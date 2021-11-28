@@ -40,6 +40,14 @@ python-dateutil = ">=2.8.1"
 dev = ["twine", "markdown", "flake8", "wheel"]
 
 [[package]]
+name = "immutabledict"
+version = "2.2.1"
+description = "Immutable wrapper around dictionaries (a fork of frozendict)"
+category = "main"
+optional = false
+python-versions = ">=3.6,<4.0"
+
+[[package]]
 name = "importlib-metadata"
 version = "4.8.2"
 description = "Read metadata from Python packages"
@@ -259,7 +267,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "7cfd487777830fdfb65304b0bb0432ebddf62a98b61b692ffa3d54b6e1c392cc"
+content-hash = "6d93e3f93012f102d590e12c64a7425a4cc586b1f7ab9a4e21b5f5d436adaf1f"
 
 [metadata.files]
 click = [
@@ -277,6 +285,10 @@ deepmerge = [
 ghp-import = [
     {file = "ghp-import-2.0.2.tar.gz", hash = "sha256:947b3771f11be850c852c64b561c600fdddf794bab363060854c1ee7ad05e071"},
     {file = "ghp_import-2.0.2-py3-none-any.whl", hash = "sha256:5f8962b30b20652cdffa9c5a9812f7de6bcb56ec475acac579807719bf242c46"},
+]
+immutabledict = [
+    {file = "immutabledict-2.2.1-py3-none-any.whl", hash = "sha256:8d7e32e0bda6dfb846349b78c753b858587c736f46be247d01ccd583ce5cc85b"},
+    {file = "immutabledict-2.2.1.tar.gz", hash = "sha256:1ddb0edf1bb6c70d0197eb90ce1fe2b2d58502334f5fdfde72d7c633d723ec3a"},
 ]
 importlib-metadata = [
     {file = "importlib_metadata-4.8.2-py3-none-any.whl", hash = "sha256:53ccfd5c134223e497627b9815d5030edf77d2ed573922f7a0b8f8bb81a1c100"},
