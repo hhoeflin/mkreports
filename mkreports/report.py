@@ -119,16 +119,3 @@ class Report:
                 return Page(path, self)
             else:
                 raise PageNotExistsError(f"Page {path} does not exist.")
-
-
-if __name__ == "__main__":
-    import tempfile
-
-    temp_dir = Path(tempfile.mkdtemp()) / "test_report"
-    report = Report(temp_dir)
-    print(f"Created Report directory {temp_dir}")
-    page = report.get_page("test/test2/test.md")
-    print(f"Created page at {page.path}")
-    asset_path = Path(__file__)
-    ingested_asset_path = page.ingest_asset(asset_path)
-    print(f"Ingested asset into path {ingested_asset_path}")

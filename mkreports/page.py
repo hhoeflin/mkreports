@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import shutil
 from pathlib import Path
+from typing import Union
 
 from .utils import md5_hash_file
 
@@ -47,3 +48,11 @@ class Page:
             shutil.copy(path, new_path)
 
         return new_path.relative_to(self.abs_path.parent)
+
+    def clear(self) -> None:
+        """Clear the page markdown file and the generated assets directory."""
+        shutil.rmtree(self.gen_asset_path)
+        self.abs_path.unlink()
+
+    def append(item: Union[str, MdBlob]) -> None:
+        pass
