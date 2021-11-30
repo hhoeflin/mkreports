@@ -35,19 +35,19 @@ class MdObj(ABC):
                     return False
         return True
 
-    def __add__(self, other) -> "MdList":
-        from .list import MdList
+    def __add__(self, other) -> "MdSeq":
+        from .list import MdSeq
 
-        first = self if isinstance(self, MdList) else MdList([self])
-        second = other if isinstance(other, MdList) else MdList([other])
+        first = self if isinstance(self, MdSeq) else MdSeq([self])
+        second = other if isinstance(other, MdSeq) else MdSeq([other])
 
         return first + second
 
-    def __radd__(self, other) -> "MdList":
-        from .list import MdList
+    def __radd__(self, other) -> "MdSeq":
+        from .list import MdSeq
 
-        first = other if isinstance(self, MdList) else MdList([other])
-        second = self if isinstance(other, MdList) else MdList([self])
+        first = other if isinstance(self, MdSeq) else MdSeq([other])
+        second = self if isinstance(other, MdSeq) else MdSeq([self])
 
         return first + second
 

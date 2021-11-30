@@ -8,7 +8,7 @@ from .md_obj import MdObj, StoreFunc
 from .utils import ensure_newline
 
 
-class MdList(MdObj, MutableSequence):
+class MdSeq(MdObj, MutableSequence):
     """
     Class to caputre a list of other MdObjs.
     """
@@ -39,31 +39,31 @@ class MdList(MdObj, MutableSequence):
     def __len__(self) -> int:
         return len(self._list)
 
-    def __add__(self, other) -> "MdList":
-        second = other if type(other) == MdList else MdList([other])
-        return MdList(self._list + second._list)
+    def __add__(self, other) -> "MdSeq":
+        second = other if type(other) == MdSeq else MdSeq([other])
+        return MdSeq(self._list + second._list)
 
-    def __radd__(self, other) -> "MdList":
-        second = other if type(other) == MdList else MdList([other])
-        return MdList(second._list + self._list)
+    def __radd__(self, other) -> "MdSeq":
+        second = other if type(other) == MdSeq else MdSeq([other])
+        return MdSeq(second._list + self._list)
 
     def insert(self, index: int, value: MdObj) -> None:
         self._list.insert(index, value)
 
-    def store(self, store_func: Optional[StoreFunc]) -> "MdList":
-        return MdList(x.store(store_func) for x in self._list)
+    def store(self, store_func: Optional[StoreFunc]) -> "MdSeq":
+        return MdSeq(x.store(store_func) for x in self._list)
 
     def require_store(self) -> bool:
         return any(x.require_store() for x in self._list)
 
-    def localize(self, path: Optional[Path]) -> "MdList":
-        return MdList(x.localize(path) for x in self._list)
+    def localize(self, path: Optional[Path]) -> "MdSeq":
+        return MdSeq(x.localize(path) for x in self._list)
 
     def require_localize(self) -> bool:
         return any(x.require_localize() for x in self._list)
 
-    def count(self, counters: Counters) -> "MdList":
-        return MdList(x.count(counters) for x in self._list)
+    def count(self, counters: Counters) -> "MdSeq":
+        return MdSeq(x.count(counters) for x in self._list)
 
     def require_count(self) -> bool:
         return any(x.require_count() for x in self._list)
@@ -74,5 +74,5 @@ class MdList(MdObj, MutableSequence):
     def to_markdown(self) -> str:
         return "".join([x.to_markdown() for x in self._list])
 
-    def final_child(self) -> "MdList":
-        return MdList(x.final_child() for x in self._list)
+    def final_child(self) -> "MdSeq":
+        return MdSeq(x.final_child() for x in self._list)
