@@ -4,7 +4,7 @@ from typing import Optional, Union
 
 from .counters import Counters
 from .md_obj import MdObj, StoreFunc
-from .utils import ensure_newline
+from .text import ensure_newline
 
 
 class Raw(MdObj):

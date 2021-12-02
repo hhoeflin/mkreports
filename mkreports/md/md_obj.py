@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import Callable, Optional
 
 from .counters import Counters
-from .utils import ensure_newline
+from .text import ensure_newline
 
 StoreFunc = Callable[[Path, bool, bool], None]
 
@@ -117,7 +117,7 @@ class MdObj(ABC):
         if bm == "":
             return self.to_markdown()
         else:
-            return ensure_newline(self.to_markdown(), 0, 2) + self.backmatter()
+            return SpacedText(self.to_markdown(), 0, 2) + self.backmatter()
 
     def final_child(self) -> "MdObj":
         """Return the last child, following all children."""
