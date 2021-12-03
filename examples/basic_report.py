@@ -1,7 +1,15 @@
+import inspect
 import tempfile
 from pathlib import Path
 
-from mkreports import Report, md
+from mkreports import Report, md, stack
+
+
+def test():
+    stack_here = stack.get_stack()
+    for frame in stack_here:
+        print(frame)
+
 
 if __name__ == "__main__":
     temp_dir = Path(tempfile.mkdtemp()) / "test_report"
@@ -15,7 +23,7 @@ if __name__ == "__main__":
     )
 
     print(basic_text.process_all())
-
+    test()
     # ingest an asset
     asset_path = Path(__file__)
     ingested_asset_path = page.ingest_asset(asset_path)
