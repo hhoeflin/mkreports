@@ -33,20 +33,6 @@ class Page:
 
     def ingest_asset(self, path: Path, move: bool = False, hash: bool = True) -> Path:
 
-        if hash:
-            # we calculate the hash of the file to be ingested
-            path_hash = md5_hash_file(path)
-            new_path = self.gen_asset_path / (path.stem + "-" + path_hash + path.suffix)
-        else:
-            new_path = self.gen_asset_path / path.name
-
-        # now see if we move or copy the file
-        new_path.parent.mkdir(parents=True, exist_ok=True)
-        if move:
-            shutil.move(path, new_path)
-        else:
-            shutil.copy(path, new_path)
-
         return new_path.relative_to(self.abs_path.parent)
 
     def clear(self) -> None:

@@ -6,9 +6,15 @@ from mkreports import Report, md, stack
 
 
 def test():
-    stack_here = stack.get_stack()
-    for frame in stack_here:
+    stack_one = stack.get_stack()
+    for frame in stack_one:
         print(frame)
+
+    stack_two = stack.get_stack()
+
+    equal, diff = stack.stack_diff(stack_one, stack_two)
+    for f in diff:
+        print(f)
 
 
 if __name__ == "__main__":

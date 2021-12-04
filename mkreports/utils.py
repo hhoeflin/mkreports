@@ -1,7 +1,6 @@
 """
 Various utility functions for the package.
 """
-import hashlib
 from copy import deepcopy
 from pathlib import Path
 from typing import List, Mapping, Union
@@ -79,11 +78,3 @@ def update_mkdocs(mkdocs_file: Path, nav_entry: NavEntry) -> None:
 
     with mkdocs_file.open("w") as f:
         yaml.dump(mkdocs_settings, f, default_flow_style=False)
-
-
-def md5_hash_file(path: Path) -> str:
-    m = hashlib.md5()
-    with path.open("rb") as f:
-        m.update(f.read())
-
-    return m.hexdigest()

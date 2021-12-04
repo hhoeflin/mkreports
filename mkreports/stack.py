@@ -28,8 +28,6 @@ class FrameInfo:
 
 Stack = List[FrameInfo]
 
-StackDiff = List["Stack"]
-
 
 def read_file(
     path: Path, from_line: Optional[int] = None, to_line: Optional[int] = None
@@ -87,7 +85,7 @@ def get_stack() -> Stack:
     return list(reversed(stack))
 
 
-def stack_diff(stack_old, stack_new) -> Tuple[Stack, StackDiff]:
+def stack_diff(stack_old, stack_new) -> Tuple[Stack, Stack]:
     """
     Calculate the difference of two stacks.
 
@@ -128,4 +126,4 @@ def stack_diff(stack_old, stack_new) -> Tuple[Stack, StackDiff]:
                 middle_stack = [middle_frame]
                 new_stack_lower = [frame for frame in stack_new[idx_new + 1 :]]
 
-    return (equal_stack, [old_stack_lower, middle_stack, new_stack_lower])
+    return (equal_stack, old_stack_lower + middle_stack + new_stack_lower)

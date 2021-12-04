@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import Callable, Optional
 
 from .counters import Counters
-from .text import ensure_newline
+from .text import Text, ensure_newline
 
 StoreFunc = Callable[[Path, bool, bool], None]
 
@@ -68,7 +68,7 @@ class MdObj(ABC):
         """
         return False
 
-    def localize(self, path: Optional[Path] = None) -> "MdObj":
+    def localize(self, relative_to: Optional[Path] = None) -> "MdObj":
         """
         Make file paths relative to 'path'.
 
@@ -94,12 +94,12 @@ class MdObj(ABC):
         """Does the object require counters."""
         return False
 
-    def backmatter(self) -> str:
+    def backmatter(self) -> Text:
         """Return the parts of the object required for the backmatter."""
         return ""
 
     @abstractmethod
-    def to_markdown(self) -> str:
+    def to_markdown(self) -> Text:
         """
         Convert the object to markdown.
 
@@ -108,7 +108,7 @@ class MdObj(ABC):
         """
         pass
 
-    def to_md_with_bm(self) -> str:
+    def to_md_with_bm(self) -> Text:
         """
         Convert to markdown and attach the backmatter.
         """
