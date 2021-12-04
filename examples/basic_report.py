@@ -31,6 +31,6 @@ if __name__ == "__main__":
     print(basic_text.process_all())
     test()
     # ingest an asset
-    asset_path = Path(__file__)
-    ingested_asset_path = page.ingest_asset(asset_path)
-    print(f"Ingested asset into path {ingested_asset_path}")
+    script_asset = md.File(Path(__file__), hash=True)
+    page.append(script_asset)
+    print(f"Asset at {script_asset.final_child().path}")

@@ -118,7 +118,7 @@ class MdObj(ABC):
     def process_all(
         self,
         store_path: Optional[Path] = None,
-        path: Optional[Path] = None,
+        page_path: Optional[Path] = None,
         counters: Optional[Counters] = None,
     ) -> SpacedText:
-        return self.store(store_path).count(counters).to_md_with_bm(path)
+        return self.store(store_path).count(counters).to_md_with_bm(page_path)

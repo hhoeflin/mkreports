@@ -4,8 +4,7 @@ from copy import copy
 from pathlib import Path
 from typing import Optional
 
-from md_obj import MdObj
-
+from .md_obj import MdObj
 from .text import SpacedText
 
 
@@ -66,6 +65,9 @@ class File(MdObj):
 
         self._save(new_file)
         return new_file
+
+    def to_markdown(self, path: Path) -> SpacedText:
+        return SpacedText("")
 
 
 class ImageFile(File):
