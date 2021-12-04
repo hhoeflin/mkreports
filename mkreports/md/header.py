@@ -20,7 +20,15 @@ class Header(MdObj):
         self._style = style
 
     def to_markdown(self, path: Path) -> SpacedText:
-        return mdt.Header.Header.choose_header(self._level, self._title, self._style)
+        header = mdt.Header.Header.choose_header(
+            self._level, self._title, self._style
+        ).strip("\n")
+        return SpacedText(
+            mdt.Header.Header.choose_header(
+                self._level, self._title, self._style
+            ).strip("\n"),
+            (1, 2),
+        )
 
 
 H1 = functools.partial(Header, level=1)

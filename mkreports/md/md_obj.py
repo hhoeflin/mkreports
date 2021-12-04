@@ -100,9 +100,13 @@ class MdObj(ABC):
         """
         Convert to markdown and attach the backmatter.
         """
-        return SpacedText(self.to_markdown(path), (1, 2)) + SpacedText(
-            self.backmatter(path), (2, 1)
-        )
+        backmatter = self.backmatter(path)
+        if backmatter.text == "":
+            return self.to_markdown(path)
+        else:
+            return SpacedText(self.to_markdown(path), (1, 2)) + SpacedText(
+                self.backmatter(path), (2, 1)
+            )
 
     def final_child(self) -> "MdObj":
         """Return the last child, following all children."""
