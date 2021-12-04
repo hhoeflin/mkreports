@@ -1,9 +1,11 @@
 import functools
+from pathlib import Path
 from typing import Literal
 
 import mdutils.tools as mdt
 
 from .md_obj import MdObj
+from .text import SpacedText
 
 
 class Header(MdObj):
@@ -17,7 +19,7 @@ class Header(MdObj):
         self._level = level
         self._style = style
 
-    def to_markdown(self) -> str:
+    def to_markdown(self, path: Path) -> SpacedText:
         return mdt.Header.Header.choose_header(self._level, self._title, self._style)
 
 

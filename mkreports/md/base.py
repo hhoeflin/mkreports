@@ -3,8 +3,8 @@ from pathlib import Path
 from typing import Optional, Union
 
 from .counters import Counters
-from .md_obj import MdObj, StoreFunc
-from .text import ensure_newline
+from .md_obj import MdObj
+from .text import SpacedText, Text
 
 
 class Raw(MdObj):
@@ -16,8 +16,8 @@ class Raw(MdObj):
         super().__init__()
         self.raw = raw
 
-    def to_markdown(self) -> str:
-        return self.raw
+    def to_markdown(self, path: Path) -> SpacedText:
+        return SpacedText(self.raw)
 
 
 class MdWrapper(MdObj):
@@ -36,30 +36,17 @@ class MdWrapper(MdObj):
             obj = Raw(obj)
         self._obj = obj
 
-    def store(self, store_func: Optional[StoreFunc] = None) -> "MdWrapper":
+    def store(self, store_path: Optional[Path] = None) -> "MdWrapper":
         if self.require_store():
             self_copy = copy.copy(self)
             self._child = self_copy
-            self_copy._obj = self._obj.store(store_func)
+            self_copy._obj = self._obj.store(store_path)
             return self_copy
         else:
             return self
-        return self._obj.store(store_func)
 
     def require_store(self) -> bool:
         return self._obj.require_store()
-
-    def localize(self, path: Optional[Path] = None) -> "MdWrapper":
-        if self.require_localize():
-            self_copy = copy.copy(self)
-            self._child = self_copy
-            self_copy._obj = self._obj.localize(path)
-            return self_copy
-        else:
-            return self
-
-    def require_localize(self) -> bool:
-        return self._obj.require_localize()
 
     def count(self, counters: Optional[Counters] = None) -> "MdWrapper":
         if self.require_count():
@@ -73,16 +60,16 @@ class MdWrapper(MdObj):
     def require_count(self) -> bool:
         return self._obj.require_count()
 
-    def backmatter(self) -> str:
-        return self._obj.backmatter()
+    def backmatter(self, path: Path) -> SpacedText:
+        return self._obj.backmatter(path)
 
-    def to_markdown(self) -> str:
-        return self._obj.to_markdown()
+    def to_markdown(self, path: Path) -> SpacedText:
+        return self._obj.to_markdown(path)
 
     def final_child(self) -> "MdObj":
         return self._obj.final_child()
 
 
 class MdParagraph(MdWrapper):
-    def to_markdown(self) -> str:
-        return ensure_newline(super().to_markdown(), 1, 2)
+    def to_markdown(self, path: Path) -> SpacedText:
+        return SpacedText(super().to_markdown(path), (1, 2))

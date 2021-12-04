@@ -2,11 +2,11 @@ import hashlib
 import shutil
 from copy import copy
 from pathlib import Path
-from typing import Literal, Optional
+from typing import Optional
 
 from md_obj import MdObj
 
-from .text import Text
+from .text import SpacedText
 
 
 def md5_hash_file(path: Path) -> str:
@@ -67,33 +67,6 @@ class File(MdObj):
         self._save(new_file)
         return new_file
 
-    def localize(self, relative_to: Optional[Path] = None) -> "File":
-        if relative_to is None:
-            new_file = self
-        else:
-            new_file = copy(self)
-            if self.path.is_absolute():
-                new_obj.relative_to = relative_to
-                new_obj.path = self.path.relative_to(relative_to)
-                self._child = new_obj
-                return self._child
-            else:
-                if self.relative_to == relative_to:
-                    return self
-                else:
-                    new_obj.relative_to = relative_to
-                    new_obj.path = (self.relative_to / self.path).relative_to(
-                        relative_to
-                    )
-                    # path is already relative. Interpret it relative to cwd.
-                    self._child = new_obj
-                return self._child
-        self._save(new_file)
-        return new_file
-
-    def require_localize(self) -> bool:
-        return True
-
 
 class ImageFile(File):
     def __init__(
@@ -101,5 +74,5 @@ class ImageFile(File):
     ) -> None:
         super().__init__(path=path, relative_to=relative_to)
 
-    def to_markdown(self) -> Text:
+    def to_markdown(self, path: Path) -> SpacedText:
         pass

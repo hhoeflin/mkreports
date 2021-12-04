@@ -5,9 +5,8 @@ from __future__ import annotations
 
 import shutil
 from pathlib import Path
-from typing import Union
 
-from .utils import md5_hash_file
+from .md import Text
 
 
 class Page:
@@ -31,14 +30,10 @@ class Page:
     def gen_asset_path(self) -> Path:
         return self.abs_path.parent / (self._path.stem + "_gen_assets")
 
-    def ingest_asset(self, path: Path, move: bool = False, hash: bool = True) -> Path:
-
-        return new_path.relative_to(self.abs_path.parent)
-
     def clear(self) -> None:
         """Clear the page markdown file and the generated assets directory."""
         shutil.rmtree(self.gen_asset_path)
         self.abs_path.unlink()
 
-    def append(item: Union[str, MdBlob]) -> None:
+    def append(self, item: Text) -> None:
         pass

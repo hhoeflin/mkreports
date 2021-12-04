@@ -1,11 +1,9 @@
 from abc import ABC, abstractmethod
 from pathlib import Path
-from typing import Callable, Optional
+from typing import Optional
 
 from .counters import Counters
-from .text import Text, ensure_newline
-
-StoreFunc = Callable[[Path, bool, bool], None]
+from .text import SpacedText, Text
 
 
 class MdObj(ABC):
@@ -51,7 +49,13 @@ class MdObj(ABC):
 
         return first + second
 
-    def store(self, store_func: Optional[StoreFunc] = None) -> "MdObj":
+    def _save(self, child: "MdObj") -> "MdObj":
+        # check if child is self
+        if id(child) != id(self):
+            self._child = child
+        return child
+
+    def store(self, store_path: Optional[Path] = None) -> "MdObj":
         """
         Stores assets in a file.
 
@@ -68,22 +72,6 @@ class MdObj(ABC):
         """
         return False
 
-    def localize(self, relative_to: Optional[Path] = None) -> "MdObj":
-        """
-        Make file paths relative to 'path'.
-
-        Markdown documents typically references files relative to itself.
-        For objects that reference absolute paths, this method returns
-        them relative to 'path'.
-        """
-        return self
-
-    def require_localize(self) -> bool:
-        """
-        Does the object require a path to make file stores relative.
-        """
-        return False
-
     def count(self, counters: Optional[Counters] = None) -> "MdObj":
         """
         Objects that may need counters, such as references.
@@ -94,30 +82,27 @@ class MdObj(ABC):
         """Does the object require counters."""
         return False
 
-    def backmatter(self) -> Text:
+    def backmatter(self, path: Optional[Path]) -> SpacedText:
         """Return the parts of the object required for the backmatter."""
-        return ""
+        return SpacedText("")
 
     @abstractmethod
-    def to_markdown(self) -> Text:
+    def to_markdown(self, path: Optional[Path]) -> SpacedText:
         """
         Convert the object to markdown.
 
-        Assumes that all other processing steps are done, such as storing, localiztion,
+        Assumes that all other processing steps are done, such as storing,
         and counting.
         """
         pass
 
-    def to_md_with_bm(self) -> Text:
+    def to_md_with_bm(self, path: Optional[Path]) -> SpacedText:
         """
         Convert to markdown and attach the backmatter.
         """
-        bm = self.backmatter()
-
-        if bm == "":
-            return self.to_markdown()
-        else:
-            return ensure_newline(self.to_markdown(), 0, 2) + self.backmatter()
+        return SpacedText(self.to_markdown(path), (1, 2)) + SpacedText(
+            self.backmatter(path), (2, 1)
+        )
 
     def final_child(self) -> "MdObj":
         """Return the last child, following all children."""
@@ -128,8 +113,8 @@ class MdObj(ABC):
 
     def process_all(
         self,
-        store_func: Optional[StoreFunc] = None,
+        store_path: Optional[Path] = None,
         path: Optional[Path] = None,
         counters: Optional[Counters] = None,
-    ) -> str:
-        return self.store(store_func).localize(path).count(counters).to_md_with_bm()
+    ) -> SpacedText:
+        return self.store(store_path).count(counters).to_md_with_bm(path)
