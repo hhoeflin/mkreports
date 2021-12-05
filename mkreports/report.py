@@ -161,10 +161,8 @@ class Page:
 
     def append(self, item: Union[MdObj, Text]) -> None:
         if isinstance(item, MdObj):
-            md_text = item.process_all(
-                store_path=self.gen_asset_path,
+            md_text = item.to_md_with_bm(
                 page_path=self.page_abs_path,
-                counters=self._counters,
             )
         elif isinstance(item, (str, SpacedText)):
             md_text = SpacedText(item)

@@ -28,9 +28,9 @@ if __name__ == "__main__":
         md.H1("First header") + md.H2("Second header") + md.P("This is a paragraph")
     )
 
-    print(basic_text.process_all())
+    print(basic_text.to_markdown())
     test()
     # ingest an asset
-    script_asset = md.File(Path(__file__), hash=True)
+    script_asset = md.File(Path(__file__), store_path=page.gen_asset_path, hash=True)
     page.append(script_asset)
-    print(f"Asset at {script_asset.final_child().path}")
+    print(f"Asset at {script_asset.path}")
