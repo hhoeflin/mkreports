@@ -14,10 +14,10 @@ import yaml
 from immutabledict import immutabledict
 
 from .counters import Counters
-from .exceptions import (PageNotExistsError, ReportExistsError,
-                         ReportNotExistsError, ReportNotValidError)
+from .exceptions import (ReportExistsError, ReportNotExistsError,
+                         ReportNotValidError)
 from .md import MdObj, SpacedText, Text
-from .utils import Nav, path_from_nav_entry, path_to_nav_entry, update_mkdocs
+from .utils import NavEntry, path_to_nav_entry, update_mkdocs
 
 default_settings = immutabledict(
     {
@@ -100,7 +100,9 @@ class Report:
         if not self.index_file.exists() or not self.index_file.is_file():
             raise ReportNotValidError(f"{self.index_file} does not exist")
 
-    def get_page(self, page_name: Union[Nav, Path, str], create: bool = True) -> "Page":
+    def get_page(
+        self, page_name: Union[NavEntry, Path, str], append: bool = True
+    ) -> "Page":
         # if the page_name is just a string, we turn it into a dictionary
         # based on the hierarchical names
         if isinstance(page_name, (str, Path)):
@@ -108,21 +110,25 @@ class Report:
             nav_entry = path_to_nav_entry(path)
         else:
             nav_entry = page_name
-            path = path_from_nav_entry(nav_entry)
+            path = nav_entry[1]
 
         # if the file already exists, just return a 'Page',
         # else create a new nav-entry and the file and return a 'Page'
         if (self.docs_dir / path).exists():
-            return Page(self.docs_dir / path)
-        else:
-            if create:
-                # create the file by touching it and create a nav-entry
-                (self.docs_dir / path).parent.mkdir(exist_ok=True, parents=True)
-                (self.docs_dir / path).touch()
-                update_mkdocs(self.mkdocs_file, nav_entry)
+            if append:
                 return Page(self.docs_dir / path)
             else:
-                raise PageNotExistsError(f"Page {path} does not exist.")
+                # delete the existing site
+                (self.docs_dir / path).unlink()
+                (self.docs_dir / path).touch()
+                # we do not need to add en entry into the nav
+                return Page(self.docs_dir / path)
+        else:
+            # create the file by touching it and create a nav-entry
+            (self.docs_dir / path).parent.mkdir(exist_ok=True, parents=True)
+            (self.docs_dir / path).touch()
+            update_mkdocs(self.mkdocs_file, nav_entry)
+            return Page(self.docs_dir / path)
 
 
 class Page:

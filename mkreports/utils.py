@@ -1,14 +1,17 @@
 """
 Various utility functions for the package.
 """
+from collections import defaultdict
 from copy import deepcopy
 from pathlib import Path
-from typing import Any, List, Mapping, Union
+from typing import Dict, List, Mapping, Optional, Tuple, Union
 
 import yaml
 from deepmerge import Merger
 
-Nav = List[Union[str, "Nav", Mapping[str, Union[str, "Nav"]]]]
+NavEntry = Tuple[List[str], Path]
+Nav = List[NavEntry]
+MkdocsNav = List[Union[str, Mapping[str, Union[str, "MkdocsNav"]]]]
 
 
 def snake_to_text(x: str) -> str:
@@ -16,81 +19,81 @@ def snake_to_text(x: str) -> str:
     return " ".join([w.capitalize() for w in x.split("_")])
 
 
-def path_to_nav_entry(path: Path, orig_path=None) -> Nav:
-    # remember the original path to use
-    if orig_path is None:
-        orig_path = path
-    if len(path.parts) == 1:
-        return [{snake_to_text(path.stem): str(orig_path)}]
-    else:
-        outer = path.parts[0]
-        rest = Path(*path.parts[1:])
-        return [{snake_to_text(outer): path_to_nav_entry(rest, orig_path=orig_path)}]
+def path_to_nav_entry(path: Path) -> NavEntry:
+    return (
+        [snake_to_text(x) for x in path.parent.parts] + [snake_to_text(path.stem)],
+        path,
+    )
 
 
-def check_length_one(x: Union[List, Mapping]) -> Any:
-    if isinstance(x, List):
-        assert len(x) == 1
-        return x[0]
-    elif isinstance(x, Mapping):
-        assert len(x) == 1
-        return list(x.values())[0]
-    else:
-        raise ValueError("Unexpected type")
+def check_length_one(
+    x: Mapping[str, Union[str, "MkdocsNav"]]
+) -> Tuple[str, Union[str, MkdocsNav]]:
+    assert len(x) == 1
+    return list(x.items())[0]
 
 
-def path_from_nav_entry(x: Nav) -> Path:
-    # first unpack the list
-    x_entry = check_length_one(x)
-    if isinstance(x_entry, str):
-        return Path(x_entry)
-    elif isinstance(x_entry, Mapping):
-        value = check_length_one(x_entry)
-        if isinstance(value, str):
-            return Path(value)
-        elif isinstance(value, List):
-            return path_from_nav_entry(check_length_one(x_entry))
+def mkdocs_to_nav(mkdocs_nav: MkdocsNav) -> Nav:
+    """
+    Convert an mkdovs nav to a list of NavEntry.
+    """
+    res = []
+    for entry in mkdocs_nav:
+        if isinstance(entry, str):
+            res.append(([], Path(entry)))
+        elif isinstance(entry, Mapping):
+            key, val = check_length_one(entry)
+            if isinstance(val, str):
+                res.append(([key], Path(val)))
+            elif isinstance(val, List):
+                res = res + [([key] + h, p) for (h, p) in mkdocs_to_nav(val)]
+            else:
+                raise Exception("Not expected type")
         else:
-            raise ValueError("Not a nav item as defined")
-    elif isinstance(x_entry, List):
-        return path_from_nav_entry(check_length_one(x_entry))
-    else:
-        raise ValueError("Not a nav item as defined")
+            raise Exception("Not expected type")
+    return res
 
 
-def str_as_list_append(config, path, base, nxt):
-    return [base] + nxt
+def split_nav(x: Nav) -> Tuple[List[str], Dict[str, Nav]]:
+    res_nav = defaultdict(list)
+    res_list = []
+    for (h, p) in x:
+        if len(h) == 0:
+            res_list.append(p)
+        else:
+            res_nav[h[0]].append((h[1:], p))
+
+    return (res_list, res_nav)
 
 
-nav_merger = Merger(
-    # pass in a list of tuple, with the
-    # strategies you are looking to apply
-    # to each type.
-    [
-        (list, ["append"]),
-        (dict, ["merge"]),
-        (set, ["union"]),
-        (str, [str_as_list_append]),
-    ],
-    # next, choose the fallback strategies,
-    # applied to all other types:
-    ["override"],
-    # finally, choose the strategies in
-    # the case where the types conflict:
-    ["override"],
-)
+def nav_to_mkdocs(nav: Nav) -> MkdocsNav:
+    """
+    Convert a list of nav-entries into mkdocs format.
+    """
+    split_nokey, split_keys = split_nav(nav)
+    res: MkdocsNav = [str(p) for p in split_nokey]
+
+    for key, val in split_keys.items():
+        mkdocs_for_key = nav_to_mkdocs(val)
+        # if it is a list of length 1 with a string, treat it special
+        if len(mkdocs_for_key) == 1 and isinstance(mkdocs_for_key[0], str):
+            res.append({key: mkdocs_for_key[0]})
+        else:
+            res.append({key: mkdocs_for_key})
+
+    return res
 
 
-def update_mkdocs(mkdocs_file: Path, nav_entry: Nav) -> None:
+def update_mkdocs(mkdocs_file: Path, nav_entry: NavEntry) -> None:
     # now we read the mkdocs yaml file
     # merge the nav entry in it with the new one
     # and write it out
     with mkdocs_file.open("r") as f:
         mkdocs_settings = yaml.load(f, Loader=yaml.Loader)
 
-    nav = deepcopy(mkdocs_settings["nav"])
-    nav = nav_merger.merge(nav, nav_entry)
-    mkdocs_settings["nav"] = nav
+    nav = mkdocs_to_nav(mkdocs_settings["nav"]) + [nav_entry]
+    mkdocs_nav = nav_to_mkdocs(nav)
+    mkdocs_settings["nav"] = mkdocs_nav
 
     with mkdocs_file.open("w") as f:
         yaml.dump(mkdocs_settings, f, default_flow_style=False)
