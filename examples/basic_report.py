@@ -1,5 +1,3 @@
-import inspect
-import tempfile
 from pathlib import Path
 
 from mkreports import Report, md, stack

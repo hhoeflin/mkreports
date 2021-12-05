@@ -3,7 +3,7 @@ Various utility functions for the package.
 """
 from collections import defaultdict
 from pathlib import Path
-from typing import Dict, List, Mapping, Optional, Tuple, Union
+from typing import Dict, List, Mapping, Tuple, Union
 
 import yaml
 
