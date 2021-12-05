@@ -1,10 +1,10 @@
 import functools
 from pathlib import Path
-from typing import Literal
+from typing import Literal, Optional
 
 import mdutils.tools as mdt
 
-from .md_obj import MdObj
+from .base import MdObj
 from .text import SpacedText
 
 
@@ -19,7 +19,7 @@ class Header(MdObj):
         self._level = level
         self._style = style
 
-    def to_markdown(self, path: Path) -> SpacedText:
+    def to_markdown(self, page_path: Optional[Path] = None) -> SpacedText:
         header = mdt.Header.Header.choose_header(
             self._level, self._title, self._style
         ).strip("\n")

@@ -4,7 +4,7 @@ from copy import copy
 from pathlib import Path
 from typing import Optional
 
-from .md_obj import MdObj
+from .base import MdObj
 from .text import SpacedText
 
 
@@ -24,29 +24,22 @@ class File(MdObj):
     def __init__(
         self,
         path: Path,
-        relative_to: Optional[Path] = None,
+        store_path: Path,
         allow_copy: bool = True,
         hash: bool = False,
     ) -> None:
         super().__init__()
-        self.path = path
-        self.relative_to = Path.cwd() if relative_to is None else relative_to
+        self.path = path.absolute()
+
         self.allow_copy = allow_copy
         self.hash = hash
+        self.store_path = store_path
 
-    @property
-    def abs_path(self) -> Path:
-        if self.relative_to is None:
-            return self.path.absolute()
-        else:
-            return (self.relative_to / self.path).absolute()
-
-    def store(self, store_path: Path) -> "File":
         if self.allow_copy:
 
             if self.hash:
                 # we calculate the hash of the file to be ingested
-                path_hash = md5_hash_file(self.abs_path)
+                path_hash = md5_hash_file(self.path)
                 new_path = store_path / (
                     self.path.stem + "-" + path_hash + self.path.suffix
                 )
@@ -55,26 +48,26 @@ class File(MdObj):
 
             # now see if we move or copy the file
             new_path.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copy(self.abs_path, new_path)
-
-            new_file = copy(self)
-            new_file.relative_to = None
-            new_file.path = new_path
+            shutil.copy(self.path, new_path)
+            self.path = new_path
         else:
             new_file = self
 
-        self._save(new_file)
-        return new_file
-
-    def to_markdown(self, path: Path) -> SpacedText:
+    def to_markdown(self, page_path: Path) -> SpacedText:
         return SpacedText("")
 
 
 class ImageFile(File):
     def __init__(
-        self, path: Path, text: str = "", relative_to: Optional[Path] = None
+        self,
+        path: Path,
+        text: str = "",
+        tooltip: str = "",
     ) -> None:
-        super().__init__(path=path, relative_to=relative_to)
+        super().__init__(path=path)
+        self.text = text
+        self.tooltip = tooltip
 
     def to_markdown(self, path: Path) -> SpacedText:
+
         pass

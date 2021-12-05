@@ -1,4 +1,4 @@
-from typing import Any, Optional, Tuple, Union
+from typing import Any, Tuple, Union
 
 Text = Union[str, "SpacedText"]
 
