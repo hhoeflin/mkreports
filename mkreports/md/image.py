@@ -2,7 +2,9 @@ import hashlib
 import shutil
 from copy import copy
 from pathlib import Path
-from typing import Optional
+from typing import Literal, Optional
+
+from mdutils.tools.Image import Image as UtilsImage
 
 from .base import MdObj
 from .text import SpacedText
@@ -14,6 +16,19 @@ def md5_hash_file(path: Path) -> str:
         m.update(f.read())
 
     return m.hexdigest()
+
+
+def relpath(path_to, path_from):
+    path_to = Path(path_to).absolute()
+    path_from = Path(path_from).absolute()
+    head = Path("/")
+    tail = Path("")
+    try:
+        for p in (*reversed(path_from.parents), path_from):
+            head, tail = p, path_to.relative_to(p)
+    except ValueError:  # Stop when the paths diverge.
+        pass
+    return Path("../" * (len(path_from.parents) - len(head.parents))).joinpath(tail)
 
 
 class File(MdObj):
@@ -53,7 +68,7 @@ class File(MdObj):
         else:
             new_file = self
 
-    def to_markdown(self, page_path: Path) -> SpacedText:
+    def to_markdown(self, page_path: Optional[Path] = None) -> SpacedText:
         return SpacedText("")
 
 
@@ -61,13 +76,32 @@ class ImageFile(File):
     def __init__(
         self,
         path: Path,
+        store_path: Path,
+        type: Literal["inline", "ref"] = "inline",
         text: str = "",
         tooltip: str = "",
+        allow_copy: bool = True,
+        hash: bool = True,
     ) -> None:
-        super().__init__(path=path)
+        super().__init__(
+            path=path, store_path=store_path, allow_copy=allow_copy, hash=hash
+        )
         self.text = text
         self.tooltip = tooltip
+        self.type = type
 
-    def to_markdown(self, path: Path) -> SpacedText:
-
-        pass
+    def to_markdown(self, page_path: Path) -> SpacedText:
+        if page_path is None:
+            raise ValueError("Page path cannot be None")
+        if self.type == "inline":
+            return SpacedText(
+                UtilsImage.new_inline_image(
+                    text=self.text,
+                    path=str(relpath(self.path, page_path.parent)),
+                    tooltip=self.tooltip,
+                )
+            )
+        elif type == "ref":
+            raise NotImplementedError()
+        else:
+            raise ValueError(f"Unknown type {self.type}")

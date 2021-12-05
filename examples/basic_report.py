@@ -18,9 +18,8 @@ def test():
 
 
 if __name__ == "__main__":
-    temp_dir = Path(tempfile.mkdtemp()) / "test_report"
-    report = Report(temp_dir)
-    print(f"Created Report directory {temp_dir}")
+    report = Report("basic_report", site_name="Basic report")
+    print(f"Created Report directory {report.path}")
     page = report.get_page("test/test2/test.md")
     print(f"Created page at {page.path}")
 
@@ -32,5 +31,11 @@ if __name__ == "__main__":
     test()
     # ingest an asset
     script_asset = md.File(Path(__file__), store_path=page.gen_asset_path, hash=True)
-    page.append(script_asset)
+    mkdocs_img = md.ImageFile(
+        Path(__file__).parent / "mkdocs.jpg", store_path=page.gen_asset_path, hash=True
+    )
+    page.append(basic_text)
+    page.append(mkdocs_img)
     print(f"Asset at {script_asset.path}")
+    print(f"Image at {mkdocs_img.path}")
+    print(f"Page at {page.path}")

@@ -17,13 +17,12 @@ from .counters import Counters
 from .exceptions import (PageNotExistsError, ReportExistsError,
                          ReportNotExistsError, ReportNotValidError)
 from .md import MdObj, SpacedText, Text
-from .utils import (NavEntry, path_from_nav_entry, path_to_nav_entry,
-                    update_mkdocs)
+from .utils import Nav, path_from_nav_entry, path_to_nav_entry, update_mkdocs
 
 default_settings = immutabledict(
     {
         "theme": {"name": "material"},
-        "nav": {"Home": "index.md"},
+        "nav": [{"Home": "index.md"}],
         "markdown_extensions": [
             "admonition",
             "pymdownx.details",
@@ -37,12 +36,14 @@ class Report:
     def __init__(
         self,
         path: Union[str, Path],
+        site_name: str,
         create: bool = True,
         exist_ok: bool = True,
         settings: Optional[Mapping[str, str]] = None,
     ) -> None:
         # need to ensure it is of type Path
-        self._path = Path(path)
+        self._path = Path(path).absolute()
+        self.site_name = site_name
         # first check if the path exists and return error if that is not ok
         if self.path.exists():
             if not exist_ok:
@@ -77,7 +78,7 @@ class Report:
 
     @property
     def index_file(self) -> Path:
-        return self.path / "index.md"
+        return self.docs_dir / "index.md"
 
     def _create_new(self, settings: Mapping[str, str]) -> None:
         # create the directories
@@ -86,6 +87,7 @@ class Report:
         self.index_file.touch()
         # the settings are our serialized yaml
         settings = dict(settings.items())  # ensure settings is regular dict
+        settings["site_name"] = self.site_name
         with self.mkdocs_file.open("w") as f:
             yaml.dump(settings, f, Dumper=yaml.Dumper, default_flow_style=False)
 
@@ -98,7 +100,7 @@ class Report:
         if not self.index_file.exists() or not self.index_file.is_file():
             raise ReportNotValidError(f"{self.index_file} does not exist")
 
-    def get_page(self, page_name: Union[NavEntry, Path], create: bool = True) -> "Page":
+    def get_page(self, page_name: Union[Nav, Path, str], create: bool = True) -> "Page":
         # if the page_name is just a string, we turn it into a dictionary
         # based on the hierarchical names
         if isinstance(page_name, (str, Path)):
@@ -111,28 +113,27 @@ class Report:
         # if the file already exists, just return a 'Page',
         # else create a new nav-entry and the file and return a 'Page'
         if (self.docs_dir / path).exists():
-            return Page(path, self)
+            return Page(self.docs_dir / path)
         else:
             if create:
                 # create the file by touching it and create a nav-entry
                 (self.docs_dir / path).parent.mkdir(exist_ok=True, parents=True)
                 (self.docs_dir / path).touch()
                 update_mkdocs(self.mkdocs_file, nav_entry)
-                return Page(path, self)
+                return Page(self.docs_dir / path)
             else:
                 raise PageNotExistsError(f"Page {path} does not exist.")
 
 
 class Page:
-    def __init__(self, path: Path, report: "Report") -> None:
-        self._path = path
-        self._report = report
+    def __init__(self, path: Path) -> None:
+        self._path = path.absolute()
         self._counters = Counters()
 
         # get the last string that was written into the page (if it exists)
         # otherwise we set it to newlines.
-        if self.page_abs_path.exists():
-            with self.page_abs_path.open("r") as f:
+        if self.path.exists():
+            with self.path.open("r") as f:
                 last_lines = f.readlines()[-3:]
             self._last_obj = SpacedText("".join(last_lines))
         else:
@@ -143,31 +144,24 @@ class Page:
         return self._path
 
     @property
-    def report(self) -> "Report":
-        return self._report
-
-    @property
-    def page_abs_path(self) -> Path:
-        return (self._report.docs_dir / self._path).resolve()
-
-    @property
     def gen_asset_path(self) -> Path:
-        return self.page_abs_path.parent / (self._path.stem + "_gen_assets")
+        return self.path.parent / (self._path.stem + "_gen_assets")
 
     def clear(self) -> None:
         """Clear the page markdown file and the generated assets directory."""
         shutil.rmtree(self.gen_asset_path)
-        self.page_abs_path.unlink()
+        self.path.unlink()
 
     def append(self, item: Union[MdObj, Text]) -> None:
         if isinstance(item, MdObj):
             md_text = item.to_md_with_bm(
-                page_path=self.page_abs_path,
+                page_path=self.path,
             )
         elif isinstance(item, (str, SpacedText)):
             md_text = SpacedText(item)
         else:
             raise Exception("item should be a str, SpacedText or MdObj")
 
-        with self.page_abs_path.open("a") as f:
-            f.write(md_text.format_text(self._last_obj, "a"))
+        with self.path.open("a") as f:
+            f.write(last_obj := md_text.format_text(self._last_obj, "a"))
+        self._last_obj = last_obj
