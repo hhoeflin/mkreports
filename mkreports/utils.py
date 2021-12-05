@@ -2,12 +2,10 @@
 Various utility functions for the package.
 """
 from collections import defaultdict
-from copy import deepcopy
 from pathlib import Path
 from typing import Dict, List, Mapping, Optional, Tuple, Union
 
 import yaml
-from deepmerge import Merger
 
 NavEntry = Tuple[List[str], Path]
 Nav = List[NavEntry]
