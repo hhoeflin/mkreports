@@ -105,3 +105,19 @@ class ImageFile(File):
             raise NotImplementedError()
         else:
             raise ValueError(f"Unknown type {self.type}")
+
+
+class Image(ImageFile):
+    def __init__(
+        self,
+        image,
+        width: float,
+        height: float,
+        units: Literal["in", "cm", "mm"],
+        dpi: float,
+        store_path: Path,
+        type: Literal["inline", "ref"] = "inline",
+        text: str = "",
+        tooltip: str = "",
+    ) -> None:
+        pass

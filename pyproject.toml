@@ -19,6 +19,7 @@ pudb = "^2021.2.2"
 bpython = "^0.22.1"
 pytest = "^6.2.5"
 pytest-pudb = "^0.7.0"
+plotnine = "^0.8.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

@@ -1,43 +1,38 @@
-# SPDX-FileCopyrightText: 2021 Serokell <https://serokell.io/>
-#
-# SPDX-License-Identifier: CC0-1.0
-
 {
-  description = "My Python application";
+  description = "Application packaged using poetry2nix";
 
   inputs = {
-    nixpkgs = {
-      type = "indirect";
-      id = "nixpkgs";
-    };
     flake-utils.url = "github:numtide/flake-utils";
+    nixpkgs.url = "nixpkgs";
+    poetry2nix = {
+      url = "github:nix-community/poetry2nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
-
-  outputs = { self, nixpkgs, flake-utils }:
-    flake-utils.lib.eachDefaultSystem (system:
+  outputs = { self, nixpkgs, flake-utils, poetry2nix }:
+    {
+      # Nixpkgs overlay providing the application
+      overlay = nixpkgs.lib.composeManyExtensions [
+        poetry2nix.overlay
+        (final: prev: {
+          # The application
+          myapp = prev.poetry2nix.mkPoetryApplication {
+            projectDir = ./.;
+          };
+        })
+      ];
+    } // (flake-utils.lib.eachDefaultSystem (system:
       let
-        pkgs = nixpkgs.legacyPackages.${system};
-
-        customOverrides = self: super: {
-          # Overrides go here
+        pkgs = import nixpkgs {
+          inherit system;
+          overlays = [ self.overlay ];
+        };
+      in
+      rec {
+        apps = {
+          myapp = pkgs.myapp;
         };
 
-        app = pkgs.poetry2nix.mkPoetryApplication {
-          projectDir = ./.;
-          overrides =
-            [ pkgs.poetry2nix.defaultPoetryOverrides customOverrides ];
-        };
-
-        # DON'T FORGET TO PUT YOUR PACKAGE NAME HERE, REMOVING `throw`
-        packageName = "mkreports";
-      in {
-        packages.${packageName} = app;
-
-        defaultPackage = self.packages.${system}.${packageName};
-
-        devShell = pkgs.mkShell {
-          buildInputs = with pkgs; [ poetry ];
-          inputsFrom = builtins.attrValues self.packages.${system};
-        };
-      });
+        defaultApp = apps.myapp;
+      }));
 }
