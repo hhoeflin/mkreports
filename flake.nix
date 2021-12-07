@@ -16,8 +16,11 @@
         poetry2nix.overlay
         (final: prev: {
           # The application
-          myapp = prev.poetry2nix.mkPoetryApplication {
+          mkreports = prev.poetry2nix.mkPoetryEnv {
             projectDir = ./.;
+            editablePackageSources = {
+              mkreports = ./mkreports;
+            };
           };
         })
       ];
@@ -29,10 +32,14 @@
         };
       in
       rec {
-        apps = {
-          myapp = pkgs.myapp;
-        };
+        #devShells = {
+        #  mkreports = pkgs.mkreports;
+        #};
 
-        defaultApp = apps.myapp;
+        packages = {
+          mkreports = pkgs.mkreports;
+        };
+        # devShell = devShells.mkreports;
+
       }));
 }
