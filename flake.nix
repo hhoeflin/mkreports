@@ -35,6 +35,6 @@
         packages = {
           mkreports = pkgs.mkreports;
         };
-
+        defaultPackage = packages.mkreports;
       }));
 }
