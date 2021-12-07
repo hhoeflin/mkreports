@@ -32,14 +32,9 @@
         };
       in
       rec {
-        #devShells = {
-        #  mkreports = pkgs.mkreports;
-        #};
-
         packages = {
           mkreports = pkgs.mkreports;
         };
-        # devShell = devShells.mkreports;
 
       }));
 }
