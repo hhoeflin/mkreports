@@ -19,7 +19,7 @@
           mkreports = prev.poetry2nix.mkPoetryEnv {
             projectDir = ./.;
             editablePackageSources = {
-              mkreports = ./mkreports;
+              mkreports = ./.;
             };
           };
         })
