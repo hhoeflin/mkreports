@@ -34,6 +34,21 @@ if __name__ == "__main__":
     )
     page.append(basic_text)
     page.append(mkdocs_img)
+
+    # and now we append a ggplot image
+    from plotnine import aes, facet_wrap, geom_point, ggplot, stat_smooth
+    from plotnine.data import mtcars
+
+    page.append(
+        md.Image(
+            ggplot(mtcars, aes("wt", "mpg", color="factor(gear)"))
+            + geom_point()
+            + stat_smooth(method="lm")
+            + facet_wrap("~gear"),
+            store_path=page.gen_asset_path,
+        )
+    )
+
     print(f"Asset at {script_asset.path}")
     print(f"Image at {mkdocs_img.path}")
     print(f"Page at {page.path}")

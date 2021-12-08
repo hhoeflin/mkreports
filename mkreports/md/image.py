@@ -1,5 +1,6 @@
 import hashlib
 import shutil
+import tempfile
 from copy import copy
 from pathlib import Path
 from typing import Literal, Optional
@@ -77,7 +78,7 @@ class ImageFile(File):
         self,
         path: Path,
         store_path: Path,
-        type: Literal["inline", "ref"] = "inline",
+        link_type: Literal["inline", "ref"] = "inline",
         text: str = "",
         tooltip: str = "",
         allow_copy: bool = True,
@@ -88,12 +89,12 @@ class ImageFile(File):
         )
         self.text = text
         self.tooltip = tooltip
-        self.type = type
+        self.link_type = link_type
 
     def to_markdown(self, page_path: Path) -> SpacedText:
         if page_path is None:
             raise ValueError("Page path cannot be None")
-        if self.type == "inline":
+        if self.link_type == "inline":
             return SpacedText(
                 UtilsImage.new_inline_image(
                     text=self.text,
@@ -104,20 +105,62 @@ class ImageFile(File):
         elif type == "ref":
             raise NotImplementedError()
         else:
-            raise ValueError(f"Unknown type {self.type}")
+            raise ValueError(f"Unknown type {self.link_type}")
 
 
 class Image(ImageFile):
     def __init__(
         self,
         image,
-        width: float,
-        height: float,
-        units: Literal["in", "cm", "mm"],
-        dpi: float,
         store_path: Path,
-        type: Literal["inline", "ref"] = "inline",
+        width: Optional[float] = None,
+        height: Optional[float] = None,
+        units: Literal["in", "cm", "mm"] = "in",
+        dpi: Optional[float] = None,
+        link_type: Literal["inline", "ref"] = "inline",
         text: str = "",
         tooltip: str = "",
+        img_type=Literal["jpg", "png"],
     ) -> None:
-        pass
+        if type(image) in image_save_funcs:
+            # ok, we know how to save this: put it in temp dir first
+            with tempfile.TemporaryDirectory() as dir:
+                path = Path(dir) / "img." + img_type
+                image_save_funcs[type(image)](
+                    image=image,
+                    path=path,
+                    width=width,
+                    height=height,
+                    dpi=dpi,
+                    units=units,
+                )
+            # now we create the ImageFile object
+            super().__init__(
+                path=path,
+                store_path=store_path,
+                link_type=link_type,
+                text=text,
+                tooltip=tooltip,
+            )
+        else:
+            raise ValueError("Unsupported image type")
+
+
+image_save_funcs = dict()
+try:
+    from plotnine.ggplot import ggplot
+
+    def ggplot_save(
+        image: ggplot,
+        path: Path,
+        width: Optional[float] = None,
+        height: Optional[float] = None,
+        dpi: Optional[float] = None,
+        units: Literal["in", "cm", "mm"] = "in",
+        **kwargs,
+    ):
+        image.save(path, width=width, height=height, dpi=dpi, units=units, **kwargs)
+
+    image_save_funcs[ggplot] = ggplot_save
+except Exception:
+    pass
