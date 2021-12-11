@@ -49,6 +49,8 @@ if __name__ == "__main__":
         )
     )
 
+    page.append(md.Table(mtcars, index=False))
+
     print(f"Asset at {script_asset.path}")
     print(f"Image at {mkdocs_img.path}")
     print(f"Page at {page.path}")

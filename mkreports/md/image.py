@@ -1,22 +1,11 @@
-import hashlib
-import shutil
 import tempfile
-from copy import copy
 from pathlib import Path
 from typing import Literal, Optional
 
 from mdutils.tools.Image import Image as UtilsImage
 
-from .base import MdObj
+from .file import File
 from .text import SpacedText
-
-
-def md5_hash_file(path: Path) -> str:
-    m = hashlib.md5()
-    with path.open("rb") as f:
-        m.update(f.read())
-
-    return m.hexdigest()
 
 
 def relpath(path_to, path_from):
@@ -30,47 +19,6 @@ def relpath(path_to, path_from):
     except ValueError:  # Stop when the paths diverge.
         pass
     return Path("../" * (len(path_from.parents) - len(head.parents))).joinpath(tail)
-
-
-class File(MdObj):
-
-    path: Path
-    relative_to: Optional[Path]
-
-    def __init__(
-        self,
-        path: Path,
-        store_path: Path,
-        allow_copy: bool = True,
-        hash: bool = False,
-    ) -> None:
-        super().__init__()
-        self.path = path.absolute()
-
-        self.allow_copy = allow_copy
-        self.hash = hash
-        self.store_path = store_path
-
-        if self.allow_copy:
-
-            if self.hash:
-                # we calculate the hash of the file to be ingested
-                path_hash = md5_hash_file(self.path)
-                new_path = store_path / (
-                    self.path.stem + "-" + path_hash + self.path.suffix
-                )
-            else:
-                new_path = store_path / self.path.name
-
-            # now see if we move or copy the file
-            new_path.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copy(self.path, new_path)
-            self.path = new_path
-        else:
-            new_file = self
-
-    def to_markdown(self, page_path: Optional[Path] = None) -> SpacedText:
-        return SpacedText("")
 
 
 class ImageFile(File):
@@ -120,12 +68,12 @@ class Image(ImageFile):
         link_type: Literal["inline", "ref"] = "inline",
         text: str = "",
         tooltip: str = "",
-        img_type=Literal["jpg", "png"],
+        img_type: Literal["jpg", "png"] = "png",
     ) -> None:
         if type(image) in image_save_funcs:
             # ok, we know how to save this: put it in temp dir first
             with tempfile.TemporaryDirectory() as dir:
-                path = Path(dir) / "img." + img_type
+                path = Path(dir) / ("image." + img_type)
                 image_save_funcs[type(image)](
                     image=image,
                     path=path,
@@ -134,14 +82,15 @@ class Image(ImageFile):
                     dpi=dpi,
                     units=units,
                 )
-            # now we create the ImageFile object
-            super().__init__(
-                path=path,
-                store_path=store_path,
-                link_type=link_type,
-                text=text,
-                tooltip=tooltip,
-            )
+                # now we create the ImageFile object
+                # which will also move it into the store
+                super().__init__(
+                    path=path,
+                    store_path=store_path,
+                    link_type=link_type,
+                    text=text,
+                    tooltip=tooltip,
+                )
         else:
             raise ValueError("Unsupported image type")
 
