@@ -19,7 +19,7 @@
           mkreports = prev.poetry2nix.mkPoetryEnv {
             projectDir = ./.;
             editablePackageSources = {
-              mkreports = ./.;
+              mkreports = if builtins.getEnv "PROJECT_DIR" == "" then ./. else builtins.getEnv "PROJECT_DIR";
             };
           };
         })
