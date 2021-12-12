@@ -15,6 +15,7 @@ immutabledict = "^2.2.1"
 typing-extensions = "<=3.11"
 pytest = "^6.2.5"
 tabulate = "^0.8.9"
+deepmerge = "^0.3.0"
 
 [tool.poetry.dev-dependencies]
 pudb = "^2021.2.2"

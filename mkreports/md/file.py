@@ -7,12 +7,30 @@ from .base import MdObj
 from .text import SpacedText
 
 
+def true_stem(path: Path) -> str:
+    """True stem of a path, without all suffixes, not just last."""
+    return path.name[: -(len("".join(path.suffixes)))]
+
+
 def md5_hash_file(path: Path) -> str:
     m = hashlib.md5()
     with path.open("rb") as f:
         m.update(f.read())
 
     return m.hexdigest()
+
+
+def relpath(path_to, path_from):
+    path_to = Path(path_to).absolute()
+    path_from = Path(path_from).absolute()
+    head = Path("/")
+    tail = Path("")
+    try:
+        for p in (*reversed(path_from.parents), path_from):
+            head, tail = p, path_to.relative_to(p)
+    except ValueError:  # Stop when the paths diverge.
+        pass
+    return Path("../" * (len(path_from.parents) - len(head.parents))).joinpath(tail)
 
 
 class File(MdObj):
@@ -40,7 +58,7 @@ class File(MdObj):
                 # we calculate the hash of the file to be ingested
                 path_hash = md5_hash_file(self.path)
                 new_path = store_path / (
-                    self.path.stem + "-" + path_hash + self.path.suffix
+                    true_stem(self.path) + "-" + path_hash + "".join(self.path.suffixes)
                 )
             else:
                 new_path = store_path / self.path.name

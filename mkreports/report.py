@@ -17,7 +17,7 @@ from .counters import Counters
 from .exceptions import (ReportExistsError, ReportNotExistsError,
                          ReportNotValidError)
 from .md import MdObj, SpacedText, Text
-from .utils import NavEntry, path_to_nav_entry, update_mkdocs
+from .requirements import NavEntry, Requirements, path_to_nav_entry
 
 default_settings = immutabledict(
     {
@@ -115,26 +115,32 @@ class Report:
         # if the file already exists, just return a 'Page',
         # else create a new nav-entry and the file and return a 'Page'
         if (self.docs_dir / path).exists():
-            if append:
-                return Page(self.docs_dir / path)
-            else:
+            if not append:
                 # delete the existing site
                 (self.docs_dir / path).unlink()
                 (self.docs_dir / path).touch()
                 # we do not need to add en entry into the nav
-                return Page(self.docs_dir / path)
         else:
             # create the file by touching it and create a nav-entry
             (self.docs_dir / path).parent.mkdir(exist_ok=True, parents=True)
             (self.docs_dir / path).touch()
-            update_mkdocs(self.mkdocs_file, nav_entry)
-            return Page(self.docs_dir / path)
+
+            # update the report settings
+            req = Requirements.load(self.path)
+            req.add_nav_entry(nav_entry)
+            req.save(self.path)
+
+        return Page(self.docs_dir / path, report=self)
+
+    def update_settings(self, _override=False, **kwargs) -> None:
+        update_mkdocs_settings(self.mkdocs_file, _override=_override, **kwargs)
 
 
 class Page:
-    def __init__(self, path: Path) -> None:
+    def __init__(self, path: Path, report: Report) -> None:
         self._path = path.absolute()
         self._counters = Counters()
+        self.report = report
 
         # get the last string that was written into the page (if it exists)
         # otherwise we set it to newlines.
@@ -163,6 +169,9 @@ class Page:
             md_text = item.to_md_with_bm(
                 page_path=self.path,
             )
+            req = item.requirements()
+            if len(req.mkdocs) + len(req.mkreports) > 0:
+                self.report.update_settings(req)
         elif isinstance(item, (str, SpacedText)):
             md_text = SpacedText(item)
         else:

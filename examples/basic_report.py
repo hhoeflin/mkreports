@@ -49,7 +49,11 @@ if __name__ == "__main__":
         )
     )
 
+    # the table as markdown
     page.append(md.Table(mtcars, index=False))
+
+    # and as a DataTable
+    page.append(md.DataTable(mtcars, store_path=page.gen_asset_path))
 
     print(f"Asset at {script_asset.path}")
     print(f"Image at {mkdocs_img.path}")

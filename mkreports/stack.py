@@ -60,15 +60,17 @@ def get_stack() -> Stack:
         code = frame.f_code
         higher_frame = frame.f_back
 
-        if higher_frame is None and code.co_firstlineno != 1:
-            raise Exception(
-                f"Did not expect first line {code.co_firstlineno} when upper frame is None."
-            )
-        code_lines = (
-            read_file(Path(code.co_filename))
-            if higher_frame is None
-            else inspect.getsourcelines(code)[0]
-        )
+        # if higher_frame is None and code.co_firstlineno != 1:
+        #    raise Exception(
+        #        f"Did not expect first line {code.co_firstlineno} when upper frame is None."
+        #    )
+        # if higher_frame is None:
+        #    code_lines = read_file(Path(code.co_filename))
+        # else:
+        try:
+            code_lines = inspect.getsourcelines(code)[0]
+        except Exception:
+            code_lines = "Count not get source"
         stack.append(
             FrameInfo(
                 filename=code.co_filename,

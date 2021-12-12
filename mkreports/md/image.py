@@ -4,21 +4,8 @@ from typing import Literal, Optional
 
 from mdutils.tools.Image import Image as UtilsImage
 
-from .file import File
+from .file import File, relpath
 from .text import SpacedText
-
-
-def relpath(path_to, path_from):
-    path_to = Path(path_to).absolute()
-    path_from = Path(path_from).absolute()
-    head = Path("/")
-    tail = Path("")
-    try:
-        for p in (*reversed(path_from.parents), path_from):
-            head, tail = p, path_to.relative_to(p)
-    except ValueError:  # Stop when the paths diverge.
-        pass
-    return Path("../" * (len(path_from.parents) - len(head.parents))).joinpath(tail)
 
 
 class ImageFile(File):
@@ -90,6 +77,8 @@ class Image(ImageFile):
                     link_type=link_type,
                     text=text,
                     tooltip=tooltip,
+                    allow_copy=True,
+                    hash=True,
                 )
         else:
             raise ValueError("Unsupported image type")

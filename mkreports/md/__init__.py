@@ -1,7 +1,8 @@
 from .base import MdParagraph, Raw
+from .file import File
 from .header import *
-from .image import File, Image, ImageFile
-from .table import Table
+from .image import Image, ImageFile
+from .table import DataTable, Table
 from .text import SpacedText, Text
 
 P = MdParagraph

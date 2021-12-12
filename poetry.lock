@@ -121,6 +121,14 @@ optional = false
 python-versions = ">=3.6"
 
 [[package]]
+name = "deepmerge"
+version = "0.3.0"
+description = "a toolset to deeply merge python dictionaries."
+category = "main"
+optional = false
+python-versions = ">=3"
+
+[[package]]
 name = "descartes"
 version = "1.1.0"
 description = "Use geometric objects as matplotlib paths and patches"
@@ -742,7 +750,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "dfcf61017a3f2690b1c9db1bf6bc02719fb7e4daee154f11f528e2f32cc1b69f"
+content-hash = "869ef6f816b3932ce1337516a8a77d6150efaf4980e20d759125f34842134e71"
 
 [metadata.files]
 atomicwrites = [
@@ -807,6 +815,10 @@ cwcwidth = [
 cycler = [
     {file = "cycler-0.11.0-py3-none-any.whl", hash = "sha256:3a27e95f763a428a739d2add979fa7494c912a32c17c4c38c4d5f082cad165a3"},
     {file = "cycler-0.11.0.tar.gz", hash = "sha256:9c87405839a19696e837b3b818fed3f5f69f16f1eec1a1ad77e043dcea9c772f"},
+]
+deepmerge = [
+    {file = "deepmerge-0.3.0-py2.py3-none-any.whl", hash = "sha256:87166dbe9ba1a3348a45c9d4ada6778f518d41afc0b85aa017ea3041facc3f9c"},
+    {file = "deepmerge-0.3.0.tar.gz", hash = "sha256:f6fd7f1293c535fb599e197e750dbe8674503c5d2a89759b3c72a3c46746d4fd"},
 ]
 descartes = [
     {file = "descartes-1.1.0-py2-none-any.whl", hash = "sha256:b7e412e7e6e294412f1d0f661f187babc970088c2456089e6801eebb043c2e1b"},
