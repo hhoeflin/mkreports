@@ -138,8 +138,8 @@ class Settings:
         """
         Load the settings from the mkdocs.yaml and mkreports.yaml.
         """
-        mkdocs_file = report_dir / "mkdocs.yaml"
-        mkreports_file = report_dir / "mkreports.yaml"
+        mkdocs_file = report_dir / "mkdocs.yml"
+        mkreports_file = report_dir / "mkreports.yml"
         if mkdocs_file.exists():
             with mkdocs_file.open("r") as f:
                 mkdocs_settings = yaml.load(f, Loader=yaml.Loader)
