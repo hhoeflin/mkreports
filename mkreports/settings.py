@@ -107,11 +107,11 @@ req_merger = Merger(
 
 
 @dataclass
-class Requirements:
+class Settings:
     mkdocs: Dict[str, Any] = field(default_factory=dict)
     mkreports: Dict[str, Any] = field(default_factory=dict)
 
-    def __add__(self, other: "Requirements"):
+    def __add__(self, other: "Settings"):
         """
         Merges mkdocs and mkreports.
 
@@ -121,7 +121,7 @@ class Requirements:
             raise ValueError(
                 "Merging of Requirements with 'nav' in mkdocs not supported."
             )
-        return Requirements(
+        return Settings(
             mkdocs=req_merger.merge(deepcopy(self.mkdocs), deepcopy(other.mkdocs)),
             mkreports=req_merger.merge(
                 deepcopy(self.mkreports), deepcopy(other.mkreports)
@@ -134,7 +134,7 @@ class Requirements:
         self.mkdocs["nav"] = mkdocs_nav
 
     @classmethod
-    def load(cls, report_dir: Path) -> "Requirements":
+    def load(cls, report_dir: Path) -> "Settings":
         """
         Load the settings from the mkdocs.yaml and mkreports.yaml.
         """
@@ -151,7 +151,7 @@ class Requirements:
         else:
             mkreports_settings = {}
 
-        return Requirements(mkdocs=mkdocs_settings, mkreports=mkreports_settings)
+        return Settings(mkdocs=mkdocs_settings, mkreports=mkreports_settings)
 
     def save(self, report_dir: Path):
         """

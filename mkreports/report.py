@@ -17,7 +17,7 @@ from .counters import Counters
 from .exceptions import (ReportExistsError, ReportNotExistsError,
                          ReportNotValidError)
 from .md import MdObj, SpacedText, Text
-from .requirements import NavEntry, Requirements, path_to_nav_entry
+from .settings import NavEntry, Settings, path_to_nav_entry
 
 default_settings = immutabledict(
     {
@@ -126,14 +126,11 @@ class Report:
             (self.docs_dir / path).touch()
 
             # update the report settings
-            req = Requirements.load(self.path)
+            req = Settings.load(self.path)
             req.add_nav_entry(nav_entry)
             req.save(self.path)
 
         return Page(self.docs_dir / path, report=self)
-
-    def update_settings(self, _override=False, **kwargs) -> None:
-        update_mkdocs_settings(self.mkdocs_file, _override=_override, **kwargs)
 
 
 class Page:
@@ -169,7 +166,7 @@ class Page:
             md_text = item.to_md_with_bm(
                 page_path=self.path,
             )
-            req = item.requirements()
+            req = item.req_settings()
             if len(req.mkdocs) + len(req.mkreports) > 0:
                 self.report.update_settings(req)
         elif isinstance(item, (str, SpacedText)):

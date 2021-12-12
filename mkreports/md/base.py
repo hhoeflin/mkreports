@@ -4,7 +4,7 @@ from collections.abc import MutableSequence
 from pathlib import Path
 from typing import Iterable, List, Optional, Union
 
-from mkreports.requirements import Requirements
+from mkreports.settings import Settings
 
 from .text import SpacedText
 
@@ -74,8 +74,8 @@ class MdObj(ABC):
                 self.backmatter(page_path), (2, 1)
             )
 
-    def requirements(self) -> Requirements:
-        return Requirements()
+    def req_settings(self) -> Settings:
+        return Settings()
 
 
 class MdSeq(MdObj, MutableSequence):
@@ -130,12 +130,12 @@ class MdSeq(MdObj, MutableSequence):
             lambda x, y: x + y, [elem.to_markdown(path) for elem in self._list]
         )
 
-    def requirements(self) -> Requirements:
+    def req_settings(self) -> Settings:
         """Requirements for the object."""
         # merge the requirements for all individual elements
-        res = Requirements()
+        res = Settings()
         for elem in self._list:
-            res += elem.requirements()
+            res += elem.req_settings()
         return res
 
 
