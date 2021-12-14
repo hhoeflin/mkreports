@@ -8,8 +8,9 @@ included.
 """
 import shutil
 from pathlib import Path
-from typing import Mapping, Optional, Union
+from typing import Any, Dict, Mapping, Optional, Union
 
+import frontmatter
 import yaml
 from immutabledict import immutabledict
 
@@ -17,19 +18,44 @@ from .counters import Counters
 from .exceptions import (ReportExistsError, ReportNotExistsError,
                          ReportNotValidError)
 from .md import MdObj, SpacedText, Text
-from .settings import NavEntry, Settings, path_to_nav_entry
+from .settings import (NavEntry, add_nav_entry, load_yaml, merge_settings,
+                       path_to_nav_entry, save_yaml)
 
 default_settings = immutabledict(
     {
-        "theme": {"name": "material"},
+        "theme": {"name": "material", "custom_dir": "overrides"},
         "nav": [{"Home": "index.md"}],
         "markdown_extensions": [
+            "meta",
             "admonition",
             "pymdownx.details",
             "pymdownx.superfences",
         ],
     }
 )
+
+# template
+main_html_override = """
+{% extends "base.html" %}
+
+{% block extrahead %}
+
+  {% if page and page.meta and page.meta.css %}
+    {% for css_load in page.meta.css %}
+        <link rel="stylesheet" href="{{css_load}}">
+    {% endfor %}
+
+  {% endif %}
+
+  {% if page and page.meta and page.meta.javascript %}
+
+    {% for js_load in page.meta.javascript %}
+        <script type="text/javascript" src="{{js_load}}"></script>
+    {% endfor %}
+
+  {% endif %}
+{% endblock %}
+"""
 
 
 class Report:
@@ -91,6 +117,12 @@ class Report:
         with self.mkdocs_file.open("w") as f:
             yaml.dump(settings, f, Dumper=yaml.Dumper, default_flow_style=False)
 
+        # also create the overrides doc
+        overrides_dir = self.path / "overrides"
+        overrides_dir.mkdir(exist_ok=True, parents=True)
+        with (overrides_dir / "main.html").open("w") as f:
+            f.write(main_html_override)
+
     def _ensure_is_report(self) -> None:
         # now ensure that these all exist
         if not self.mkdocs_file.exists() or not self.mkdocs_file.is_file():
@@ -126,11 +158,36 @@ class Report:
             (self.docs_dir / path).touch()
 
             # update the report settings
-            req = Settings.load(self.path)
-            req.add_nav_entry(nav_entry)
-            req.save(self.path)
+            mkdocs_settings = load_yaml(self.mkdocs_file)
+            mkdocs_settings = add_nav_entry(mkdocs_settings, nav_entry)
+            save_yaml(mkdocs_settings, self.mkdocs_file)
 
         return Page(self.docs_dir / path, report=self)
+
+
+def merge_frontmatter(page_path: Path, page_settings: Dict[str, Any]) -> None:
+    """
+    Read the frontmatter and merge it with the additional settings.
+
+    The reason that we do this separately is a minor issue in the
+    frontmatter library, that filters the newlines at the end of the file.
+    https://github.com/eyeseast/python-frontmatter/issues/87
+    """
+    # first load the page; we do this ourselves so that we have
+    # the newlines at the end
+    with page_path.open("r") as f:
+        page_str = f.read()
+
+    # get number of newlines
+    num_char_stripped = len(page_str) - len(page_str.rstrip())
+    end_chars = page_str[-num_char_stripped:]
+
+    page_post = frontmatter.loads(page_str)
+    page_post.metadata = merge_settings(page_post.metadata, page_settings)
+    page_out = frontmatter.dumps(page_post) + end_chars
+
+    with page_path.open("w") as f:
+        f.write(page_out)
 
 
 class Page:
@@ -167,8 +224,21 @@ class Page:
                 page_path=self.path,
             )
             req = item.req_settings()
-            if len(req.mkdocs) + len(req.mkreports) > 0:
-                self.report.update_settings(req)
+            if len(req.mkdocs) > 0:
+                # merge these things into mkdocs
+                # there is not allowed to be a nav here
+                if "nav" in req.mkdocs:
+                    raise ValueError("nav not allowed to be in mkdocs")
+
+                mkdocs_settings = load_yaml(self.report.mkdocs_file)
+                mkdocs_settings = merge_settings(mkdocs_settings, req.mkdocs)
+                save_yaml(mkdocs_settings, self.report.mkdocs_file)
+            if len(req.page) > 0:
+                # frontmatter loads the entire post including frontmatter
+                # then we can change it as necessary and write it back
+                # as we have to change content at the front, does not work more efficiently
+                merge_frontmatter(self.path, req.page)
+
         elif isinstance(item, (str, SpacedText)):
             md_text = SpacedText(item)
         else:

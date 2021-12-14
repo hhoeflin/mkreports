@@ -92,7 +92,7 @@ def strategy_append_new(config, path, base, nxt):
     return base + [x for x in nxt if x not in base]
 
 
-req_merger = Merger(
+settings_merger = Merger(
     # pass in a list of tuple, with the
     # strategies you are looking to apply
     # to each type.
@@ -106,10 +106,38 @@ req_merger = Merger(
 )
 
 
+def merge_settings(a, b):
+    return settings_merger.merge(deepcopy(a), deepcopy(b))
+
+
+def add_nav_entry(mkdocs_settings, nav_entry: NavEntry) -> None:
+    mkdocs_settings = deepcopy(mkdocs_settings)
+    nav = mkdocs_to_nav(mkdocs_settings["nav"]) + [nav_entry]
+    mkdocs_nav = nav_to_mkdocs(nav)
+    mkdocs_settings["nav"] = mkdocs_nav
+
+    return mkdocs_settings
+
+
+def load_yaml(file: Path) -> Any:
+    if file.exists():
+        with file.open("r") as f:
+            res = yaml.load(f, Loader=yaml.Loader)
+    else:
+        res = {}
+
+    return res
+
+
+def save_yaml(obj: Any, file: Path) -> None:
+    with file.open("w") as f:
+        yaml.dump(obj, f, default_flow_style=False)
+
+
 @dataclass
 class Settings:
     mkdocs: Dict[str, Any] = field(default_factory=dict)
-    mkreports: Dict[str, Any] = field(default_factory=dict)
+    page: Dict[str, Any] = field(default_factory=dict)
 
     def __add__(self, other: "Settings"):
         """
@@ -122,44 +150,6 @@ class Settings:
                 "Merging of Requirements with 'nav' in mkdocs not supported."
             )
         return Settings(
-            mkdocs=req_merger.merge(deepcopy(self.mkdocs), deepcopy(other.mkdocs)),
-            mkreports=req_merger.merge(
-                deepcopy(self.mkreports), deepcopy(other.mkreports)
-            ),
+            mkdocs=merge_settings(self.mkdocs, other.mkdocs),
+            page=merge_settings(self.page, other.page),
         )
-
-    def add_nav_entry(self, nav_entry: NavEntry) -> None:
-        nav = mkdocs_to_nav(self.mkdocs["nav"]) + [nav_entry]
-        mkdocs_nav = nav_to_mkdocs(nav)
-        self.mkdocs["nav"] = mkdocs_nav
-
-    @classmethod
-    def load(cls, report_dir: Path) -> "Settings":
-        """
-        Load the settings from the mkdocs.yaml and mkreports.yaml.
-        """
-        mkdocs_file = report_dir / "mkdocs.yml"
-        mkreports_file = report_dir / "mkreports.yml"
-        if mkdocs_file.exists():
-            with mkdocs_file.open("r") as f:
-                mkdocs_settings = yaml.load(f, Loader=yaml.Loader)
-        else:
-            mkdocs_settings = {}
-        if mkreports_file.exists():
-            with (report_dir / "mkreports.yaml").open("r") as f:
-                mkreports_settings = yaml.load(f, Loader=yaml.Loader)
-        else:
-            mkreports_settings = {}
-
-        return Settings(mkdocs=mkdocs_settings, mkreports=mkreports_settings)
-
-    def save(self, report_dir: Path):
-        """
-        Save the requirements to the mkdocs.yaml and mkreports.yaml file.
-        """
-        mkdocs_file = report_dir / "mkdocs.yaml"
-        mkreports_file = report_dir / "mkreports.yaml"
-        with mkdocs_file.open("w") as f:
-            yaml.dump(self.mkdocs, f, default_flow_style=False)
-        with mkreports_file.open("w") as f:
-            yaml.dump(self.mkreports, f, default_flow_style=False)

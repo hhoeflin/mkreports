@@ -1,9 +1,12 @@
+import copy
 import inspect
+import json
 import tempfile
 from pathlib import Path
 from typing import Optional
 
 import pandas as pd
+from mkreports.settings import Settings
 
 from .base import MdObj
 from .file import File, relpath, true_stem
@@ -27,13 +30,16 @@ class DataTable(File):
         table: pd.DataFrame,
         store_path: Path,
         table_id: Optional[str] = None,
+        column_settings: Optional[dict] = None,
         **kwargs,
     ):
         self.kwargs = kwargs
 
         with tempfile.TemporaryDirectory() as dir:
-            path = Path(dir) / ("table.json.gzip")
-            table.to_json(path, **kwargs)
+            path = Path(dir) / ("table.json")
+            # here we use the split method; the index and columns
+            # are not useful, but the rest gets set as 'data', which we need
+            table.to_json(path, orient="split", **kwargs)
 
             # Make sure the file is moved to the rigth place
             super().__init__(
@@ -45,17 +51,30 @@ class DataTable(File):
             table_id = true_stem(self.path)
         self.table_id = table_id
 
-    def requirements(self):
-        settings = dict(
-            # the following needs to be loaded in the header of the page, not the footer
-            # this enables activating the tables in the body
-            extra_javascript=[
-                "https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js",
-                "https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js",
-            ],
-            extra_css=[
-                "https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css"
-            ],
+        # prepare the table settings
+        col_set = {col: {"title": col} for col in table.columns}
+        if column_settings is not None:
+            # only pick out settings for columns that occur in the table
+            col_set.update({col: column_settings[col] for col in table.columns})
+
+        # put together the settings for the table
+        # there, the columns are a list in the correct order
+        self.table_settings = {
+            "scrollX": "true",
+            "columns": [col_set[col] for col in table.columns],
+        }
+
+    def req_settings(self):
+        settings = Settings(
+            page=dict(
+                # the following needs to be loaded in the header of the page, not the footer
+                # this enables activating the tables in the body
+                javascript=[
+                    "https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js",
+                    "https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js",
+                ],
+                css=["https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css"],
+            )
         )
         return settings
 
@@ -66,18 +85,21 @@ class DataTable(File):
             )
 
         # now we insert the data table on the page
-        rel_table_path = str(relpath(self.path, page_path.parent))
+        # note: as we are inserting directly into html, we have to do one addition
+        # level deeper for the relative path
+        rel_table_path = str(relpath(self.path, page_path))
+        table_settings = copy.deepcopy(self.table_settings)
+        table_settings["ajax"] = str(rel_table_path)
+        settings_str = json.dumps(table_settings)
         raw_html = inspect.cleandoc(
             f"""
             <table id='{self.table_id}' class='display' style='width:100%'> </table>
             <script>
             $(document).ready( function () {{
-            $('#{self.table_id}').DataTable({{
-                'ajax': '{rel_table_path}'
-            }});
+            $('#{self.table_id}').DataTable({settings_str});
             }} );
             </script>
-        """
+            """
         )
 
         return SpacedText(raw_html, (2, 2))
