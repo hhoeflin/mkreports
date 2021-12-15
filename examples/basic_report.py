@@ -2,20 +2,8 @@ from pathlib import Path
 
 from mkreports import Report, md, stack
 
-
-def test():
-    stack_one = stack.get_stack()
-    for frame in stack_one:
-        print(frame)
-
-    stack_two = stack.get_stack()
-
-    equal, diff = stack.stack_diff(stack_one, stack_two)
-    for f in diff:
-        print(f)
-
-
 if __name__ == "__main__":
+    stack_start = stack.get_stack()
     report = Report("basic_report", site_name="Basic report")
     print(f"Created Report directory {report.path}")
     page = report.get_page("test/test2/test.md", append=False)
@@ -26,7 +14,6 @@ if __name__ == "__main__":
     )
 
     print(basic_text.to_markdown())
-    test()
     # ingest an asset
     script_asset = md.File(Path(__file__), store_path=page.gen_asset_path, hash=True)
     mkdocs_img = md.ImageFile(
@@ -58,3 +45,8 @@ if __name__ == "__main__":
     print(f"Asset at {script_asset.path}")
     print(f"Image at {mkdocs_img.path}")
     print(f"Page at {page.path}")
+
+    # now we want to print a little code
+    stack_end = stack.get_stack()
+    diff_equal, diff_diff = stack.stack_diff(stack_start, stack_end)
+    page.append(diff_diff[0].md_code())

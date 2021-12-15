@@ -23,7 +23,11 @@ from .settings import (NavEntry, add_nav_entry, load_yaml, merge_settings,
 
 default_settings = immutabledict(
     {
-        "theme": {"name": "material", "custom_dir": "overrides"},
+        "theme": {
+            "name": "material",
+            "custom_dir": "overrides",
+            "features": ["toc.integrate"],
+        },
         "nav": [{"Home": "index.md"}],
         "markdown_extensions": [
             "meta",

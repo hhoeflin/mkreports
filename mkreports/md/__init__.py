@@ -1,4 +1,4 @@
-from .base import MdParagraph, Raw
+from .base import Code, MdParagraph, Raw
 from .file import File
 from .header import *
 from .image import Image, ImageFile

@@ -4,6 +4,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import List, Optional, Tuple
 
+from .md.base import Code
+
 
 @dataclass
 class FrameInfo:
@@ -16,6 +18,10 @@ class FrameInfo:
     def __str__(self):
         header = f"File: {self.filename}"
         position = f" {self.display_range} in {self.code_range}"
+        return "\n".join([header, position, self.display_code])
+
+    @property
+    def display_code(self):
         display_code = "".join(
             self.code[
                 (self.display_range[0] - self.code_range[0]) : (
@@ -23,7 +29,28 @@ class FrameInfo:
                 )
             ]
         )
-        return "\n".join([header, position, display_code])
+        return display_code
+
+    def md_code(self, code_range=True, highlight=True):
+        if code_range:
+            code = "".join(self.code)
+            first_line = self.code_range[0] + 1
+        else:
+            code = self.display_code
+            first_line = self.code_range[0] + 1
+
+        if highlight and code_range:
+            hi_lines = (self.display_range[0] + 1, self.display_range[1] + 1)
+        else:
+            hi_lines = None
+
+        return Code(
+            code=code,
+            title=self.filename,
+            first_line=first_line,
+            hi_lines=hi_lines,
+            language="python",
+        )
 
 
 Stack = List[FrameInfo]
@@ -68,9 +95,15 @@ def get_stack() -> Stack:
         #    code_lines = read_file(Path(code.co_filename))
         # else:
         try:
-            code_lines = inspect.getsourcelines(code)[0]
+            if code.co_name == "<module>":
+                code_lines = read_file(Path(code.co_filename))
+            else:
+                import pudb
+
+                pudb.set_trace()
+                code_lines = inspect.getsourcelines(code)[0]
         except Exception:
-            code_lines = "Count not get source"
+            code_lines = ["Count not get source\n"]
         stack.append(
             FrameInfo(
                 filename=code.co_filename,
@@ -122,7 +155,7 @@ def stack_diff(stack_old, stack_new) -> Tuple[Stack, Stack]:
                 ]
                 middle_frame = copy(stack_old[idx_old])
                 middle_frame.display_range = (
-                    stack_old[idx_old].display_range[1],
+                    stack_old[idx_old].display_range[1] - 1,
                     stack_new[idx_new].display_range[1],
                 )
                 middle_stack = [middle_frame]

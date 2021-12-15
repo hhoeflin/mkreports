@@ -2,8 +2,9 @@ import functools
 from abc import ABC, abstractmethod
 from collections.abc import MutableSequence
 from pathlib import Path
-from typing import Iterable, List, Optional, Union
+from typing import Iterable, List, Optional, Tuple, Union
 
+from mdutils.tools.TextUtils import TextUtils
 from mkreports.settings import Settings
 
 from .text import SpacedText
@@ -173,3 +174,41 @@ class MdParagraph(MdObj):
 
     def to_markdown(self, page_path: Optional[Path] = None) -> SpacedText:
         return SpacedText(self._obj.to_markdown(page_path), (1, 2))
+
+
+class Code(MdObj):
+    """Wrapper class for code."""
+
+    def __init__(
+        self,
+        code: str,
+        title: Optional[str] = None,
+        first_line: Optional[int] = None,
+        hi_lines: Optional[Tuple[int, int]] = None,
+        language: Optional[str] = "python",
+    ) -> None:
+        self.code = code
+        self.title = title
+        self.language = language
+        self.first_line = first_line
+        self.hi_lines = hi_lines
+
+    def to_markdown(self, page_path: Optional[Path] = None) -> SpacedText:
+        annots = ""
+        if self.language is not None:
+            annots = annots + self.language
+        if self.title is not None:
+            annots = annots + f' title="{self.title}"'
+        if self.first_line is not None:
+            # hi_lines get intrepreted relative to first_line
+            if self.hi_lines is not None:
+                hi_lines = (
+                    self.hi_lines[0] - self.first_line + 1,
+                    self.hi_lines[1] - self.first_line + 1,
+                )
+            annots = annots + f' linenums="{self.first_line}"'
+
+        if self.hi_lines is not None:
+            annots = annots + f' hl_lines="{self.hi_lines[0]}-{self.hi_lines[1]}"'
+
+        return SpacedText(TextUtils.insert_code(self.code, annots), (2, 2))
