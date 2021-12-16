@@ -155,11 +155,7 @@ class Raw(MdObj):
 
 class MdParagraph(MdObj):
     """
-    Wrapper class for an object.
-
-    Passes along all calls to the object being wrapped. This is
-    used as a base class for other classes that wrap objects.
-    All methods are overwritten except for `to_md_with_bm` and `process_all`.
+    Wraps an object in a paragraph.
     """
 
     _obj: MdObj

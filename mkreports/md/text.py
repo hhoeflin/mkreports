@@ -53,20 +53,20 @@ class SpacedText:
         return self.text == other.text and self.req_nl == other.req_nl
 
     def __add__(self, follow: Text) -> "SpacedText":
-        return add_text(self, SpacedText(follow))
+        return _add_text(self, SpacedText(follow))
 
     def __radd__(self, precede: Text) -> "SpacedText":
-        return add_text(SpacedText(precede), self)
+        return _add_text(SpacedText(precede), self)
 
     def format_text(self, precede: Text = "", follow: Text = "") -> str:
-        add_before = needed_nl_between(SpacedText(precede), self)
-        add_after = needed_nl_between(self, SpacedText(follow))
+        add_before = _needed_nl_between(SpacedText(precede), self)
+        add_after = _needed_nl_between(self, SpacedText(follow))
 
         # return with the required additional newlines
         return ("\n" * add_before) + self.text + ("\n" * add_after)
 
 
-def needed_nl_between(first: SpacedText, second: SpacedText) -> int:
+def _needed_nl_between(first: SpacedText, second: SpacedText) -> int:
     """
     Calculates the number of newlines needed between two text objects.
     """
@@ -86,9 +86,9 @@ def needed_nl_between(first: SpacedText, second: SpacedText) -> int:
     return add_between
 
 
-def add_text(first: SpacedText, second: SpacedText) -> SpacedText:
+def _add_text(first: SpacedText, second: SpacedText) -> SpacedText:
     # this takes care of empty strings
-    add_nl = needed_nl_between(first, second)
+    add_nl = _needed_nl_between(first, second)
 
     # if one of the strings is emtpy, we still need to take care of the rest
     ## required is maximum of both on side with ''

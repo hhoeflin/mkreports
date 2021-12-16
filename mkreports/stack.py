@@ -98,9 +98,6 @@ def get_stack() -> Stack:
             if code.co_name == "<module>":
                 code_lines = read_file(Path(code.co_filename))
             else:
-                import pudb
-
-                pudb.set_trace()
                 code_lines = inspect.getsourcelines(code)[0]
         except Exception:
             code_lines = ["Count not get source\n"]
@@ -120,45 +117,49 @@ def get_stack() -> Stack:
     return list(reversed(stack))
 
 
-def stack_diff(stack_old, stack_new) -> Tuple[Stack, Stack]:
-    """
-    Calculate the difference of two stacks.
+class StackDiff:
+    def __init__(self, first_stack: Stack, second_stack: Stack):
+        """
+        Calculate the difference of two stacks.
 
-    Shows the code executed between the old stack and the new.
-    """
-    equal_stack = []
-    for idx_old, idx_new in zip(range(len(stack_old)), range(len(stack_new))):
-        frame_old = stack_old[idx_old]
-        frame_new = stack_new[idx_new]
-        if (
-            frame_old.filename == frame_new.filename
-            and frame_old.code_range == frame_new.code_range
-        ):
-            # this is within the same function
-            if frame_old.display_range == frame_new.display_range:
-                # this is the same, no change
-                equal_stack.append(frame_old)
-            else:
-                # execution has at least moved by one code line
-                # store the lower levels of the old frame
-                # then the difference in the current frame to the new
-                # then the lower levels of the new frame
-                old_stack_lower = [
-                    FrameInfo(
-                        filename=frame.filename,
-                        code_range=frame.code_range,
-                        display_range=(frame.currentline_idx, frame.code_range[1]),
-                        currentline_idx=frame.code_range[1],
-                        code=frame.code,
+        Shows the code executed between the old stack and the new.
+        """
+        self.first = first_stack
+        self.second = second_stack
+
+        self.equal = []
+        for idx in range(min(len(self.first), len(self.second))):
+            frame_old = self.first[idx]
+            frame_new = self.second[idx]
+            if (
+                frame_old.filename == frame_new.filename
+                and frame_old.code_range == frame_new.code_range
+            ):
+                # this is within the same function
+                if frame_old.display_range == frame_new.display_range:
+                    # this is the same, no change
+                    self.equal.append(frame_old)
+                else:
+                    # execution has at least moved by one code line
+                    # store the lower levels of the old frame
+                    # then the difference in the current frame to the new
+                    # then the lower levels of the new frame
+                    self.old_lower = [
+                        FrameInfo(
+                            filename=frame.filename,
+                            code_range=frame.code_range,
+                            display_range=(frame.currentline_idx, frame.code_range[1]),
+                            currentline_idx=frame.code_range[1],
+                            code=frame.code,
+                        )
+                        for frame in self.first[idx + 1 :]
+                    ]
+                    middle_frame = copy(self.first[idx])
+                    middle_frame.display_range = (
+                        self.first[idx].display_range[1] - 1,
+                        self.second[idx].display_range[1],
                     )
-                    for frame in stack_old[idx_old + 1 :]
-                ]
-                middle_frame = copy(stack_old[idx_old])
-                middle_frame.display_range = (
-                    stack_old[idx_old].display_range[1] - 1,
-                    stack_new[idx_new].display_range[1],
-                )
-                middle_stack = [middle_frame]
-                new_stack_lower = [frame for frame in stack_new[idx_new + 1 :]]
-
-    return (equal_stack, old_stack_lower + middle_stack + new_stack_lower)
+                    self.middle = [middle_frame]
+                    self.new_lower = [frame for frame in self.second[idx + 1 :]]
+                    self.changed = self.old_lower + self.middle + self.new_lower
+                    return

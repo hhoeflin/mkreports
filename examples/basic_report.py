@@ -48,5 +48,18 @@ if __name__ == "__main__":
 
     # now we want to print a little code
     stack_end = stack.get_stack()
-    diff_equal, diff_diff = stack.stack_diff(stack_start, stack_end)
-    page.append(diff_diff[0].md_code())
+    page.append(stack.StackDiff(stack_start, stack_end).changed[0].md_code())
+
+    page.append(md.H2("Several different containers"))
+    # and now we want to add an admonition
+    stack_end2 = stack.get_stack()
+    page.append(
+        md.Admonition(
+            stack.StackDiff(stack_end, stack_end2).changed[0].md_code()
+            + "This is an admonition",
+            kind="bug",
+            collapse=True,
+        )
+    )
+
+    page.append(md.Tab("A test text", "Title 1") + md.Tab("Second test", "Title 2"))
