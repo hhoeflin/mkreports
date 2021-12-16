@@ -63,3 +63,6 @@ if __name__ == "__main__":
     )
 
     page.append(md.Tab("A test text", "Title 1") + md.Tab("Second test", "Title 2"))
+
+    page.append(md.H2("A stack as tabs"))
+    page.append(stack.stack_to_tabs(stack_end2))

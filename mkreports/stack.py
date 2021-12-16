@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import List, Optional, Tuple
 
-from .md.base import Code
+from .md import Code, MdObj, MdSeq, Tab
 
 
 @dataclass
@@ -14,6 +14,7 @@ class FrameInfo:
     display_range: Tuple[int, int]
     currentline_idx: int
     code: List[str]
+    co_name: str
 
     def __str__(self):
         header = f"File: {self.filename}"
@@ -104,6 +105,7 @@ def get_stack() -> Stack:
         stack.append(
             FrameInfo(
                 filename=code.co_filename,
+                co_name=code.co_name,
                 code_range=(
                     code.co_firstlineno - 1,
                     code.co_firstlineno - 1 + len(code_lines),
@@ -151,6 +153,7 @@ class StackDiff:
                             display_range=(frame.currentline_idx, frame.code_range[1]),
                             currentline_idx=frame.code_range[1],
                             code=frame.code,
+                            co_name=frame.co_name,
                         )
                         for frame in self.first[idx + 1 :]
                     ]
@@ -163,3 +166,17 @@ class StackDiff:
                     self.new_lower = [frame for frame in self.second[idx + 1 :]]
                     self.changed = self.old_lower + self.middle + self.new_lower
                     return
+
+
+def stack_to_tabs(
+    stack: Stack, code_range: bool = True, highlight: bool = True
+) -> MdObj:
+    """Convert a stack to a list of tabs."""
+    res = MdSeq()
+    for frame in stack:
+        res = res + Tab(
+            frame.md_code(code_range=code_range, highlight=highlight),
+            title=frame.co_name,
+        )
+
+    return res

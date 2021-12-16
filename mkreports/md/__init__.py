@@ -1,4 +1,4 @@
-from .base import Code, MdParagraph, Raw
+from .base import Code, MdParagraph, MdSeq, Raw
 from .containers import Admonition, Tab
 from .file import File
 from .header import *
