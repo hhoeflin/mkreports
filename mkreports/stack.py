@@ -73,15 +73,14 @@ def read_file(
     return lines[slice(from_line, to_line, 1)]
 
 
-def get_stack() -> Stack:
+def get_stack(omit_levels: int = 0) -> Stack:
     """
     Get a simplified version of the stack.
     """
-    curframe = inspect.currentframe()
-    if curframe is not None:
-        frame = curframe.f_back
-    else:
-        raise Exception("Can't happen!")
+    frame = inspect.currentframe()
+    # need to jump over the specified number of levels
+    for _ in range(omit_levels + 1):
+        frame = frame.f_back
 
     stack = []
     while frame is not None:

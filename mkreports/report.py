@@ -20,6 +20,7 @@ from .exceptions import (ReportExistsError, ReportNotExistsError,
 from .md import MdObj, SpacedText, Text
 from .settings import (NavEntry, add_nav_entry, load_yaml, merge_settings,
                        path_to_nav_entry, save_yaml)
+from .stack import Stack, StackDiff, get_stack, stack_to_tabs
 
 default_settings = immutabledict(
     {
@@ -199,6 +200,8 @@ class Page:
         self._path = path.absolute()
         self._counters = Counters()
         self.report = report
+        self.code_marker_first: Optional[Stack] = None
+        self.code_marker_second: Optional[Stack] = None
 
         # get the last string that was written into the page (if it exists)
         # otherwise we set it to newlines.
@@ -208,6 +211,8 @@ class Page:
             self._last_obj = SpacedText("".join(last_lines))
         else:
             self._last_obj = SpacedText("\n\n\n")
+        # set the marker to where it was created
+        self.set_marker(omit_levels=1)
 
     @property
     def path(self) -> Path:
@@ -222,7 +227,24 @@ class Page:
         shutil.rmtree(self.gen_asset_path)
         self.path.unlink()
 
-    def append(self, item: Union[MdObj, Text]) -> None:
+    def set_marker(self, omit_levels=0):
+        self.code_marker_first = self.code_marker_second
+        self.code_marker_second = get_stack(omit_levels=omit_levels + 1)
+
+    def md_stack(self, code_range: bool = True, highlight: bool = True) -> MdObj:
+        """Stack between 2 markers as markdown."""
+        if self.code_marker_first is not None and self.code_marker_second is not None:
+            stack_diff = StackDiff(self.code_marker_first, self.code_marker_second)
+            return stack_to_tabs(
+                stack_diff.changed, code_range=code_range, highlight=highlight
+            )
+        else:
+            raise Exception("Need 2 markers to give a stack difference")
+
+    def append(self, item: Union[MdObj, Text], add_code=True, mark=True) -> None:
+        if add_code:
+            self.set_marker(omit_levels=1)
+
         if isinstance(item, MdObj):
             md_text = item.to_md_with_bm(
                 page_path=self.path,
