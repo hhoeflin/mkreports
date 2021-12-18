@@ -1,7 +1,7 @@
 import tempfile
 from copy import deepcopy
 from pathlib import Path
-from typing import Literal, Optional
+from typing import Literal, Optional, Union
 
 from mdutils.tools.Image import Image as UtilsImage
 
@@ -151,6 +151,38 @@ try:
         image.savefig(path, dpi="figure" if dpi is None else dpi, **kwargs)
 
     image_save_funcs[MplFigure] = matplotlib_save
+
+except Exception:
+    pass
+
+# seaborn; if seaborn loads we can assume so does matplotlib
+try:
+    from seaborn import FacetGrid as SnsFacetGrid
+    from seaborn import JointGrid as SnsJointGrid
+    from seaborn import PairGrid as SnsPairGrid
+
+    def seaborn_save(
+        image: Union[SnsFacetGrid, SnsJointGrid, SnsPairGrid],
+        path: Path,
+        width: Optional[float] = None,
+        height: Optional[float] = None,
+        dpi: Optional[float] = None,
+        units: Literal["in", "cm", "mm"] = "in",
+        **kwargs,
+    ):
+        matplotlib_save(
+            image=image.figure,
+            path=path,
+            width=width,
+            height=height,
+            dpi=dpi,
+            units=units,
+            **kwargs,
+        )
+
+    image_save_funcs[SnsFacetGrid] = seaborn_save
+    image_save_funcs[SnsJointGrid] = seaborn_save
+    image_save_funcs[SnsPairGrid] = seaborn_save
 
 except Exception:
     pass

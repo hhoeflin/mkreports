@@ -1,6 +1,7 @@
 from pathlib import Path
 
 import matplotlib.pyplot as plt
+import seaborn as sns
 from mkreports import Report, md
 from plotnine import aes, facet_wrap, geom_point, ggplot, stat_smooth
 from plotnine.data import mtcars
@@ -57,7 +58,30 @@ def use_images(report: Report) -> None:
     )
 
     p.add(md.H3("Seaborn"))
-    p.add(md.Admonition("Still to be implemented", kind="warning"))
+
+    sns.set_theme(style="ticks")
+
+    # Load the example dataset for Anscombe's quartet
+    df = sns.load_dataset("anscombe")
+
+    # Show the results of a linear regression within each dataset
+    p.add(
+        md.Image(
+            sns.lmplot(
+                x="x",
+                y="y",
+                col="dataset",
+                hue="dataset",
+                data=df,
+                col_wrap=2,
+                ci=None,
+                palette="muted",
+                height=4,
+                scatter_kws={"s": 50, "alpha": 1},
+            ),
+            store_path=p.gen_asset_path,
+        )
+    )
 
     p.add(md.H3("Altair"))
     p.add(md.Admonition("Still to be implemented", kind="warning"))
