@@ -59,6 +59,14 @@ def use_images(report: Report) -> None:
 
     p.add(md.H3("Seaborn"))
 
+    p.add(
+        """
+        Another well known option is Seaborn. The interface is similar to the 
+        ones before. Under the hood, the `figure` attribute of the seaborn plot is 
+        accessed and saved in the same fashion as for matplotlib.
+        """
+    )
+
     sns.set_theme(style="ticks")
 
     # Load the example dataset for Anscombe's quartet
