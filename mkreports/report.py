@@ -6,6 +6,7 @@ responsible for creating a mkdocs project if it doesn't exist
 already and ensuring that the neccessary settings are all 
 included. 
 """
+import inspect
 import shutil
 from pathlib import Path
 from typing import Any, Dict, Mapping, Optional, Union
@@ -241,7 +242,7 @@ class Page:
         else:
             raise Exception("Need 2 markers to give a stack difference")
 
-    def append(self, item: Union[MdObj, Text], add_code=True, mark=True) -> None:
+    def add(self, item: Union[MdObj, Text], add_code=True, mark=True) -> None:
         if add_code:
             self.set_marker(omit_levels=1)
 
@@ -265,8 +266,10 @@ class Page:
                 # as we have to change content at the front, does not work more efficiently
                 merge_frontmatter(self.path, req.page)
 
-        elif isinstance(item, (str, SpacedText)):
-            md_text = SpacedText(item)
+        elif isinstance(item, str):
+            md_text = SpacedText(inspect.cleandoc(item))
+        elif isinstance(item, SpacedText):
+            md_text = item
         else:
             raise Exception("item should be a str, SpacedText or MdObj")
 

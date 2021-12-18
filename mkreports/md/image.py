@@ -1,4 +1,5 @@
 import tempfile
+from copy import deepcopy
 from pathlib import Path
 from typing import Literal, Optional
 
@@ -85,6 +86,7 @@ class Image(ImageFile):
 
 
 image_save_funcs = dict()
+# for plotnine
 try:
     from plotnine.ggplot import ggplot
 
@@ -100,5 +102,55 @@ try:
         image.save(path, width=width, height=height, dpi=dpi, units=units, **kwargs)
 
     image_save_funcs[ggplot] = ggplot_save
+except Exception:
+    pass
+
+# for matplotlib
+try:
+    import matplotlib.pyplot as plt
+    from matplotlib.figure import Figure as MplFigure
+
+    def matplotlib_save(
+        image: MplFigure,
+        path: Path,
+        width: Optional[float] = None,
+        height: Optional[float] = None,
+        dpi: Optional[float] = None,
+        units: Literal["in", "cm", "mm"] = "in",
+        **kwargs,
+    ):
+        # first we need to convert the units if given
+        if width is not None or height is not None:
+            if units != "in":
+                if units == "cm":
+                    factor = 1 / 2.54
+                elif units == "mm":
+                    factor = 1 / (10 * 2.54)
+                else:
+                    raise ValueError(
+                        f"unit {units} not supported. Must be one of 'in', 'cm' or 'mm'."
+                    )
+                width = width * factor if width is not None else None
+                height = height * factor if height is not None else None
+
+            # if only one of the two is set, we infer the other
+            if width is None and height is not None:
+                old_width = image.get_figwidth()
+                old_height = image.get_figheight()
+                width = old_width * (height / old_height)
+            elif width is not None and height is None:
+                old_width = image.get_figwidth()
+                old_height = image.get_figheight()
+                height = old_height * (width / old_width)
+
+            # now we set the new figure height, but on a copy of the figure
+            image = deepcopy(image)
+            image.set_size_inches(w=width, h=height)
+
+        # save it
+        image.savefig(path, dpi="figure" if dpi is None else dpi, **kwargs)
+
+    image_save_funcs[MplFigure] = matplotlib_save
+
 except Exception:
     pass

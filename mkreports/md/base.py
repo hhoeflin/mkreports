@@ -1,4 +1,5 @@
 import functools
+import inspect
 from abc import ABC, abstractmethod
 from collections.abc import MutableSequence
 from pathlib import Path
@@ -145,9 +146,12 @@ class Raw(MdObj):
     Class to encapsulate raw markdown.
     """
 
-    def __init__(self, raw: str):
+    def __init__(self, raw: str, dedent=True):
         super().__init__()
-        self.raw = raw
+        if dedent:
+            self.raw = inspect.cleandoc(raw)
+        else:
+            self.raw = raw
 
     def to_markdown(self, path: Optional[Path] = None) -> SpacedText:
         return SpacedText(self.raw)
