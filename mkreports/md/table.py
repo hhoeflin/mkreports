@@ -28,7 +28,7 @@ class DataTable(File):
     def __init__(
         self,
         table: pd.DataFrame,
-        store_path: Path,
+        store_path: Optional[Path] = None,
         table_id: Optional[str] = None,
         column_settings: Optional[dict] = None,
         **kwargs,

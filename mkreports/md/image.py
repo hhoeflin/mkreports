@@ -13,7 +13,7 @@ class ImageFile(File):
     def __init__(
         self,
         path: Path,
-        store_path: Path,
+        store_path: Optional[Path] = None,
         link_type: Literal["inline", "ref"] = "inline",
         text: str = "",
         tooltip: str = "",
@@ -48,7 +48,7 @@ class Image(ImageFile):
     def __init__(
         self,
         image,
-        store_path: Path,
+        store_path: Optional[Path] = None,
         width: Optional[float] = None,
         height: Optional[float] = None,
         units: Literal["in", "cm", "mm"] = "in",

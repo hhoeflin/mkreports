@@ -3,7 +3,7 @@ import shutil
 from pathlib import Path
 from typing import Optional
 
-from .base import MdObj
+from .base import MdObj, get_default_store_path
 from .text import SpacedText
 
 
@@ -41,7 +41,7 @@ class File(MdObj):
     def __init__(
         self,
         path: Path,
-        store_path: Path,
+        store_path: Optional[Path] = None,
         allow_copy: bool = True,
         hash: bool = False,
     ) -> None:
@@ -50,18 +50,23 @@ class File(MdObj):
 
         self.allow_copy = allow_copy
         self.hash = hash
-        self.store_path = store_path
+        self.store_path = (
+            store_path if store_path is not None else get_default_store_path()
+        )
+
+        if self.store_path is None:
+            raise ValueError("store_path or a default must be set. Can't both be None.")
 
         if self.allow_copy:
 
             if self.hash:
                 # we calculate the hash of the file to be ingested
                 path_hash = md5_hash_file(self.path)
-                new_path = store_path / (
+                new_path = self.store_path / (
                     true_stem(self.path) + "-" + path_hash + "".join(self.path.suffixes)
                 )
             else:
-                new_path = store_path / self.path.name
+                new_path = self.store_path / self.path.name
 
             # now see if we move or copy the file
             new_path.parent.mkdir(parents=True, exist_ok=True)
