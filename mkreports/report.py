@@ -152,6 +152,9 @@ class Report:
             nav_entry = page_name
             path = nav_entry[1]
 
+        if path.suffix != ".md":
+            raise ValueError(f"{path} needs to have extension '.md'")
+
         # if the file already exists, just return a 'Page',
         # else create a new nav-entry and the file and return a 'Page'
         if (self.docs_dir / path).exists():
