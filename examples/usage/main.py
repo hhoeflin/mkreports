@@ -13,90 +13,93 @@ def use_images(report: Report) -> None:
     """
     with report.get_page("images.md", append=False) as p:
 
-        p.add(md.H1("Using images"))
-        p.add(md.H2("Supported formats"))
-        p.add(
-            """
-            Mkreports supports inclusion out of the box of a number of different imaging 
-            libraries. For each supported library, an example is show below.
+        with p.add(md.H1("Using images")):
+            with p.add(md.H2("Supported formats")):
+                p.add(
+                    """
+                    Mkreports supports inclusion out of the box of a number of different imaging 
+                    libraries. For each supported library, an example is show below.
 
-            For any not supported library, it is still possible to write out the 
-            image manually and then include it as an `ImageFile` object.
-            """
-        )
+                    For any not supported library, it is still possible to write out the 
+                    image manually and then include it as an `ImageFile` object.
+                    """
+                )
 
-        p.add(md.H3("Matplotlib"))
+                with p.add(md.H3("Matplotlib")):
 
-        p.add(
-            """
-            For many scientific graphing purposes, `matplotlib` is either the direct
-            choice or the backend being used for plotting. 
-            """
-        )
+                    p.add(
+                        """
+                        For many scientific graphing purposes, `matplotlib` is either the direct
+                        choice or the backend being used for plotting. 
+                        """
+                    )
 
-        fig, ax = plt.subplots()  # Create a figure containing a single axes.
-        ax.plot([1, 2, 3, 4], [1, 4, 2, 3])
-        p.add(md.Image(fig))
+                    (
+                        fig,
+                        ax,
+                    ) = plt.subplots()  # Create a figure containing a single axes.
+                    ax.plot([1, 2, 3, 4], [1, 4, 2, 3])
+                    p.add(md.Image(fig))
 
-        p.add(md.H3("Plotnine"))
+                with p.add(md.H3("Plotnine")):
 
-        p.add(
-            """
-            Any plots created by `plotnine` can be included directly. The code below
-            is from the beginner example of the library.
-            """
-        )
+                    p.add(
+                        """
+                        Any plots created by `plotnine` can be included directly. The code below
+                        is from the beginner example of the library.
+                        """
+                    )
 
-        p.add(
-            md.Image(
-                ggplot(mtcars, aes("wt", "mpg", color="factor(gear)"))
-                + geom_point()
-                + stat_smooth(method="lm")
-                + facet_wrap("~gear"),
-            )
-        )
+                    p.add(
+                        md.Image(
+                            ggplot(mtcars, aes("wt", "mpg", color="factor(gear)"))
+                            + geom_point()
+                            + stat_smooth(method="lm")
+                            + facet_wrap("~gear"),
+                        )
+                    )
 
-        p.add(md.H3("Seaborn"))
+                with p.add(md.H3("Seaborn")):
 
-        p.add(
-            """
-            Another well known option is Seaborn. The interface is similar to the 
-            ones before. Under the hood, the `figure` attribute of the seaborn plot is 
-            accessed and saved in the same fashion as for matplotlib.
-            """
-        )
+                    p.add(
+                        """
+                        Another well known option is Seaborn. The interface is similar to the 
+                        ones before. Under the hood, the `figure` attribute of the seaborn plot is 
+                        accessed and saved in the same fashion as for matplotlib.
+                        """
+                    )
 
-        sns.set_theme(style="ticks")
+                    sns.set_theme(style="ticks")
 
-        # Load the example dataset for Anscombe's quartet
-        df = sns.load_dataset("anscombe")
+                    # Load the example dataset for Anscombe's quartet
+                    df = sns.load_dataset("anscombe")
 
-        # Show the results of a linear regression within each dataset
-        p.add(
-            md.Image(
-                sns.lmplot(
-                    x="x",
-                    y="y",
-                    col="dataset",
-                    hue="dataset",
-                    data=df,
-                    col_wrap=2,
-                    ci=None,
-                    palette="muted",
-                    height=4,
-                    scatter_kws={"s": 50, "alpha": 1},
-                ),
-            )
-        )
+                    # Show the results of a linear regression within each dataset
+                    p.add(
+                        md.Image(
+                            sns.lmplot(
+                                x="x",
+                                y="y",
+                                col="dataset",
+                                hue="dataset",
+                                data=df,
+                                col_wrap=2,
+                                ci=None,
+                                palette="muted",
+                                height=4,
+                                scatter_kws={"s": 50, "alpha": 1},
+                            ),
+                        )
+                    )
 
-        p.add(md.H3("Altair"))
-        p.add(md.Admonition("Still to be implemented", kind="warning"))
+                with p.add(md.H3("Altair")):
+                    p.add(md.Admonition("Still to be implemented", kind="warning"))
 
-        p.add(md.H3("Plotly"))
-        p.add(md.Admonition("Still to be implemented", kind="warning"))
+                with p.add(md.H3("Plotly")):
+                    p.add(md.Admonition("Still to be implemented", kind="warning"))
 
-        p.add(md.H2("Different image sizes"))
-        p.add(md.Admonition("Still to be implemented", kind="warning"))
+            with p.add(md.H2("Different image sizes")):
+                p.add(md.Admonition("Still to be implemented", kind="warning"))
 
 
 if __name__ == "__main__":

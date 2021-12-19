@@ -6,10 +6,11 @@ responsible for creating a mkdocs project if it doesn't exist
 already and ensuring that the neccessary settings are all 
 included. 
 """
+import contextlib
 import inspect
 import shutil
 from pathlib import Path
-from typing import Any, Dict, Mapping, Optional, Union
+from typing import Any, ContextManager, Dict, Mapping, Optional, Union
 
 import frontmatter
 import yaml
@@ -254,7 +255,9 @@ class Page:
         else:
             raise Exception("Need 2 markers to give a stack difference")
 
-    def add(self, item: Union[MdObj, Text], add_code=True, mark=True) -> None:
+    def add(
+        self, item: Union[MdObj, Text], add_code=True, mark=True
+    ) -> ContextManager["Page"]:
         if add_code:
             self.set_marker(omit_levels=1)
 
@@ -288,3 +291,5 @@ class Page:
         with self.path.open("a") as f:
             f.write(last_obj := md_text.format_text(self._last_obj, "a"))
         self._last_obj = last_obj
+
+        return contextlib.nullcontext(self)
