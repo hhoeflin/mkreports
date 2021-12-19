@@ -18,7 +18,8 @@ from immutabledict import immutabledict
 from .counters import Counters
 from .exceptions import (ReportExistsError, ReportNotExistsError,
                          ReportNotValidError)
-from .md import MdObj, SpacedText, Text
+from .md import (MdObj, SpacedText, Text, get_default_store_path,
+                 set_default_store_path)
 from .settings import (NavEntry, add_nav_entry, load_yaml, merge_settings,
                        path_to_nav_entry, save_yaml)
 from .stack import Stack, StackDiff, get_stack, stack_to_tabs
@@ -214,6 +215,17 @@ class Page:
             self._last_obj = SpacedText("\n\n\n")
         # set the marker to where it was created
         self.set_marker(omit_levels=1)
+
+    def __enter__(self) -> "Page":
+        """Enter context manager and set the default store path."""
+        self._old_store_path = get_default_store_path()
+        set_default_store_path(self.gen_asset_path)
+
+        return self
+
+    def __exit__(self, exc_type, exc_val, traceback) -> None:
+        """Remove the default store path and restore the previous one."""
+        set_default_store_path(self._old_store_path)
 
     @property
     def path(self) -> Path:
