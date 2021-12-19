@@ -19,14 +19,14 @@ if __name__ == "__main__":
     mkdocs_img = md.ImageFile(
         Path(__file__).parent / "mkdocs.jpg", store_path=page.gen_asset_path, hash=True
     )
-    page.append(basic_text)
-    page.append(mkdocs_img)
+    page.add(basic_text)
+    page.add(mkdocs_img)
 
     # and now we append a ggplot image
     from plotnine import aes, facet_wrap, geom_point, ggplot, stat_smooth
     from plotnine.data import mtcars
 
-    page.append(
+    page.add(
         md.Image(
             ggplot(mtcars, aes("wt", "mpg", color="factor(gear)"))
             + geom_point()
@@ -37,10 +37,10 @@ if __name__ == "__main__":
     )
 
     # the table as markdown
-    page.append(md.Table(mtcars, index=False))
+    page.add(md.Table(mtcars, index=False))
 
     # and as a DataTable
-    page.append(md.DataTable(mtcars, store_path=page.gen_asset_path))
+    page.add(md.DataTable(mtcars, store_path=page.gen_asset_path))
 
     print(f"Asset at {script_asset.path}")
     print(f"Image at {mkdocs_img.path}")
@@ -48,12 +48,12 @@ if __name__ == "__main__":
 
     # now we want to print a little code
     stack_end = stack.get_stack()
-    page.append(stack.StackDiff(stack_start, stack_end).changed[0].md_code())
+    page.add(stack.StackDiff(stack_start, stack_end).changed[0].md_code())
 
-    page.append(md.H2("Several different containers"))
+    page.add(md.H2("Several different containers"))
     # and now we want to add an admonition
     stack_end2 = stack.get_stack()
-    page.append(
+    page.add(
         md.Admonition(
             stack.StackDiff(stack_end, stack_end2).changed[0].md_code()
             + "This is an admonition",
@@ -62,7 +62,7 @@ if __name__ == "__main__":
         )
     )
 
-    page.append(md.Tab("A test text", "Title 1") + md.Tab("Second test", "Title 2"))
+    page.add(md.Tab("A test text", "Title 1") + md.Tab("Second test", "Title 2"))
 
-    page.append(md.H2("A stack as tabs"))
-    page.append(stack.stack_to_tabs(stack_end2))
+    page.add(md.H2("A stack as tabs"))
+    page.add(stack.stack_to_tabs(stack_end2))
