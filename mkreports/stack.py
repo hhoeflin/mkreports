@@ -1,48 +1,196 @@
+from __future__ import annotations
+
 import inspect
+import logging
+import sys
 from copy import copy
 from dataclasses import dataclass
 from pathlib import Path
-from typing import List, Optional, Tuple
+from types import FrameType, ModuleType
+from typing import List, Optional, Sequence, Tuple, Union
+
+from anytree import NodeMixin
 
 from .md import Code, MdObj, MdSeq, Tab
 
+logger = logging.getLogger(__name__)
 
-@dataclass
-class FrameInfo:
+AnyPath = Union[str, Path]
+
+
+class Tracker:
+    """
+    Used to profile the code in order to detect executed functions.
+
+    It is intended to be used as a context manager. When entering
+    the context, the profiler will be set and all subsequent
+    function calls will be recorded. Afterwards the profiling
+    is stopped.
+    """
+
+    def __init__(
+        self,
+        dirs: Optional[Union[AnyPath, Sequence[AnyPath]]] = None,
+        packages: Optional[Union[ModuleType, Sequence[ModuleType]]] = None,
+        omit_levels: int = 0,
+    ):
+        if isinstance(dirs, Sequence) and not isinstance(dirs, str):
+            self.dirs = set(dirs)  # don't need to do anything
+        elif isinstance(dirs, (str, Path)):
+            self.dirs = set([dirs])
+        else:
+            self.dirs = set()
+
+        if isinstance(packages, Sequence):
+            packages = list(packages)
+        elif isinstance(packages, ModuleType):
+            packages = [packages]
+        else:
+            packages = []
+
+        # for the packages, we also convert them to directories
+        for package in packages:
+            # always use the first element of the list
+            self.dirs.add(Path(package.__path__[0]))
+
+        self.omit_levels = omit_levels
+
+    def __enter__(self) -> "Tracker":
+        """Enter context manager and set the profiler."""
+
+        # we get the directory of the callee
+        if sys.gettrace() is None:
+            sys.settrace(self.trace)
+        else:
+            logger.warning(f"Logger already set to {sys.gettrace()}")
+
+        frame = self._get_callee_frame()
+        # save the tree for storing the information
+        self.tree = FrameInfo.from_frame(frame)
+        self.dirs.add(Path(self.tree.filename).parent)
+
+        self.cur_node = self.tree
+        self.entry_lineno = frame.f_lineno
+        return self
+
+    def _get_callee_frame(self) -> FrameType:
+        frame = inspect.currentframe()
+        # need to jump over the specified number of levels
+        for _ in range(self.omit_levels + 2):
+            if frame is None:
+                raise Exception("frame is None")
+            frame = frame.f_back
+        if frame is None:
+            raise Exception("frame is None")
+        return frame
+
+    def __exit__(self, exc_type, exc_val, traceback) -> None:
+        """Remove the profiler when exiting the context manager."""
+        sys.settrace(None)
+        frame = self._get_callee_frame()
+        # we set the display range
+        self.tree.hilite_range = slice(self.entry_lineno - 1, frame.f_lineno)
+
+    def frame_traceable(self, frame: FrameType) -> bool:
+        frame_path = Path(frame.f_code.co_filename)
+        for dir in self.dirs:
+            if dir in frame_path.parents:
+                return True
+        return False
+
+    def trace(self, frame, event, arg):
+        # when tracing, only care if it is a 'call' event
+        if event == "call":
+            # if it is inside the approved dirs, keep tracing;
+            # otherwise we turn it off
+            if self.frame_traceable(frame):
+                # add the code object to the things that are traced
+                # we put this as part of the tree
+                self.cur_node = FrameInfo.from_frame(frame, parent=self.cur_node)
+                print(self.tree.children)
+                return self.trace
+            else:
+                # we stop tracing
+                return None
+        elif event == "return":
+            # set the current node to the parent in the tree
+            if self.cur_node is not None:
+                self.cur_node = self.cur_node.parent
+            else:
+                raise Exception("cur_node should not be None")
+            pass
+        else:
+            return self.trace
+
+
+class FrameInfo(NodeMixin):
     filename: str
-    code_range: Tuple[int, int]
-    display_range: Tuple[int, int]
+    code_range: slice
+    hilite_range: Optional[slice]
     currentline_idx: int
     code: List[str]
     co_name: str
 
+    def __init__(
+        self,
+        filename: str,
+        code_range: slice,
+        hilite_range: Optional[slice],
+        currentline_idx: int,
+        code: List[str],
+        co_name: str,
+        parent: Optional[FrameInfo],
+        children: Optional[List[FrameInfo]],
+    ):
+        self.filename = filename
+        self.code_range = code_range
+        self.hilite_range = hilite_range
+        self.currentline_idx = currentline_idx
+        self.code = code
+        self.co_name = co_name
+        self.parent = parent
+        if children:
+            self.children = children
+
     def __str__(self):
         header = f"File: {self.filename}"
-        position = f" {self.display_range} in {self.code_range}"
-        return "\n".join([header, position, self.display_code])
+        position = f" {self.hilite_range} in {self.code_range}"
+        return "\n".join([header, position, self.focus_code])
 
     @property
-    def display_code(self):
+    def name(self):
+        return f"{self.filename}:{self.code_range.start}-{self.code_range.stop}"
+
+    @property
+    def focus_range(self):
+        if self.hilite_range is None:
+            return self.code_range
+        else:
+            return self.hilite_range
+
+    @property
+    def focus_code(self):
         display_code = "".join(
             self.code[
-                (self.display_range[0] - self.code_range[0]) : (
-                    self.display_range[1] - self.code_range[1]
+                (self.focus_range.start - self.code_range.start) : (
+                    self.focus_range.stop - self.code_range.stop
                 )
             ]
         )
         return display_code
 
-    def md_code(self, code_range=True, highlight=True):
-        if code_range:
+    def md_code(self, highlight: bool = True) -> MdObj:
+        if highlight:
             code = "".join(self.code)
-            first_line = self.code_range[0] + 1
+            first_line = self.code_range.start + 1
+            if self.code_range == self.focus_range:
+                hi_lines = None
+            else:
+                hi_lines = (self.focus_range.start + 1, self.focus_range.stop + 1)
         else:
-            code = self.display_code
-            first_line = self.code_range[0] + 1
-
-        if highlight and code_range:
-            hi_lines = (self.display_range[0] + 1, self.display_range[1] + 1)
-        else:
+            # no highlight, so we take the focused range
+            code = self.focus_code
+            first_line = self.focus_range.start + 1
             hi_lines = None
 
         return Code(
@@ -51,6 +199,47 @@ class FrameInfo:
             first_line=first_line,
             hi_lines=hi_lines,
             language="python",
+        )
+
+    def md_tree(self, highlight: bool = True) -> MdObj:
+        if self.children:
+            res = Tab(self.md_code(highlight=highlight), title="...main...")
+            for child in self.children:
+                res += Tab(child.md_tree(highlight=highlight), title=child.co_name)
+            return res
+        else:
+            return self.md_code(highlight=highlight)
+
+    @classmethod
+    def from_frame(cls, frame, parent=None, children=None) -> "FrameInfo":
+        code = frame.f_code
+
+        # if higher_frame is None and code.co_firstlineno != 1:
+        #    raise Exception(
+        #        f"Did not expect first line {code.co_firstlineno} when upper frame is None."
+        #    )
+        # if higher_frame is None:
+        #    code_lines = read_file(Path(code.co_filename))
+        # else:
+        try:
+            if code.co_name == "<module>":
+                code_lines = read_file(Path(code.co_filename))
+            else:
+                code_lines = inspect.getsourcelines(code)[0]
+        except Exception:
+            code_lines = ["Count not get source\n"]
+        return FrameInfo(
+            filename=code.co_filename,
+            co_name=code.co_name,
+            code_range=slice(
+                code.co_firstlineno - 1,
+                code.co_firstlineno - 1 + len(code_lines),
+            ),
+            hilite_range=None,
+            currentline_idx=frame.f_lineno - 1,
+            code=code_lines,
+            parent=parent,
+            children=children,
         )
 
 
@@ -80,41 +269,14 @@ def get_stack(omit_levels: int = 0) -> Stack:
     frame = inspect.currentframe()
     # need to jump over the specified number of levels
     for _ in range(omit_levels + 1):
+        if frame is None:
+            raise Exception("frame is None")
         frame = frame.f_back
 
     stack = []
     while frame is not None:
-        code = frame.f_code
-        higher_frame = frame.f_back
-
-        # if higher_frame is None and code.co_firstlineno != 1:
-        #    raise Exception(
-        #        f"Did not expect first line {code.co_firstlineno} when upper frame is None."
-        #    )
-        # if higher_frame is None:
-        #    code_lines = read_file(Path(code.co_filename))
-        # else:
-        try:
-            if code.co_name == "<module>":
-                code_lines = read_file(Path(code.co_filename))
-            else:
-                code_lines = inspect.getsourcelines(code)[0]
-        except Exception:
-            code_lines = ["Count not get source\n"]
-        stack.append(
-            FrameInfo(
-                filename=code.co_filename,
-                co_name=code.co_name,
-                code_range=(
-                    code.co_firstlineno - 1,
-                    code.co_firstlineno - 1 + len(code_lines),
-                ),
-                display_range=(code.co_firstlineno - 1, frame.f_lineno),
-                currentline_idx=frame.f_lineno - 1,
-                code=code_lines,
-            )
-        )
-        frame = higher_frame
+        stack.append(FrameInfo.from_frame(frame))
+        frame = frame.f_back
     return list(reversed(stack))
 
 
@@ -137,7 +299,7 @@ class StackDiff:
                 and frame_old.code_range == frame_new.code_range
             ):
                 # this is within the same function
-                if frame_old.display_range == frame_new.display_range:
+                if frame_old.hilite_range == frame_new.hilite_range:
                     # this is the same, no change
                     self.equal.append(frame_old)
                 else:
@@ -149,33 +311,23 @@ class StackDiff:
                         FrameInfo(
                             filename=frame.filename,
                             code_range=frame.code_range,
-                            display_range=(frame.currentline_idx, frame.code_range[1]),
-                            currentline_idx=frame.code_range[1],
+                            hilite_range=slice(
+                                frame.currentline_idx, frame.code_range.stop
+                            ),
+                            currentline_idx=frame.code_range.stop,
                             code=frame.code,
                             co_name=frame.co_name,
+                            parent=None,
+                            children=None,
                         )
                         for frame in self.first[idx + 1 :]
                     ]
                     middle_frame = copy(self.first[idx])
-                    middle_frame.display_range = (
-                        self.first[idx].display_range[1] - 1,
-                        self.second[idx].display_range[1],
+                    middle_frame.hilite_range = slice(
+                        self.first[idx].focus_range.stop - 1,
+                        self.second[idx].focus_range.stop,
                     )
                     self.middle = [middle_frame]
                     self.new_lower = [frame for frame in self.second[idx + 1 :]]
                     self.changed = self.old_lower + self.middle + self.new_lower
                     return
-
-
-def stack_to_tabs(
-    stack: Stack, code_range: bool = True, highlight: bool = True
-) -> MdObj:
-    """Convert a stack to a list of tabs."""
-    res = MdSeq()
-    for frame in stack:
-        res = res + Tab(
-            frame.md_code(code_range=code_range, highlight=highlight),
-            title=frame.co_name,
-        )
-
-    return res
