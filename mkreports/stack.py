@@ -58,12 +58,6 @@ class Tracker:
     def __enter__(self) -> "Tracker":
         """Enter context manager and set the profiler."""
 
-        # we get the directory of the callee
-        if sys.gettrace() is None:
-            sys.settrace(self.trace)
-        else:
-            logger.warning(f"Logger already set to {sys.gettrace()}")
-
         frame = self._get_callee_frame()
         # save the tree for storing the information
         self.tree = FrameInfo.from_frame(frame)
@@ -71,7 +65,21 @@ class Tracker:
 
         self.cur_node = self.tree
         self.entry_lineno = frame.f_lineno
+
+        # we get the directory of the callee
+        if sys.gettrace() is None:
+            sys.settrace(self.trace)
+        else:
+            logger.warning(f"Logger already set to {sys.gettrace()}")
+
         return self
+
+    def __exit__(self, exc_type, exc_val, traceback) -> None:
+        """Remove the profiler when exiting the context manager."""
+        sys.settrace(None)
+        frame = self._get_callee_frame()
+        # we set the display range
+        self.tree.hilite_range = slice(self.entry_lineno - 1, frame.f_lineno)
 
     def _get_callee_frame(self) -> FrameType:
         frame = inspect.currentframe()
@@ -83,13 +91,6 @@ class Tracker:
         if frame is None:
             raise Exception("frame is None")
         return frame
-
-    def __exit__(self, exc_type, exc_val, traceback) -> None:
-        """Remove the profiler when exiting the context manager."""
-        sys.settrace(None)
-        frame = self._get_callee_frame()
-        # we set the display range
-        self.tree.hilite_range = slice(self.entry_lineno - 1, frame.f_lineno)
 
     def frame_traceable(self, frame: FrameType) -> bool:
         frame_path = Path(frame.f_code.co_filename)
