@@ -18,6 +18,7 @@ tabulate = ">=0.8.9"
 deepmerge = ">=0.3.0"
 python-frontmatter = ">=1.0.0"
 anytree = "^2.8.0"
+intervaltree = "^3.1.0"
 
 [tool.poetry.dev-dependencies]
 pudb = ">=2021.2.2"

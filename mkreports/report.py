@@ -23,7 +23,7 @@ from .md import (MdObj, SpacedText, Text, get_default_store_path,
                  set_default_store_path)
 from .settings import (NavEntry, add_nav_entry, load_yaml, merge_settings,
                        path_to_nav_entry, save_yaml)
-from .stack import Stack, StackDiff, get_stack, stack_to_tabs
+from .stack import Stack, StackDiff, get_stack
 
 default_settings = immutabledict(
     {
