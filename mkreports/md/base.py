@@ -8,7 +8,7 @@ from typing import Iterable, List, Optional, Tuple, Union
 from mdutils.tools.TextUtils import TextUtils
 from mkreports.settings import Settings
 
-from .text import SpacedText
+from .text import SpacedText, Text
 
 store_path_dict = {}
 
@@ -85,9 +85,7 @@ class MdObj(ABC):
         if backmatter.text == "":
             return self.to_markdown(page_path)
         else:
-            return SpacedText(self.to_markdown(page_path), (1, 2)) + SpacedText(
-                self.backmatter(page_path), (2, 1)
-            )
+            return SpacedText(self.to_markdown(page_path), (1, 2)) + SpacedText(self.backmatter(page_path), (2, 1))
 
     def req_settings(self) -> Settings:
         return Settings()
@@ -136,14 +134,10 @@ class MdSeq(MdObj, MutableSequence):
         self._list.insert(index, value)
 
     def backmatter(self, path: Optional[Path] = None) -> SpacedText:
-        return functools.reduce(
-            lambda x, y: x + y, [elem.backmatter(path) for elem in self._list]
-        )
+        return functools.reduce(lambda x, y: x + y, [elem.backmatter(path) for elem in self._list])
 
     def to_markdown(self, path: Optional[Path] = None) -> SpacedText:
-        return functools.reduce(
-            lambda x, y: x + y, [elem.to_markdown(path) for elem in self._list]
-        )
+        return functools.reduce(lambda x, y: x + y, [elem.to_markdown(path) for elem in self._list])
 
     def req_settings(self) -> Settings:
         """Requirements for the object."""
@@ -159,10 +153,12 @@ class Raw(MdObj):
     Class to encapsulate raw markdown.
     """
 
-    def __init__(self, raw: str, dedent=True):
+    def __init__(self, raw: Text, dedent=True):
         super().__init__()
         if dedent:
-            self.raw = inspect.cleandoc(raw)
+            # we only apply dedent to raw strings
+            if isinstance(raw, str):
+                self.raw = inspect.cleandoc(raw)
         else:
             self.raw = raw
 
@@ -197,14 +193,14 @@ class Code(MdObj):
         code: str,
         title: Optional[str] = None,
         first_line: Optional[int] = None,
-        hi_lines: Optional[Tuple[int, int]] = None,
+        hl_lines: Optional[Tuple[int, int]] = None,
         language: Optional[str] = "python",
     ) -> None:
         self.code = code
         self.title = title
         self.language = language
         self.first_line = first_line
-        self.hi_lines = hi_lines
+        self.hl_lines = hl_lines
 
     def to_markdown(self, page_path: Optional[Path] = None) -> SpacedText:
         annots = ""
@@ -214,14 +210,18 @@ class Code(MdObj):
             annots = annots + f' title="{self.title}"'
         if self.first_line is not None:
             # hi_lines get intrepreted relative to first_line
-            if self.hi_lines is not None:
-                hi_lines = (
-                    self.hi_lines[0] - self.first_line + 1,
-                    self.hi_lines[1] - self.first_line + 1,
+            if self.hl_lines is not None:
+                hl_lines = (
+                    self.hl_lines[0] - self.first_line + 1,
+                    self.hl_lines[1] - self.first_line + 1,
                 )
+            else:
+                hl_lines = self.hl_lines
             annots = annots + f' linenums="{self.first_line}"'
+        else:
+            hl_lines = self.hl_lines
 
-        if self.hi_lines is not None:
-            annots = annots + f' hl_lines="{self.hi_lines[0]}-{self.hi_lines[1]}"'
+        if hl_lines is not None:
+            annots = annots + f' hl_lines="{hl_lines[0]}-{hl_lines[1]}"'
 
         return SpacedText(TextUtils.insert_code(self.code, annots), (2, 2))

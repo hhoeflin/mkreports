@@ -4,14 +4,16 @@ import inspect
 import logging
 import sys
 from copy import copy
-from dataclasses import dataclass
 from pathlib import Path
+from textwrap import dedent
 from types import FrameType, ModuleType
-from typing import List, Optional, Sequence, Tuple, Union
+from typing import List, Optional, Sequence, Union
 
 from anytree import NodeMixin
+from intervaltree import Interval
 
-from .md import Code, MdObj, MdSeq, Tab
+from .exceptions import TrackerActiveError, TrackerNotActiveError
+from .md import Code, MdObj, Tab
 
 logger = logging.getLogger(__name__)
 
@@ -54,17 +56,23 @@ class Tracker:
             self.dirs.add(Path(package.__path__[0]))
 
         self.omit_levels = omit_levels
+        self.ctx_active = False
+        self.tree = None
+        self.cur_node = None
 
     def __enter__(self) -> "Tracker":
         """Enter context manager and set the profiler."""
+        if self.ctx_active:
+            raise TrackerActiveError("Context manager is already active")
 
-        frame = self._get_callee_frame()
+        frame = self._get_callee_frame(omit_levels=self.omit_levels + 1)
         # save the tree for storing the information
         self.tree = FrameInfo.from_frame(frame)
         self.dirs.add(Path(self.tree.filename).parent)
 
         self.cur_node = self.tree
         self.entry_lineno = frame.f_lineno
+        self.ctx_active = True
 
         # we get the directory of the callee
         if sys.gettrace() is None:
@@ -76,15 +84,30 @@ class Tracker:
 
     def __exit__(self, exc_type, exc_val, traceback) -> None:
         """Remove the profiler when exiting the context manager."""
-        sys.settrace(None)
-        frame = self._get_callee_frame()
-        # we set the display range
-        self.tree.hilite_range = slice(self.entry_lineno - 1, frame.f_lineno)
+        if not self.ctx_active:
+            raise TrackerNotActiveError("Context manager is not active")
 
-    def _get_callee_frame(self) -> FrameType:
+        sys.settrace(None)
+        frame = self._get_callee_frame(omit_levels=self.omit_levels + 1)
+        # we set the display range
+        # the display_range should go to the end of the current statement
+        if self.tree is not None:
+            self.tree.hilite_interval = Interval(self.entry_lineno, frame.f_lineno + 1)
+        else:
+            raise Exception("__enter__ has not been called.")
+        self.ctx_active = False
+
+    @property
+    def finished(self) -> bool:
+        """Tracker ctx manager has been finished."""
+        # The tracker context manager has been finished if
+        # the node is not None, but also the ctx-manager is not active.
+        return self.tree is not None and not self.ctx_active
+
+    def _get_callee_frame(self, omit_levels: int) -> FrameType:
         frame = inspect.currentframe()
         # need to jump over the specified number of levels
-        for _ in range(self.omit_levels + 2):
+        for _ in range(omit_levels + 1):
             if frame is None:
                 raise Exception("frame is None")
             frame = frame.f_back
@@ -108,7 +131,6 @@ class Tracker:
                 # add the code object to the things that are traced
                 # we put this as part of the tree
                 self.cur_node = FrameInfo.from_frame(frame, parent=self.cur_node)
-                print(self.tree.children)
                 return self.trace
             else:
                 # we stop tracing
@@ -126,27 +148,27 @@ class Tracker:
 
 class FrameInfo(NodeMixin):
     filename: str
-    code_range: slice
-    hilite_range: Optional[slice]
-    currentline_idx: int
+    code_interval: Interval
+    hilite_interval: Optional[Interval]
+    curlineno: int
     code: List[str]
     co_name: str
 
     def __init__(
         self,
         filename: str,
-        code_range: slice,
-        hilite_range: Optional[slice],
-        currentline_idx: int,
+        code_interval: Interval,
+        hilite_interval: Optional[Interval],
+        curlineno: int,
         code: List[str],
         co_name: str,
         parent: Optional[FrameInfo],
         children: Optional[List[FrameInfo]],
     ):
         self.filename = filename
-        self.code_range = code_range
-        self.hilite_range = hilite_range
-        self.currentline_idx = currentline_idx
+        self.code_interval = code_interval
+        self.hilite_interval = hilite_interval
+        self.curlineno = curlineno
         self.code = code
         self.co_name = co_name
         self.parent = parent
@@ -155,26 +177,26 @@ class FrameInfo(NodeMixin):
 
     def __str__(self):
         header = f"File: {self.filename}"
-        position = f" {self.hilite_range} in {self.code_range}"
+        position = f" {self.hilite_interval} in {self.code_interval}"
         return "\n".join([header, position, self.focus_code])
 
     @property
     def name(self):
-        return f"{self.filename}:{self.code_range.start}-{self.code_range.stop}"
+        return f"{self.filename}:{self.code_interval.begin}-{self.code_interval.end}"
 
     @property
-    def focus_range(self):
-        if self.hilite_range is None:
-            return self.code_range
+    def focus_interval(self):
+        if self.hilite_interval is None:
+            return self.code_interval
         else:
-            return self.hilite_range
+            return self.hilite_interval
 
     @property
     def focus_code(self):
         display_code = "".join(
             self.code[
-                (self.focus_range.start - self.code_range.start) : (
-                    self.focus_range.stop - self.code_range.stop
+                (self.focus_interval.begin - self.code_interval.begin) : (
+                    self.focus_interval.end - self.code_interval.end
                 )
             ]
         )
@@ -183,22 +205,22 @@ class FrameInfo(NodeMixin):
     def md_code(self, highlight: bool = True) -> MdObj:
         if highlight:
             code = "".join(self.code)
-            first_line = self.code_range.start + 1
-            if self.code_range == self.focus_range:
-                hi_lines = None
+            first_line = self.code_interval.begin
+            if self.code_interval == self.focus_interval:
+                hl_lines = None
             else:
-                hi_lines = (self.focus_range.start + 1, self.focus_range.stop + 1)
+                hl_lines = (self.focus_interval.begin, self.focus_interval.end - 1)
         else:
             # no highlight, so we take the focused range
             code = self.focus_code
-            first_line = self.focus_range.start + 1
-            hi_lines = None
+            first_line = self.focus_interval.begin
+            hl_lines = None
 
         return Code(
-            code=code,
+            code=dedent(code),
             title=self.filename,
             first_line=first_line,
-            hi_lines=hi_lines,
+            hl_lines=hl_lines,
             language="python",
         )
 
@@ -232,12 +254,12 @@ class FrameInfo(NodeMixin):
         return FrameInfo(
             filename=code.co_filename,
             co_name=code.co_name,
-            code_range=slice(
-                code.co_firstlineno - 1,
-                code.co_firstlineno - 1 + len(code_lines),
+            code_interval=Interval(
+                code.co_firstlineno,
+                code.co_firstlineno + len(code_lines),
             ),
-            hilite_range=None,
-            currentline_idx=frame.f_lineno - 1,
+            hilite_interval=None,
+            curlineno=frame.f_lineno,
             code=code_lines,
             parent=parent,
             children=children,
@@ -247,9 +269,7 @@ class FrameInfo(NodeMixin):
 Stack = List[FrameInfo]
 
 
-def read_file(
-    path: Path, from_line: Optional[int] = None, to_line: Optional[int] = None
-) -> List[str]:
+def read_file(path: Path, from_line: Optional[int] = None, to_line: Optional[int] = None) -> List[str]:
 
     """
     Read a part of a file.
@@ -295,12 +315,9 @@ class StackDiff:
         for idx in range(min(len(self.first), len(self.second))):
             frame_old = self.first[idx]
             frame_new = self.second[idx]
-            if (
-                frame_old.filename == frame_new.filename
-                and frame_old.code_range == frame_new.code_range
-            ):
+            if frame_old.filename == frame_new.filename and frame_old.code_interval == frame_new.code_interval:
                 # this is within the same function
-                if frame_old.hilite_range == frame_new.hilite_range:
+                if frame_old.hilite_interval == frame_new.hilite_interval:
                     # this is the same, no change
                     self.equal.append(frame_old)
                 else:
@@ -311,11 +328,9 @@ class StackDiff:
                     self.old_lower = [
                         FrameInfo(
                             filename=frame.filename,
-                            code_range=frame.code_range,
-                            hilite_range=slice(
-                                frame.currentline_idx, frame.code_range.stop
-                            ),
-                            currentline_idx=frame.code_range.stop,
+                            code_interval=frame.code_interval,
+                            hilite_interval=Interval(frame.curlineno, frame.code_interval.end),
+                            curlineno=frame.code_interval.end,
                             code=frame.code,
                             co_name=frame.co_name,
                             parent=None,
@@ -324,9 +339,9 @@ class StackDiff:
                         for frame in self.first[idx + 1 :]
                     ]
                     middle_frame = copy(self.first[idx])
-                    middle_frame.hilite_range = slice(
-                        self.first[idx].focus_range.stop - 1,
-                        self.second[idx].focus_range.stop,
+                    middle_frame.hilite_interval = Interval(
+                        self.first[idx].focus_interval.end - 1,
+                        self.second[idx].focus_interval.end,
                     )
                     self.middle = [middle_frame]
                     self.new_lower = [frame for frame in self.second[idx + 1 :]]

@@ -15,4 +15,4 @@ if __name__ == "__main__":
         a()
         print("End of context")
 
-    print(str(t.tree.md_tree(highlight=True).to_markdown()))
+    print(str(t.tree.md_tree(highlight=True).to_markdown(None)))

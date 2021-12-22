@@ -31,7 +31,8 @@ def use_tables(report: Report) -> None:
         with p.add(md.H2("DataTable javascript library")):
             p.add(
                 """
-                Here the same table, but displayed using the [DataTables](https://datatables.net/)  
+                Here the same table, but displayed using the 
+                [DataTables](https://datatables.net/)  
                 plugin. With this, we get automatic paging, searching as well as sorting
                 by columns. 
                 """

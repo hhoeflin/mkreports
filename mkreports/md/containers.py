@@ -55,9 +55,9 @@ class Admonition(MdObj):
         else:
             admon_text = str(self.text)
 
-        return SpacedText(
-            f"{'???' if self.collapse else '!!!'} {self.kind}", (2, 2)
-        ) + SpacedText(indent(str(admon_text), "    "), (2, 2))
+        return SpacedText(f"{'???' if self.collapse else '!!!'} {self.kind}", (2, 2)) + SpacedText(
+            indent(str(admon_text), "    "), (2, 2)
+        )
 
 
 class Tab(MdObj):
@@ -87,6 +87,4 @@ class Tab(MdObj):
         else:
             tab_text = str(self.text)
 
-        return SpacedText(f'=== "`{self.title}`"', (2, 2)) + SpacedText(
-            indent(str(tab_text), "    "), (2, 2)
-        )
+        return SpacedText(f'=== "{self.title}"', (2, 2)) + SpacedText(indent(str(tab_text), "    "), (2, 2))

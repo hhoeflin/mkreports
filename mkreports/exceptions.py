@@ -17,3 +17,19 @@ class ReportNotValidError(Exception):
 
 class PageNotExistsError(Exception):
     pass
+
+
+class TrackerIncompleteError(Exception):
+    pass
+
+
+class TrackerEmptyError(Exception):
+    pass
+
+
+class TrackerActiveError(Exception):
+    pass
+
+
+class TrackerNotActiveError(Exception):
+    pass

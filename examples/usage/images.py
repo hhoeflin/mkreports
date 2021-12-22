@@ -26,20 +26,18 @@ def use_images(report: Report) -> None:
             )
 
             with p.add(md.H3("Matplotlib")):
+                with p.track_code():
 
-                p.add(
-                    """
-                    For many scientific graphing purposes, `matplotlib` is either the direct
-                    choice or the backend being used for plotting. 
-                    """
-                )
+                    p.add(
+                        """
+                        For many scientific graphing purposes, `matplotlib` is either the direct
+                        choice or the backend being used for plotting. 
+                        """
+                    )
 
-                (
-                    fig,
-                    ax,
-                ) = plt.subplots()  # Create a figure containing a single axes.
-                ax.plot([1, 2, 3, 4], [1, 4, 2, 3])
-                p.add(md.Image(fig))
+                    fig, ax = plt.subplots()
+                    ax.plot([1, 2, 3, 4], [1, 4, 2, 3])
+                p.add(md.Image(fig), add_code=True)
 
             with p.add(md.H3("Plotnine")):
 

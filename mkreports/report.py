@@ -7,7 +7,6 @@ already and ensuring that the neccessary settings are all
 included. 
 """
 import contextlib
-import inspect
 import shutil
 from pathlib import Path
 from typing import Any, ContextManager, Dict, Mapping, Optional, Union
@@ -18,12 +17,13 @@ from immutabledict import immutabledict
 
 from .counters import Counters
 from .exceptions import (ReportExistsError, ReportNotExistsError,
-                         ReportNotValidError)
-from .md import (MdObj, SpacedText, Text, get_default_store_path,
+                         ReportNotValidError, TrackerEmptyError,
+                         TrackerIncompleteError)
+from .md import (MdObj, Raw, SpacedText, Tab, Text, get_default_store_path,
                  set_default_store_path)
 from .settings import (NavEntry, add_nav_entry, load_yaml, merge_settings,
                        path_to_nav_entry, save_yaml)
-from .stack import Stack, StackDiff, get_stack
+from .stack import Stack, Tracker
 
 default_settings = immutabledict(
     {
@@ -140,9 +140,7 @@ class Report:
         if not self.index_file.exists() or not self.index_file.is_file():
             raise ReportNotValidError(f"{self.index_file} does not exist")
 
-    def get_page(
-        self, page_name: Union[NavEntry, Path, str], append: bool = True
-    ) -> "Page":
+    def get_page(self, page_name: Union[NavEntry, Path, str], append: bool = True) -> "Page":
         # if the page_name is just a string, we turn it into a dictionary
         # based on the hierarchical names
         if isinstance(page_name, (str, Path)):
@@ -217,8 +215,9 @@ class Page:
             self._last_obj = SpacedText("".join(last_lines))
         else:
             self._last_obj = SpacedText("\n\n\n")
-        # set the marker to where it was created
-        self.set_marker(omit_levels=1)
+
+        # a tracker for tracking code to be printed
+        self.reset_tracker()
 
     def __enter__(self) -> "Page":
         """Enter context manager and set the default store path."""
@@ -244,52 +243,60 @@ class Page:
         shutil.rmtree(self.gen_asset_path)
         self.path.unlink()
 
-    def set_marker(self, omit_levels=0):
-        self.code_marker_first = self.code_marker_second
-        self.code_marker_second = get_stack(omit_levels=omit_levels + 1)
+    def reset_tracker(self) -> None:
+        # note: tracker is designed to be passed outside
+        self.tracker = Tracker(omit_levels=0)
 
-    def md_stack(self, code_range: bool = True, highlight: bool = True) -> MdObj:
-        """Stack between 2 markers as markdown."""
-        if self.code_marker_first is not None and self.code_marker_second is not None:
-            stack_diff = StackDiff(self.code_marker_first, self.code_marker_second)
-            return stack_to_tabs(
-                stack_diff.changed, code_range=code_range, highlight=highlight
-            )
-        else:
-            raise Exception("Need 2 markers to give a stack difference")
+    def track_code(self):
+        self.reset_tracker()
+        return self.tracker
 
-    def add(
-        self, item: Union[MdObj, Text], add_code=True, mark=True
-    ) -> ContextManager["Page"]:
-        if add_code:
-            self.set_marker(omit_levels=1)
+    def track_code_start(self):
+        self.tracker.__enter__()
 
-        if isinstance(item, MdObj):
-            md_text = item.to_md_with_bm(
-                page_path=self.path,
-            )
-            req = item.req_settings()
-            if len(req.mkdocs) > 0:
-                # merge these things into mkdocs
-                # there is not allowed to be a nav here
-                if "nav" in req.mkdocs:
-                    raise ValueError("nav not allowed to be in mkdocs")
+    def track_code_end(self):
+        self.tracker.__exit__(None, None, None)
 
-                mkdocs_settings = load_yaml(self.report.mkdocs_file)
-                mkdocs_settings = merge_settings(mkdocs_settings, req.mkdocs)
-                save_yaml(mkdocs_settings, self.report.mkdocs_file)
-            if len(req.page) > 0:
-                # frontmatter loads the entire post including frontmatter
-                # then we can change it as necessary and write it back
-                # as we have to change content at the front, does not work more efficiently
-                merge_frontmatter(self.path, req.page)
+    def md_code(self, highlight: bool = True) -> MdObj:
+        """Print code as markdown that has been tracked."""
+        if self.tracker.ctx_active:
+            raise TrackerIncompleteError("The tracker has not finished.")
+        if self.tracker.tree is None:
+            raise TrackerEmptyError("The tracker has not been started.")
+        return self.tracker.tree.md_tree(highlight=highlight)
 
-        elif isinstance(item, str):
-            md_text = SpacedText(inspect.cleandoc(item))
+    def add(self, item: Union[MdObj, Text], add_code=False) -> ContextManager["Page"]:
+        # first ensure that item is an MdObj
+        if isinstance(item, str):
+            item = Raw(item, dedent=True)
         elif isinstance(item, SpacedText):
-            md_text = item
-        else:
-            raise Exception("item should be a str, SpacedText or MdObj")
+            item = Raw(item)
+
+        if add_code:
+            # we wrap it all in a tabs, with one tab the main output, the other
+            # the code;
+            item = Tab(item, title="Content") + Tab(self.md_code(highlight=False), title="Code")
+            # reset the tracker
+            self.reset_tracker()
+
+        md_text = item.to_md_with_bm(
+            page_path=self.path,
+        )
+        req = item.req_settings()
+        if len(req.mkdocs) > 0:
+            # merge these things into mkdocs
+            # there is not allowed to be a nav here
+            if "nav" in req.mkdocs:
+                raise ValueError("nav not allowed to be in mkdocs")
+
+            mkdocs_settings = load_yaml(self.report.mkdocs_file)
+            mkdocs_settings = merge_settings(mkdocs_settings, req.mkdocs)
+            save_yaml(mkdocs_settings, self.report.mkdocs_file)
+        if len(req.page) > 0:
+            # frontmatter loads the entire post including frontmatter
+            # then we can change it as necessary and write it back
+            # as we have to change content at the front, does not work more efficiently
+            merge_frontmatter(self.path, req.page)
 
         with self.path.open("a") as f:
             f.write(last_obj := md_text.format_text(self._last_obj, "a"))
