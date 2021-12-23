@@ -7,7 +7,7 @@ from copy import copy
 from pathlib import Path
 from textwrap import dedent
 from types import FrameType, ModuleType
-from typing import List, Optional, Sequence, Union
+from typing import List, Optional, Sequence, Tuple, Union
 
 from anytree import NodeMixin
 from intervaltree import Interval
@@ -196,13 +196,13 @@ class FrameInfo(NodeMixin):
         display_code = "".join(
             self.code[
                 (self.focus_interval.begin - self.code_interval.begin) : (
-                    self.focus_interval.end - self.code_interval.end
+                    self.focus_interval.end - self.code_interval.begin
                 )
             ]
         )
         return display_code
 
-    def md_code(self, highlight: bool = True) -> MdObj:
+    def md_code(self, highlight: bool = True) -> Code:
         if highlight:
             code = "".join(self.code)
             first_line = self.code_interval.begin
@@ -224,11 +224,27 @@ class FrameInfo(NodeMixin):
             language="python",
         )
 
+    def _md_collect(self, highlight) -> List[Tuple[str, Code]]:
+        res = [(self.co_name, self.md_code(highlight=highlight))]
+        for child in self.children:
+            res.extend(child._md_collect(highlight))
+        return res
+
     def md_tree(self, highlight: bool = True) -> MdObj:
+        """
+        Return the code in a tree.
+
+        If there is only a single node, a simple Code object is returned,
+        otherwise Tabs are produced for the code. In the tabs,
+        functions that occur earlier in the code are listed first.
+        Also, functions are only listed once even if they occur deeper in the
+        tree.
+        """
+        code_list = self._md_collect(highlight)
         if self.children:
-            res = Tab(self.md_code(highlight=highlight), title="...main...")
+            res = Tab(self.md_code(highlight=highlight), title="<main>")
             for child in self.children:
-                res += Tab(child.md_tree(highlight=highlight), title=child.co_name)
+                res = res + Tab(child.md_tree(highlight=highlight), title=child.co_name)
             return res
         else:
             return self.md_code(highlight=highlight)

@@ -1,3 +1,4 @@
+import html
 from pathlib import Path
 from textwrap import indent
 from typing import Literal, Optional, Union
@@ -87,4 +88,6 @@ class Tab(MdObj):
         else:
             tab_text = str(self.text)
 
-        return SpacedText(f'=== "{self.title}"', (2, 2)) + SpacedText(indent(str(tab_text), "    "), (2, 2))
+        return SpacedText(f'=== "{html.escape(self.title)}"', (2, 2)) + SpacedText(
+            indent(str(tab_text), "    "), (2, 2)
+        )

@@ -131,6 +131,9 @@ class MdSeq(MdObj, MutableSequence):
         second = other if type(other) == MdSeq else MdSeq([other])
         return MdSeq(second._list + self._list)
 
+    def __iadd__(self, other):
+        raise NotImplementedError("This operation is not supported.")
+
     def insert(self, index: int, value: MdObj) -> None:
         self._list.insert(index, value)
 

@@ -12,7 +12,7 @@ def use_images(report: Report) -> None:
     with report.get_page("images.md", append=False) as p:
 
         # we don't need an indentation for everything if we don't want
-        p.add(md.H1("Using images"))
+        p.add(md.H1("Images"))
 
         with p.add(md.H2("Supported formats")):
             p.add(
@@ -37,7 +37,7 @@ def use_images(report: Report) -> None:
 
                     fig, ax = plt.subplots()
                     ax.plot([1, 2, 3, 4], [1, 4, 2, 3])
-                p.add(md.Image(fig), add_code=True)
+                p.add(md.Image(fig))
 
             with p.add(md.H3("Plotnine")):
 
