@@ -1,4 +1,5 @@
 import functools
+import html
 import inspect
 from abc import ABC, abstractmethod
 from collections.abc import MutableSequence
@@ -207,7 +208,7 @@ class Code(MdObj):
         if self.language is not None:
             annots = annots + self.language
         if self.title is not None:
-            annots = annots + f' title="{self.title}"'
+            annots = annots + f' title="{html.escape(self.title)}"'
         if self.first_line is not None:
             # hi_lines get intrepreted relative to first_line
             if self.hl_lines is not None:
