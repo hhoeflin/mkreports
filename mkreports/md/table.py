@@ -2,8 +2,10 @@ import copy
 import inspect
 import json
 import tempfile
+from copy import deepcopy
+from dataclasses import dataclass
 from pathlib import Path
-from typing import Optional
+from typing import Any, Dict, Optional
 
 import pandas as pd
 from mkreports.settings import Settings
@@ -13,10 +15,16 @@ from .file import File, relpath, true_stem
 from .text import SpacedText
 
 
+@dataclass(frozen=True)
 class Table(MdObj):
+    table: pd.DataFrame
+    kwargs: Dict[str, Any]
+
     def __init__(self, table: pd.DataFrame, **kwargs):
-        self.kwargs = kwargs
-        self.table = table
+        super().__init__()
+        object.__setattr__(self, "kwargs", kwargs)
+        # think about making this a static-frame
+        object.__setattr__(self, "table", deepcopy(table))
 
     def to_markdown(self, page_path: Optional[Path] = None) -> SpacedText:
         table_md = self.table.to_markdown(**self.kwargs)

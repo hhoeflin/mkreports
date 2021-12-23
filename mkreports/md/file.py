@@ -1,5 +1,6 @@
 import hashlib
 import shutil
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional
 
@@ -33,10 +34,13 @@ def relpath(path_to, path_from):
     return Path("../" * (len(path_from.parents) - len(head.parents))).joinpath(tail)
 
 
+@dataclass(frozen=True)
 class File(MdObj):
 
     path: Path
-    relative_to: Optional[Path]
+    allow_copy: bool
+    store_path: Optional[Path]
+    hash: bool
 
     def __init__(
         self,
@@ -46,14 +50,18 @@ class File(MdObj):
         hash: bool = False,
     ) -> None:
         super().__init__()
-        self.path = path.absolute()
 
-        self.allow_copy = allow_copy
-        self.hash = hash
-        self.store_path = (
-            store_path if store_path is not None else get_default_store_path()
+        # set the existing attributes
+        object.__setattr__(self, "allow_copy", allow_copy)
+        object.__setattr__(self, "hash", hash)
+        object.__setattr__(
+            self,
+            "store_path",
+            (store_path if store_path is not None else get_default_store_path()),
         )
 
+        # for the path we first have to see if they will be copied
+        path = path.absolute()
         if self.store_path is None:
             raise ValueError("store_path or a default must be set. Can't both be None.")
 
@@ -61,19 +69,19 @@ class File(MdObj):
 
             if self.hash:
                 # we calculate the hash of the file to be ingested
-                path_hash = md5_hash_file(self.path)
+                path_hash = md5_hash_file(path)
                 new_path = self.store_path / (
-                    true_stem(self.path) + "-" + path_hash + "".join(self.path.suffixes)
+                    true_stem(path) + "-" + path_hash + "".join(path.suffixes)
                 )
             else:
-                new_path = self.store_path / self.path.name
+                new_path = self.store_path / path.name
 
             # now see if we move or copy the file
             new_path.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copy(self.path, new_path)
-            self.path = new_path
-        else:
-            pass
+            shutil.copy(path, new_path)
+            path = new_path
+
+        object.__setattr__(self, "path", path)
 
     def to_markdown(self, page_path: Optional[Path] = None) -> SpacedText:
         return SpacedText("")

@@ -1,5 +1,6 @@
 import tempfile
 from copy import deepcopy
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Literal, Optional, Union
 
@@ -9,7 +10,12 @@ from .file import File, relpath
 from .text import SpacedText
 
 
+@dataclass(frozen=True)
 class ImageFile(File):
+    text: str
+    tooltip: str
+    link_type: str
+
     def __init__(
         self,
         path: Path,
@@ -23,9 +29,9 @@ class ImageFile(File):
         super().__init__(
             path=path, store_path=store_path, allow_copy=allow_copy, hash=hash
         )
-        self.text = text
-        self.tooltip = tooltip
-        self.link_type = link_type
+        object.__setattr__(self, "text", text)
+        object.__setattr__(self, "tooltip", tooltip)
+        object.__setattr__(self, "link_type", link_type)
 
     def to_markdown(self, page_path: Path) -> SpacedText:
         if page_path is None:
@@ -99,7 +105,15 @@ try:
         units: Literal["in", "cm", "mm"] = "in",
         **kwargs,
     ):
-        image.save(path, width=width, height=height, dpi=dpi, units=units, **kwargs)
+        image.save(
+            path,
+            width=width,
+            height=height,
+            dpi=dpi,
+            units=units,
+            verbose=False,
+            **kwargs,
+        )
 
     image_save_funcs[ggplot] = ggplot_save
 except Exception:

@@ -2,7 +2,8 @@ import functools
 import html
 import inspect
 from abc import ABC, abstractmethod
-from collections.abc import MutableSequence
+from collections.abc import Sequence
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable, List, Optional, Tuple, Union
 
@@ -25,6 +26,7 @@ def get_default_store_path() -> Optional[Path]:
         return None
 
 
+@dataclass(frozen=True)
 class MdObj(ABC):
     """
     A class for representing markdown objects.
@@ -32,25 +34,6 @@ class MdObj(ABC):
     Using this class we will be able to compose markdown objects
     in various ways.
     """
-
-    _child: Optional["MdObj"]
-
-    def __init__(self) -> None:
-        self._child = None
-
-    def __eq__(self, other) -> bool:
-        """
-        Check equality of MdObj. Here, _child is ignored.
-        """
-        if type(self) != type(other):
-            return False
-        if set(self.__dict__.keys()) != set(other.__dict__.keys()):
-            return False
-        for key in self.__dict__.keys():
-            if key != "_child":
-                if self.__dict__["key"] != other.__dict__["key"]:
-                    return False
-        return True
 
     def __add__(self, other) -> "MdSeq":
         first = self if isinstance(self, MdSeq) else MdSeq([self])
@@ -86,18 +69,21 @@ class MdObj(ABC):
         if backmatter.text == "":
             return self.to_markdown(page_path)
         else:
-            return SpacedText(self.to_markdown(page_path), (1, 2)) + SpacedText(self.backmatter(page_path), (2, 1))
+            return SpacedText(self.to_markdown(page_path), (1, 2)) + SpacedText(
+                self.backmatter(page_path), (2, 1)
+            )
 
     def req_settings(self) -> Settings:
         return Settings()
 
 
-class MdSeq(MdObj, MutableSequence):
+@dataclass(frozen=True)
+class MdSeq(MdObj, Sequence):
     """
     Class to caputre a list of other MdObjs.
     """
 
-    _list: List[MdObj]
+    items: Tuple[MdObj, ...]
 
     def __init__(self, items: Union[str, Iterable[Union[MdObj, str]]] = ()):
         """
@@ -109,67 +95,70 @@ class MdSeq(MdObj, MutableSequence):
         super().__init__()
         if isinstance(items, str):
             items = [items]
-        self._list = [x if not isinstance(x, str) else Raw(x) for x in items]
+        object.__setattr__(
+            self,
+            "items",
+            tuple([x if not isinstance(x, str) else Raw(x) for x in items]),
+        )
 
     def __getitem__(self, index: int) -> MdObj:
-        return self._list[index]
-
-    def __setitem__(self, index: int, value: MdObj) -> None:
-        self._list[index] = value
-
-    def __delitem__(self, index: int) -> None:
-        del self._list[index]
+        return self.items[index]
 
     def __len__(self) -> int:
-        return len(self._list)
+        return len(self.items)
 
     def __add__(self, other) -> "MdSeq":
         second = other if type(other) == MdSeq else MdSeq([other])
-        return MdSeq(self._list + second._list)
+        return MdSeq(self.items + second.items)
 
     def __radd__(self, other) -> "MdSeq":
         second = other if type(other) == MdSeq else MdSeq([other])
-        return MdSeq(second._list + self._list)
+        return MdSeq(second.items + self.items)
 
     def __iadd__(self, other):
-        raise NotImplementedError("This operation is not supported.")
-
-    def insert(self, index: int, value: MdObj) -> None:
-        self._list.insert(index, value)
+        raise NotImplementedError("This class is immutable.")
 
     def backmatter(self, path: Optional[Path] = None) -> SpacedText:
-        return functools.reduce(lambda x, y: x + y, [elem.backmatter(path) for elem in self._list])
+        return functools.reduce(
+            lambda x, y: x + y, [elem.backmatter(path) for elem in self.items]
+        )
 
     def to_markdown(self, path: Optional[Path] = None) -> SpacedText:
-        return functools.reduce(lambda x, y: x + y, [elem.to_markdown(path) for elem in self._list])
+        return functools.reduce(
+            lambda x, y: x + y, [elem.to_markdown(path) for elem in self.items]
+        )
 
     def req_settings(self) -> Settings:
         """Requirements for the object."""
         # merge the requirements for all individual elements
         res = Settings()
-        for elem in self._list:
+        for elem in self.items:
             res += elem.req_settings()
         return res
 
 
+@dataclass(frozen=True)
 class Raw(MdObj):
     """
     Class to encapsulate raw markdown.
     """
+
+    raw: Text
 
     def __init__(self, raw: Text, dedent=True):
         super().__init__()
         if dedent:
             # we only apply dedent to raw strings
             if isinstance(raw, str):
-                self.raw = inspect.cleandoc(raw)
-        else:
-            self.raw = raw
+                raw = inspect.cleandoc(raw)
+
+        object.__setattr__(self, "raw", raw)
 
     def to_markdown(self, path: Optional[Path] = None) -> SpacedText:
         return SpacedText(self.raw)
 
 
+@dataclass(frozen=True)
 class MdParagraph(MdObj):
     """
     Wraps an object in a paragraph.
@@ -180,7 +169,7 @@ class MdParagraph(MdObj):
     def __init__(self, obj: Union[str, MdObj]) -> None:
         if isinstance(obj, str):
             obj = Raw(obj)
-        self._obj = obj
+        object.__setattr__(self, "_obj", obj)
 
     def backmatter(self, page_path: Optional[Path] = None) -> SpacedText:
         return self._obj.backmatter(page_path)
@@ -189,22 +178,15 @@ class MdParagraph(MdObj):
         return SpacedText(self._obj.to_markdown(page_path), (1, 2))
 
 
+@dataclass(frozen=True)
 class Code(MdObj):
     """Wrapper class for code."""
 
-    def __init__(
-        self,
-        code: str,
-        title: Optional[str] = None,
-        first_line: Optional[int] = None,
-        hl_lines: Optional[Tuple[int, int]] = None,
-        language: Optional[str] = "python",
-    ) -> None:
-        self.code = code
-        self.title = title
-        self.language = language
-        self.first_line = first_line
-        self.hl_lines = hl_lines
+    code: str
+    title: Optional[str] = None
+    first_line: Optional[int] = None
+    hl_lines: Optional[Tuple[int, int]] = None
+    language: Optional[str] = "python"
 
     def to_markdown(self, page_path: Optional[Path] = None) -> SpacedText:
         annots = ""

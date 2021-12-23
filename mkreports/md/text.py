@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from typing import Any, Tuple, Union
 
 Text = Union[str, "SpacedText"]
@@ -25,19 +26,26 @@ def count_newlines(x: str, before=True) -> int:
     return num_nl
 
 
+@dataclass(frozen=True)
 class SpacedText:
     """Representation of text with spaces before or after."""
 
+    text: str
+    req_nl: Tuple[int, int]
+
     def __init__(self, text: Text, req_nl: Tuple[int, int] = (0, 0)) -> None:
         if isinstance(text, str):
-            self.text = text
-            self.req_nl = req_nl
+            my_text = text
+            my_req_nl = req_nl
         else:
-            self.text = text.text
-            self.req_nl = (
+            my_text = text.text
+            my_req_nl = (
                 max(req_nl[0], text.req_nl[0]),
                 max(req_nl[1], text.req_nl[1]),
             )
+
+        object.__setattr__(self, "text", my_text)
+        object.__setattr__(self, "req_nl", my_req_nl)
 
     def __str__(self) -> str:
         """
