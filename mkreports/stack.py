@@ -13,7 +13,7 @@ from anytree import NodeMixin
 from intervaltree import Interval
 
 from .exceptions import TrackerActiveError, TrackerNotActiveError
-from .md import Code, MdObj, Tab
+from .md import Code, MdObj, Raw, Tab
 
 logger = logging.getLogger(__name__)
 
@@ -60,14 +60,15 @@ class Tracker:
         self.tree = None
         self.cur_node = None
 
-    def __enter__(self) -> "Tracker":
-        """Enter context manager and set the profiler."""
+    def start(self, omit_levels=0):
+        """Activate the tracking."""
         if self.ctx_active:
             raise TrackerActiveError("Context manager is already active")
 
-        frame = self._get_callee_frame(omit_levels=self.omit_levels + 1)
+        frame = self._get_callee_frame(omit_levels=omit_levels + 1)
         # save the tree for storing the information
         self.tree = FrameInfo.from_frame(frame)
+        # here we actually want the next command
         self.dirs.add(Path(self.tree.filename).parent)
 
         self.cur_node = self.tree
@@ -82,13 +83,12 @@ class Tracker:
 
         return self
 
-    def __exit__(self, exc_type, exc_val, traceback) -> None:
-        """Remove the profiler when exiting the context manager."""
+    def stop(self, omit_levels=0):
         if not self.ctx_active:
             raise TrackerNotActiveError("Context manager is not active")
 
         sys.settrace(None)
-        frame = self._get_callee_frame(omit_levels=self.omit_levels + 1)
+        frame = self._get_callee_frame(omit_levels=omit_levels + 1)
         # we set the display range
         # the display_range should go to the end of the current statement
         if self.tree is not None:
@@ -96,6 +96,14 @@ class Tracker:
         else:
             raise Exception("__enter__ has not been called.")
         self.ctx_active = False
+
+    def __enter__(self) -> "Tracker":
+        """Enter context manager and set the profiler."""
+        return self.start(omit_levels=1)
+
+    def __exit__(self, exc_type, exc_val, traceback) -> None:
+        """Remove the profiler when exiting the context manager."""
+        self.stop(omit_levels=1)
 
     @property
     def finished(self) -> bool:
@@ -241,13 +249,21 @@ class FrameInfo(NodeMixin):
         tree.
         """
         code_list = self._md_collect(highlight)
-        if self.children:
-            res = Tab(self.md_code(highlight=highlight), title="<main>")
-            for child in self.children:
-                res = res + Tab(child.md_tree(highlight=highlight), title=child.co_name)
-            return res
+
+        # now only take the unique ones
+        code_list = list({key: None for key in code_list}.keys())
+        # now we want to de-duplicate the list
+
+        if len(code_list) > 0:
+            if len(code_list) == 1:
+                return code_list[0][1]
+            else:
+                res = Tab(code_list[0][1], title="<main>")
+                for i in range(1, len(code_list)):
+                    res = res + Tab(code_list[i][1], title=code_list[i][0])
+                return res
         else:
-            return self.md_code(highlight=highlight)
+            return Raw("")
 
     @classmethod
     def from_frame(cls, frame, parent=None, children=None) -> "FrameInfo":
@@ -285,7 +301,9 @@ class FrameInfo(NodeMixin):
 Stack = List[FrameInfo]
 
 
-def read_file(path: Path, from_line: Optional[int] = None, to_line: Optional[int] = None) -> List[str]:
+def read_file(
+    path: Path, from_line: Optional[int] = None, to_line: Optional[int] = None
+) -> List[str]:
 
     """
     Read a part of a file.
@@ -331,7 +349,10 @@ class StackDiff:
         for idx in range(min(len(self.first), len(self.second))):
             frame_old = self.first[idx]
             frame_new = self.second[idx]
-            if frame_old.filename == frame_new.filename and frame_old.code_interval == frame_new.code_interval:
+            if (
+                frame_old.filename == frame_new.filename
+                and frame_old.code_interval == frame_new.code_interval
+            ):
                 # this is within the same function
                 if frame_old.hilite_interval == frame_new.hilite_interval:
                     # this is the same, no change
@@ -345,7 +366,9 @@ class StackDiff:
                         FrameInfo(
                             filename=frame.filename,
                             code_interval=frame.code_interval,
-                            hilite_interval=Interval(frame.curlineno, frame.code_interval.end),
+                            hilite_interval=Interval(
+                                frame.curlineno, frame.code_interval.end
+                            ),
                             curlineno=frame.code_interval.end,
                             code=frame.code,
                             co_name=frame.co_name,
