@@ -1,5 +1,6 @@
-from .base import (Code, MdParagraph, MdSeq, Raw, get_default_store_path,
+from .base import (MdParagraph, MdSeq, Raw, get_default_store_path,
                    set_default_store_path)
+from .code import Code
 from .containers import Admonition, Tab
 from .file import File
 from .header import *
