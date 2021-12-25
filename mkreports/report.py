@@ -140,7 +140,9 @@ class Report:
         if not self.index_file.exists() or not self.index_file.is_file():
             raise ReportNotValidError(f"{self.index_file} does not exist")
 
-    def get_page(self, page_name: Union[NavEntry, Path, str], append: bool = True) -> "Page":
+    def get_page(
+        self, page_name: Union[NavEntry, Path, str], append: bool = True
+    ) -> "Page":
         # if the page_name is just a string, we turn it into a dictionary
         # based on the hierarchical names
         if isinstance(page_name, (str, Path)):
@@ -275,7 +277,9 @@ class Page:
         if add_code:
             # we wrap it all in a tabs, with one tab the main output, the other
             # the code;
-            item = Tab(item, title="Content") + Tab(self.md_code(highlight=False), title="Code")
+            item = Tab(item, title="Content") + Tab(
+                self.md_code(highlight=False), title="Code"
+            )
             # reset the tracker
             self.reset_tracker()
 
