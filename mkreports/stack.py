@@ -73,9 +73,8 @@ class Tracker:
         self.dirs.add(Path(self.tree.filename).parent)
 
         self.cur_node = self.tree
-        stmt_after = parser.closest_after(
-            Path(frame.f_code.co_filename), frame.f_lineno
-        )
+        stmt_tree = parser.get_stmt_ranges(Path(frame.f_code.co_filename))
+        stmt_after = parser.closest_after(stmt_tree, frame.f_lineno)
         if stmt_after is None:
             self.entry_lineno = frame.f_lineno
         else:
@@ -100,9 +99,8 @@ class Tracker:
         # the display_range should go to the end of the current statement
         if self.tree is not None:
             # here we want to have the true ending line number
-            cur_stmt_lines = parser.smallest_overlap(
-                Path(frame.f_code.co_filename), frame.f_lineno
-            )
+            stmt_tree = parser.get_stmt_ranges(Path(frame.f_code.co_filename))
+            cur_stmt_lines = parser.smallest_overlap(stmt_tree, frame.f_lineno)
             if cur_stmt_lines is not None:
                 self.tree.hilite_interval = Interval(
                     self.entry_lineno, cur_stmt_lines.end

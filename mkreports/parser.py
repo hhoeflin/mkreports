@@ -84,6 +84,15 @@ def closest_after(tree: IntervalTree, lineno: int) -> Optional[Interval]:
         return None
 
 
+def envelope(tree: IntervalTree, pos: Interval) -> Optional[Interval]:
+    tree_list = list(tree.envelope(pos.begin - 1, pos.end))
+    if len(tree_list) == 0:
+        return None
+    else:
+        tree_list.sort(key=lambda x: x.end - x.begin)
+        return tree_list[0]
+
+
 def get_neighbors(
     tree: IntervalTree, lineno: int
 ) -> Tuple[Optional[Interval], Optional[Interval], Optional[Interval]]:
