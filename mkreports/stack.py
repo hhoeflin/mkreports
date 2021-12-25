@@ -12,6 +12,7 @@ from typing import List, Optional, Sequence, Tuple, Union
 from anytree import NodeMixin
 from intervaltree import Interval
 
+from . import parser
 from .exceptions import TrackerActiveError, TrackerNotActiveError
 from .md import Code, MdObj, Raw, Tab
 
@@ -72,7 +73,13 @@ class Tracker:
         self.dirs.add(Path(self.tree.filename).parent)
 
         self.cur_node = self.tree
-        self.entry_lineno = frame.f_lineno
+        stmt_after = parser.closest_after(
+            Path(frame.f_code.co_filename), frame.f_lineno
+        )
+        if stmt_after is None:
+            self.entry_lineno = frame.f_lineno
+        else:
+            self.entry_lineno = stmt_after.begin
         self.ctx_active = True
 
         # we get the directory of the callee
@@ -92,7 +99,16 @@ class Tracker:
         # we set the display range
         # the display_range should go to the end of the current statement
         if self.tree is not None:
-            self.tree.hilite_interval = Interval(self.entry_lineno, frame.f_lineno + 1)
+            # here we want to have the true ending line number
+            cur_stmt_lines = parser.smallest_overlap(
+                Path(frame.f_code.co_filename), frame.f_lineno
+            )
+            if cur_stmt_lines is not None:
+                self.tree.hilite_interval = Interval(
+                    self.entry_lineno, cur_stmt_lines.end
+                )
+            else:
+                raise Exception("Could not find current statement")
         else:
             raise Exception("__enter__ has not been called.")
         self.ctx_active = False
