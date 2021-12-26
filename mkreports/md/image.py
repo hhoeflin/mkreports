@@ -1,12 +1,17 @@
+import copy
+import inspect
+import json
 import tempfile
 from copy import deepcopy
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Literal, Optional, Union
 
+import pandas as pd
 from mdutils.tools.Image import Image as UtilsImage
+from mkreports.settings import Settings
 
-from .file import File, relpath
+from .file import File, relpath, true_stem
 from .text import SpacedText
 
 
@@ -89,6 +94,70 @@ class Image(ImageFile):
                 )
         else:
             raise ValueError("Unsupported image type")
+
+
+class Altair(File):
+    def __init__(
+        self,
+        altair,
+        store_path: Optional[Path] = None,
+        altair_id: Optional[str] = None,
+        **kwargs,
+    ):
+        with tempfile.TemporaryDirectory() as dir:
+            path = Path(dir) / ("altair.csv")
+            # here we use the split method; the index and columns
+            # are not useful, but the rest gets set as 'data', which we need
+            with path.open("w") as f:
+                f.write(altair.to_json(**kwargs))
+
+            # Make sure the file is moved to the rigth place
+            super().__init__(
+                path=path, store_path=store_path, allow_copy=True, hash=True
+            )
+
+        # use the hashed table name as the id if there is no other
+        if altair_id is None:
+            altair_id = true_stem(self.path)
+        self.altair_id = altair_id
+
+    def req_settings(self):
+        settings = Settings(
+            page=dict(
+                # the following needs to be loaded in the header of the page, not the footer
+                # this enables activating the tables in the body
+                javascript=[
+                    "https://cdn.jsdelivr.net/npm/vega@5",
+                    "https://cdn.jsdelivr.net/npm/vega-lite@5",
+                    "https://cdn.jsdelivr.net/npm/vega-embed@6",
+                ],
+            )
+        )
+        return settings
+
+    def to_markdown(self, page_path: Path):
+        if page_path is None:
+            raise ValueError(
+                "page_path must be set for relative referencing of json data file."
+            )
+
+        # now we insert the data table on the page
+        # note: as we are inserting directly into html, we have to do one addition
+        # level deeper for the relative path
+        rel_spec_path = str(relpath(self.path, page_path))
+        raw_html = inspect.cleandoc(
+            f"""
+            <div id='{self.altair_id}'> </div>
+            <script>
+                vegaEmbed("#{self.altair_id}", "{rel_spec_path}")
+    	        // result.view provides access to the Vega View API
+                .then(result => console.log(result))
+                .catch(console.warn);
+            </script>
+            """
+        )
+
+        return SpacedText(raw_html, (2, 2))
 
 
 image_save_funcs = dict()

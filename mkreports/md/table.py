@@ -41,10 +41,8 @@ class DataTable(File):
         column_settings: Optional[dict] = None,
         **kwargs,
     ):
-        self.kwargs = kwargs
-
         with tempfile.TemporaryDirectory() as dir:
-            path = Path(dir) / ("table.json")
+            path = Path(dir) / ("datatable.json")
             # here we use the split method; the index and columns
             # are not useful, but the rest gets set as 'data', which we need
             table.to_json(path, orient="split", **kwargs)

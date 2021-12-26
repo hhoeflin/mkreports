@@ -28,6 +28,7 @@ pytest-pudb = ">=0.7.0"
 plotnine = ">=0.8.0"
 matplotlib = ">=3.4.3"
 seaborn = ">=0.11.2"
+altair = "^4.1.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
