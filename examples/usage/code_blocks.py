@@ -54,3 +54,5 @@ def use_code_blocks(report: Report) -> None:
                 - A number of statements around the current one. 
                 """
             )
+
+            p.add(md.Admonition("This is not yet implemented", kind="warning"))

@@ -1,5 +1,5 @@
 import functools
-import inspect
+import textwrap
 from abc import ABC, abstractmethod
 from collections.abc import Sequence
 from dataclasses import dataclass
@@ -106,12 +106,12 @@ class MdSeq(MdObj, Sequence):
         return len(self.items)
 
     def __add__(self, other) -> "MdSeq":
-        second = other if type(other) == MdSeq else MdSeq([other])
-        return MdSeq(self.items + second.items)
+        second_items = other.items if type(other) == MdSeq else (other,)
+        return MdSeq(self.items + second_items)
 
     def __radd__(self, other) -> "MdSeq":
-        second = other if type(other) == MdSeq else MdSeq([other])
-        return MdSeq(second.items + self.items)
+        second_items = other if type(other) == MdSeq else (other,)
+        return MdSeq(second_items + self.items)
 
     def __iadd__(self, other):
         raise NotImplementedError("This class is immutable.")
@@ -148,7 +148,7 @@ class Raw(MdObj):
         if dedent:
             # we only apply dedent to raw strings
             if isinstance(raw, str):
-                raw = inspect.cleandoc(raw)
+                raw = textwrap.dedent(raw)
 
         object.__setattr__(self, "raw", raw)
 
