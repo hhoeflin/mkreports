@@ -5,7 +5,9 @@ def use_basic(report: Report) -> None:
     with report.get_page("basic.md", append=False) as p:
         p.add(md.H1("Basic formatting elements"))
 
-        with p.add(md.H2("Headings")):
+        with p.add(
+            md.H2("Headings", anchor=(heading_anchor := md.Anchor("my-headings")))
+        ):
             p.add(
                 md.Code(
                     """
@@ -47,4 +49,25 @@ def use_basic(report: Report) -> None:
             p.add(numbered_list, add_code=True)
 
         with p.add(md.H2("Links")):
-            p.add(md.Admonition("Not yet implemented", "warning"))
+            p.add(
+                """
+                A number of different types of links are possible. Those within
+                a page to an anchor or to another page (with or without anchor)
+                """
+            )
+            with p.track_code():
+                x = md.P(
+                    "A link back to the "
+                    + md.Link(anchor=heading_anchor, text="first heading")
+                )
+                x += md.P(
+                    "A link to another page "
+                    + md.Link("Images", to_page_path=report.get_page("images.md").path)
+                )
+                x += md.P(
+                    "Or just to any page " + md.Link("Google", url="https://google.com")
+                )
+                x += md.P(
+                    "Or of course also just straight markdown [Google](https://google.com)"
+                )
+            p.add(x, add_code=True)

@@ -1,8 +1,10 @@
 import functools
+import html
 import textwrap
 from abc import ABC, abstractmethod
 from collections.abc import Sequence
 from dataclasses import dataclass
+from os.path import relpath
 from pathlib import Path
 from typing import Iterable, Optional, Tuple, Union
 
@@ -113,9 +115,6 @@ class MdSeq(MdObj, Sequence):
         second_items = other if type(other) == MdSeq else (other,)
         return MdSeq(second_items + self.items)
 
-    def __iadd__(self, other):
-        raise NotImplementedError("This class is immutable.")
-
     def backmatter(self, path: Optional[Path] = None) -> SpacedText:
         return functools.reduce(
             lambda x, y: x + y, [elem.backmatter(path) for elem in self.items]
@@ -157,20 +156,75 @@ class Raw(MdObj):
 
 
 @dataclass(frozen=True)
+class Anchor(MdObj):
+    name: str
+
+    def to_markdown(self, page_path: Optional[Path] = None) -> SpacedText:
+        return SpacedText(f"[](){{:name='{self.name}'}}", (0, 0))
+
+
+@dataclass(frozen=True)
+class Link(MdObj):
+    text: str = ""
+    to_page_path: Optional[Path] = None
+    anchor: Optional[Union[str, Anchor]] = None
+    url: Optional[str] = None
+
+    def to_markdown(self, page_path: Optional[Path] = None) -> SpacedText:
+        if self.url is not None:
+            link = self.url
+        else:
+            if page_path is None or self.to_page_path is None:
+                if self.anchor is None:
+                    raise ValueError(
+                        "Either id or to_page_path and page_path have to be defined"
+                    )
+                else:
+                    # assume is on the same page
+                    anchor_id = (
+                        self.anchor
+                        if isinstance(self.anchor, str)
+                        else self.anchor.name
+                    )
+                    link = f"#{anchor_id}"
+            else:
+                # both are not none, do relative
+                if self.anchor is None:
+                    link = f"{relpath(self.to_page_path, start=page_path.parent)}"
+                else:
+                    anchor_id = (
+                        self.anchor
+                        if isinstance(self.anchor, str)
+                        else self.anchor.name
+                    )
+                    link = f"{relpath(self.to_page_path, start=page_path.parent)}#{anchor_id}"
+
+        return SpacedText(f"[{html.escape(self.text)}]({link})", (0, 0))
+
+
+@dataclass(frozen=True)
 class Paragraph(MdObj):
     """
     Wraps an object in a paragraph.
     """
 
-    _obj: MdObj
+    obj: Union[MdObj, str]
+    anchor: Optional[Union[Anchor, str]] = None
 
-    def __init__(self, obj: Union[str, MdObj]) -> None:
-        if isinstance(obj, str):
-            obj = Raw(obj)
-        object.__setattr__(self, "_obj", obj)
+    def __post_init__(self):
+        if isinstance(self.obj, str):
+            object.__setattr__(self, "obj", Raw(self.obj))
+        if isinstance(self.anchor, str):
+            object.__setattr__(self, "anchor", Anchor(self.anchor))
 
     def backmatter(self, page_path: Optional[Path] = None) -> SpacedText:
-        return self._obj.backmatter(page_path)
+        return self.obj.backmatter(page_path)
 
     def to_markdown(self, page_path: Optional[Path] = None) -> SpacedText:
-        return SpacedText(self._obj.to_markdown(page_path), (1, 2))
+        p_text = self.obj.to_markdown(page_path)
+        if isinstance(self.anchor, Anchor):
+            # note, string conversion to Anchor done in post-init
+            p_text = SpacedText(p_text.text, (0, 1)) + self.anchor.to_markdown(
+                page_path
+            )
+        return SpacedText(p_text, (2, 2))

@@ -36,6 +36,7 @@ default_settings = immutabledict(
         "markdown_extensions": [
             "meta",
             "admonition",
+            "pymdownx.extra",
             "pymdownx.details",
             "pymdownx.superfences",
         ],
