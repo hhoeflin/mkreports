@@ -18,7 +18,7 @@ def indent_hanging(x: str, hanging: str, spaces: int = 4):
 
 
 @dataclass(frozen=True)
-class MdList(MdObj):
+class List(MdObj):
     marker: Literal["-", "*", "+", "1"]
     list: MdSeq
 
@@ -31,27 +31,27 @@ class MdList(MdObj):
         object.__setattr__(self, "marker", marker)
         object.__setattr__(self, "list", MdSeq(items))
 
-    def append(self, item: Union[Text, MdObj]) -> "MdList":
+    def append(self, item: Union[Text, MdObj]) -> "List":
         if isinstance(item, (str, SpacedText)):
             item = Raw(item)
-        return MdList(self.list.items + (item,), marker=self.marker)
+        return List(self.list.items + (item,), marker=self.marker)
 
-    def extend(self, items: Sequence[Union[Text, MdObj]]) -> "MdList":
+    def extend(self, items: Sequence[Union[Text, MdObj]]) -> "List":
         items = tuple(
             [
                 Raw(item) if isinstance(item, (str, SpacedText)) else item
                 for item in items
             ]
         )
-        return MdList(self.list.items + items, marker=self.marker)
+        return List(self.list.items + items, marker=self.marker)
 
     def __len__(self) -> int:
         return len(self.list)
 
-    def __add__(self, other) -> "MdList":
+    def __add__(self, other) -> "List":
         raise NotImplementedError("Addition not supported for MdList")
 
-    def __radd__(self, other) -> "MdList":
+    def __radd__(self, other) -> "List":
         raise NotImplementedError("Addition not supported for MdList")
 
     def to_markdown(self, path: Optional[Path] = None) -> SpacedText:

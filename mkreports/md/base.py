@@ -157,7 +157,7 @@ class Raw(MdObj):
 
 
 @dataclass(frozen=True)
-class MdParagraph(MdObj):
+class Paragraph(MdObj):
     """
     Wraps an object in a paragraph.
     """

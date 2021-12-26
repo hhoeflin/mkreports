@@ -24,14 +24,12 @@ def use_basic(report: Report) -> None:
         with p.add(md.H2("Lists")):
             with p.track_code():
                 numbered_list = (
-                    md.MdList(marker="1")
+                    md.List(marker="1")
                     .append("First item")
                     .append("Second item")
                     .append("Third item")
                 )
-                unordered_list = md.MdList(
-                    ("apples", "pears", "strawberry"), marker="*"
-                )
+                unordered_list = md.List(("apples", "pears", "strawberry"), marker="*")
 
                 numbered_list = numbered_list.append(
                     md.Raw("Some fruit:") + unordered_list
