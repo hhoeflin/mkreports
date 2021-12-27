@@ -38,11 +38,11 @@ class Tracker:
         omit_levels: int = 0,
     ):
         if isinstance(dirs, Sequence) and not isinstance(dirs, str):
-            self.dirs = set(dirs)  # don't need to do anything
+            my_dirs = list(dirs)  # don't need to do anything
         elif isinstance(dirs, (str, Path)):
-            self.dirs = set([dirs])
+            my_dirs = [dirs]
         else:
-            self.dirs = set()
+            my_dirs = []
 
         if isinstance(packages, Sequence):
             packages = list(packages)
@@ -54,7 +54,10 @@ class Tracker:
         # for the packages, we also convert them to directories
         for package in packages:
             # always use the first element of the list
-            self.dirs.add(Path(package.__path__[0]))
+            my_dirs.append(Path(package.__path__[0]))
+
+        # make the directories strings with a slash at the end
+        self.dirs = [str(x) + "/" for x in my_dirs]
 
         self.omit_levels = omit_levels
         self.ctx_active = False
@@ -69,9 +72,13 @@ class Tracker:
         frame = self._get_callee_frame(omit_levels=omit_levels + 1)
         # save the tree for storing the information
         self.tree = FrameInfo.from_frame(frame)
-        # here we actually want the next command
-        self.dirs.add(Path(self.tree.filename).parent)
 
+        # include the current file in the directories to accept
+        self.active_dirs = copy(self.dirs)
+        self.active_dirs.append(str(Path(self.tree.filename).parent) + "/")
+        self.active_dirs = list(set(self.active_dirs))
+
+        # here we actually want the next command
         self.cur_node = self.tree
         stmt_tree = parser.get_stmt_ranges(Path(frame.f_code.co_filename))
         stmt_after = parser.closest_after(stmt_tree, frame.f_lineno)
@@ -84,6 +91,7 @@ class Tracker:
         # we get the directory of the callee
         if sys.gettrace() is None:
             sys.settrace(self.trace)
+            # sys.settrace(None)
         else:
             logger.warning(f"Logger already set to {sys.gettrace()}")
 
@@ -138,11 +146,19 @@ class Tracker:
         return frame
 
     def frame_traceable(self, frame: FrameType) -> bool:
-        frame_path = Path(frame.f_code.co_filename)
-        for dir in self.dirs:
-            if dir in frame_path.parents:
+        frame_path = frame.f_code.co_filename
+        for dir in self.active_dirs:
+            if frame_path.startswith(dir):
                 return True
         return False
+
+    def notrace(self, frame, event, arg):
+        return None
+
+    def trace_reset_on_return(self, frame, event, arg):
+        if event == "return":
+            sys.settrace(self.trace)
+            return self.trace
 
     def trace(self, frame, event, arg):
         # when tracing, only care if it is a 'call' event
@@ -156,11 +172,13 @@ class Tracker:
                 return self.trace
             else:
                 # we stop tracing
-                return None
+                sys.settrace(self.notrace)
+                return self.trace_reset_on_return
         elif event == "return":
             # set the current node to the parent in the tree
             if self.cur_node is not None:
                 self.cur_node = self.cur_node.parent
+                sys.settrace(self.trace)
             else:
                 raise Exception("cur_node should not be None")
             pass

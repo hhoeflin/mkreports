@@ -37,44 +37,42 @@ def use_images(report: Report) -> None:
 
                     fig, ax = plt.subplots()
                     ax.plot([1, 2, 3, 4], [1, 4, 2, 3])
-                p.add(md.Image(fig))
+                p.add(md.Image(fig), add_code=True)
 
             with p.add(md.H3("Plotnine")):
+                with p.track_code():
+                    p.add(
+                        """
+                        Any plots created by `plotnine` can be included directly. The code below
+                        is from the beginner example of the library.
+                        """
+                    )
 
-                p.add(
-                    """
-                    Any plots created by `plotnine` can be included directly. The code below
-                    is from the beginner example of the library.
-                    """
-                )
-
-                p.add(
-                    md.Image(
+                    pn_image = md.Image(
                         ggplot(mtcars, aes("wt", "mpg", color="factor(gear)"))
                         + geom_point()
                         + stat_smooth(method="lm")
                         + facet_wrap("~gear"),
                     )
-                )
+                p.add(pn_image, add_code=True)
 
             with p.add(md.H3("Seaborn")):
+                with p.track_code():
+                    p.add(
+                        """
+                        Another well known option is Seaborn. The interface is similar to the 
+                        ones before. Under the hood, the `figure` attribute of the seaborn plot is 
+                        accessed and saved in the same fashion as for matplotlib.
+                        """
+                    )
 
-                p.add(
-                    """
-                    Another well known option is Seaborn. The interface is similar to the 
-                    ones before. Under the hood, the `figure` attribute of the seaborn plot is 
-                    accessed and saved in the same fashion as for matplotlib.
-                    """
-                )
+                    sns.set_theme(style="ticks")
 
-                sns.set_theme(style="ticks")
+                    # Load the example dataset for Anscombe's quartet
+                    df = sns.load_dataset("anscombe")
 
-                # Load the example dataset for Anscombe's quartet
-                df = sns.load_dataset("anscombe")
-
-                # Show the results of a linear regression within each dataset
-                p.add(
-                    md.Image(
+                    # Show the results of a linear regression within each dataset
+                    sea_img = md.Image(
                         sns.lmplot(
                             x="x",
                             y="y",
@@ -88,22 +86,28 @@ def use_images(report: Report) -> None:
                             scatter_kws={"s": 50, "alpha": 1},
                         ),
                     )
-                )
+                p.add(sea_img, add_code=True)
 
             with p.add(md.H3("Altair")):
-                import altair as alt
-                import pandas as pd
+                with p.track_code():
+                    import altair as alt
+                    import pandas as pd
 
-                source = pd.DataFrame(
-                    {
-                        "a": ["A", "B", "C", "D", "E", "F", "G", "H", "I"],
-                        "b": [28, 55, 43, 91, 81, 53, 19, 87, 52],
-                    }
-                )
+                    source = pd.DataFrame(
+                        {
+                            "a": ["A", "B", "C", "D", "E", "F", "G", "H", "I"],
+                            "b": [28, 55, 43, 91, 81, 53, 19, 87, 52],
+                        }
+                    )
 
-                altair_chart = alt.Chart(source).mark_bar().encode(x="a", y="b")
+                    altair_chart = md.Altair(
+                        alt.Chart(source)
+                        .mark_bar()
+                        .encode(x="a", y="b")
+                        .properties(width=600)
+                    )
 
-                p.add(md.Altair(altair_chart))
+                p.add(altair_chart, add_code=True)
 
             with p.add(md.H3("Plotly")):
                 p.add(md.Admonition("Still to be implemented", kind="warning"))
