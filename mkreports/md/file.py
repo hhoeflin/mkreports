@@ -2,7 +2,7 @@ import hashlib
 import shutil
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Union
 
 from .base import MdObj, get_default_store_path
 from .text import SpacedText
@@ -44,7 +44,7 @@ class File(MdObj):
 
     def __init__(
         self,
-        path: Path,
+        path: Union[str, Path],
         store_path: Optional[Path] = None,
         allow_copy: bool = True,
         hash: bool = False,
@@ -61,7 +61,7 @@ class File(MdObj):
         )
 
         # for the path we first have to see if they will be copied
-        path = path.absolute()
+        path = Path(path).absolute()
         if self.store_path is None:
             raise ValueError("store_path or a default must be set. Can't both be None.")
 

@@ -6,7 +6,7 @@ from collections.abc import Sequence
 from dataclasses import dataclass
 from os.path import relpath
 from pathlib import Path
-from typing import Iterable, Optional, Tuple, Union
+from typing import Any, Dict, Iterable, Optional, Tuple, Union
 
 from mkreports.settings import Settings
 
@@ -141,8 +141,12 @@ class Raw(MdObj):
     """
 
     raw: Text
+    page_settings: Dict[str, Any]
+    mkdocs_settings: Dict[str, Any]
 
-    def __init__(self, raw: Text, dedent=True):
+    def __init__(
+        self, raw: Text, dedent=True, page_settings=None, mkdocs_settings=None
+    ):
         super().__init__()
         if dedent:
             # we only apply dedent to raw strings
@@ -150,6 +154,14 @@ class Raw(MdObj):
                 raw = textwrap.dedent(raw)
 
         object.__setattr__(self, "raw", raw)
+        object.__setattr__(self, "page_settings", page_settings)
+        object.__setattr__(self, "mkdocs_settings", mkdocs_settings)
+
+    def req_settings(self) -> Settings:
+        return Settings(
+            page=self.page_settings if self.page_settings is not None else {},
+            mkdocs=self.mkdocs_settings if self.mkdocs_settings is not None else {},
+        )
 
     def to_markdown(self, path: Optional[Path] = None) -> SpacedText:
         return SpacedText(self.raw)

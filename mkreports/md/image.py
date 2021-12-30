@@ -1,13 +1,10 @@
-import copy
 import inspect
-import json
 import tempfile
 from copy import deepcopy
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Literal, Optional, Union
 
-import pandas as pd
 from mdutils.tools.Image import Image as UtilsImage
 from mkreports.settings import Settings
 
@@ -23,7 +20,7 @@ class ImageFile(File):
 
     def __init__(
         self,
-        path: Path,
+        path: Union[str, Path],
         store_path: Optional[Path] = None,
         link_type: Literal["inline", "ref"] = "inline",
         text: str = "",

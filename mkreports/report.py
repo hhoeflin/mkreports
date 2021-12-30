@@ -9,10 +9,10 @@ included.
 import contextlib
 import shutil
 from pathlib import Path
-from typing import Any, ContextManager, Dict, Mapping, Optional, Union
+from typing import Any, ContextManager, Dict, Mapping, Optional, Tuple, Union
 
-import frontmatter
 import yaml
+from frontmatter.default_handlers import DEFAULT_POST_TEMPLATE, YAMLHandler
 from immutabledict import immutabledict
 
 from .counters import Counters
@@ -21,6 +21,7 @@ from .exceptions import (ReportExistsError, ReportNotExistsError,
                          TrackerIncompleteError)
 from .md import (MdObj, Raw, SpacedText, Tab, Text, get_default_store_path,
                  set_default_store_path)
+from .md_proxy import MdProxy
 from .settings import (NavEntry, add_nav_entry, load_yaml, merge_settings,
                        path_to_nav_entry, save_yaml)
 from .stack import Stack, Tracker
@@ -30,7 +31,6 @@ default_settings = immutabledict(
         "theme": {
             "name": "material",
             "custom_dir": "overrides",
-            "features": ["toc.integrate"],
         },
         "nav": [{"Home": "index.md"}],
         "markdown_extensions": [
@@ -67,11 +67,41 @@ main_html_override = """
 """
 
 
+def load_page(path: Union[Path, str]) -> Tuple[Dict[str, Any], str]:
+    with Path(path).open("r") as f:
+        text = f.read()
+
+    handler = YAMLHandler()
+    try:
+        fm, content = handler.split(text)
+        metadata = handler.load(fm)
+    except:
+        metadata = {}
+        content = text
+
+    return metadata, content
+
+
+def write_page(path: Union[Path, str], metadata, content) -> None:
+    handler = YAMLHandler()
+    metadata = handler.export(metadata)
+    start_delimiter = handler.START_DELIMITER
+    end_delimiter = handler.END_DELIMITER
+    with Path(path).open("w") as f:
+        text = DEFAULT_POST_TEMPLATE.format(
+            metadata=metadata,
+            content=content,
+            start_delimiter=start_delimiter,
+            end_delimiter=end_delimiter,
+        )
+        f.write(text)
+
+
 class Report:
     def __init__(
         self,
         path: Union[str, Path],
-        site_name: str,
+        site_name: Optional[str] = None,
         create: bool = True,
         exist_ok: bool = True,
         settings: Optional[Mapping[str, str]] = None,
@@ -89,10 +119,14 @@ class Report:
         else:
             # check if should be created
             if create:
+                if site_name is None:
+                    raise ValueError(
+                        "When creating a report a site_name has to be specified"
+                    )
                 # call the functions from mkdocs that creates a new report
                 if settings is None:
                     settings = default_settings
-                self._create_new(settings)
+                self._create_new(site_name, settings)
             else:
                 raise ReportNotExistsError(f"{self.path} does not exist.")
 
@@ -115,14 +149,14 @@ class Report:
     def index_file(self) -> Path:
         return self.docs_dir / "index.md"
 
-    def _create_new(self, settings: Mapping[str, str]) -> None:
+    def _create_new(self, site_name: str, settings: Mapping[str, str]) -> None:
         # create the directories
         self.docs_dir.mkdir(exist_ok=True, parents=True)
         # index.md just remains empty
         self.index_file.touch()
         # the settings are our serialized yaml
         settings = dict(settings.items())  # ensure settings is regular dict
-        settings["site_name"] = self.site_name
+        settings["site_name"] = site_name
         with self.mkdocs_file.open("w") as f:
             yaml.dump(settings, f, Dumper=yaml.Dumper, default_flow_style=False)
 
@@ -142,7 +176,7 @@ class Report:
             raise ReportNotValidError(f"{self.index_file} does not exist")
 
     def get_page(
-        self, page_name: Union[NavEntry, Path, str], append: bool = True
+        self, page_name: Union[NavEntry, Path, str], append: bool = True, hide_toc=True
     ) -> "Page":
         # if the page_name is just a string, we turn it into a dictionary
         # based on the hierarchical names
@@ -177,31 +211,6 @@ class Report:
         return Page(self.docs_dir / path, report=self)
 
 
-def merge_frontmatter(page_path: Path, page_settings: Dict[str, Any]) -> None:
-    """
-    Read the frontmatter and merge it with the additional settings.
-
-    The reason that we do this separately is a minor issue in the
-    frontmatter library, that filters the newlines at the end of the file.
-    https://github.com/eyeseast/python-frontmatter/issues/87
-    """
-    # first load the page; we do this ourselves so that we have
-    # the newlines at the end
-    with page_path.open("r") as f:
-        page_str = f.read()
-
-    # get number of newlines
-    num_char_stripped = len(page_str) - len(page_str.rstrip())
-    end_chars = page_str[-num_char_stripped:]
-
-    page_post = frontmatter.loads(page_str)
-    page_post.metadata = merge_settings(page_post.metadata, page_settings)
-    page_out = frontmatter.dumps(page_post) + end_chars
-
-    with page_path.open("w") as f:
-        f.write(page_out)
-
-
 class Page:
     def __init__(self, path: Path, report: Report) -> None:
         self._path = path.absolute()
@@ -209,15 +218,6 @@ class Page:
         self.report = report
         self.code_marker_first: Optional[Stack] = None
         self.code_marker_second: Optional[Stack] = None
-
-        # get the last string that was written into the page (if it exists)
-        # otherwise we set it to newlines.
-        if self.path.exists():
-            with self.path.open("r") as f:
-                last_lines = f.readlines()[-3:]
-            self._last_obj = SpacedText("".join(last_lines))
-        else:
-            self._last_obj = SpacedText("\n\n\n")
 
         # a tracker for tracking code to be printed
         self.reset_tracker()
@@ -268,7 +268,9 @@ class Page:
             raise TrackerEmptyError("The tracker has not been started.")
         return self.tracker.tree.md_tree(highlight=highlight)
 
-    def add(self, item: Union[MdObj, Text], add_code=False) -> ContextManager["Page"]:
+    def add(
+        self, item: Union[MdObj, Text], add_code=False, bottom: bool = True
+    ) -> ContextManager["Page"]:
         # first ensure that item is an MdObj
         if isinstance(item, str):
             item = Raw(item, dedent=True)
@@ -297,14 +299,41 @@ class Page:
             mkdocs_settings = load_yaml(self.report.mkdocs_file)
             mkdocs_settings = merge_settings(mkdocs_settings, req.mkdocs)
             save_yaml(mkdocs_settings, self.report.mkdocs_file)
-        if len(req.page) > 0:
-            # frontmatter loads the entire post including frontmatter
-            # then we can change it as necessary and write it back
-            # as we have to change content at the front, does not work more efficiently
-            merge_frontmatter(self.path, req.page)
 
-        with self.path.open("a") as f:
-            f.write(last_obj := md_text.format_text(self._last_obj, "a"))
-        self._last_obj = last_obj
+        if bottom:
+            self._add_to_page(top=None, bottom=md_text, page_settings=req.page)
+        else:
+            self._add_to_page(top=md_text, bottom=None, page_settings=req.page)
 
         return contextlib.nullcontext(self)
+
+    def _add_to_page(
+        self,
+        top: Optional[SpacedText],
+        bottom: Optional[SpacedText],
+        page_settings: Dict[str, Any],
+    ) -> None:
+        """
+        Read the frontmatter and merge it with the additional settings.
+
+        The reason that we do this separately is a minor issue in the
+        frontmatter library, that filters the newlines at the end of the file.
+        https://github.com/eyeseast/python-frontmatter/issues/87
+        """
+        metadata, content = load_page(self.path)
+        # we need to read the whole page anyway
+        metadata = merge_settings(metadata, page_settings)
+
+        if top is not None:
+            content = top.format_text("", content) + content
+        if bottom is not None:
+            content = content + bottom.format_text(content, "")
+
+        write_page(self.path, metadata, content)
+
+    @property
+    def md(self):
+        """
+        A proxy for the 'md' submodule that specifies 'store_path' where possible.
+        """
+        return MdProxy(store_path=self.gen_asset_path)

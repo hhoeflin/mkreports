@@ -132,3 +132,4 @@ dmypy.json
 .pyre/
 
 examples/usage/usage
+examples/ipython_test
