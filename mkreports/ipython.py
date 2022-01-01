@@ -3,18 +3,18 @@ import shutil
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Callable, List, Optional
+from typing import Any, Callable, List, Optional, Tuple, Union
 
 from IPython.core.magic import Magics, line_magic, magics_class
 
 from . import md
-from .report import Report
+from .report import Page, Report
 
 
 @dataclass
 class Handler:
     name: str
-    class_type: type
+    class_type: Union[type, Tuple[type, ...]]
     func: Callable
     add_code: bool
 
@@ -22,15 +22,14 @@ class Handler:
 @magics_class
 class ConsoleWriter(Magics):
     handlers: List[Handler]
+    console: Page
 
     def __init__(self, ip):
         super().__init__(ip)
         self.shell = ip
         self.handlers = []
         self.stored_code = []
-        self.handlers = [
-            Handler(name="mdobj", class_type=md.MdObj, func=lambda x: x, add_code=False)
-        ]
+        self._set_default_handlers()
 
         # identify an mkreport
         if "MKREPORTS_DIR" in os.environ:
@@ -40,6 +39,73 @@ class ConsoleWriter(Magics):
             self.open_console()
         else:
             raise Exception("No 'MKREPORTS_DIR' in environment")
+
+    def _set_default_handlers(self):
+        self.handlers = []
+        # handler for tables
+        try:
+            import pandas as pd
+
+            self.handlers.append(
+                Handler(
+                    name="datatable",
+                    class_type=pd.DataFrame,
+                    func=lambda x: self.console.md.DataTable(x),
+                    add_code=True,
+                )
+            )
+        except Exception:
+            pass
+
+        # handler for matplotlib
+        try:
+            from matplotlib.figure import Figure as MplFigure
+
+            self.handlers.append(
+                Handler(
+                    name="matplotlib",
+                    class_type=MplFigure,
+                    func=lambda x: self.console.md.Image(x),
+                    add_code=True,
+                )
+            )
+        except Exception:
+            pass
+
+        try:
+            from plotnine.ggplot import ggplot
+
+            self.handlers.append(
+                Handler(
+                    name="plotnine",
+                    class_type=ggplot,
+                    func=lambda x: self.console.md.Image(x),
+                    add_code=True,
+                )
+            )
+        except Exception:
+            pass
+
+        try:
+            from seaborn import FacetGrid as SnsFacetGrid
+            from seaborn import JointGrid as SnsJointGrid
+            from seaborn import PairGrid as SnsPairGrid
+
+            self.handlers.append(
+                Handler(
+                    name="seaborn",
+                    class_type=(SnsFacetGrid, SnsJointGrid, SnsPairGrid),
+                    func=lambda x: self.console.md.Image(x),
+                    add_code=True,
+                )
+            )
+
+        except Exception:
+            pass
+
+        self.handlers.append(
+            Handler(name="mdobj", class_type=md.MdObj, func=lambda x: x, add_code=False)
+        )
 
     def get_handler(self, obj: Any) -> Optional[Handler]:
         for handler in self.handlers:
