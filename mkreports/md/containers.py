@@ -32,7 +32,7 @@ class Admonition(MdObj):
     collapse: bool = False
 
     def req_settings(self) -> Settings:
-        return Settings(
+        cont_settings = Settings(
             mkdocs={
                 "markdown_extensions": [
                     "admonition",
@@ -41,6 +41,10 @@ class Admonition(MdObj):
                 ]
             }
         )
+        if isinstance(self.text, MdObj):
+            return cont_settings + self.text.req_settings()
+        else:
+            return cont_settings
 
     def backmatter(self, page_path: Optional[Path] = None):
         if isinstance(self.text, MdObj):
@@ -65,7 +69,7 @@ class Tab(MdObj):
     title: Optional[str] = None
 
     def req_settings(self) -> Settings:
-        return Settings(
+        tab_settings = Settings(
             mkdocs={
                 "markdown_extensions": [
                     "pymdownx.superfences",
@@ -73,6 +77,10 @@ class Tab(MdObj):
                 ]
             }
         )
+        if isinstance(self.text, MdObj):
+            return tab_settings + self.text.req_settings()
+        else:
+            return tab_settings
 
     def backmatter(self, page_path: Optional[Path] = None):
         if isinstance(self.text, MdObj):
