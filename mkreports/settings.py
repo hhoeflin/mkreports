@@ -6,6 +6,7 @@ from typing import Any, Dict, List, Mapping, Tuple, Union
 
 import yaml
 from deepmerge import Merger
+from more_itertools import unique_everseen
 
 NavEntry = Tuple[List[str], Path]
 Nav = List[NavEntry]
@@ -113,6 +114,8 @@ def merge_settings(a, b):
 def add_nav_entry(mkdocs_settings, nav_entry: NavEntry) -> None:
     mkdocs_settings = deepcopy(mkdocs_settings)
     nav = mkdocs_to_nav(mkdocs_settings["nav"]) + [nav_entry]
+    # we need to deduplicate
+    nav = list(unique_everseen(nav))
     mkdocs_nav = nav_to_mkdocs(nav)
     mkdocs_settings["nav"] = mkdocs_nav
 

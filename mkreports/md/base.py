@@ -145,7 +145,7 @@ class Raw(MdObj):
     mkdocs_settings: Dict[str, Any]
 
     def __init__(
-        self, raw: Text, dedent=True, page_settings=None, mkdocs_settings=None
+        self, raw: Text = "", dedent=True, page_settings=None, mkdocs_settings=None
     ):
         super().__init__()
         if dedent:

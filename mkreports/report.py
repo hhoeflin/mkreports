@@ -68,7 +68,10 @@ main_html_override = """
 
 
 def load_page(path: Union[Path, str]) -> Tuple[Dict[str, Any], str]:
-    with Path(path).open("r") as f:
+    path = Path(path)
+    if not path.exists():
+        return {}, ""
+    with path.open("r") as f:
         text = f.read()
 
     handler = YAMLHandler()
@@ -175,8 +178,22 @@ class Report:
         if not self.index_file.exists() or not self.index_file.is_file():
             raise ReportNotValidError(f"{self.index_file} does not exist")
 
+    def _add_nav_entry(self, nav_entry) -> None:
+        # check that the nav-entry is relative; if absolute,
+        # make it relative to the docs_dir
+        if isinstance(nav_entry[1], str):
+            nav_entry = (nav_entry[0], Path(nav_entry[1]))
+        if nav_entry[1].is_absolute():
+            nav_entry = (nav_entry[0], nav_entry[1].relative_to(self.docs_dir))
+
+        mkdocs_settings = load_yaml(self.mkdocs_file)
+        mkdocs_settings = add_nav_entry(mkdocs_settings, nav_entry)
+        save_yaml(mkdocs_settings, self.mkdocs_file)
+
     def get_page(
-        self, page_name: Union[NavEntry, Path, str], append: bool = True, hide_toc=True
+        self,
+        page_name: Union[NavEntry, Path, str],
+        append: bool = True,
     ) -> "Page":
         # if the page_name is just a string, we turn it into a dictionary
         # based on the hierarchical names
@@ -204,20 +221,27 @@ class Report:
             (self.docs_dir / path).touch()
 
             # update the report settings
-            mkdocs_settings = load_yaml(self.mkdocs_file)
-            mkdocs_settings = add_nav_entry(mkdocs_settings, nav_entry)
-            save_yaml(mkdocs_settings, self.mkdocs_file)
+            self._add_nav_entry(nav_entry)
 
         return Page(self.docs_dir / path, report=self)
 
 
 class Page:
-    def __init__(self, path: Path, report: Report) -> None:
+    def __init__(
+        self,
+        path: Path,
+        report: Report,
+    ) -> None:
         self._path = path.absolute()
         self._counters = Counters()
         self.report = report
         self.code_marker_first: Optional[Stack] = None
         self.code_marker_second: Optional[Stack] = None
+
+        # check if the page already exists
+        if not self._path.exists():
+            # we create the file with the settings
+            self.add(Raw(page_settings=page_settings, mkdocs_settings=mkdocs_settings))
 
         # a tracker for tracking code to be printed
         self.reset_tracker()
