@@ -7,9 +7,8 @@ from code_blocks import use_code_blocks
 from images import use_images
 from tables import use_tables
 
-if __name__ == "__main__":
-    report = Report(Path("usage"), site_name="Mkreports documentations")
-    # basic formatting options
+
+def run_all(report: Report):
     use_basic(report)
     # documentation for images
     use_images(report)
@@ -17,3 +16,8 @@ if __name__ == "__main__":
     use_tables(report)
     # documentation for code blocks
     use_code_blocks(report)
+
+
+if __name__ == "__main__":
+    report = Report(Path("usage"), site_name="Mkreports documentations")
+    run_all(report)

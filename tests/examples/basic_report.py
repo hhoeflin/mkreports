@@ -15,9 +15,13 @@ if __name__ == "__main__":
 
     print(basic_text.to_markdown())
     # ingest an asset
-    script_asset = md.File(Path(__file__), store_path=page.gen_asset_path, hash=True)
+    script_asset = md.File(
+        Path(__file__), store_path=page.gen_asset_path, use_hash=True
+    )
     mkdocs_img = md.ImageFile(
-        Path(__file__).parent / "mkdocs.jpg", store_path=page.gen_asset_path, hash=True
+        Path(__file__).parent / "mkdocs.jpg",
+        store_path=page.gen_asset_path,
+        use_hash=True,
     )
     page.add(basic_text)
     page.add(mkdocs_img)

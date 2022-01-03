@@ -131,5 +131,6 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-examples/usage/usage
-examples/ipython_test
+# project specific stuff
+tests/examples/usage/usage
+tests/examples/ipython_test
