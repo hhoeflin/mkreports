@@ -26,7 +26,6 @@ def count_newlines(x: str, before=True) -> int:
     return num_nl
 
 
-@dataclass(frozen=True)
 class SpacedText:
     """Representation of text with spaces before or after."""
 
@@ -44,8 +43,8 @@ class SpacedText:
                 max(req_nl[1], text.req_nl[1]),
             )
 
-        object.__setattr__(self, "text", my_text)
-        object.__setattr__(self, "req_nl", my_req_nl)
+        self.text = my_text
+        self.req_nl = my_req_nl
 
     def __str__(self) -> str:
         """

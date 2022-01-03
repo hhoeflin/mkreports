@@ -17,7 +17,6 @@ def indent_hanging(x: str, hanging: str, spaces: int = 4):
     return "\n".join(x_lines)
 
 
-@dataclass(frozen=True)
 class List(MdObj):
     marker: Literal["-", "*", "+", "1"]
     list: MdSeq
@@ -28,8 +27,8 @@ class List(MdObj):
         marker: Literal["-", "*", "+", "1"] = "-",
     ):
         super().__init__()
-        object.__setattr__(self, "marker", marker)
-        object.__setattr__(self, "list", MdSeq(items))
+        self.items = items
+        self.marker = marker
 
     def append(self, item: Union[Text, MdObj]) -> "List":
         if isinstance(item, (str, SpacedText)):

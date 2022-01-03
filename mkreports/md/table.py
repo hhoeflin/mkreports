@@ -3,9 +3,8 @@ import inspect
 import json
 import tempfile
 from copy import deepcopy
-from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Dict, Optional
+from typing import Any, Callable, Dict, Optional
 
 import pandas as pd
 from mkreports.settings import Settings
@@ -15,16 +14,15 @@ from .file import File, relpath, true_stem
 from .text import SpacedText
 
 
-@dataclass(frozen=True)
 class Table(MdObj):
     table: pd.DataFrame
     kwargs: Dict[str, Any]
 
     def __init__(self, table: pd.DataFrame, **kwargs):
         super().__init__()
-        object.__setattr__(self, "kwargs", kwargs)
+        self.kwargs = kwargs
         # think about making this a static-frame
-        object.__setattr__(self, "table", deepcopy(table))
+        self.table = deepcopy(table)
 
     def to_markdown(self, page_path: Optional[Path] = None) -> SpacedText:
         table_md = self.table.to_markdown(**self.kwargs)
@@ -37,7 +35,7 @@ class DataTable(File):
         self,
         table: pd.DataFrame,
         store_path: Optional[Path] = None,
-        table_id: Optional[str] = None,
+        table_id: Callable[str, str] = lambda hash: f"datatable-{hash}",
         column_settings: Optional[dict] = None,
         **kwargs,
     ):
@@ -47,9 +45,9 @@ class DataTable(File):
             # are not useful, but the rest gets set as 'data', which we need
             table.to_json(path, orient="split", **kwargs)
 
-            # Make sure the file is moved to the rigth place
+            # Make sure the file is moved to the right place
             super().__init__(
-                path=path, store_path=store_path, allow_copy=True, hash=True
+                path=path, store_path=store_path, allow_copy=True, use_hash=True
             )
 
         # use the hashed table name as the id if there is no other

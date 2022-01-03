@@ -26,7 +26,6 @@ def get_default_store_path() -> Optional[Path]:
         return None
 
 
-@dataclass(frozen=True)
 class MdObj(ABC):
     """
     A class for representing markdown objects.
@@ -77,7 +76,6 @@ class MdObj(ABC):
         return Settings()
 
 
-@dataclass(frozen=True)
 class MdSeq(MdObj, Sequence):
     """
     Class to caputre a list of other MdObjs.
@@ -95,11 +93,7 @@ class MdSeq(MdObj, Sequence):
         super().__init__()
         if isinstance(items, str):
             items = [items]
-        object.__setattr__(
-            self,
-            "items",
-            tuple([x if not isinstance(x, str) else Raw(x) for x in items]),
-        )
+        self.items = tuple([x if not isinstance(x, str) else Raw(x) for x in items])
 
     def __getitem__(self, index: int) -> MdObj:
         return self.items[index]
@@ -134,7 +128,7 @@ class MdSeq(MdObj, Sequence):
         return res
 
 
-@dataclass(frozen=True)
+@dataclass()
 class Raw(MdObj):
     """
     Class to encapsulate raw markdown.
@@ -153,9 +147,9 @@ class Raw(MdObj):
             if isinstance(raw, str):
                 raw = textwrap.dedent(raw)
 
-        object.__setattr__(self, "raw", raw)
-        object.__setattr__(self, "page_settings", page_settings)
-        object.__setattr__(self, "mkdocs_settings", mkdocs_settings)
+        self.raw = raw
+        self.page_settings = page_settings
+        self.mkdocs_settings = mkdocs_settings
 
     def req_settings(self) -> Settings:
         return Settings(
@@ -167,7 +161,7 @@ class Raw(MdObj):
         return SpacedText(self.raw)
 
 
-@dataclass(frozen=True)
+@dataclass()
 class Anchor(MdObj):
     name: str
 
@@ -175,7 +169,7 @@ class Anchor(MdObj):
         return SpacedText(f"[](){{:name='{self.name}'}}", (0, 0))
 
 
-@dataclass(frozen=True)
+@dataclass()
 class Link(MdObj):
     text: str = ""
     to_page_path: Optional[Path] = None
@@ -214,20 +208,22 @@ class Link(MdObj):
         return SpacedText(f"[{html.escape(self.text)}]({link})", (0, 0))
 
 
-@dataclass(frozen=True)
+@dataclass
 class Paragraph(MdObj):
     """
     Wraps an object in a paragraph.
     """
 
-    obj: Union[MdObj, str]
-    anchor: Optional[Union[Anchor, str]] = None
+    obj: MdObj
+    anchor: Optional[Union[Anchor, str]]
 
-    def __post_init__(self):
-        if isinstance(self.obj, str):
-            object.__setattr__(self, "obj", Raw(self.obj))
-        if isinstance(self.anchor, str):
-            object.__setattr__(self, "anchor", Anchor(self.anchor))
+    def __init__(
+        self, obj: Union[str, MdObj], anchor: Optional[Union[Anchor, str]] = None
+    ):
+        self.obj = obj if not isinstance(obj, str) else Raw(obj)
+        self.anchor = (
+            anchor if not isinstance(self.anchor, str) else Anchor(self.anchor)
+        )
 
     def backmatter(self, page_path: Optional[Path] = None) -> SpacedText:
         return self.obj.backmatter(page_path)

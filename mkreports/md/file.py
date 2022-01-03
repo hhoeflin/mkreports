@@ -34,30 +34,28 @@ def relpath(path_to, path_from):
     return Path("../" * (len(path_from.parents) - len(head.parents))).joinpath(tail)
 
 
-@dataclass(frozen=True)
 class File(MdObj):
 
     path: Path
     allow_copy: bool
     store_path: Optional[Path]
-    hash: bool
+    use_hash: bool
+    hash: str
 
     def __init__(
         self,
         path: Union[str, Path],
         store_path: Optional[Path] = None,
         allow_copy: bool = True,
-        hash: bool = False,
+        use_hash: bool = False,
     ) -> None:
         super().__init__()
 
         # set the existing attributes
-        object.__setattr__(self, "allow_copy", allow_copy)
-        object.__setattr__(self, "hash", hash)
-        object.__setattr__(
-            self,
-            "store_path",
-            (store_path if store_path is not None else get_default_store_path()),
+        self.allow_copy = allow_copy
+        self.use_hash = use_hash
+        self.store_path = (
+            store_path if store_path is not None else get_default_store_path()
         )
 
         # for the path we first have to see if they will be copied
@@ -67,7 +65,7 @@ class File(MdObj):
 
         if self.allow_copy:
 
-            if self.hash:
+            if self.use_hash:
                 # we calculate the hash of the file to be ingested
                 path_hash = md5_hash_file(path)
                 new_path = self.store_path / (
@@ -81,7 +79,7 @@ class File(MdObj):
             shutil.copy(path, new_path)
             path = new_path
 
-        object.__setattr__(self, "path", path)
+        self.path = path
 
     def to_markdown(self, page_path: Optional[Path] = None) -> SpacedText:
         return SpacedText("")

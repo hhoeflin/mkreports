@@ -231,12 +231,12 @@ class Page:
         self,
         path: Path,
         report: Report,
+        page_settings: Optional[Dict[str, Any]] = None,
+        mkdocs_settings: Optional[Dict[str, Any]] = None,
     ) -> None:
         self._path = path.absolute()
         self._counters = Counters()
         self.report = report
-        self.code_marker_first: Optional[Stack] = None
-        self.code_marker_second: Optional[Stack] = None
 
         # check if the page already exists
         if not self._path.exists():

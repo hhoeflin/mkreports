@@ -12,7 +12,6 @@ from .file import File, relpath, true_stem
 from .text import SpacedText
 
 
-@dataclass(frozen=True)
 class ImageFile(File):
     text: str
     tooltip: str
@@ -26,14 +25,14 @@ class ImageFile(File):
         text: str = "",
         tooltip: str = "",
         allow_copy: bool = True,
-        hash: bool = True,
+        use_hash: bool = True,
     ) -> None:
         super().__init__(
-            path=path, store_path=store_path, allow_copy=allow_copy, hash=hash
+            path=path, store_path=store_path, allow_copy=allow_copy, use_hash=use_hash
         )
-        object.__setattr__(self, "text", text)
-        object.__setattr__(self, "tooltip", tooltip)
-        object.__setattr__(self, "link_type", link_type)
+        self.text = text
+        self.tooltip = tooltip
+        self.link_type = link_type
 
     def to_markdown(self, page_path: Path) -> SpacedText:
         if page_path is None:
@@ -87,7 +86,7 @@ class Image(ImageFile):
                     text=text,
                     tooltip=tooltip,
                     allow_copy=True,
-                    hash=True,
+                    use_hash=True,
                 )
         else:
             raise ValueError("Unsupported image type")
@@ -110,7 +109,7 @@ class Altair(File):
 
             # Make sure the file is moved to the rigth place
             super().__init__(
-                path=path, store_path=store_path, allow_copy=True, hash=True
+                path=path, store_path=store_path, allow_copy=True, use_hash=True
             )
 
         # use the hashed table name as the id if there is no other

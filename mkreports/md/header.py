@@ -9,7 +9,7 @@ from .base import Anchor, MdObj
 from .text import SpacedText
 
 
-@dataclass(frozen=True)
+@dataclass
 class Heading(MdObj):
     title: str
     level: int
@@ -18,7 +18,7 @@ class Heading(MdObj):
 
     def __post_init__(self):
         if isinstance(self.anchor, str):
-            object.__setattr__(self, "anchor", Anchor(self.anchor))
+            self.anchor = Anchor(self.anchor)
 
     def to_markdown(self, page_path: Optional[Path] = None) -> SpacedText:
         heading = mdt.Header.Header.choose_header(

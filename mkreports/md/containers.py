@@ -12,7 +12,7 @@ from .base import MdObj
 from .text import SpacedText, Text
 
 
-@dataclass(frozen=True)
+@dataclass
 class Admonition(MdObj):
     text: Union[Text, MdObj]
     kind: Literal[
@@ -63,7 +63,7 @@ class Admonition(MdObj):
         ) + SpacedText(indent(str(admon_text), "    "), (2, 2))
 
 
-@dataclass(frozen=True)
+@dataclass
 class Tab(MdObj):
     text: Union[Text, MdObj]
     title: Optional[str] = None
