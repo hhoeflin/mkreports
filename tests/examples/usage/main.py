@@ -2,10 +2,10 @@ from pathlib import Path
 
 from mkreports import Report
 
-from basic import use_basic
-from code_blocks import use_code_blocks
-from images import use_images
-from tables import use_tables
+from .basic import use_basic
+from .code_blocks import use_code_blocks
+from .images import use_images
+from .tables import use_tables
 
 
 def run_all(report: Report):
@@ -19,5 +19,5 @@ def run_all(report: Report):
 
 
 if __name__ == "__main__":
-    report = Report(Path("usage"), site_name="Mkreports documentations")
+    report = Report(Path("usage_docs"), site_name="Mkreports documentations")
     run_all(report)

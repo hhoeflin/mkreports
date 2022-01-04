@@ -1,6 +1,6 @@
 import hashlib
 import shutil
-from dataclasses import dataclass
+from os.path import relpath
 from pathlib import Path
 from typing import Optional, Union
 
@@ -21,17 +21,16 @@ def md5_hash_file(path: Path) -> str:
     return m.hexdigest()
 
 
-def relpath(path_to, path_from):
-    path_to = Path(path_to).absolute()
-    path_from = Path(path_from).absolute()
-    head = Path("/")
-    tail = Path("")
-    try:
-        for p in (*reversed(path_from.parents), path_from):
-            head, tail = p, path_to.relative_to(p)
-    except ValueError:  # Stop when the paths diverge.
-        pass
-    return Path("../" * (len(path_from.parents) - len(head.parents))).joinpath(tail)
+def relpath_html(target: Path, page_path: Path):
+    """
+    Relative path as to be used for html
+    """
+    if page_path.stem == "index":
+        # here, for translating to html, this path is referred to as its parent
+        return relpath(target, page_path.parent)
+    else:
+        # for translating to html, will be converted to path.parent / path.stem / index.html
+        return relpath(target, page_path)
 
 
 class File(MdObj):
@@ -40,7 +39,7 @@ class File(MdObj):
     allow_copy: bool
     store_path: Optional[Path]
     use_hash: bool
-    hash: str
+    _hash: Optional[str] = None
 
     def __init__(
         self,
@@ -59,7 +58,7 @@ class File(MdObj):
         )
 
         # for the path we first have to see if they will be copied
-        path = Path(path).absolute()
+        self.path = Path(path).absolute()
         if self.store_path is None:
             raise ValueError("store_path or a default must be set. Can't both be None.")
 
@@ -67,19 +66,22 @@ class File(MdObj):
 
             if self.use_hash:
                 # we calculate the hash of the file to be ingested
-                path_hash = md5_hash_file(path)
                 new_path = self.store_path / (
-                    true_stem(path) + "-" + path_hash + "".join(path.suffixes)
+                    true_stem(self.path) + "-" + self.hash + "".join(self.path.suffixes)
                 )
             else:
-                new_path = self.store_path / path.name
+                new_path = self.store_path / self.path.name
 
             # now see if we move or copy the file
             new_path.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy(path, new_path)
-            path = new_path
+            self.path = new_path
 
-        self.path = path
+    @property
+    def hash(self) -> str:
+        if self._hash is None:
+            self._hash = md5_hash_file(self.path)
+        return self._hash
 
     def to_markdown(self, page_path: Optional[Path] = None) -> SpacedText:
         return SpacedText("")

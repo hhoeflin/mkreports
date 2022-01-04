@@ -221,9 +221,7 @@ class Paragraph(MdObj):
         self, obj: Union[str, MdObj], anchor: Optional[Union[Anchor, str]] = None
     ):
         self.obj = obj if not isinstance(obj, str) else Raw(obj)
-        self.anchor = (
-            anchor if not isinstance(self.anchor, str) else Anchor(self.anchor)
-        )
+        self.anchor = anchor if not isinstance(anchor, str) else Anchor(anchor)
 
     def backmatter(self, page_path: Optional[Path] = None) -> SpacedText:
         return self.obj.backmatter(page_path)

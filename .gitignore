@@ -133,4 +133,6 @@ dmypy.json
 
 # project specific stuff
 tests/examples/usage/usage
-tests/examples/ipython_test
+tests/examples/ipython_test/test
+
+examples/ipython_test/test/docs/console/active.md

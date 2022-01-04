@@ -6,5 +6,5 @@ def test_list():
         md.H1("First header") + md.H2("Second header") + md.P("This is a paragraph")
     )
     assert basic_text.to_markdown().format_text(" ", " ") == (
-        "\n# First header\n\n## Second header\n\nThis is a paragraph\n\n"
+        "\n\n# First header\n\n## Second header\n\nThis is a paragraph\n\n"
     )

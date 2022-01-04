@@ -4,13 +4,13 @@ import json
 import tempfile
 from copy import deepcopy
 from pathlib import Path
-from typing import Any, Callable, Dict, Optional
+from typing import Any, Callable, Dict, Optional, Union
 
 import pandas as pd
 from mkreports.settings import Settings
 
 from .base import MdObj
-from .file import File, relpath, true_stem
+from .file import File, relpath_html, true_stem
 from .text import SpacedText
 
 
@@ -35,7 +35,7 @@ class DataTable(File):
         self,
         table: pd.DataFrame,
         store_path: Optional[Path] = None,
-        table_id: Callable[str, str] = lambda hash: f"datatable-{hash}",
+        table_id: Union[str, Callable[[str], str]] = lambda hash: f"datatable-{hash}",
         column_settings: Optional[dict] = None,
         **kwargs,
     ):
@@ -51,9 +51,10 @@ class DataTable(File):
             )
 
         # use the hashed table name as the id if there is no other
-        if table_id is None:
-            table_id = true_stem(self.path)
-        self.table_id = table_id
+        if isinstance(table_id, Callable):
+            self.table_id = table_id(self.hash)
+        else:
+            self.table_id = table_id
 
         # prepare the table settings
         col_set = {col: {"title": col} for col in table.columns}
@@ -91,7 +92,7 @@ class DataTable(File):
         # now we insert the data table on the page
         # note: as we are inserting directly into html, we have to do one addition
         # level deeper for the relative path
-        rel_table_path = str(relpath(self.path, page_path))
+        rel_table_path = relpath_html(self.path, page_path)
         table_settings = copy.deepcopy(self.table_settings)
         table_settings["ajax"] = str(rel_table_path)
         settings_str = json.dumps(table_settings)

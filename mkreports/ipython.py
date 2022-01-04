@@ -115,12 +115,13 @@ class ConsoleWriter(Magics):
             return None
 
     def open_console(self) -> None:
-        self.console = self.report.get_page((["Console"], Path("console/index.md")))
+        self.console = self.report.get_page(
+            Path("console/active.md"), init_counter_time=True
+        )
         # make sure the table of contents does not get shown
         self.console.add(
             md.Raw(
                 page_settings={"hide": ["toc"]},
-                mkdocs_settings={"theme": {"features": ["navigation.indexes"]}},
             )
         )
 
@@ -130,13 +131,13 @@ class ConsoleWriter(Magics):
         Function to archive the console. This is also a line magic, however
         the line itself will be ignored.
         """
-        print(line)
         # we also need to add a navigation entry
         new_entry = ["Console", f"{datetime.now().strftime('%Y/%m/%d %H:%M:%S')}.md"]
         new_path = (
             self.console.path.parent / f"{datetime.now().strftime('%Y%m%d_%H%M%S')}.md"
         )
-        # we move teh page out of the way
+
+        # we move the page out of the way
         shutil.move(
             self.console.path,
             new_path,
@@ -190,8 +191,7 @@ def load_ipython_extension(ip):
     of the user-space, same as the markdown module for use.
     """
     cw = ConsoleWriter(ip)
-    from . import md
 
-    cw.shell.push({"md": md, "cons": cw.console})
+    cw.shell.push({"md": cw.console.md, "cons": cw.console})
     ip.events.register("post_run_cell", cw.post_run_cell)
     ip.register_magics(cw)

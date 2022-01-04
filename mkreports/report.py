@@ -8,6 +8,7 @@ included.
 """
 import contextlib
 import shutil
+import time
 from pathlib import Path
 from typing import Any, ContextManager, Dict, Mapping, Optional, Tuple, Union
 
@@ -112,8 +113,8 @@ class Report:
         # need to ensure it is of type Path
         self._path = Path(path).absolute()
         self.site_name = site_name
-        # first check if the path exists and return error if that is not ok
-        if self.path.exists():
+        # first check if the path exists and is not empty and return error if that is not ok
+        if self.path.exists() and any(self.path.iterdir()):
             if not exist_ok:
                 raise ReportExistsError(f"{self.path} already exists")
             else:
@@ -153,7 +154,7 @@ class Report:
         return self.docs_dir / "index.md"
 
     def _create_new(self, site_name: str, settings: Mapping[str, str]) -> None:
-        # create the directories
+        # create the directoriewwwwwwbhec
         self.docs_dir.mkdir(exist_ok=True, parents=True)
         # index.md just remains empty
         self.index_file.touch()
@@ -194,6 +195,7 @@ class Report:
         self,
         page_name: Union[NavEntry, Path, str],
         append: bool = True,
+        init_counter_time: bool = False,
     ) -> "Page":
         # if the page_name is just a string, we turn it into a dictionary
         # based on the hierarchical names
@@ -223,7 +225,9 @@ class Report:
             # update the report settings
             self._add_nav_entry(nav_entry)
 
-        return Page(self.docs_dir / path, report=self)
+        return Page(
+            self.docs_dir / path, report=self, init_counter_time=init_counter_time
+        )
 
 
 class Page:
@@ -233,15 +237,26 @@ class Page:
         report: Report,
         page_settings: Optional[Dict[str, Any]] = None,
         mkdocs_settings: Optional[Dict[str, Any]] = None,
+        init_counter_time: bool = False,
     ) -> None:
         self._path = path.absolute()
-        self._counters = Counters()
+        if init_counter_time:
+            # use time in ms
+            self._counters = Counters(start_with=int(time.time() * 1000))
+        else:
+            self._counters = Counters()
         self.report = report
 
         # check if the page already exists
         if not self._path.exists():
             # we create the file with the settings
             self.add(Raw(page_settings=page_settings, mkdocs_settings=mkdocs_settings))
+
+        self._md = MdProxy(
+            store_path=self.gen_asset_path,
+            datatable_id=lambda hash: self._counters.counted_id(f"datatable-{hash}"),
+            altair_id=lambda hash: self._counters.counted_id(f"altair-{hash}"),
+        )
 
         # a tracker for tracking code to be printed
         self.reset_tracker()
@@ -356,8 +371,8 @@ class Page:
         write_page(self.path, metadata, content)
 
     @property
-    def md(self):
+    def md(self) -> MdProxy:
         """
         A proxy for the 'md' submodule that specifies 'store_path' where possible.
         """
-        return MdProxy(store_path=self.gen_asset_path)
+        return self._md

@@ -1,0 +1,18 @@
+markdown_extensions:
+- meta
+- admonition
+- pymdownx.extra
+- pymdownx.details
+- pymdownx.superfences
+- pymdownx.tabbed:
+    alternate_style: true
+nav:
+- Home: index.md
+- Basic: basic.md
+- Images: images.md
+- Tables: tables.md
+- Code Blocks: code_blocks.md
+site_name: Mkreports documentations
+theme:
+  custom_dir: overrides
+  name: material

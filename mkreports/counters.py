@@ -17,3 +17,13 @@ class Counters:
         else:
             self._counts[name] = self._start_with
         return self._counts[name]
+
+    def counted_id(self, prefix: str, omit_1: bool = False) -> str:
+        """
+        Returns an id with a counted number at the end.
+        """
+        prefix_count = self.count(prefix)
+        if omit_1 and prefix_count == 1:
+            return prefix
+        else:
+            return f"{prefix}_{self.count(prefix)}"

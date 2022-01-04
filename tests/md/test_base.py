@@ -10,4 +10,4 @@ def test_raw():
 def test_paragraph():
     test_paragraph = "This is a paragraph"
     p = md.P(test_paragraph)
-    assert p.to_markdown().format_text(" ", " ") == "\n" + test_paragraph + "\n\n"
+    assert p.to_markdown().format_text(" ", " ") == "\n\n" + test_paragraph + "\n\n"

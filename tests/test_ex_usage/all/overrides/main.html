@@ -1,0 +1,20 @@
+
+{% extends "base.html" %}
+
+{% block extrahead %}
+
+  {% if page and page.meta and page.meta.css %}
+    {% for css_load in page.meta.css %}
+        <link rel="stylesheet" href="{{css_load}}">
+    {% endfor %}
+
+  {% endif %}
+
+  {% if page and page.meta and page.meta.javascript %}
+
+    {% for js_load in page.meta.javascript %}
+        <script type="text/javascript" src="{{js_load}}"></script>
+    {% endfor %}
+
+  {% endif %}
+{% endblock %}

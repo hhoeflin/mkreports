@@ -31,7 +31,7 @@ class Heading(MdObj):
 
         return SpacedText(
             heading,
-            (1, 2),
+            (2, 2),
         )
 
 

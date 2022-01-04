@@ -27,7 +27,7 @@ class List(MdObj):
         marker: Literal["-", "*", "+", "1"] = "-",
     ):
         super().__init__()
-        self.items = items
+        self.list = MdSeq(items)
         self.marker = marker
 
     def append(self, item: Union[Text, MdObj]) -> "List":

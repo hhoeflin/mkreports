@@ -1,14 +1,13 @@
 import inspect
 import tempfile
 from copy import deepcopy
-from dataclasses import dataclass
 from pathlib import Path
-from typing import Literal, Optional, Union
+from typing import Callable, Literal, Optional, Union
 
 from mdutils.tools.Image import Image as UtilsImage
 from mkreports.settings import Settings
 
-from .file import File, relpath, true_stem
+from .file import File, relpath_html
 from .text import SpacedText
 
 
@@ -41,7 +40,7 @@ class ImageFile(File):
             return SpacedText(
                 UtilsImage.new_inline_image(
                     text=self.text,
-                    path=str(relpath(self.path, page_path.parent)),
+                    path=str(relpath_html(self.path, page_path.parent)),
                     tooltip=self.tooltip,
                 )
             )
@@ -97,7 +96,7 @@ class Altair(File):
         self,
         altair,
         store_path: Optional[Path] = None,
-        altair_id: Optional[str] = None,
+        altair_id: Union[str, Callable[[str], str]] = lambda hash: f"altair-{hash}",
         **kwargs,
     ):
         with tempfile.TemporaryDirectory() as dir:
@@ -112,10 +111,10 @@ class Altair(File):
                 path=path, store_path=store_path, allow_copy=True, use_hash=True
             )
 
-        # use the hashed table name as the id if there is no other
-        if altair_id is None:
-            altair_id = true_stem(self.path)
-        self.altair_id = altair_id
+        if isinstance(altair_id, Callable):
+            self.altair_id = altair_id(self.hash)
+        else:
+            self.altair_id = altair_id
 
     def req_settings(self):
         settings = Settings(
@@ -131,25 +130,42 @@ class Altair(File):
         )
         return settings
 
-    def to_markdown(self, page_path: Path):
+    def backmatter(self, page_path: Optional[Path]) -> SpacedText:
+        """Set the script tag into backmatter."""
         if page_path is None:
             raise ValueError(
                 "page_path must be set for relative referencing of json data file."
             )
-
         # now we insert the data table on the page
         # note: as we are inserting directly into html, we have to do one addition
         # level deeper for the relative path
-        rel_spec_path = str(relpath(self.path, page_path))
+        rel_spec_path = str(relpath_html(self.path, page_path))
         raw_html = inspect.cleandoc(
             f"""
-            <div id='{self.altair_id}'> </div>
             <script>
                 vegaEmbed("#{self.altair_id}", "{rel_spec_path}")
     	        // result.view provides access to the Vega View API
                 .then(result => console.log(result))
                 .catch(console.warn);
             </script>
+            """
+        )
+
+        return SpacedText(raw_html, (2, 2))
+
+    def to_markdown(self, page_path: Path):
+        if page_path is None:
+            raise ValueError(
+                "page_path must be set for relative referencing of json data file."
+            )
+
+        # note; here we just insert the div. The reason is that this part can be indented, e.g.
+        # inside a tab. But then <script> content can be escaped, leading to errors for '=>'
+        # so the script tag itself gets done in the backmatter
+
+        raw_html = inspect.cleandoc(
+            f"""
+            <div id='{self.altair_id}'> </div>
             """
         )
 
