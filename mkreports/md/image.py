@@ -92,6 +92,32 @@ class Image(ImageFile):
             raise ValueError("Unsupported image type")
 
 
+class PIL(ImageFile):
+    def __init__(
+        self,
+        image,
+        store_path: Optional[Path] = None,
+        link_type: Literal["inline", "ref"] = "inline",
+        text: str = "",
+        tooltip: str = "",
+        img_type: Literal["jpg", "png"] = "png",
+    ) -> None:
+        with tempfile.TemporaryDirectory() as dir:
+            path = Path(dir) / ("pil_image." + img_type)
+            image.save(path)
+            # now we create the ImageFile object
+            # which will also move it into the store
+            super().__init__(
+                path=path,
+                store_path=store_path,
+                link_type=link_type,
+                text=text,
+                tooltip=tooltip,
+                allow_copy=True,
+                use_hash=True,
+            )
+
+
 class Altair(File):
     def __init__(
         self,
@@ -265,6 +291,8 @@ class Plotly(File):
 
 
 image_save_funcs = dict()
+
+
 # for plotnine
 try:
     from plotnine.ggplot import ggplot

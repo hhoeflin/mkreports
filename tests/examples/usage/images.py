@@ -1,6 +1,8 @@
 import matplotlib.pyplot as plt
+import numpy as np
 import seaborn as sns
 from mkreports import Report, md
+from PIL import Image
 from plotnine import aes, facet_wrap, geom_point, ggplot, stat_smooth
 from plotnine.data import mtcars
 
@@ -24,6 +26,22 @@ def use_images(report: Report) -> None:
                 image manually and then include it as an `ImageFile` object.
                 """
             )
+
+            with p.add(md.H3("PIL")):
+                with p.track_code():
+                    p.add(
+                        """
+                        PIL is the standard python image library. `Image` objects are written
+                        out to files and included in the markdown.
+
+                        Here as an example we simply have a black and white image of a black
+                        and grey square.
+                        """
+                    )
+                    img_np = np.zeros((200, 400), dtype=np.uint8)
+                    img_np[:, 200:400] = 128
+                    img = Image.fromarray(img_np)
+                p.add(p.md.PIL(img), add_code=True)
 
             with p.add(md.H3("Matplotlib")):
                 with p.track_code():
