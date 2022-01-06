@@ -110,7 +110,11 @@ def use_images(report: Report) -> None:
                 p.add(altair_chart, add_code=True)
 
             with p.add(md.H3("Plotly")):
-                p.add(md.Admonition("Still to be implemented", kind="warning"))
+                with p.track_code():
+                    import plotly.express as px
+
+                    fig = px.scatter(x=[0, 1, 2, 3, 4], y=[0, 1, 4, 9, 16])
+                p.add(p.md.Plotly(fig), add_code=True)
 
         with p.add(md.H2("Different image sizes")):
             p.add(md.Admonition("Still to be implemented", kind="warning"))

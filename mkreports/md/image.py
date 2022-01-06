@@ -1,4 +1,5 @@
 import inspect
+import json
 import tempfile
 from copy import deepcopy
 from pathlib import Path
@@ -166,6 +167,97 @@ class Altair(File):
         raw_html = inspect.cleandoc(
             f"""
             <div id='{self.altair_id}'> </div>
+            """
+        )
+
+        return SpacedText(raw_html, (2, 2))
+
+
+class Plotly(File):
+    def __init__(
+        self,
+        plotly,
+        store_path: Optional[Path] = None,
+        plotly_id: Union[str, Callable[[str], str]] = lambda hash: f"plotly-{hash}",
+        **kwargs,
+    ):
+        with tempfile.TemporaryDirectory() as dir:
+            path = Path(dir) / ("plotly.json")
+            # here we use the split method; the index and columns
+            # are not useful, but the rest gets set as 'data', which we need
+            with path.open("w") as f:
+                f.write(plotly.to_json(**kwargs))
+
+            # Make sure the file is moved to the rigth place
+            super().__init__(
+                path=path, store_path=store_path, allow_copy=True, use_hash=True
+            )
+
+        if isinstance(plotly_id, Callable):
+            self.plotly_id = plotly_id(self.hash)
+        else:
+            self.plotly_id = plotly_id
+
+    def req_settings(self):
+        settings = Settings(
+            page=dict(
+                # the following needs to be loaded in the header of the page, not the footer
+                # this enables activating the tables in the body
+                javascript=[
+                    "https://cdn.plot.ly/plotly-2.8.3.min.js",
+                ],
+            )
+        )
+        return settings
+
+    def backmatter(self, page_path: Optional[Path]) -> SpacedText:
+        """Set the script tag into backmatter."""
+        if page_path is None:
+            raise ValueError(
+                "page_path must be set for relative referencing of json data file."
+            )
+        # now we insert the data table on the page
+        # note: as we are inserting directly into html, we have to do one addition
+        # level deeper for the relative path
+        rel_spec_path = str(relpath_html(self.path, page_path))
+        raw_html = inspect.cleandoc(
+            f"""
+            <script>
+                fetch('{rel_spec_path}')
+                    .then(function (response) {{
+                        return response.json();
+                    }})
+                    .then(function (data) {{
+                        doPlotly(data);
+                    }})
+                    .catch(function (err) {{
+                        console.log('error: ' + err);
+                    }});
+                function doPlotly(plotlyJson) {{
+                    Plotly.newPlot("{self.plotly_id}", {{
+                        "data": plotlyJson["data"],
+                        "layout": plotlyJson["layout"]
+                    }})
+                }}
+            </script>
+            """
+        )
+
+        return SpacedText(raw_html, (2, 2))
+
+    def to_markdown(self, page_path: Path):
+        if page_path is None:
+            raise ValueError(
+                "page_path must be set for relative referencing of json data file."
+            )
+
+        # note; here we just insert the div. The reason is that this part can be indented, e.g.
+        # inside a tab. But then <script> content can be escaped, leading to errors for '=>'
+        # so the script tag itself gets done in the backmatter
+
+        raw_html = inspect.cleandoc(
+            f"""
+            <div id='{self.plotly_id}'> </div>
             """
         )
 

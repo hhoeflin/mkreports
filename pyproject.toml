@@ -20,6 +20,7 @@ python-frontmatter = ">=1.0.0"
 anytree = "^2.8.0"
 intervaltree = "^3.1.0"
 more-itertools = "^8.12.0"
+plotly = "^5.5.0"
 
 [tool.poetry.dev-dependencies]
 pudb = ">=2021.2.2"
