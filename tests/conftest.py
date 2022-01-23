@@ -1,5 +1,9 @@
 def pytest_addoption(parser):
-    parser.addoption("--replace-gold", action="store_true", help="run all combinations")
+    parser.addoption(
+        "--replace-gold",
+        action="store_true",
+        help="don't check gold output and instead overwrite it",
+    )
 
 
 def pytest_generate_tests(metafunc):
