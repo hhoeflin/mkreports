@@ -1,6 +1,7 @@
 from .base import (Anchor, Link, MdSeq, Paragraph, Raw, get_default_store_path,
                    set_default_store_path)
 from .containers import Admonition, Code, Tab
+from .docstring import Docstring
 from .file import File
 from .header import *
 from .image import PIL, Altair, Image, ImageFile, Plotly
