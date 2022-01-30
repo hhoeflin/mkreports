@@ -54,7 +54,7 @@ choice or the backend being used for plotting.
 
 === "Content"
 
-    ![](images_gen_assets/image-09ce4ef92b0aecfedf20b283676d4f4f.png)
+    ![](images_gen_assets/image-9eacde53d07030438d059ea6a19b8285.png)
 
 === "Code"
 
@@ -78,7 +78,7 @@ is from the beginner example of the library.
 
 === "Content"
 
-    ![](images_gen_assets/image-59c9a85403ce21e8b623567fb406ca15.png)
+    ![](images_gen_assets/image-9446dc7872bbfae6dd221f72376fc7bb.png)
 
 === "Code"
 
@@ -107,7 +107,7 @@ accessed and saved in the same fashion as for matplotlib.
 
 === "Content"
 
-    ![](images_gen_assets/image-4d60d000b40181d289c317100604191d.png)
+    ![](images_gen_assets/image-c3fb8cb2918f73795ffbae41eb5404ae.png)
 
 === "Code"
 
@@ -147,7 +147,7 @@ accessed and saved in the same fashion as for matplotlib.
 
 === "Content"
 
-    <div id='altair-a60f58418e1eda28fbf413975bb9247c_1'> </div>
+    <div id='altair-a7a2eb773c7d9454c694b490a77e5a7e_1'> </div>
 
 === "Code"
 
@@ -172,7 +172,7 @@ accessed and saved in the same fashion as for matplotlib.
     ```
 
 <script>
-    vegaEmbed("#altair-a60f58418e1eda28fbf413975bb9247c_1", "../images_gen_assets/altair-a60f58418e1eda28fbf413975bb9247c.csv")
+    vegaEmbed("#altair-a7a2eb773c7d9454c694b490a77e5a7e_1", "../images_gen_assets/altair-a7a2eb773c7d9454c694b490a77e5a7e.csv")
     // result.view provides access to the Vega View API
     .then(result => console.log(result))
     .catch(console.warn);
