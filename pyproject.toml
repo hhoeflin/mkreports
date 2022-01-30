@@ -1,9 +1,12 @@
 [tool.poetry]
 name = "mkreports"
-version = "0.1.0"
+version = "0.1.1"
 description = "Creating static reports from python using mkdocs"
 authors = ["Holger Hoefling <hhoeflin@gmail.com>"]
 license = "MIT"
+homepage = "https://github.com/hhoeflin/mkreports"
+repository = "https://github.com/hhoeflin/mkreports"
+readme = "README.md"
 
 [tool.poetry.dependencies]
 python = ">=3.7"

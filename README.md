@@ -1,3 +1,5 @@
+*This project is in very early status; all APIs can change at any point in time.*
+
 # Mkdocs based data analysis reports
 
 In this reports we want to provide an easier way to create static
