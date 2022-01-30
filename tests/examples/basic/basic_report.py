@@ -6,7 +6,7 @@ if __name__ == "__main__":
     stack_start = stack.get_stack()
     report = Report("basic_report", site_name="Basic report")
     print(f"Created Report directory {report.path}")
-    page = report.get_page("test/test2/test.md", append=False)
+    page = report.page("test/test2/test.md", append=False)
     print(f"Created page at {page.path}")
 
     basic_text = (

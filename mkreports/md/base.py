@@ -15,17 +15,6 @@ from .text import SpacedText, Text
 store_path_dict = {}
 
 
-def set_default_store_path(store_path: Optional[Path]) -> None:
-    store_path_dict["store_path"] = store_path
-
-
-def get_default_store_path() -> Optional[Path]:
-    if "store_path" in store_path_dict:
-        return store_path_dict["store_path"]
-    else:
-        return None
-
-
 class MdObj(ABC):
     """
     A class for representing markdown objects.

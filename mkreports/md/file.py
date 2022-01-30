@@ -4,7 +4,7 @@ from os.path import relpath
 from pathlib import Path
 from typing import Optional, Union
 
-from .base import MdObj, get_default_store_path
+from .base import MdObj
 from .text import SpacedText
 
 
@@ -37,14 +37,14 @@ class File(MdObj):
 
     path: Path
     allow_copy: bool
-    store_path: Optional[Path]
+    store_path: Path
     use_hash: bool
     _hash: Optional[str] = None
 
     def __init__(
         self,
         path: Union[str, Path],
-        store_path: Optional[Path] = None,
+        store_path: Path,
         allow_copy: bool = True,
         use_hash: bool = False,
     ) -> None:
@@ -53,14 +53,10 @@ class File(MdObj):
         # set the existing attributes
         self.allow_copy = allow_copy
         self.use_hash = use_hash
-        self.store_path = (
-            store_path if store_path is not None else get_default_store_path()
-        )
+        self.store_path = store_path
 
         # for the path we first have to see if they will be copied
         self.path = Path(path).absolute()
-        if self.store_path is None:
-            raise ValueError("store_path or a default must be set. Can't both be None.")
 
         if self.allow_copy:
 

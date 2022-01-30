@@ -20,7 +20,7 @@ class ImageFile(File):
     def __init__(
         self,
         path: Union[str, Path],
-        store_path: Optional[Path] = None,
+        store_path: Path,
         link_type: Literal["inline", "ref"] = "inline",
         text: str = "",
         tooltip: str = "",
@@ -55,7 +55,7 @@ class Image(ImageFile):
     def __init__(
         self,
         image,
-        store_path: Optional[Path] = None,
+        store_path: Path,
         width: Optional[float] = None,
         height: Optional[float] = None,
         units: Literal["in", "cm", "mm"] = "in",
@@ -96,7 +96,7 @@ class PIL(ImageFile):
     def __init__(
         self,
         image,
-        store_path: Optional[Path] = None,
+        store_path: Path,
         link_type: Literal["inline", "ref"] = "inline",
         text: str = "",
         tooltip: str = "",
@@ -122,7 +122,7 @@ class Altair(File):
     def __init__(
         self,
         altair,
-        store_path: Optional[Path] = None,
+        store_path: Path,
         altair_id: Union[str, Callable[[str], str]] = lambda hash: f"altair-{hash}",
         **kwargs,
     ):
@@ -203,7 +203,7 @@ class Plotly(File):
     def __init__(
         self,
         plotly,
-        store_path: Optional[Path] = None,
+        store_path: Path,
         plotly_id: Union[str, Callable[[str], str]] = lambda hash: f"plotly-{hash}",
         **kwargs,
     ):

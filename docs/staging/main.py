@@ -1,4 +1,5 @@
 import inspect
+import shutil
 from pathlib import Path
 
 import mkreports
@@ -11,7 +12,20 @@ from .images import use_images
 from .tables import use_tables
 
 
+def add_md_pages(report: Report):
+    """
+    Add pages written in pure markdown format.
+    """
+    # open the page, and copy the other one over it
+    index_page = report.page("index.md")
+    shutil.copy(Path(__file__).parent / "index.md", index_page.path)
+
+    markdown_page = report.page("markdown.md")
+    shutil.copy(Path(__file__).parent / "markdown.md", markdown_page.path)
+
+
 def run_all(report: Report):
+    add_md_pages(report)
     use_basic(report)
     # documentation for images
     use_images(report)

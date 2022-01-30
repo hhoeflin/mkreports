@@ -115,7 +115,7 @@ class ConsoleWriter(Magics):
             return None
 
     def open_console(self) -> None:
-        self.console = self.report.get_page(
+        self.console = self.report.page(
             Path("console/active.md"), init_counter_time=True
         )
         # make sure the table of contents does not get shown

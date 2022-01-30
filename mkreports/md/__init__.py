@@ -1,5 +1,4 @@
-from .base import (Anchor, Link, MdSeq, Paragraph, Raw, get_default_store_path,
-                   set_default_store_path)
+from .base import Anchor, Link, MdSeq, Paragraph, Raw
 from .containers import Admonition, Code, Tab
 from .docstring import Docstring
 from .file import File

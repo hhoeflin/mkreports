@@ -7,7 +7,7 @@ def use_tables(report: Report) -> None:
     """
     Show all the different ways on how we can work with tables.
     """
-    with report.get_page("tables.md", append=False) as p:
+    with report.page("tables.md", append=False) as p:
         p.add(md.H1("Different ways of handling tables"))
 
         p.add(
@@ -38,4 +38,4 @@ def use_tables(report: Report) -> None:
                 """
             )
             # and as a DataTable
-            p.add(md.DataTable(pd.DataFrame(mtcars)))
+            p.DataTable(pd.DataFrame(mtcars))

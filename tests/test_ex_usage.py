@@ -7,19 +7,21 @@ new output will be compared. This way any changes can
 be detected.
 """
 
+import sys
 from pathlib import Path
 
+sys.path.insert(1, str(Path(__file__).parents[1] / "docs"))
 from mkreports import Report
+from staging.main import run_all
 
 from dircmp import DirCmp
-from examples.usage.main import run_all
 
-gold_path_all = Path(__file__).parent / "test_ex_usage" / "all"
+gold_path_all = Path(__file__).parents[1] / "docs/final"
 
 
-def test_all(replace_gold, tmp_path):
+def test_all(tmp_path):
     """Test basic usage example."""
-    dircmp = DirCmp(tmp_path, gold_path_all, replace_gold)
+    dircmp = DirCmp(tmp_path, gold_path_all)
     report = Report(dircmp.test_output_dir, site_name="Mkreports documentations")
     run_all(report)
     assert dircmp.is_same, dircmp.report_full_closure()

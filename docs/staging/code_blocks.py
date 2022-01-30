@@ -14,10 +14,10 @@ def use_code_blocks(report: Report) -> None:
     """
     Show different ways on how code blacks can be included.
     """
-    with report.get_page("code_blocks.md", append=False) as p:
-        p.add(md.H1("Code blocks"))
+    with report.page("code_blocks.md", append=False) as p:
+        p.H1("Code blocks")
 
-        with p.add(md.H2("Tracking code")):
+        with p.H2("Tracking code"):
             p.add(
                 """
                 One of the features of mkreports is that we can include
@@ -45,7 +45,7 @@ def use_code_blocks(report: Report) -> None:
 
             p.add(f"fib({x}) = {a}", add_code=True)
 
-        with p.add(md.H2("Relative to position")):
+        with p.H2("Relative to position"):
             p.add(
                 """
                 In addition to tracking code as shown above, we can also
@@ -55,4 +55,4 @@ def use_code_blocks(report: Report) -> None:
                 """
             )
 
-            p.add(md.Admonition("This is not yet implemented", kind="warning"))
+            p.Admonition("This is not yet implemented", kind="warning")

@@ -11,12 +11,12 @@ def use_images(report: Report) -> None:
     """
     Show all different ways on how we can include images.
     """
-    with report.get_page("images.md", append=False) as p:
+    with report.page("images.md", append=False) as p:
 
         # we don't need an indentation for everything if we don't want
-        p.add(md.H1("Images"))
+        p.H1("Images")
 
-        with p.add(md.H2("Supported formats")):
+        with p.H2("Supported formats"):
             p.add(
                 """
                 Mkreports supports inclusion out of the box of a number of different imaging 
@@ -27,7 +27,7 @@ def use_images(report: Report) -> None:
                 """
             )
 
-            with p.add(md.H3("PIL")):
+            with p.H3("PIL"):
                 with p.track_code():
                     p.add(
                         """
@@ -41,7 +41,7 @@ def use_images(report: Report) -> None:
                     img_np = np.zeros((200, 400), dtype=np.uint8)
                     img_np[:, 200:400] = 128
                     img = Image.fromarray(img_np)
-                p.add(p.md.PIL(img), add_code=True)
+                p.PIL(img, add_code=True)
 
             with p.add(md.H3("Matplotlib")):
                 with p.track_code():
@@ -55,7 +55,7 @@ def use_images(report: Report) -> None:
 
                     fig, ax = plt.subplots()
                     ax.plot([1, 2, 3, 4], [1, 4, 2, 3])
-                p.add(md.Image(fig), add_code=True)
+                p.Image(fig, add_code=True)
 
             with p.add(md.H3("Plotnine")):
                 with p.track_code():
@@ -66,7 +66,7 @@ def use_images(report: Report) -> None:
                         """
                     )
 
-                    pn_image = md.Image(
+                    pn_image = p.md.Image(
                         ggplot(mtcars, aes("wt", "mpg", color="factor(gear)"))
                         + geom_point()
                         + stat_smooth(method="lm")
@@ -90,7 +90,7 @@ def use_images(report: Report) -> None:
                     df = sns.load_dataset("anscombe")
 
                     # Show the results of a linear regression within each dataset
-                    sea_img = md.Image(
+                    sea_img = p.md.Image(
                         sns.lmplot(
                             x="x",
                             y="y",
@@ -106,7 +106,7 @@ def use_images(report: Report) -> None:
                     )
                 p.add(sea_img, add_code=True)
 
-            with p.add(md.H3("Altair")):
+            with p.H3("Altair"):
                 with p.track_code():
                     import altair as alt
                     import pandas as pd
@@ -118,7 +118,7 @@ def use_images(report: Report) -> None:
                         }
                     )
 
-                    altair_chart = md.Altair(
+                    altair_chart = p.md.Altair(
                         alt.Chart(source)
                         .mark_bar()
                         .encode(x="a", y="b")
@@ -127,12 +127,12 @@ def use_images(report: Report) -> None:
 
                 p.add(altair_chart, add_code=True)
 
-            with p.add(md.H3("Plotly")):
+            with p.H3("Plotly"):
                 with p.track_code():
                     import plotly.express as px
 
                     fig = px.scatter(x=[0, 1, 2, 3, 4], y=[0, 1, 4, 9, 16])
                 p.add(p.md.Plotly(fig), add_code=True)
 
-        with p.add(md.H2("Different image sizes")):
-            p.add(md.Admonition("Still to be implemented", kind="warning"))
+        with p.H2("Different image sizes"):
+            p.Admonition("Still to be implemented", kind="warning")

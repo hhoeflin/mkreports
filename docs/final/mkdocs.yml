@@ -1,0 +1,44 @@
+markdown_extensions:
+- meta
+- admonition
+- pymdownx.extra
+- pymdownx.details
+- pymdownx.superfences
+- pymdownx.tabbed:
+    alternate_style: true
+nav:
+- Home: index.md
+- Markdown: markdown.md
+- Basic: basic.md
+- Images: images.md
+- Tables: tables.md
+- Code Blocks: code_blocks.md
+- Reference:
+  - mkreports:
+    - counters: Reference/mkreports/counters.md
+    - docs: Reference/mkreports/docs.md
+    - exceptions: Reference/mkreports/exceptions.md
+    - ipython: Reference/mkreports/ipython.md
+    - md:
+      - base: Reference/mkreports/md/base.md
+      - containers: Reference/mkreports/md/containers.md
+      - docstring: Reference/mkreports/md/docstring.md
+      - file: Reference/mkreports/md/file.md
+      - header: Reference/mkreports/md/header.md
+      - image: Reference/mkreports/md/image.md
+      - list: Reference/mkreports/md/list.md
+      - table: Reference/mkreports/md/table.md
+      - text: Reference/mkreports/md/text.md
+    - md_proxy: Reference/mkreports/md_proxy.md
+    - parser: Reference/mkreports/parser.md
+    - report: Reference/mkreports/report.md
+    - settings: Reference/mkreports/settings.md
+    - stack: Reference/mkreports/stack.md
+    - utils: Reference/mkreports/utils.md
+plugins:
+- search
+- mkdocstrings
+site_name: Mkreports documentations
+theme:
+  custom_dir: overrides
+  name: material

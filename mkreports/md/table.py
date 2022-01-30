@@ -34,7 +34,7 @@ class DataTable(File):
     def __init__(
         self,
         table: pd.DataFrame,
-        store_path: Optional[Path] = None,
+        store_path: Path,
         table_id: Union[str, Callable[[str], str]] = lambda hash: f"datatable-{hash}",
         column_settings: Optional[dict] = None,
         **kwargs,

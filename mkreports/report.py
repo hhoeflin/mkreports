@@ -10,7 +10,8 @@ import contextlib
 import shutil
 import time
 from pathlib import Path
-from typing import Any, ContextManager, Dict, Mapping, Optional, Tuple, Union
+from typing import (Any, Callable, ContextManager, Dict, Mapping, Optional,
+                    Tuple, Union)
 
 import yaml
 from frontmatter.default_handlers import DEFAULT_POST_TEMPLATE, YAMLHandler
@@ -20,8 +21,7 @@ from .counters import Counters
 from .exceptions import (ReportExistsError, ReportNotExistsError,
                          ReportNotValidError, TrackerEmptyError,
                          TrackerIncompleteError)
-from .md import (MdObj, Raw, SpacedText, Tab, Text, get_default_store_path,
-                 set_default_store_path)
+from .md import MdObj, Raw, SpacedText, Tab, Text
 from .md_proxy import MdProxy
 from .settings import (NavEntry, add_nav_entry, load_yaml, merge_settings,
                        path_to_nav_entry, save_yaml)
@@ -191,7 +191,7 @@ class Report:
         mkdocs_settings = add_nav_entry(mkdocs_settings, nav_entry)
         save_yaml(mkdocs_settings, self.mkdocs_file)
 
-    def get_page(
+    def page(
         self,
         page_name: Union[NavEntry, Path, str],
         append: bool = True,
@@ -263,14 +263,31 @@ class Page:
 
     def __enter__(self) -> "Page":
         """Enter context manager and set the default store path."""
-        self._old_store_path = get_default_store_path()
-        set_default_store_path(self.gen_asset_path)
-
         return self
 
     def __exit__(self, exc_type, exc_val, traceback) -> None:
         """Remove the default store path and restore the previous one."""
-        set_default_store_path(self._old_store_path)
+
+    def __getattr__(self, name):
+        md_class = self.md.__getattr__(name)
+
+        def md_and_add(*args, **kwargs):
+            kwargs_add = {
+                name: value
+                for name, value in kwargs.items()
+                if name in ["add_code", "bottom"]
+            }
+            kwargs_md = {
+                name: value
+                for name, value in kwargs.items()
+                if name not in ["add_code", "bottom"]
+            }
+
+            # now apply to md
+            md_obj = md_class(*args, **kwargs_md)
+            return self.add(md_obj, **kwargs_add)
+
+        return md_and_add
 
     @property
     def path(self) -> Path:
@@ -308,7 +325,7 @@ class Page:
         return self.tracker.tree.md_tree(highlight=highlight)
 
     def add(
-        self, item: Union[MdObj, Text], add_code=False, bottom: bool = True
+        self, item: Union[MdObj, Text], add_code: bool = False, bottom: bool = True
     ) -> ContextManager["Page"]:
         # first ensure that item is an MdObj
         if isinstance(item, str):

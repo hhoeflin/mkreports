@@ -2,8 +2,8 @@ from mkreports import Report, md
 
 
 def use_basic(report: Report) -> None:
-    with report.get_page("basic.md", append=False) as p:
-        p.add(md.H1("Basic formatting elements"))
+    with report.page("basic.md", append=False) as p:
+        p.H1("Basic formatting elements")
 
         with p.add(
             md.H2("Headings", anchor=(heading_anchor := md.Anchor("my-headings")))
@@ -62,7 +62,7 @@ def use_basic(report: Report) -> None:
                 )
                 x += md.P(
                     "A link to another page "
-                    + md.Link("Images", to_page_path=report.get_page("images.md").path)
+                    + md.Link("Images", to_page_path=report.page("images.md").path)
                 )
                 x += md.P(
                     "Or just to any page " + md.Link("Google", url="https://google.com")
