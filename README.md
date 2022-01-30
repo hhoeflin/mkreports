@@ -1,3 +1,5 @@
+![Pytest](https://github.com/hhoeflin/mkreports/actions/workflows/pytest.yml/badge.svg)
+
 *This project is in very early status; all APIs can change at any point in time.*
 
 # Mkdocs based data analysis reports
