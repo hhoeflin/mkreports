@@ -31,7 +31,7 @@ and grey square.
 
 === "Code"
 
-    ```python title="/home/hhoeflin/projects/mkreports/docs/staging/images.py" linenums="32"
+    ```python title="images.py" linenums="32"
     p.add(
         """
         PIL is the standard python image library. `Image` objects are written
@@ -58,7 +58,7 @@ choice or the backend being used for plotting.
 
 === "Code"
 
-    ```python title="/home/hhoeflin/projects/mkreports/docs/staging/images.py" linenums="49"
+    ```python title="images.py" linenums="49"
     p.add(
         """
         For many scientific graphing purposes, `matplotlib` is either the direct
@@ -82,7 +82,7 @@ is from the beginner example of the library.
 
 === "Code"
 
-    ```python title="/home/hhoeflin/projects/mkreports/docs/staging/images.py" linenums="62"
+    ```python title="images.py" linenums="62"
     p.add(
         """
         Any plots created by `plotnine` can be included directly. The code below
@@ -111,7 +111,7 @@ accessed and saved in the same fashion as for matplotlib.
 
 === "Code"
 
-    ```python title="/home/hhoeflin/projects/mkreports/docs/staging/images.py" linenums="79"
+    ```python title="images.py" linenums="79"
     p.add(
         """
         Another well known option is Seaborn. The interface is similar to the 
@@ -151,7 +151,7 @@ accessed and saved in the same fashion as for matplotlib.
 
 === "Code"
 
-    ```python title="/home/hhoeflin/projects/mkreports/docs/staging/images.py" linenums="111"
+    ```python title="images.py" linenums="111"
     import altair as alt
     import pandas as pd
 
@@ -186,7 +186,7 @@ accessed and saved in the same fashion as for matplotlib.
 
 === "Code"
 
-    ```python title="/home/hhoeflin/projects/mkreports/docs/staging/images.py" linenums="132"
+    ```python title="images.py" linenums="132"
     import plotly.express as px
 
     fig = px.scatter(x=[0, 1, 2, 3, 4], y=[0, 1, 4, 9, 16])

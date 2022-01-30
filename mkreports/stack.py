@@ -242,7 +242,7 @@ class FrameInfo(NodeMixin):
         )
         return display_code
 
-    def md_code(self, highlight: bool = True) -> Code:
+    def md_code(self, highlight: bool = True, full_filename: bool = False) -> Code:
         if highlight:
             code = "".join(self.code)
             first_line = self.code_interval.begin
@@ -258,7 +258,7 @@ class FrameInfo(NodeMixin):
 
         return Code(
             code=dedent(code),
-            title=self.filename,
+            title=self.filename if full_filename else Path(self.filename).name,
             first_line=first_line,
             hl_lines=hl_lines,
             language="python",
@@ -270,7 +270,7 @@ class FrameInfo(NodeMixin):
             res.extend(child._md_collect(highlight))
         return res
 
-    def md_tree(self, highlight: bool = True) -> MdObj:
+    def md_tree(self, highlight: bool = True, full_filename: bool = False) -> MdObj:
         """
         Return the code in a tree.
 
@@ -292,7 +292,12 @@ class FrameInfo(NodeMixin):
             else:
                 res = Tab(code_list[0][1], title="<main>")
                 for i in range(1, len(code_list)):
-                    res = res + Tab(code_list[i][1], title=code_list[i][0])
+                    res = res + Tab(
+                        code_list[i][1],
+                        title=code_list[i][0]
+                        if full_filename
+                        else Path(code_list[i][0]).name,
+                    )
                 return res
         else:
             return Raw("")

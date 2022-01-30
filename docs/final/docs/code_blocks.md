@@ -32,7 +32,7 @@ active under the 'Content' tab and the code block under 'Code').
 
     === "&lt;main&gt;"
 
-        ```python title="/home/hhoeflin/projects/mkreports/docs/staging/code_blocks.py" linenums="43"
+        ```python title="code_blocks.py" linenums="43"
         x = 3
         a = fib(x)
 
@@ -40,7 +40,7 @@ active under the 'Content' tab and the code block under 'Code').
 
     === "fib"
 
-        ```python title="/home/hhoeflin/projects/mkreports/docs/staging/code_blocks.py" linenums="4"
+        ```python title="code_blocks.py" linenums="4"
         def fib(n):
             if n == 0:
                 return 0

@@ -316,13 +316,15 @@ class Page:
     def track_code_end(self):
         self.tracker.__exit__(None, None, None)
 
-    def md_code(self, highlight: bool = True) -> MdObj:
+    def md_code(self, highlight: bool = True, full_filename: bool = False) -> MdObj:
         """Print code as markdown that has been tracked."""
         if self.tracker.ctx_active:
             raise TrackerIncompleteError("The tracker has not finished.")
         if self.tracker.tree is None:
             raise TrackerEmptyError("The tracker has not been started.")
-        return self.tracker.tree.md_tree(highlight=highlight)
+        return self.tracker.tree.md_tree(
+            highlight=highlight, full_filename=full_filename
+        )
 
     def add(
         self, item: Union[MdObj, Text], add_code: bool = False, bottom: bool = True

@@ -41,7 +41,7 @@ md.H7("Header type 7")
 
 === "Code"
 
-    ```python title="/home/hhoeflin/projects/mkreports/docs/staging/basic.py" linenums="28"
+    ```python title="basic.py" linenums="28"
     numbered_list = (
         md.List(marker="1")
         .append("First item")
@@ -82,7 +82,7 @@ a page to an anchor or to another page (with or without anchor)
 
 === "Code"
 
-    ```python title="/home/hhoeflin/projects/mkreports/docs/staging/basic.py" linenums="59"
+    ```python title="basic.py" linenums="59"
     x = md.P(
         "A link back to the "
         + md.Link(anchor=heading_anchor, text="first heading")
