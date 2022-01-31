@@ -19,9 +19,13 @@ from dircmp import DirCmp
 gold_path_all = Path(__file__).parents[1] / "docs/final"
 
 
-def test_all(tmp_path):
+def test_all(tmp_path, ignore_images):
     """Test basic usage example."""
-    dircmp = DirCmp(tmp_path, gold_path_all)
+    if ignore_images:
+        ignore = ["docs/images.md", "docs/images_gen_assets"]
+    else:
+        ignore = None
+    dircmp = DirCmp(tmp_path, gold_path_all, ignore=ignore)
     report = Report(dircmp.test_output_dir, site_name="Mkreports documentations")
     run_all(report)
     assert dircmp.is_same, dircmp.report_full_closure()

@@ -2,6 +2,7 @@ import io
 from contextlib import redirect_stdout
 from filecmp import dircmp
 from pathlib import Path
+from typing import Sequence
 
 
 def recursive_cmp_dirs_equal(cmp_dirs) -> bool:
@@ -23,14 +24,17 @@ def recursive_cmp_dirs_equal(cmp_dirs) -> bool:
 
 
 class DirCmp:
-    def __init__(self, test_output_dir: Path, gold_output_dir: Path) -> None:
+    def __init__(
+        self, test_output_dir: Path, gold_output_dir: Path, ignore: Sequence[str]
+    ) -> None:
         self.test_output_dir = test_output_dir
         self.gold_output_dir = gold_output_dir
+        self.ignore = ignore
 
     @property
     def is_same(self) -> bool:
         return recursive_cmp_dirs_equal(
-            dircmp(self.test_output_dir, self.gold_output_dir)
+            dircmp(self.test_output_dir, self.gold_output_dir, ignore=self.ignore)
         )
 
     def report_full_closure(self):
