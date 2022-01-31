@@ -7,11 +7,11 @@ already and ensuring that the neccessary settings are all
 included. 
 """
 import contextlib
+import os
 import shutil
 import time
 from pathlib import Path
-from typing import (Any, Callable, ContextManager, Dict, Mapping, Optional,
-                    Tuple, Union)
+from typing import Any, ContextManager, Dict, Mapping, Optional, Tuple, Union
 
 import yaml
 from frontmatter.default_handlers import DEFAULT_POST_TEMPLATE, YAMLHandler
@@ -25,7 +25,7 @@ from .md import MdObj, Raw, SpacedText, Tab, Text
 from .md_proxy import MdProxy
 from .settings import (NavEntry, add_nav_entry, load_yaml, merge_settings,
                        path_to_nav_entry, save_yaml)
-from .stack import Stack, Tracker
+from .stack import Tracker
 
 default_settings = immutabledict(
     {
@@ -104,13 +104,20 @@ def write_page(path: Union[Path, str], metadata, content) -> None:
 class Report:
     def __init__(
         self,
-        path: Union[str, Path],
+        path: Optional[Union[str, Path]] = None,
         site_name: Optional[str] = None,
         create: bool = True,
         exist_ok: bool = True,
         settings: Optional[Mapping[str, str]] = None,
     ) -> None:
         # need to ensure it is of type Path
+        if path is None:
+            try:
+                path = os.environ["MKREPORTS_DIR"]
+            except Exception:
+                raise ValueError(
+                    "If no report path is given, the 'MKREPORTS_DIR'  environment variable has to be set."
+                )
         self._path = Path(path).absolute()
         self.site_name = site_name
         # first check if the path exists and is not empty and return error if that is not ok
