@@ -134,3 +134,6 @@ tests/examples/ipython_test/test
 tests/examples/usage_docs
 examples/ipython_test/test/docs/console/active.md
 conda_env
+
+# don't check in built site
+docs/final/site
