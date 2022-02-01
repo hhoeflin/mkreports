@@ -1,12 +1,10 @@
-import io
-from contextlib import redirect_stdout
 from filecmp import dircmp
 from pathlib import Path
 from typing import Sequence
 
 
-def recursive_cmp_dirs_equal(cmp_dirs) -> bool:
-
+def cmp_dirs_recursive(left_dir: Path, right_dir: Path, ignore: Sequence[Path]) -> bool:
+    cmp_dirs = dircmp(left_dir, right_dir, ignore=[str(path) for path in ignore])
     if (
         len(cmp_dirs.left_only) > 0
         or len(cmp_dirs.right_only) > 0
@@ -16,31 +14,15 @@ def recursive_cmp_dirs_equal(cmp_dirs) -> bool:
     ):
         return False
     else:
-        # recurse into common subdirectories
-        for cmp_subdirs in cmp_dirs.subdirs.values():
-            if not recursive_cmp_dirs_equal(cmp_subdirs):
+        for subdir in cmp_dirs.common_dirs:
+            subdir_ignore = [
+                path.relative_to(subdir)
+                for path in ignore
+                if subdir in [str(x) for x in path.parents]
+            ]
+            print(f"{subdir}: {subdir_ignore}")
+            if not cmp_dirs_recursive(
+                left_dir / subdir, right_dir / subdir, ignore=subdir_ignore
+            ):
                 return False
         return True
-
-
-class DirCmp:
-    def __init__(
-        self, test_output_dir: Path, gold_output_dir: Path, ignore: Sequence[str]
-    ) -> None:
-        self.test_output_dir = test_output_dir
-        self.gold_output_dir = gold_output_dir
-        self.ignore = ignore
-
-    @property
-    def is_same(self) -> bool:
-        return recursive_cmp_dirs_equal(
-            dircmp(self.test_output_dir, self.gold_output_dir, ignore=self.ignore)
-        )
-
-    def report_full_closure(self):
-        cmp_dirs = dircmp(self.test_output_dir, self.gold_output_dir)
-        s = io.StringIO()
-        with redirect_stdout(s):
-            cmp_dirs.report_full_closure()
-
-        return s.getvalue()

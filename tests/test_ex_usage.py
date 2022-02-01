@@ -11,21 +11,25 @@ import sys
 from pathlib import Path
 
 sys.path.insert(1, str(Path(__file__).parents[1] / "docs"))
+import filecmp
+
 from mkreports import Report
 from staging.main import run_all
 
-from dircmp import DirCmp
+from dircmp import cmp_dirs_recursive
 
-gold_path_all = Path(__file__).parents[1] / "docs/final"
+gold_path = Path(__file__).parents[1] / "docs/final"
 
 
 def test_all(tmp_path, ignore_images):
     """Test basic usage example."""
     if ignore_images:
-        ignore = ["docs/images.md", "docs/images_gen_assets"]
+        ignore = [Path("docs/images.md"), Path("docs/images_gen_assets")]
     else:
-        ignore = None
-    dircmp = DirCmp(tmp_path, gold_path_all, ignore=ignore)
-    report = Report(dircmp.test_output_dir, site_name="Mkreports documentations")
+        ignore = []
+    report = Report(tmp_path, site_name="Mkreports documentations")
     run_all(report)
-    assert dircmp.is_same, dircmp.report_full_closure()
+
+    if not cmp_dirs_recursive(tmp_path, gold_path, ignore):
+        filecmp.dircmp(tmp_path, gold_path).report_full_closure()
+        raise AssertionError("Directories not equal")
