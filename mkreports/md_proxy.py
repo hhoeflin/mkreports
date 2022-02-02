@@ -10,10 +10,12 @@ class MdProxy:
     def __init__(
         self,
         store_path: Path,
+        report_path: Path,
         datatable_id: Optional[Union[str, Callable[[str], str]]] = None,
         altair_id: Optional[Union[str, Callable[[str], str]]] = None,
     ):
         self.store_path = store_path
+        self.report_path = report_path
         self.datatable_id = datatable_id
         self.altair_id = altair_id
 
@@ -28,6 +30,8 @@ class MdProxy:
             obj_sig = inspect.signature(obj)
             if "store_path" in obj_sig.parameters:
                 partial_kwargs["store_path"] = self.store_path
+            if "report_path" in obj_sig.parameters:
+                partial_kwargs["report_path"] = self.report_path
 
             if (
                 self.datatable_id is not None

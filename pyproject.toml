@@ -26,6 +26,7 @@ more-itertools = "^8.12.0"
 plotly = "^5.5.0"
 typer = "^0.4.0"
 mkdocstrings = {version = "^0.17.0", python = "^3.7"}
+GitPython = "^3.1.26"
 
 [tool.poetry.dev-dependencies]
 pudb = ">=2021.2.2"

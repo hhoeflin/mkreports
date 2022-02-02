@@ -9,12 +9,14 @@ from mdutils.tools.TextUtils import TextUtils
 from mkreports.settings import Settings
 
 from .base import MdObj
+from .file import File
 from .text import SpacedText, Text
 
 
 @dataclass
 class Admonition(MdObj):
     text: Union[Text, MdObj]
+    title: Optional[str] = None
     kind: Literal[
         "note",
         "abstract",
@@ -58,9 +60,18 @@ class Admonition(MdObj):
         else:
             admon_text = str(self.text)
 
-        return SpacedText(
-            f"{'???' if self.collapse else '!!!'} {self.kind}", (2, 2)
-        ) + SpacedText(indent(str(admon_text), "    "), (2, 2))
+        if self.title is None:
+            title_md = ""
+        else:
+            title_md = f'"{self.title}"'
+
+        return (
+            SpacedText(
+                f"{'???' if self.collapse else '!!!'} {self.kind} {title_md}",
+                (2, 2),
+            )
+            + SpacedText(indent(str(admon_text), "    "), (2, 2))
+        )
 
 
 @dataclass
@@ -115,6 +126,14 @@ class Code(MdObj):
     language: Optional[str] = "python"
     dedent: bool = True
 
+    def req_settings(self):
+        settings = Settings(
+            mkdocs=dict(
+                markdown_extensions=[{"pymdownx.highlight": dict(use_pygments=True)}]
+            )
+        )
+        return settings
+
     def to_markdown(self, page_path: Optional[Path] = None) -> SpacedText:
         annots = ""
         if self.language is not None:
@@ -139,4 +158,60 @@ class Code(MdObj):
 
         return SpacedText(
             TextUtils.insert_code(textwrap.dedent(self.code), annots), (2, 2)
+        )
+
+
+class CodeFile(File):
+    """
+    Code block with the content of a file.
+    """
+
+    def __init__(
+        self,
+        path: Path,
+        store_path: Path,
+        report_path: Path,
+        title: Optional[str] = None,
+        hl_lines: Optional[Tuple[int, int]] = None,
+        language: Optional[str] = "python",
+    ):
+        """
+        Move a code-file into the store-dir and reference it in code block.
+        """
+        super().__init__(
+            path=path, store_path=store_path, allow_copy=True, use_hash=True
+        )
+        self.report_path = report_path
+        self.title = title
+        self.hl_lines = hl_lines
+        self.language = language
+
+    def req_settings(self):
+        settings = Settings(mkdocs=dict(markdown_extensions="pymdownx.snippets"))
+        settings = Settings(
+            mkdocs=dict(
+                markdown_extensions=[
+                    "pymdownx.snippets",
+                    {"pymdownx.highlight": dict(use_pygments=True)},
+                ]
+            )
+        )
+        return settings
+
+    def to_markdown(self, page_path: Optional[Path] = None) -> SpacedText:
+        annots = ""
+        if self.language is not None:
+            annots = annots + self.language
+        if self.title is not None:
+            annots = annots + f' title="{html.escape(self.title)}"'
+
+        hl_lines = self.hl_lines
+        if hl_lines is not None:
+            annots = annots + f' hl_lines="{hl_lines[0]}-{hl_lines[1]}"'
+
+        return SpacedText(
+            TextUtils.insert_code(
+                f"--8<-- '{self.path.relative_to(self.report_path)}'", annots
+            ),
+            (2, 2),
         )

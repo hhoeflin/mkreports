@@ -78,7 +78,7 @@ is from the beginner example of the library.
 
 === "Content"
 
-    ![](images_gen_assets/image-9446dc7872bbfae6dd221f72376fc7bb.png)
+    ![](images_gen_assets/image-41a828f4fba906604a976d3f9ad1138a.png)
 
 === "Code"
 
@@ -214,6 +214,6 @@ accessed and saved in the same fashion as for matplotlib.
 
 ## Different image sizes
 
-!!! warning
+!!! warning 
 
     Still to be implemented

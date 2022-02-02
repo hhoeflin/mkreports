@@ -4,8 +4,11 @@ markdown_extensions:
 - pymdownx.extra
 - pymdownx.details
 - pymdownx.superfences
+- pymdownx.highlight:
+    use_pygments: true
 - pymdownx.tabbed:
     alternate_style: true
+- pymdownx.snippets
 nav:
 - Home: index.md
 - Markdown: markdown.md

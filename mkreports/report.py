@@ -26,6 +26,7 @@ from .md_proxy import MdProxy
 from .settings import (NavEntry, add_nav_entry, load_yaml, merge_settings,
                        path_to_nav_entry, save_yaml)
 from .stack import Tracker
+from .utils import relative_repo_root
 
 default_settings = immutabledict(
     {
@@ -203,6 +204,7 @@ class Report:
         page_name: Union[NavEntry, Path, str],
         append: bool = True,
         init_counter_time: bool = False,
+        append_code_file: Optional[Union[str, Path]] = None,
     ) -> "Page":
         # if the page_name is just a string, we turn it into a dictionary
         # based on the hierarchical names
@@ -233,7 +235,10 @@ class Report:
             self._add_nav_entry(nav_entry)
 
         return Page(
-            self.docs_dir / path, report=self, init_counter_time=init_counter_time
+            self.docs_dir / path,
+            report=self,
+            init_counter_time=init_counter_time,
+            append_code_file=append_code_file,
         )
 
 
@@ -245,6 +250,7 @@ class Page:
         page_settings: Optional[Dict[str, Any]] = None,
         mkdocs_settings: Optional[Dict[str, Any]] = None,
         init_counter_time: bool = False,
+        append_code_file: Optional[Union[Path, str]] = None,
     ) -> None:
         self._path = path.absolute()
         if init_counter_time:
@@ -261,19 +267,32 @@ class Page:
 
         self._md = MdProxy(
             store_path=self.gen_asset_path,
+            report_path=self.report.path,
             datatable_id=lambda hash: self._counters.counted_id(f"datatable-{hash}"),
             altair_id=lambda hash: self._counters.counted_id(f"altair-{hash}"),
         )
+
+        self.append_code_file = append_code_file
 
         # a tracker for tracking code to be printed
         self.reset_tracker()
 
     def __enter__(self) -> "Page":
-        """Enter context manager and set the default store path."""
         return self
 
     def __exit__(self, exc_type, exc_val, traceback) -> None:
-        """Remove the default store path and restore the previous one."""
+        if self.append_code_file:
+            try:
+                self.add(
+                    self.md.Admonition(
+                        self.md.CodeFile(self.append_code_file),
+                        collapse=True,
+                        kind="info",
+                        title=relative_repo_root(self.append_code_file),
+                    )
+                )
+            except Exception:
+                pass
 
     def __getattr__(self, name):
         md_class = self.md.__getattr__(name)
@@ -351,9 +370,9 @@ class Page:
             # reset the tracker
             self.reset_tracker()
 
-        md_text = item.to_md_with_bm(
-            page_path=self.path,
-        )
+        # call the markdown and the backmatter
+        md_text = item.to_md_with_bm(page_path=self.path)
+
         req = item.req_settings()
         if len(req.mkdocs) > 0:
             # merge these things into mkdocs

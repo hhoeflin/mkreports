@@ -58,6 +58,28 @@ refer to code blocks as either
 - the context around the current statement
 - A number of statements around the current one. 
 
-!!! warning
+!!! warning 
 
     This is not yet implemented
+
+## Adding code files
+
+In addtion we can also add entire code files, for 
+example at the end of a page the file or files that 
+created a page. This can be wrapped into a collapsed
+admonition so that the file is hidden.
+
+??? info 
+
+    ```python
+    --8<-- 'docs/code_blocks_gen_assets/code_blocks-d024ec4997aac99e7685576a1888828d.py'
+    ```
+
+And at the end will add another copy of the code-file, 
+but automatically when ending the page context manager.
+
+??? info "docs/staging/code_blocks.py"
+
+    ```python
+    --8<-- 'docs/code_blocks_gen_assets/code_blocks-d024ec4997aac99e7685576a1888828d.py'
+    ```
