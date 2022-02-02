@@ -626,20 +626,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#mkreports.report.Page.__enter__" class="md-nav__link">
-    __enter__()
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#mkreports.report.Page.__exit__" class="md-nav__link">
-    __exit__()
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#mkreports.report.Page.clear" class="md-nav__link">
     clear()
   </a>
@@ -769,20 +755,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#mkreports.report.Page.__enter__" class="md-nav__link">
-    __enter__()
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#mkreports.report.Page.__exit__" class="md-nav__link">
-    __exit__()
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#mkreports.report.Page.clear" class="md-nav__link">
     clear()
   </a>
@@ -864,6 +836,7 @@ Page        </code>
         <span class="n">page_settings</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">mkdocs_settings</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">init_counter_time</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">append_code_file</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">init_counter_time</span><span class="p">:</span>
@@ -880,19 +853,32 @@ Page        </code>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_md</span> <span class="o">=</span> <span class="n">MdProxy</span><span class="p">(</span>
             <span class="n">store_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gen_asset_path</span><span class="p">,</span>
+            <span class="n">report_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
             <span class="n">datatable_id</span><span class="o">=</span><span class="k">lambda</span> <span class="nb">hash</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_counters</span><span class="o">.</span><span class="n">counted_id</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;datatable-</span><span class="si">{</span><span class="nb">hash</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">),</span>
             <span class="n">altair_id</span><span class="o">=</span><span class="k">lambda</span> <span class="nb">hash</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_counters</span><span class="o">.</span><span class="n">counted_id</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;altair-</span><span class="si">{</span><span class="nb">hash</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">),</span>
         <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">append_code_file</span> <span class="o">=</span> <span class="n">append_code_file</span>
 
         <span class="c1"># a tracker for tracking code to be printed</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">reset_tracker</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Page&quot;</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Enter context manager and set the default store path.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span>
 
     <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">traceback</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Remove the default store path and restore the previous one.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">append_code_file</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">md</span><span class="o">.</span><span class="n">Admonition</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">md</span><span class="o">.</span><span class="n">CodeFile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">append_code_file</span><span class="p">),</span>
+                        <span class="n">collapse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                        <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;info&quot;</span><span class="p">,</span>
+                        <span class="n">title</span><span class="o">=</span><span class="n">relative_repo_root</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">append_code_file</span><span class="p">),</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="k">pass</span>
 
     <span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="n">md_class</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">md</span><span class="o">.</span><span class="fm">__getattr__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
@@ -970,9 +956,9 @@ Page        </code>
             <span class="c1"># reset the tracker</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">reset_tracker</span><span class="p">()</span>
 
-        <span class="n">md_text</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">to_md_with_bm</span><span class="p">(</span>
-            <span class="n">page_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
-        <span class="p">)</span>
+        <span class="c1"># call the markdown and the backmatter</span>
+        <span class="n">md_text</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">to_md_with_bm</span><span class="p">(</span><span class="n">page_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+
         <span class="n">req</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">req_settings</span><span class="p">()</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">req</span><span class="o">.</span><span class="n">mkdocs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="c1"># merge these things into mkdocs</span>
@@ -1060,63 +1046,6 @@ Page        </code>
 
 
 
-
-  <div class="doc doc-object doc-method">
-
-
-
-<h3 id="mkreports.report.Page.__enter__" class="doc doc-heading">
-<code class="highlight language-python"><span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-special"><code>special</code></small>
-  </span>
-
-</h3>
-
-    <div class="doc doc-contents ">
-
-      <p>Enter context manager and set the default store path.</p>
-
-        <details class="quote">
-          <summary>Source code in <code>mkreports/report.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Page&quot;</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Enter context manager and set the default store path.&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="bp">self</span>
-</code></pre></div>
-        </details>
-    </div>
-
-  </div>
-
-
-
-  <div class="doc doc-object doc-method">
-
-
-
-<h3 id="mkreports.report.Page.__exit__" class="doc doc-heading">
-<code class="highlight language-python"><span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">traceback</span><span class="p">)</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-special"><code>special</code></small>
-  </span>
-
-</h3>
-
-    <div class="doc doc-contents ">
-
-      <p>Remove the default store path and restore the previous one.</p>
-
-        <details class="quote">
-          <summary>Source code in <code>mkreports/report.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">traceback</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Remove the default store path and restore the previous one.&quot;&quot;&quot;</span>
-</code></pre></div>
-        </details>
-    </div>
-
-  </div>
 
 
 

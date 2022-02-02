@@ -652,6 +652,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#mkreports.utils.relative_repo_root" class="md-nav__link">
+    relative_repo_root()
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -705,6 +712,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#mkreports.utils.relative_repo_root" class="md-nav__link">
+    relative_repo_root()
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -726,6 +740,59 @@
     <div class="doc doc-contents first">
 
 
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="mkreports.utils.relative_repo_root" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">relative_repo_root</span><span class="p">(</span><span class="n">path</span><span class="p">)</span></code>
+
+
+</h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Path relative to repo root or just the name.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>mkreports/utils.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">relative_repo_root</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Path relative to repo root or just the name.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">repo</span> <span class="o">=</span> <span class="n">git</span><span class="o">.</span><span class="n">Repo</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">search_parent_directories</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">root_dir</span> <span class="o">=</span> <span class="n">repo</span><span class="o">.</span><span class="n">working_tree_dir</span>
+        <span class="k">if</span> <span class="n">root_dir</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">relative_to</span><span class="p">(</span><span class="n">root_dir</span><span class="p">))</span>
+
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="k">return</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">name</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+
+  </div>
 
     </div>
 

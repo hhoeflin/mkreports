@@ -307,6 +307,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#adding-code-files" class="md-nav__link">
+    Adding code files
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -721,6 +728,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#adding-code-files" class="md-nav__link">
+    Adding code files
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -796,6 +810,175 @@ refer to code blocks as either
 <p class="admonition-title">Warning</p>
 <p>This is not yet implemented</p>
 </div>
+<h2 id="adding-code-files">Adding code files</h2>
+<p>In addtion we can also add entire code files, for 
+example at the end of a page the file or files that 
+created a page. This can be wrapped into a collapsed
+admonition so that the file is hidden.</p>
+<details class="info">
+<summary>Info</summary>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">mkreports</span> <span class="kn">import</span> <span class="n">Report</span><span class="p">,</span> <span class="n">md</span>
+
+
+<span class="k">def</span> <span class="nf">fib</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span>
+    <span class="k">elif</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">fib</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">fib</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">use_code_blocks</span><span class="p">(</span><span class="n">report</span><span class="p">:</span> <span class="n">Report</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Show different ways on how code blacks can be included.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="n">report</span><span class="o">.</span><span class="n">page</span><span class="p">(</span><span class="s2">&quot;code_blocks.md&quot;</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">append_code_file</span><span class="o">=</span><span class="vm">__file__</span><span class="p">)</span> <span class="k">as</span> <span class="n">p</span><span class="p">:</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">H1</span><span class="p">(</span><span class="s2">&quot;Code blocks&quot;</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="n">p</span><span class="o">.</span><span class="n">H2</span><span class="p">(</span><span class="s2">&quot;Tracking code&quot;</span><span class="p">):</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+                <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">                One of the features of mkreports is that we can include</span>
+<span class="sd">                code right from the script into the output. Not only does</span>
+<span class="sd">                this include the code block in the script itself, but</span>
+<span class="sd">                also the source of functions that are called in the block. </span>
+<span class="sd">                Here as an example, the fibonacci sequence. </span>
+
+<span class="sd">                This is enabled by the `track_code` method that is part of </span>
+<span class="sd">                a page object and functions as a context manager which installs</span>
+<span class="sd">                a tracing function, recording</span>
+<span class="sd">                the code and all called functions and their source code. </span>
+
+<span class="sd">                A code block that has been tracked can then be included</span>
+<span class="sd">                when adding a markdown object to a page by usig the </span>
+<span class="sd">                `add_code=True` parameter. This is then combined with </span>
+<span class="sd">                the markdown object by adding tabs (the markdown object </span>
+<span class="sd">                active under the &#39;Content&#39; tab and the code block under &#39;Code&#39;).</span>
+<span class="sd">                &quot;&quot;&quot;</span>
+            <span class="p">)</span>
+
+            <span class="k">with</span> <span class="n">p</span><span class="o">.</span><span class="n">track_code</span><span class="p">():</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="mi">3</span>
+                <span class="n">a</span> <span class="o">=</span> <span class="n">fib</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+            <span class="n">p</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;fib(</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s2">) = </span><span class="si">{</span><span class="n">a</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">add_code</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="n">p</span><span class="o">.</span><span class="n">H2</span><span class="p">(</span><span class="s2">&quot;Relative to position&quot;</span><span class="p">):</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+                <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">                In addition to tracking code as shown above, we can also</span>
+<span class="sd">                refer to code blocks as either </span>
+<span class="sd">                - the context around the current statement</span>
+<span class="sd">                - A number of statements around the current one. </span>
+<span class="sd">                &quot;&quot;&quot;</span>
+            <span class="p">)</span>
+
+            <span class="n">p</span><span class="o">.</span><span class="n">Admonition</span><span class="p">(</span><span class="s2">&quot;This is not yet implemented&quot;</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;warning&quot;</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="n">p</span><span class="o">.</span><span class="n">H2</span><span class="p">(</span><span class="s2">&quot;Adding code files&quot;</span><span class="p">):</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+                <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">                In addtion we can also add entire code files, for </span>
+<span class="sd">                example at the end of a page the file or files that </span>
+<span class="sd">                created a page. This can be wrapped into a collapsed</span>
+<span class="sd">                admonition so that the file is hidden.</span>
+<span class="sd">                &quot;&quot;&quot;</span>
+            <span class="p">)</span>
+
+            <span class="n">p</span><span class="o">.</span><span class="n">Admonition</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">md</span><span class="o">.</span><span class="n">CodeFile</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="n">collapse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;info&quot;</span><span class="p">)</span>
+
+        <span class="n">p</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            And at the end will add another copy of the code-file, </span>
+<span class="sd">            but automatically when ending the page context manager.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+        <span class="p">)</span>
+</code></pre></div>
+</details>
+<p>And at the end will add another copy of the code-file, 
+but automatically when ending the page context manager.</p>
+<details class="info">
+<summary>docs/staging/code_blocks.py</summary>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">mkreports</span> <span class="kn">import</span> <span class="n">Report</span><span class="p">,</span> <span class="n">md</span>
+
+
+<span class="k">def</span> <span class="nf">fib</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span>
+    <span class="k">elif</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">fib</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">fib</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">use_code_blocks</span><span class="p">(</span><span class="n">report</span><span class="p">:</span> <span class="n">Report</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Show different ways on how code blacks can be included.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="n">report</span><span class="o">.</span><span class="n">page</span><span class="p">(</span><span class="s2">&quot;code_blocks.md&quot;</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">append_code_file</span><span class="o">=</span><span class="vm">__file__</span><span class="p">)</span> <span class="k">as</span> <span class="n">p</span><span class="p">:</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">H1</span><span class="p">(</span><span class="s2">&quot;Code blocks&quot;</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="n">p</span><span class="o">.</span><span class="n">H2</span><span class="p">(</span><span class="s2">&quot;Tracking code&quot;</span><span class="p">):</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+                <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">                One of the features of mkreports is that we can include</span>
+<span class="sd">                code right from the script into the output. Not only does</span>
+<span class="sd">                this include the code block in the script itself, but</span>
+<span class="sd">                also the source of functions that are called in the block. </span>
+<span class="sd">                Here as an example, the fibonacci sequence. </span>
+
+<span class="sd">                This is enabled by the `track_code` method that is part of </span>
+<span class="sd">                a page object and functions as a context manager which installs</span>
+<span class="sd">                a tracing function, recording</span>
+<span class="sd">                the code and all called functions and their source code. </span>
+
+<span class="sd">                A code block that has been tracked can then be included</span>
+<span class="sd">                when adding a markdown object to a page by usig the </span>
+<span class="sd">                `add_code=True` parameter. This is then combined with </span>
+<span class="sd">                the markdown object by adding tabs (the markdown object </span>
+<span class="sd">                active under the &#39;Content&#39; tab and the code block under &#39;Code&#39;).</span>
+<span class="sd">                &quot;&quot;&quot;</span>
+            <span class="p">)</span>
+
+            <span class="k">with</span> <span class="n">p</span><span class="o">.</span><span class="n">track_code</span><span class="p">():</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="mi">3</span>
+                <span class="n">a</span> <span class="o">=</span> <span class="n">fib</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+            <span class="n">p</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;fib(</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s2">) = </span><span class="si">{</span><span class="n">a</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">add_code</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="n">p</span><span class="o">.</span><span class="n">H2</span><span class="p">(</span><span class="s2">&quot;Relative to position&quot;</span><span class="p">):</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+                <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">                In addition to tracking code as shown above, we can also</span>
+<span class="sd">                refer to code blocks as either </span>
+<span class="sd">                - the context around the current statement</span>
+<span class="sd">                - A number of statements around the current one. </span>
+<span class="sd">                &quot;&quot;&quot;</span>
+            <span class="p">)</span>
+
+            <span class="n">p</span><span class="o">.</span><span class="n">Admonition</span><span class="p">(</span><span class="s2">&quot;This is not yet implemented&quot;</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;warning&quot;</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="n">p</span><span class="o">.</span><span class="n">H2</span><span class="p">(</span><span class="s2">&quot;Adding code files&quot;</span><span class="p">):</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+                <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">                In addtion we can also add entire code files, for </span>
+<span class="sd">                example at the end of a page the file or files that </span>
+<span class="sd">                created a page. This can be wrapped into a collapsed</span>
+<span class="sd">                admonition so that the file is hidden.</span>
+<span class="sd">                &quot;&quot;&quot;</span>
+            <span class="p">)</span>
+
+            <span class="n">p</span><span class="o">.</span><span class="n">Admonition</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">md</span><span class="o">.</span><span class="n">CodeFile</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="n">collapse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;info&quot;</span><span class="p">)</span>
+
+        <span class="n">p</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            And at the end will add another copy of the code-file, </span>
+<span class="sd">            but automatically when ending the page context manager.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+        <span class="p">)</span>
+</code></pre></div>
+</details>
 
               
             </article>
