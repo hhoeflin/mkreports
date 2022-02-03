@@ -1,10 +1,10 @@
 import pytest
-from mkreports import Report, md
+from mkreports import Report
 
 
 class TestPage:
     def test_page(self, tmp_path):
-        report = Report(tmp_path / "test", site_name="Test")
+        report = Report(tmp_path / "test", report_name="Test")
 
         with pytest.raises(ValueError):
             report.page("testpage")

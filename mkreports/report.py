@@ -106,8 +106,7 @@ class Report:
     def __init__(
         self,
         path: Optional[Union[str, Path]] = None,
-        site_name: Optional[str] = None,
-        create: bool = True,
+        report_name: Optional[str] = None,
         exist_ok: bool = True,
         settings: Optional[Mapping[str, str]] = None,
     ) -> None:
@@ -120,7 +119,7 @@ class Report:
                     "If no report path is given, the 'MKREPORTS_DIR'  environment variable has to be set."
                 )
         self._path = Path(path).absolute()
-        self.site_name = site_name
+        self.report_name = report_name
         # first check if the path exists and is not empty and return error if that is not ok
         if self.path.exists() and any(self.path.iterdir()):
             if not exist_ok:
@@ -130,15 +129,11 @@ class Report:
                 pass
         else:
             # check if should be created
-            if create:
-                if site_name is None:
-                    raise ValueError(
-                        "When creating a report a site_name has to be specified"
-                    )
+            if report_name is not None:
                 # call the functions from mkdocs that creates a new report
                 if settings is None:
                     settings = default_settings
-                self._create_new(site_name, settings)
+                self._create_new(report_name, settings)
             else:
                 raise ReportNotExistsError(f"{self.path} does not exist.")
 
@@ -202,7 +197,7 @@ class Report:
     def page(
         self,
         page_name: Union[NavEntry, Path, str],
-        append: bool = True,
+        append: bool = False,
         init_counter_time: bool = False,
         append_code_file: Optional[Union[str, Path]] = None,
     ) -> "Page":

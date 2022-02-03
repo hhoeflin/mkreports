@@ -27,7 +27,7 @@ def test_all(tmp_path, ignore_images):
         ignore = [Path("docs/images.md"), Path("docs/images_gen_assets")]
     else:
         ignore = []
-    report = Report(tmp_path, site_name="Mkreports documentations")
+    report = Report(tmp_path, report_name="Mkreports documentations")
     run_all(report)
 
     if not cmp_dirs_recursive(tmp_path, gold_path, ignore):
