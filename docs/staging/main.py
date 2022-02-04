@@ -44,7 +44,7 @@ def run_all(report: Report):
 def main(report_dir: Path):
     report = Report(
         report_dir,
-        site_name="Mkreports documentations",
+        report_name="Mkreports documentations",
     )
     run_all(report)
 

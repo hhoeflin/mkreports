@@ -39,3 +39,13 @@ def use_tables(report: Report) -> None:
             )
             # and as a DataTable
             p.DataTable(pd.DataFrame(mtcars))
+
+        with p.add(md.H2("Tabulator javascript library")):
+            p.add(
+                """
+                This time, we use the [Tabulator](http://tabulator.info)
+                library. A library with a lot of interesting 
+                functionality. Currently limited support.
+                """
+            )
+            p.Tabulator(pd.DataFrame(mtcars))

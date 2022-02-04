@@ -20,7 +20,6 @@ def cmp_dirs_recursive(left_dir: Path, right_dir: Path, ignore: Sequence[Path]) 
                 for path in ignore
                 if subdir in [str(x) for x in path.parents]
             ]
-            print(f"{subdir}: {subdir_ignore}")
             if not cmp_dirs_recursive(
                 left_dir / subdir, right_dir / subdir, ignore=subdir_ignore
             ):

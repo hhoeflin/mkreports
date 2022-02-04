@@ -24,9 +24,9 @@ gold_path = Path(__file__).parents[1] / "docs/final"
 def test_all(tmp_path, ignore_images):
     """Test basic usage example."""
     if ignore_images:
-        ignore = [Path("docs/images.md"), Path("docs/images_gen_assets")]
+        ignore = [Path("site"), Path("docs/images.md"), Path("docs/images_gen_assets")]
     else:
-        ignore = []
+        ignore = [Path("site")]
     report = Report(tmp_path, report_name="Mkreports documentations")
     run_all(report)
 

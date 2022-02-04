@@ -1,9 +1,11 @@
 ---
 css:
 - https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css
+- https://unpkg.com/tabulator-tables@5.1.0/dist/css/tabulator.min.css
 javascript:
 - https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js
 - https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js
+- https://unpkg.com/tabulator-tables@5.1.0/dist/js/tabulator.min.js
 ---
 
 
@@ -45,4 +47,15 @@ by columns.
 $(document).ready( function () {
 $('#datatable-ca9b6f052f673e1d46f468ebb1ccc5d1_1').DataTable({"scrollX": "true", "columns": [{"title": "name"}, {"title": "mpg"}, {"title": "cyl"}, {"title": "disp"}, {"title": "hp"}, {"title": "drat"}, {"title": "wt"}, {"title": "qsec"}, {"title": "vs"}, {"title": "am"}, {"title": "gear"}, {"title": "carb"}], "ajax": "../tables_gen_assets/datatable-ca9b6f052f673e1d46f468ebb1ccc5d1.json"});
 } );
+</script>
+
+## Tabulator javascript library
+
+This time, we use the [Tabulator](http://tabulator.info)
+library. A library with a lot of interesting 
+functionality. Currently limited support.
+
+<div id='tabulator-c8469972d60cd61d98262704e068f4e9' class='display' style='width:100%'> </div>
+<script>
+var table = new Tabulator('#tabulator-c8469972d60cd61d98262704e068f4e9', {"autoColumns": true, "pagination": true, "paginationSize": 10, "paginationSizeSelector": true, "ajaxURL": "../tables_gen_assets/tabulator-c8469972d60cd61d98262704e068f4e9.json"});
 </script>
