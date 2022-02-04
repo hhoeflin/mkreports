@@ -589,6 +589,26 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#mkreports.md.table.Tabulator" class="md-nav__link">
+    Tabulator
+  </a>
+  
+    <nav class="md-nav" aria-label="Tabulator">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mkreports.md.table.Tabulator.to_markdown" class="md-nav__link">
+    to_markdown()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -777,6 +797,26 @@
         
           <li class="md-nav__item">
   <a href="#mkreports.md.table.Table.to_markdown" class="md-nav__link">
+    to_markdown()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mkreports.md.table.Tabulator" class="md-nav__link">
+    Tabulator
+  </a>
+  
+    <nav class="md-nav" aria-label="Tabulator">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mkreports.md.table.Tabulator.to_markdown" class="md-nav__link">
     to_markdown()
   </a>
   
@@ -1062,6 +1102,177 @@ and counting.</p>
     <span class="n">table_md</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">to_markdown</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">)</span>
     <span class="n">table_md</span> <span class="o">=</span> <span class="n">table_md</span> <span class="k">if</span> <span class="n">table_md</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
     <span class="k">return</span> <span class="n">SpacedText</span><span class="p">(</span><span class="n">table_md</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h2 id="mkreports.md.table.Tabulator" class="doc doc-heading">
+        <code>
+Tabulator            (<a title="mkreports.md.file.File" href="../file/#mkreports.md.file.File">File</a>)
+        </code>
+
+
+
+</h2>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>mkreports/md/table.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Tabulator</span><span class="p">(</span><span class="n">File</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">table</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+        <span class="n">store_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
+        <span class="n">table_id</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="k">lambda</span> <span class="nb">hash</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;tabulator-</span><span class="si">{</span><span class="nb">hash</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="n">column_settings</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="nb">dir</span><span class="p">:</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="nb">dir</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="s2">&quot;tabulator.json&quot;</span><span class="p">)</span>
+            <span class="c1"># here we use the split method; the index and columns</span>
+            <span class="c1"># are not useful, but the rest gets set as &#39;data&#39;, which we need</span>
+            <span class="n">table</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s2">&quot;records&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+            <span class="c1"># Make sure the file is moved to the right place</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+                <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">store_path</span><span class="o">=</span><span class="n">store_path</span><span class="p">,</span> <span class="n">allow_copy</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">use_hash</span><span class="o">=</span><span class="kc">True</span>
+            <span class="p">)</span>
+
+        <span class="c1"># use the hashed table name as the id if there is no other</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">table_id</span><span class="p">,</span> <span class="n">Callable</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">table_id</span> <span class="o">=</span> <span class="n">table_id</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hash</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">table_id</span> <span class="o">=</span> <span class="n">table_id</span>
+
+        <span class="c1"># prepare the table settings</span>
+        <span class="n">col_set</span> <span class="o">=</span> <span class="p">{</span><span class="n">col</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="n">col</span><span class="p">}</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="p">}</span>
+        <span class="k">if</span> <span class="n">column_settings</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># only pick out settings for columns that occur in the table</span>
+            <span class="n">col_set</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">col</span><span class="p">:</span> <span class="n">column_settings</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="p">})</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">table_settings</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">autoColumns</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">pagination</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">paginationSize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="n">paginationSizeSelector</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">req_settings</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">settings</span> <span class="o">=</span> <span class="n">Settings</span><span class="p">(</span>
+            <span class="n">page</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+                <span class="c1"># the following needs to be loaded in the header of the page, not the footer</span>
+                <span class="c1"># this enables activating the tables in the body</span>
+                <span class="n">javascript</span><span class="o">=</span><span class="p">[</span>
+                    <span class="s2">&quot;https://unpkg.com/tabulator-tables@5.1.0/dist/js/tabulator.min.js&quot;</span><span class="p">,</span>
+                <span class="p">],</span>
+                <span class="n">css</span><span class="o">=</span><span class="p">[</span>
+                    <span class="s2">&quot;https://unpkg.com/tabulator-tables@5.1.0/dist/css/tabulator.min.css&quot;</span>
+                <span class="p">],</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">settings</span>
+
+    <span class="k">def</span> <span class="nf">to_markdown</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">page_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;page_path must be set for relative referencing of json data file.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="c1"># now we insert the data table on the page</span>
+        <span class="c1"># note: as we are inserting directly into html, we have to do one addition</span>
+        <span class="c1"># level deeper for the relative path</span>
+        <span class="n">rel_table_path</span> <span class="o">=</span> <span class="n">relpath_html</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">page_path</span><span class="p">)</span>
+        <span class="n">table_settings</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">table_settings</span><span class="p">)</span>
+        <span class="n">table_settings</span><span class="p">[</span><span class="s2">&quot;ajaxURL&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">rel_table_path</span><span class="p">)</span>
+        <span class="n">settings_str</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">table_settings</span><span class="p">)</span>
+        <span class="n">raw_html</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">cleandoc</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            &lt;div id=&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">table_id</span><span class="si">}</span><span class="s2">&#39; class=&#39;display&#39; style=&#39;width:100%&#39;&gt; &lt;/div&gt;</span>
+<span class="s2">            &lt;script&gt;</span>
+<span class="s2">            var table = new Tabulator(&#39;#</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">table_id</span><span class="si">}</span><span class="s2">&#39;, </span><span class="si">{</span><span class="n">settings_str</span><span class="si">}</span><span class="s2">);</span>
+<span class="s2">            &lt;/script&gt;</span>
+<span class="s2">            &quot;&quot;&quot;</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">SpacedText</span><span class="p">(</span><span class="n">raw_html</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+</code></pre></div>
+        </details>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="mkreports.md.table.Tabulator.to_markdown" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">to_markdown</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_path</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Convert the object to markdown.</p>
+<p>Assumes that all other processing steps are done, such as storing,
+and counting.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>mkreports/md/table.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">to_markdown</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">page_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;page_path must be set for relative referencing of json data file.&quot;</span>
+        <span class="p">)</span>
+
+    <span class="c1"># now we insert the data table on the page</span>
+    <span class="c1"># note: as we are inserting directly into html, we have to do one addition</span>
+    <span class="c1"># level deeper for the relative path</span>
+    <span class="n">rel_table_path</span> <span class="o">=</span> <span class="n">relpath_html</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">page_path</span><span class="p">)</span>
+    <span class="n">table_settings</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">table_settings</span><span class="p">)</span>
+    <span class="n">table_settings</span><span class="p">[</span><span class="s2">&quot;ajaxURL&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">rel_table_path</span><span class="p">)</span>
+    <span class="n">settings_str</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">table_settings</span><span class="p">)</span>
+    <span class="n">raw_html</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">cleandoc</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        &lt;div id=&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">table_id</span><span class="si">}</span><span class="s2">&#39; class=&#39;display&#39; style=&#39;width:100%&#39;&gt; &lt;/div&gt;</span>
+<span class="s2">        &lt;script&gt;</span>
+<span class="s2">        var table = new Tabulator(&#39;#</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">table_id</span><span class="si">}</span><span class="s2">&#39;, </span><span class="si">{</span><span class="n">settings_str</span><span class="si">}</span><span class="s2">);</span>
+<span class="s2">        &lt;/script&gt;</span>
+<span class="s2">        &quot;&quot;&quot;</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">SpacedText</span><span class="p">(</span><span class="n">raw_html</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
 </code></pre></div>
         </details>
     </div>

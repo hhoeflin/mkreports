@@ -48,6 +48,8 @@
     
         <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
     
+        <link rel="stylesheet" href="https://unpkg.com/tabulator-tables@5.1.0/dist/css/tabulator.min.css">
+    
 
   
 
@@ -57,6 +59,8 @@
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     
         <script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+    
+        <script type="text/javascript" src="https://unpkg.com/tabulator-tables@5.1.0/dist/js/tabulator.min.js"></script>
     
 
   
@@ -301,6 +305,13 @@
         <li class="md-nav__item">
   <a href="#datatable-javascript-library" class="md-nav__link">
     DataTable javascript library
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tabulator-javascript-library" class="md-nav__link">
+    Tabulator javascript library
   </a>
   
 </li>
@@ -734,6 +745,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#tabulator-javascript-library" class="md-nav__link">
+    Tabulator javascript library
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -926,6 +944,15 @@ by columns. </p>
 $(document).ready( function () {
 $('#datatable-ca9b6f052f673e1d46f468ebb1ccc5d1_1').DataTable({"scrollX": "true", "columns": [{"title": "name"}, {"title": "mpg"}, {"title": "cyl"}, {"title": "disp"}, {"title": "hp"}, {"title": "drat"}, {"title": "wt"}, {"title": "qsec"}, {"title": "vs"}, {"title": "am"}, {"title": "gear"}, {"title": "carb"}], "ajax": "../tables_gen_assets/datatable-ca9b6f052f673e1d46f468ebb1ccc5d1.json"});
 } );
+</script>
+
+<h2 id="tabulator-javascript-library">Tabulator javascript library</h2>
+<p>This time, we use the <a href="http://tabulator.info">Tabulator</a>
+library. A library with a lot of interesting 
+functionality. Currently limited support.</p>
+<div id='tabulator-c8469972d60cd61d98262704e068f4e9' class='display' style='width:100%'> </div>
+<script>
+var table = new Tabulator('#tabulator-c8469972d60cd61d98262704e068f4e9', {"autoColumns": true, "pagination": true, "paginationSize": 10, "paginationSizeSelector": true, "ajaxURL": "../tables_gen_assets/tabulator-c8469972d60cd61d98262704e068f4e9.json"});
 </script>
 
               
