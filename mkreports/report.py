@@ -21,10 +21,10 @@ from .counters import Counters
 from .exceptions import (ReportExistsError, ReportNotExistsError,
                          ReportNotValidError, TrackerEmptyError,
                          TrackerIncompleteError)
-from .md import MdObj, Raw, SpacedText, Tab, Text
+from .md import MdObj, Raw, SpacedText, Tab, Text, merge_settings
 from .md_proxy import MdProxy
-from .settings import (NavEntry, add_nav_entry, load_yaml, merge_settings,
-                       path_to_nav_entry, save_yaml)
+from .settings import (NavEntry, add_nav_entry, load_yaml, path_to_nav_entry,
+                       save_yaml)
 from .stack import Tracker
 from .utils import relative_repo_root
 
@@ -276,6 +276,7 @@ class Page:
         return self
 
     def __exit__(self, exc_type, exc_val, traceback) -> None:
+        del exc_type, exc_val, traceback
         if self.append_code_file:
             try:
                 self.add(
@@ -366,7 +367,8 @@ class Page:
             self.reset_tracker()
 
         # call the markdown and the backmatter
-        md_text = item.to_md_with_bm(page_path=self.path)
+        md_out = item.to_markdown(page_path=self.path)
+        md_text = md_out.body + md_out.back
 
         req = item.req_settings()
         if len(req.mkdocs) > 0:

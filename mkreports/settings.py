@@ -1,11 +1,9 @@
 from collections import defaultdict
 from copy import deepcopy
-from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Dict, List, Mapping, Tuple, Union
 
 import yaml
-from deepmerge import Merger
 from more_itertools import unique_everseen
 
 NavEntry = Tuple[List[str], Path]
@@ -88,29 +86,6 @@ def nav_to_mkdocs(nav: Nav) -> MkdocsNav:
     return res
 
 
-def strategy_append_new(config, path, base, nxt):
-    """prepend nxt to base."""
-    return base + [x for x in nxt if x not in base]
-
-
-settings_merger = Merger(
-    # pass in a list of tuple, with the
-    # strategies you are looking to apply
-    # to each type.
-    [(list, [strategy_append_new]), (dict, ["merge"]), (set, ["union"])],
-    # next, choose the fallback strategies,
-    # applied to all other types:
-    ["override"],
-    # finally, choose the strategies in
-    # the case where the types conflict:
-    ["override"],
-)
-
-
-def merge_settings(a, b):
-    return settings_merger.merge(deepcopy(a), deepcopy(b))
-
-
 def add_nav_entry(mkdocs_settings, nav_entry: NavEntry) -> None:
     mkdocs_settings = deepcopy(mkdocs_settings)
     nav = mkdocs_to_nav(mkdocs_settings["nav"]) + [nav_entry]
@@ -135,24 +110,3 @@ def load_yaml(file: Path) -> Any:
 def save_yaml(obj: Any, file: Path) -> None:
     with file.open("w") as f:
         yaml.dump(obj, f, default_flow_style=False)
-
-
-@dataclass
-class Settings:
-    mkdocs: Dict[str, Any] = field(default_factory=dict)
-    page: Dict[str, Any] = field(default_factory=dict)
-
-    def __add__(self, other: "Settings"):
-        """
-        Merges mkdocs and mkreports.
-
-        For mkdocs, nav will never be merged and an error thrown if attempted.
-        """
-        if "nav" in self.mkdocs and "nav" in other.mkdocs:
-            raise ValueError(
-                "Merging of Requirements with 'nav' in mkdocs not supported."
-            )
-        return Settings(
-            mkdocs=merge_settings(self.mkdocs, other.mkdocs),
-            page=merge_settings(self.page, other.page),
-        )

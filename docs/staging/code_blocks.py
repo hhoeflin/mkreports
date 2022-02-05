@@ -1,4 +1,4 @@
-from mkreports import Report, md
+from mkreports import Report
 
 
 def fib(n):

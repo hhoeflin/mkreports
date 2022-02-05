@@ -7,10 +7,10 @@ from pathlib import Path
 from typing import Any, Callable, Dict, Optional, Union
 
 import pandas as pd
-from mkreports.settings import Settings
 
-from .base import MdObj
-from .file import File, relpath_html, true_stem
+from .base import MdObj, MdOut, comment_ids
+from .file import File, relpath_html
+from .settings import Settings
 from .text import SpacedText
 
 
@@ -24,10 +24,11 @@ class Table(MdObj):
         # think about making this a static-frame
         self.table = deepcopy(table)
 
-    def to_markdown(self, page_path: Optional[Path] = None) -> SpacedText:
+    def to_markdown(self, page_path: Optional[Path] = None) -> MdOut:
+        del page_path
         table_md = self.table.to_markdown(**self.kwargs)
         table_md = table_md if table_md is not None else ""
-        return SpacedText(table_md, (2, 2))
+        return MdOut(body=SpacedText(table_md, (2, 2)))
 
 
 class DataTable(File):
@@ -83,22 +84,24 @@ class DataTable(File):
         )
         return settings
 
-    def to_markdown(self, page_path: Path):
+    def to_markdown(self, page_path: Optional[Path] = None) -> MdOut:
         if page_path is None:
             raise ValueError(
                 "page_path must be set for relative referencing of json data file."
             )
 
-        # now we insert the data table on the page
-        # note: as we are inserting directly into html, we have to do one addition
-        # level deeper for the relative path
+        body_html = inspect.cleandoc(
+            f"""
+            <table id='{self.table_id}' class='display' style='width:100%'> </table>
+            """
+        )
+
         rel_table_path = relpath_html(self.path, page_path)
         table_settings = copy.deepcopy(self.table_settings)
         table_settings["ajax"] = str(rel_table_path)
         settings_str = json.dumps(table_settings)
-        raw_html = inspect.cleandoc(
+        back_html = inspect.cleandoc(
             f"""
-            <table id='{self.table_id}' class='display' style='width:100%'> </table>
             <script>
             $(document).ready( function () {{
             $('#{self.table_id}').DataTable({settings_str});
@@ -107,7 +110,10 @@ class DataTable(File):
             """
         )
 
-        return SpacedText(raw_html, (2, 2))
+        return MdOut(
+            body=SpacedText(body_html, (2, 2)),
+            back=SpacedText(back_html, (2, 2)) + comment_ids(self.table_id),
+        )
 
 
 class Tabulator(File):
@@ -164,26 +170,31 @@ class Tabulator(File):
         )
         return settings
 
-    def to_markdown(self, page_path: Path):
+    def to_markdown(self, page_path: Optional[Path] = None) -> MdOut:
         if page_path is None:
             raise ValueError(
                 "page_path must be set for relative referencing of json data file."
             )
 
-        # now we insert the data table on the page
-        # note: as we are inserting directly into html, we have to do one addition
-        # level deeper for the relative path
+        body_html = inspect.cleandoc(
+            f"""
+            <div id='{self.table_id}' class='display' style='width:100%'> </div>
+            """
+        )
+
         rel_table_path = relpath_html(self.path, page_path)
         table_settings = copy.deepcopy(self.table_settings)
         table_settings["ajaxURL"] = str(rel_table_path)
         settings_str = json.dumps(table_settings)
-        raw_html = inspect.cleandoc(
+        back_html = inspect.cleandoc(
             f"""
-            <div id='{self.table_id}' class='display' style='width:100%'> </div>
             <script>
             var table = new Tabulator('#{self.table_id}', {settings_str});
             </script>
             """
         )
 
-        return SpacedText(raw_html, (2, 2))
+        return MdOut(
+            body=SpacedText(body_html, (2, 2)),
+            back=SpacedText(back_html, (2, 2)) + comment_ids(self.table_id),
+        )

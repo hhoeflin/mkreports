@@ -30,6 +30,7 @@ nav:
       - header: Reference/mkreports/md/header.md
       - image: Reference/mkreports/md/image.md
       - list: Reference/mkreports/md/list.md
+      - settings: Reference/mkreports/md/settings.md
       - table: Reference/mkreports/md/table.md
       - text: Reference/mkreports/md/text.md
     - md_proxy: Reference/mkreports/md_proxy.md

@@ -6,8 +6,10 @@ def test_header():
     header1 = md.H1(header_text)
     header2 = md.H2(header_text)
     assert (
-        header1.to_markdown().format_text(" ", " ") == "\n\n# " + header_text + "\n\n"
+        header1.to_markdown().body.format_text(" ", " ")
+        == "\n\n# " + header_text + "\n\n"
     )
     assert (
-        header2.to_markdown().format_text(" ", " ") == "\n\n## " + header_text + "\n\n"
+        header2.to_markdown().body.format_text(" ", " ")
+        == "\n\n## " + header_text + "\n\n"
     )

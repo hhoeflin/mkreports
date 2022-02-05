@@ -6,10 +6,10 @@ from textwrap import indent
 from typing import Literal, Optional, Tuple, Union
 
 from mdutils.tools.TextUtils import TextUtils
-from mkreports.settings import Settings
 
-from .base import MdObj
+from .base import MdObj, MdOut
 from .file import File
+from .settings import Settings
 from .text import SpacedText, Text
 
 
@@ -48,29 +48,24 @@ class Admonition(MdObj):
         else:
             return cont_settings
 
-    def backmatter(self, page_path: Optional[Path] = None):
+    def to_markdown(self, page_path: Optional[Path] = None) -> MdOut:
         if isinstance(self.text, MdObj):
-            return self.text.backmatter(page_path)
+            admon_text, back = self.text.to_markdown(page_path)
         else:
-            return SpacedText("")
-
-    def to_markdown(self, page_path: Optional[Path] = None) -> SpacedText:
-        if isinstance(self.text, MdObj):
-            admon_text = self.text.to_markdown(page_path)
-        else:
-            admon_text = str(self.text)
+            admon_text, back = str(self.text), SpacedText()
 
         if self.title is None:
             title_md = ""
         else:
             title_md = f'"{self.title}"'
 
-        return (
-            SpacedText(
+        return MdOut(
+            body=SpacedText(
                 f"{'???' if self.collapse else '!!!'} {self.kind} {title_md}",
                 (2, 2),
             )
-            + SpacedText(indent(str(admon_text), "    "), (2, 2))
+            + SpacedText(indent(str(admon_text), "    "), (2, 2)),
+            back=back,
         )
 
 
@@ -93,25 +88,21 @@ class Tab(MdObj):
         else:
             return tab_settings
 
-    def backmatter(self, page_path: Optional[Path] = None):
+    def to_markdown(self, page_path: Optional[Path] = None) -> MdOut:
         if isinstance(self.text, MdObj):
-            return self.text.backmatter(page_path)
+            tab_text, back = self.text.to_markdown(page_path)
         else:
-            return SpacedText("")
-
-    def to_markdown(self, page_path: Optional[Path] = None) -> SpacedText:
-        if isinstance(self.text, MdObj):
-            tab_text = self.text.to_markdown(page_path)
-        else:
-            tab_text = str(self.text)
+            tab_text, back = str(self.text), SpacedText()
 
         if self.title is not None:
             title_text = html.escape(self.title)
         else:
             title_text = ""
 
-        return SpacedText(f'=== "{title_text}"', (2, 2)) + SpacedText(
-            indent(str(tab_text), "    "), (2, 2)
+        return MdOut(
+            body=SpacedText(f'=== "{title_text}"', (2, 2))
+            + SpacedText(indent(str(tab_text), "    "), (2, 2)),
+            back=back,
         )
 
 
@@ -134,7 +125,8 @@ class Code(MdObj):
         )
         return settings
 
-    def to_markdown(self, page_path: Optional[Path] = None) -> SpacedText:
+    def to_markdown(self, page_path: Optional[Path] = None) -> MdOut:
+        del page_path
         annots = ""
         if self.language is not None:
             annots = annots + self.language
@@ -156,8 +148,10 @@ class Code(MdObj):
         if hl_lines is not None:
             annots = annots + f' hl_lines="{hl_lines[0]}-{hl_lines[1]}"'
 
-        return SpacedText(
-            TextUtils.insert_code(textwrap.dedent(self.code), annots), (2, 2)
+        return MdOut(
+            body=SpacedText(
+                TextUtils.insert_code(textwrap.dedent(self.code), annots), (2, 2)
+            )
         )
 
 
@@ -198,7 +192,8 @@ class CodeFile(File):
         )
         return settings
 
-    def to_markdown(self, page_path: Optional[Path] = None) -> SpacedText:
+    def to_markdown(self, page_path: Optional[Path] = None) -> MdOut:
+        del page_path
         annots = ""
         if self.language is not None:
             annots = annots + self.language
@@ -209,9 +204,11 @@ class CodeFile(File):
         if hl_lines is not None:
             annots = annots + f' hl_lines="{hl_lines[0]}-{hl_lines[1]}"'
 
-        return SpacedText(
-            TextUtils.insert_code(
-                f"--8<-- '{self.path.relative_to(self.report_path)}'", annots
-            ),
-            (2, 2),
+        return MdOut(
+            body=SpacedText(
+                TextUtils.insert_code(
+                    f"--8<-- '{self.path.relative_to(self.report_path)}'", annots
+                ),
+                (2, 2),
+            )
         )

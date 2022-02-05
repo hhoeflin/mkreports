@@ -178,6 +178,8 @@ accessed and saved in the same fashion as for matplotlib.
     .catch(console.warn);
 </script>
 
+[comment]: # (id: altair-a7a2eb773c7d9454c694b490a77e5a7e_1)
+
 ### Plotly
 
 === "Content"
@@ -211,6 +213,8 @@ accessed and saved in the same fashion as for matplotlib.
         })
     }
 </script>
+
+[comment]: # (id: plotly-2c4e085bcb294e03c4c01a147570a8c5)
 
 ## Different image sizes
 

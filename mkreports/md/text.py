@@ -1,4 +1,3 @@
-from dataclasses import dataclass
 from typing import Any, Tuple, Union
 
 Text = Union[str, "SpacedText"]
@@ -32,7 +31,7 @@ class SpacedText:
     text: str
     req_nl: Tuple[int, int]
 
-    def __init__(self, text: Text, req_nl: Tuple[int, int] = (0, 0)) -> None:
+    def __init__(self, text: Text = "", req_nl: Tuple[int, int] = (0, 0)) -> None:
         if isinstance(text, str):
             my_text = text
             my_req_nl = req_nl
