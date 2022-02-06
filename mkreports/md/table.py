@@ -44,7 +44,7 @@ class DataTable(File):
             path = Path(dir) / ("datatable.json")
             # here we use the split method; the index and columns
             # are not useful, but the rest gets set as 'data', which we need
-            table.to_json(path, orient="split", **kwargs)
+            table.to_json(path, orient="split", default_handler=str, **kwargs)
 
             # Make sure the file is moved to the right place
             super().__init__(
@@ -119,7 +119,7 @@ class Tabulator(File):
             path = Path(dir) / ("tabulator.json")
             # here we use the split method; the index and columns
             # are not useful, but the rest gets set as 'data', which we need
-            table.to_json(path, orient="records", **kwargs)
+            table.to_json(path, orient="records", default_handler=str, **kwargs)
 
             # Make sure the file is moved to the right place
             super().__init__(

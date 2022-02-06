@@ -8,7 +8,7 @@ def use_tables(report: Report) -> None:
     Show all the different ways on how we can work with tables.
     """
     with report.page("tables.md", append=False) as p:
-        p.add(md.H1("Different ways of handling tables"))
+        p.H1("Different ways of handling tables")
 
         p.add(
             """
@@ -18,7 +18,7 @@ def use_tables(report: Report) -> None:
             larger tables more sophisticated libraries are needed. 
             """
         )
-        with p.add(md.H2("Markdown tables")):
+        with p.H2("Markdown tables"):
             p.add(
                 """
                 Below an example of a regular markdown table. As it is very wide,
@@ -28,7 +28,7 @@ def use_tables(report: Report) -> None:
             )
             p.add(md.Table(pd.DataFrame(mtcars).head(10), index=False))
 
-        with p.add(md.H2("DataTable javascript library")):
+        with p.H2("DataTable javascript library"):
             p.add(
                 """
                 Here the same table, but displayed using the 
@@ -40,7 +40,7 @@ def use_tables(report: Report) -> None:
             # and as a DataTable
             p.DataTable(pd.DataFrame(mtcars))
 
-        with p.add(md.H2("Tabulator javascript library")):
+        with p.H2("Tabulator javascript library"):
             p.add(
                 """
                 This time, we use the [Tabulator](http://tabulator.info)
@@ -49,3 +49,14 @@ def use_tables(report: Report) -> None:
                 """
             )
             p.Tabulator(pd.DataFrame(mtcars))
+
+        with p.H2("Notes"):
+            p.add(
+                """
+                Internally, the tables are serialized to json so that 
+                they can be displayed in the web-browser. For any types 
+                that are non-native to json (e.g. Path-instances), as a
+                default handler the `str` funtion is called. If this
+                is not ok, please transform the table columns accordingly.
+                """
+            )
