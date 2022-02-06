@@ -8,6 +8,7 @@ from os.path import relpath
 from pathlib import Path
 from typing import Any, Dict, Iterable, NamedTuple, Optional, Tuple, Union
 
+from .idstore import IDStore
 from .settings import Settings
 from .text import SpacedText, Text
 
@@ -40,7 +41,7 @@ class MdObj(ABC):
         return first + second
 
     @abstractmethod
-    def to_markdown(self, page_path: Optional[Path] = None) -> MdOut:
+    def to_markdown(self, page_path: Path, idstore: IDStore, **kwargs) -> MdOut:
         """
         Convert the object to markdown.
 
@@ -86,8 +87,8 @@ class MdSeq(MdObj, Sequence):
         second_items = other if type(other) == MdSeq else (other,)
         return MdSeq(second_items + self.items)
 
-    def to_markdown(self, page_path: Optional[Path] = None) -> MdOut:
-        mdout_list = [x.to_markdown(page_path) for x in self.items]
+    def to_markdown(self, **kwargs) -> MdOut:
+        mdout_list = [x.to_markdown(**kwargs) for x in self.items]
         return MdOut(
             body=functools.reduce(
                 lambda x, y: x + y, [elem.body for elem in mdout_list]
@@ -135,8 +136,8 @@ class Raw(MdObj):
             mkdocs=self.mkdocs_settings if self.mkdocs_settings is not None else {},
         )
 
-    def to_markdown(self, page_path: Optional[Path] = None) -> MdOut:
-        del page_path
+    def to_markdown(self, **kwargs) -> MdOut:
+        del kwargs
         return MdOut(body=SpacedText(self.raw))
 
 
@@ -144,8 +145,8 @@ class Raw(MdObj):
 class Anchor(MdObj):
     name: str
 
-    def to_markdown(self, page_path: Optional[Path] = None) -> MdOut:
-        del page_path
+    def to_markdown(self, **kwargs) -> MdOut:
+        del kwargs
         return MdOut(body=SpacedText(f"[](){{:name='{self.name}'}}", (0, 0)))
 
 
@@ -156,7 +157,8 @@ class Link(MdObj):
     anchor: Optional[Union[str, Anchor]] = None
     url: Optional[str] = None
 
-    def to_markdown(self, page_path: Optional[Path] = None) -> MdOut:
+    def to_markdown(self, page_path: Path, **kwargs) -> MdOut:
+        del kwargs
         if self.url is not None:
             link = self.url
         else:
@@ -203,13 +205,13 @@ class Paragraph(MdObj):
         self.obj = obj if not isinstance(obj, str) else Raw(obj)
         self.anchor = anchor if not isinstance(anchor, str) else Anchor(anchor)
 
-    def to_markdown(self, page_path: Optional[Path] = None) -> MdOut:
-        obj_out = self.obj.to_markdown(page_path)
+    def to_markdown(self, **kwargs) -> MdOut:
+        obj_out = self.obj.to_markdown(**kwargs)
         if isinstance(self.anchor, Anchor):
             # note, string conversion to Anchor done in post-init
             res_body = (
                 SpacedText(obj_out.body.text, (0, 1))
-                + self.anchor.to_markdown(page_path).body
+                + self.anchor.to_markdown(**kwargs).body
             )
         else:
             res_body = obj_out.body

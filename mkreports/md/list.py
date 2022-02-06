@@ -54,7 +54,7 @@ class List(MdObj):
         del other
         raise NotImplementedError("Addition not supported for MdList")
 
-    def to_markdown(self, page_path: Optional[Path] = None) -> MdOut:
+    def to_markdown(self, **kwargs) -> MdOut:
         # create the markdown output for every item; indent it appropriately
         # and then put it all together.
 
@@ -65,7 +65,7 @@ class List(MdObj):
             prefix = [f"{self.marker} "] * len(self)
 
         md_list = [
-            indent_hanging(elem.to_markdown(page_path).body.text, hanging=prefix)
+            indent_hanging(elem.to_markdown(**kwargs).body.text, hanging=prefix)
             for elem, prefix in zip(self.list.items, prefix)
         ]
 

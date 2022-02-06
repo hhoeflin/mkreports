@@ -42,15 +42,15 @@ Here the same table, but displayed using the
 plugin. With this, we get automatic paging, searching as well as sorting
 by columns. 
 
-<table id='datatable-ca9b6f052f673e1d46f468ebb1ccc5d1_1' class='display' style='width:100%'> </table>
+<table id='datatable_id-0' class='display' style='width:100%'> </table>
 
 <script>
 $(document).ready( function () {
-$('#datatable-ca9b6f052f673e1d46f468ebb1ccc5d1_1').DataTable({"scrollX": "true", "columns": [{"title": "name"}, {"title": "mpg"}, {"title": "cyl"}, {"title": "disp"}, {"title": "hp"}, {"title": "drat"}, {"title": "wt"}, {"title": "qsec"}, {"title": "vs"}, {"title": "am"}, {"title": "gear"}, {"title": "carb"}], "ajax": "../tables_gen_assets/datatable-ca9b6f052f673e1d46f468ebb1ccc5d1.json"});
+$('#datatable_id-0').DataTable({"scrollX": "true", "columns": [{"title": "name"}, {"title": "mpg"}, {"title": "cyl"}, {"title": "disp"}, {"title": "hp"}, {"title": "drat"}, {"title": "wt"}, {"title": "qsec"}, {"title": "vs"}, {"title": "am"}, {"title": "gear"}, {"title": "carb"}], "ajax": "../tables_gen_assets/datatable-ca9b6f052f673e1d46f468ebb1ccc5d1.json"});
 } );
 </script>
 
-[comment]: # (id: datatable-ca9b6f052f673e1d46f468ebb1ccc5d1_1)
+[comment]: # (id: datatable_id-0)
 
 ## Tabulator javascript library
 
@@ -58,10 +58,10 @@ This time, we use the [Tabulator](http://tabulator.info)
 library. A library with a lot of interesting 
 functionality. Currently limited support.
 
-<div id='tabulator-c8469972d60cd61d98262704e068f4e9' class='display' style='width:100%'> </div>
+<div id='tabulator_id-0' class='display' style='width:100%'> </div>
 
 <script>
-var table = new Tabulator('#tabulator-c8469972d60cd61d98262704e068f4e9', {"autoColumns": true, "pagination": true, "paginationSize": 10, "paginationSizeSelector": true, "ajaxURL": "../tables_gen_assets/tabulator-c8469972d60cd61d98262704e068f4e9.json"});
+var table = new Tabulator('#tabulator_id-0', {"autoColumns": true, "pagination": true, "paginationSize": 10, "paginationSizeSelector": true, "ajaxURL": "../tables_gen_assets/tabulator-c8469972d60cd61d98262704e068f4e9.json"});
 </script>
 
-[comment]: # (id: tabulator-c8469972d60cd61d98262704e068f4e9)
+[comment]: # (id: tabulator_id-0)

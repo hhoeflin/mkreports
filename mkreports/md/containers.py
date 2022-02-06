@@ -48,9 +48,9 @@ class Admonition(MdObj):
         else:
             return cont_settings
 
-    def to_markdown(self, page_path: Optional[Path] = None) -> MdOut:
+    def to_markdown(self, **kwargs) -> MdOut:
         if isinstance(self.text, MdObj):
-            admon_text, back = self.text.to_markdown(page_path)
+            admon_text, back = self.text.to_markdown(**kwargs)
         else:
             admon_text, back = str(self.text), SpacedText()
 
@@ -88,9 +88,9 @@ class Tab(MdObj):
         else:
             return tab_settings
 
-    def to_markdown(self, page_path: Optional[Path] = None) -> MdOut:
+    def to_markdown(self, **kwargs) -> MdOut:
         if isinstance(self.text, MdObj):
-            tab_text, back = self.text.to_markdown(page_path)
+            tab_text, back = self.text.to_markdown(**kwargs)
         else:
             tab_text, back = str(self.text), SpacedText()
 
@@ -125,8 +125,8 @@ class Code(MdObj):
         )
         return settings
 
-    def to_markdown(self, page_path: Optional[Path] = None) -> MdOut:
-        del page_path
+    def to_markdown(self, **kwargs) -> MdOut:
+        del kwargs
         annots = ""
         if self.language is not None:
             annots = annots + self.language
@@ -192,8 +192,8 @@ class CodeFile(File):
         )
         return settings
 
-    def to_markdown(self, page_path: Optional[Path] = None) -> MdOut:
-        del page_path
+    def to_markdown(self, **kwargs) -> MdOut:
+        del kwargs
         annots = ""
         if self.language is not None:
             annots = annots + self.language

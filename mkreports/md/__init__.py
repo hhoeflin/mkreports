@@ -3,6 +3,7 @@ from .containers import Admonition, Code, CodeFile, Tab
 from .docstring import Docstring
 from .file import File
 from .header import H1, H2, H3, H4, H5, H6, H7, Heading
+from .idstore import IDStore
 from .image import PIL, Altair, Image, ImageFile, Plotly
 from .list import List
 from .settings import Settings, merge_settings
@@ -34,6 +35,7 @@ __all__ = [
     "H5",
     "H6",
     "H7",
+    "IDStore",
     "PIL",
     "Altair",
     "Image",

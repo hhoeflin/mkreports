@@ -1,6 +1,3 @@
-from pathlib import Path
-from typing import Optional
-
 from .base import MdObj, MdOut
 from .settings import Settings
 from .text import SpacedText
@@ -22,6 +19,6 @@ class Docstring(MdObj):
         )
         return cont_settings
 
-    def to_markdown(self, page_path: Optional[Path] = None) -> MdOut:
-        del page_path
+    def to_markdown(self, **kwargs) -> MdOut:
+        del kwargs
         return MdOut(body=SpacedText(f"::: {self.obj_name}", (2, 2)))

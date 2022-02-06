@@ -8,6 +8,7 @@ from mdutils.tools.Image import Image as UtilsImage
 
 from .base import MdOut, comment_ids
 from .file import File, relpath_html
+from .idstore import IDStore
 from .settings import Settings
 from .text import SpacedText
 
@@ -34,9 +35,8 @@ class ImageFile(File):
         self.tooltip = tooltip
         self.link_type = link_type
 
-    def to_markdown(self, page_path: Optional[Path] = None) -> MdOut:
-        if page_path is None:
-            raise ValueError("Page path cannot be None")
+    def to_markdown(self, page_path: Path, **kwargs) -> MdOut:
+        del kwargs
         if self.link_type == "inline":
             return MdOut(
                 body=SpacedText(
@@ -125,7 +125,6 @@ class Altair(File):
         self,
         altair,
         store_path: Path,
-        altair_id: Union[str, Callable[[str], str]] = lambda hash: f"altair-{hash}",
         **kwargs,
     ):
         with tempfile.TemporaryDirectory() as dir:
@@ -139,11 +138,6 @@ class Altair(File):
             super().__init__(
                 path=path, store_path=store_path, allow_copy=True, use_hash=True
             )
-
-        if isinstance(altair_id, Callable):
-            self.altair_id = altair_id(self.hash)
-        else:
-            self.altair_id = altair_id
 
     def req_settings(self):
         settings = Settings(
@@ -159,19 +153,17 @@ class Altair(File):
         )
         return settings
 
-    def to_markdown(self, page_path: Optional[Path] = None) -> MdOut:
-        if page_path is None:
-            raise ValueError(
-                "page_path must be set for relative referencing of json data file."
-            )
-
-        # note; here we just insert the div. The reason is that this part can be indented, e.g.
+    def to_markdown(self, page_path: Path, idstore: IDStore, **kwargs) -> MdOut:
+        del kwargs
+        # note; in the body we just insert the div.
+        # The reason is that this part can be indented, e.g.
         # inside a tab. But then <script> content can be escaped, leading to errors for '=>'
         # so the script tag itself gets done in the backmatter
 
+        altair_id = idstore.next_id("altair_id")
         body_html = inspect.cleandoc(
             f"""
-            <div id='{self.altair_id}'> </div>
+            <div id='{altair_id}'> </div>
             """
         )
 
@@ -179,7 +171,7 @@ class Altair(File):
         back_html = inspect.cleandoc(
             f"""
             <script>
-                vegaEmbed("#{self.altair_id}", "{rel_spec_path}")
+                vegaEmbed("#{altair_id}", "{rel_spec_path}")
     	        // result.view provides access to the Vega View API
                 .then(result => console.log(result))
                 .catch(console.warn);
@@ -189,7 +181,7 @@ class Altair(File):
 
         return MdOut(
             body=SpacedText(body_html, (2, 2)),
-            back=SpacedText(back_html, (2, 2)) + comment_ids(self.altair_id),
+            back=SpacedText(back_html, (2, 2)) + comment_ids(altair_id),
         )
 
 
@@ -198,7 +190,6 @@ class Plotly(File):
         self,
         plotly,
         store_path: Path,
-        plotly_id: Union[str, Callable[[str], str]] = lambda hash: f"plotly-{hash}",
         **kwargs,
     ):
         with tempfile.TemporaryDirectory() as dir:
@@ -213,11 +204,6 @@ class Plotly(File):
                 path=path, store_path=store_path, allow_copy=True, use_hash=True
             )
 
-        if isinstance(plotly_id, Callable):
-            self.plotly_id = plotly_id(self.hash)
-        else:
-            self.plotly_id = plotly_id
-
     def req_settings(self):
         settings = Settings(
             page=dict(
@@ -230,19 +216,18 @@ class Plotly(File):
         )
         return settings
 
-    def to_markdown(self, page_path: Optional[Path] = None) -> MdOut:
-        if page_path is None:
-            raise ValueError(
-                "page_path must be set for relative referencing of json data file."
-            )
+    def to_markdown(self, page_path: Path, idstore: IDStore, **kwargs) -> MdOut:
+        del kwargs
 
-        # note; here we just insert the div. The reason is that this part can be indented, e.g.
+        # note; in the body we just insert the div.
+        # The reason is that this part can be indented, e.g.
         # inside a tab. But then <script> content can be escaped, leading to errors for '=>'
         # so the script tag itself gets done in the backmatter
 
+        plotly_id = idstore.next_id("plotly_id")
         body_html = inspect.cleandoc(
             f"""
-            <div id='{self.plotly_id}'> </div>
+            <div id='{plotly_id}'> </div>
             """
         )
 
@@ -261,7 +246,7 @@ class Plotly(File):
                         console.log('error: ' + err);
                     }});
                 function doPlotly(plotlyJson) {{
-                    Plotly.newPlot("{self.plotly_id}", {{
+                    Plotly.newPlot("{plotly_id}", {{
                         "data": plotlyJson["data"],
                         "layout": plotlyJson["layout"]
                     }})
@@ -272,7 +257,7 @@ class Plotly(File):
 
         return MdOut(
             body=SpacedText(body_html, (2, 2)),
-            back=SpacedText(back_html, (2, 2)) + comment_ids(self.plotly_id),
+            back=SpacedText(back_html, (2, 2)) + comment_ids(plotly_id),
         )
 
 

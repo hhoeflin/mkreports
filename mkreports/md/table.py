@@ -10,6 +10,7 @@ import pandas as pd
 
 from .base import MdObj, MdOut, comment_ids
 from .file import File, relpath_html
+from .idstore import IDStore
 from .settings import Settings
 from .text import SpacedText
 
@@ -24,8 +25,8 @@ class Table(MdObj):
         # think about making this a static-frame
         self.table = deepcopy(table)
 
-    def to_markdown(self, page_path: Optional[Path] = None) -> MdOut:
-        del page_path
+    def to_markdown(self, **kwargs) -> MdOut:
+        del kwargs
         table_md = self.table.to_markdown(**self.kwargs)
         table_md = table_md if table_md is not None else ""
         return MdOut(body=SpacedText(table_md, (2, 2)))
@@ -36,7 +37,6 @@ class DataTable(File):
         self,
         table: pd.DataFrame,
         store_path: Path,
-        table_id: Union[str, Callable[[str], str]] = lambda hash: f"datatable-{hash}",
         column_settings: Optional[dict] = None,
         **kwargs,
     ):
@@ -50,12 +50,6 @@ class DataTable(File):
             super().__init__(
                 path=path, store_path=store_path, allow_copy=True, use_hash=True
             )
-
-        # use the hashed table name as the id if there is no other
-        if isinstance(table_id, Callable):
-            self.table_id = table_id(self.hash)
-        else:
-            self.table_id = table_id
 
         # prepare the table settings
         col_set = {col: {"title": col} for col in table.columns}
@@ -84,15 +78,12 @@ class DataTable(File):
         )
         return settings
 
-    def to_markdown(self, page_path: Optional[Path] = None) -> MdOut:
-        if page_path is None:
-            raise ValueError(
-                "page_path must be set for relative referencing of json data file."
-            )
-
+    def to_markdown(self, page_path: Path, idstore: IDStore, **kwargs) -> MdOut:
+        del kwargs
+        datatable_id = idstore.next_id("datatable_id")
         body_html = inspect.cleandoc(
             f"""
-            <table id='{self.table_id}' class='display' style='width:100%'> </table>
+            <table id='{datatable_id}' class='display' style='width:100%'> </table>
             """
         )
 
@@ -104,7 +95,7 @@ class DataTable(File):
             f"""
             <script>
             $(document).ready( function () {{
-            $('#{self.table_id}').DataTable({settings_str});
+            $('#{datatable_id}').DataTable({settings_str});
             }} );
             </script>
             """
@@ -112,7 +103,7 @@ class DataTable(File):
 
         return MdOut(
             body=SpacedText(body_html, (2, 2)),
-            back=SpacedText(back_html, (2, 2)) + comment_ids(self.table_id),
+            back=SpacedText(back_html, (2, 2)) + comment_ids(datatable_id),
         )
 
 
@@ -121,7 +112,6 @@ class Tabulator(File):
         self,
         table: pd.DataFrame,
         store_path: Path,
-        table_id: Union[str, Callable[[str], str]] = lambda hash: f"tabulator-{hash}",
         column_settings: Optional[dict] = None,
         **kwargs,
     ):
@@ -135,12 +125,6 @@ class Tabulator(File):
             super().__init__(
                 path=path, store_path=store_path, allow_copy=True, use_hash=True
             )
-
-        # use the hashed table name as the id if there is no other
-        if isinstance(table_id, Callable):
-            self.table_id = table_id(self.hash)
-        else:
-            self.table_id = table_id
 
         # prepare the table settings
         col_set = {col: {"title": col} for col in table.columns}
@@ -170,15 +154,13 @@ class Tabulator(File):
         )
         return settings
 
-    def to_markdown(self, page_path: Optional[Path] = None) -> MdOut:
-        if page_path is None:
-            raise ValueError(
-                "page_path must be set for relative referencing of json data file."
-            )
+    def to_markdown(self, page_path: Path, idstore: IDStore, **kwargs) -> MdOut:
+        del kwargs
 
+        tabulator_id = idstore.next_id("tabulator_id")
         body_html = inspect.cleandoc(
             f"""
-            <div id='{self.table_id}' class='display' style='width:100%'> </div>
+            <div id='{tabulator_id}' class='display' style='width:100%'> </div>
             """
         )
 
@@ -189,12 +171,12 @@ class Tabulator(File):
         back_html = inspect.cleandoc(
             f"""
             <script>
-            var table = new Tabulator('#{self.table_id}', {settings_str});
+            var table = new Tabulator('#{tabulator_id}', {settings_str});
             </script>
             """
         )
 
         return MdOut(
             body=SpacedText(body_html, (2, 2)),
-            back=SpacedText(back_html, (2, 2)) + comment_ids(self.table_id),
+            back=SpacedText(back_html, (2, 2)) + comment_ids(tabulator_id),
         )

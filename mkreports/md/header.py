@@ -20,14 +20,14 @@ class Heading(MdObj):
         if isinstance(self.anchor, str):
             self.anchor = Anchor(self.anchor)
 
-    def to_markdown(self, page_path: Optional[Path] = None) -> MdOut:
+    def to_markdown(self, **kwargs) -> MdOut:
         heading = mdt.Header.Header.choose_header(
             self.level, self.title, self.style
         ).strip("\n")
 
         if isinstance(self.anchor, Anchor):
             # note, string conversion to Anchor done in post-init
-            heading += self.anchor.to_markdown(page_path).body.text
+            heading += self.anchor.to_markdown(**kwargs).body.text
 
         return MdOut(
             body=SpacedText(
