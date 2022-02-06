@@ -32,5 +32,5 @@ def add_pkg_docs(
             )
 
             # now create a new page and add the doc-entry
-            page = report.page(module_nav_entry, append=False)
+            page = report.page(module_nav_entry, truncate=True)
             page.add(page.md.Docstring(".".join(module_path.parts)))

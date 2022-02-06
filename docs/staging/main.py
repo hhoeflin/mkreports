@@ -42,10 +42,7 @@ def run_all(report: Report):
 
 
 def main(report_dir: Path):
-    report = Report(
-        report_dir,
-        report_name="Mkreports documentations",
-    )
+    report = Report.create(report_dir, report_name="Mkreports documentations")
     run_all(report)
 
 

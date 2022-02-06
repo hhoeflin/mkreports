@@ -7,7 +7,7 @@ def use_tables(report: Report) -> None:
     """
     Show all the different ways on how we can work with tables.
     """
-    with report.page("tables.md", append=False) as p:
+    with report.page("tables.md", truncate=True) as p:
         p.H1("Different ways of handling tables")
 
         p.add(

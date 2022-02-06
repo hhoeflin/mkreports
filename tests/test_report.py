@@ -4,7 +4,7 @@ from mkreports import Report
 
 class TestPage:
     def test_page(self, tmp_path):
-        report = Report(tmp_path / "test", report_name="Test")
+        report = Report.create(tmp_path / "test", report_name="Test")
 
         with pytest.raises(ValueError):
             report.page("testpage")

@@ -105,9 +105,6 @@ class Report:
     def __init__(
         self,
         path: Optional[Union[str, Path]] = None,
-        report_name: Optional[str] = None,
-        exist_ok: bool = True,
-        settings: Optional[Mapping[str, str]] = None,
     ) -> None:
         # need to ensure it is of type Path
         if path is None:
@@ -118,26 +115,15 @@ class Report:
                     "If no report path is given, the 'MKREPORTS_DIR'  environment variable has to be set."
                 )
         self._path = Path(path).absolute()
-        self.report_name = report_name
         # first check if the path exists and is not empty and return error if that is not ok
-        if self.path.exists() and any(self.path.iterdir()):
-            if not exist_ok:
-                raise ReportExistsError(f"{self.path} already exists")
-            else:
-                # nothing to do here
-                pass
-        else:
-            # check if should be created
-            if report_name is not None:
-                # call the functions from mkdocs that creates a new report
-                if settings is None:
-                    settings = default_settings
-                self._create_new(report_name, settings)
-            else:
-                raise ReportNotExistsError(f"{self.path} does not exist.")
-
-        # ensure that all the dependencies are there
-        self._ensure_is_report()
+        if not self.path.exists():
+            raise ReportNotExistsError(f"{self.path} does not exist.")
+        if not self.mkdocs_file.exists() or not self.mkdocs_file.is_file():
+            raise ReportNotValidError(f"{self.mkdocs_file} does not exist")
+        if not self.docs_dir.exists() or not self.docs_dir.is_dir():
+            raise ReportNotValidError(f"{self.docs_dir} does not exist")
+        if not self.index_file.exists() or not self.index_file.is_file():
+            raise ReportNotValidError(f"{self.index_file} does not exist")
 
     @property
     def path(self) -> Path:
@@ -155,31 +141,38 @@ class Report:
     def index_file(self) -> Path:
         return self.docs_dir / "index.md"
 
-    def _create_new(self, site_name: str, settings: Mapping[str, str]) -> None:
-        # create the directoriewwwwwwbhec
-        self.docs_dir.mkdir(exist_ok=True, parents=True)
-        # index.md just remains empty
-        self.index_file.touch()
-        # the settings are our serialized yaml
-        settings = dict(settings.items())  # ensure settings is regular dict
-        settings["site_name"] = site_name
-        with self.mkdocs_file.open("w") as f:
-            yaml.dump(settings, f, Dumper=yaml.Dumper, default_flow_style=False)
+    @classmethod
+    def create(
+        cls,
+        path: Union[str, Path],
+        report_name: str,
+        settings: Optional[Mapping[str, str]] = default_settings,
+        exist_ok: bool = False,
+    ) -> "Report":
+        path = Path(path)
+        # create the directory
+        (path / "docs").mkdir(exist_ok=exist_ok, parents=True)
+        # index.md created, but done nothing if it exists
+        # if exist_ok=False, the previousalready failed otherwise
+        (path / "docs" / "index.md").touch()
+
+        # only do it if mkdocs_yml does not exist yet
+        mkdocs_file = path / "mkdocs.yml"
+        if not mkdocs_file.exists():
+            # the settings are our serialized yaml
+            # ensure settings is regular dict
+            settings = dict(settings.items()) if settings is not None else {}
+            settings["site_name"] = report_name
+            with (path / "mkdocs.yml").open("w") as f:
+                yaml.dump(settings, f, Dumper=yaml.Dumper, default_flow_style=False)
 
         # also create the overrides doc
-        overrides_dir = self.path / "overrides"
+        overrides_dir = path / "overrides"
         overrides_dir.mkdir(exist_ok=True, parents=True)
         with (overrides_dir / "main.html").open("w") as f:
             f.write(main_html_override)
 
-    def _ensure_is_report(self) -> None:
-        # now ensure that these all exist
-        if not self.mkdocs_file.exists() or not self.mkdocs_file.is_file():
-            raise ReportNotValidError(f"{self.mkdocs_file} does not exist")
-        if not self.docs_dir.exists() or not self.docs_dir.is_dir():
-            raise ReportNotValidError(f"{self.docs_dir} does not exist")
-        if not self.index_file.exists() or not self.index_file.is_file():
-            raise ReportNotValidError(f"{self.index_file} does not exist")
+        return cls(path)
 
     def _add_nav_entry(self, nav_entry) -> None:
         # check that the nav-entry is relative; if absolute,
@@ -196,7 +189,7 @@ class Report:
     def page(
         self,
         page_name: Union[NavEntry, Path, str],
-        append: bool = False,
+        truncate: bool = False,
         init_counter_time: bool = False,
         append_code_file: Optional[Union[str, Path]] = None,
     ) -> "Page":
@@ -215,7 +208,7 @@ class Report:
         # if the file already exists, just return a 'Page',
         # else create a new nav-entry and the file and return a 'Page'
         if (self.docs_dir / path).exists():
-            if not append:
+            if truncate:
                 # delete the existing site
                 (self.docs_dir / path).unlink()
                 (self.docs_dir / path).touch()
@@ -241,8 +234,6 @@ class Page:
         self,
         path: Path,
         report: Report,
-        page_settings: Optional[Dict[str, Any]] = None,
-        mkdocs_settings: Optional[Dict[str, Any]] = None,
         init_counter_time: bool = False,
         append_code_file: Optional[Union[Path, str]] = None,
     ) -> None:
@@ -253,11 +244,6 @@ class Page:
         else:
             self._idstore = IDStore()
         self.report = report
-
-        # check if the page already exists
-        if not self._path.exists():
-            # we create the file with the settings
-            self.add(Raw(page_settings=page_settings, mkdocs_settings=mkdocs_settings))
 
         self._md = MdProxy(
             store_path=self.gen_asset_path,
