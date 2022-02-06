@@ -202,6 +202,8 @@ class Report:
             nav_entry = page_name
             path = nav_entry[1]
 
+        if path.suffix == "":
+            path = path.with_suffix(".md")
         if path.suffix != ".md":
             raise ValueError(f"{path} needs to have extension '.md'")
 
