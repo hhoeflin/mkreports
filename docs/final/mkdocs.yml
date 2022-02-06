@@ -18,7 +18,6 @@ nav:
 - Code Blocks: code_blocks.md
 - Reference:
   - mkreports:
-    - counters: Reference/mkreports/counters.md
     - docs: Reference/mkreports/docs.md
     - exceptions: Reference/mkreports/exceptions.md
     - ipython: Reference/mkreports/ipython.md
@@ -28,8 +27,10 @@ nav:
       - docstring: Reference/mkreports/md/docstring.md
       - file: Reference/mkreports/md/file.md
       - header: Reference/mkreports/md/header.md
+      - idstore: Reference/mkreports/md/idstore.md
       - image: Reference/mkreports/md/image.md
       - list: Reference/mkreports/md/list.md
+      - settings: Reference/mkreports/md/settings.md
       - table: Reference/mkreports/md/table.md
       - text: Reference/mkreports/md/text.md
     - md_proxy: Reference/mkreports/md_proxy.md

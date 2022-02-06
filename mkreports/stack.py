@@ -125,6 +125,7 @@ class Tracker:
 
     def __exit__(self, exc_type, exc_val, traceback) -> None:
         """Remove the profiler when exiting the context manager."""
+        del exc_type, exc_val, traceback
         self.stop(omit_levels=1)
 
     @property
@@ -153,14 +154,17 @@ class Tracker:
         return False
 
     def notrace(self, frame, event, arg):
+        del frame, event, arg
         return None
 
     def trace_reset_on_return(self, frame, event, arg):
+        del frame, arg
         if event == "return":
             sys.settrace(self.trace)
             return self.trace
 
     def trace(self, frame, event, arg):
+        del arg
         # when tracing, only care if it is a 'call' event
         if event == "call":
             # if it is inside the approved dirs, keep tracing;

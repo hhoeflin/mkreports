@@ -5,7 +5,7 @@ from typing import Literal, Optional, Union
 
 import mdutils.tools as mdt
 
-from .base import Anchor, MdObj
+from .base import Anchor, MdObj, MdOut
 from .text import SpacedText
 
 
@@ -20,18 +20,20 @@ class Heading(MdObj):
         if isinstance(self.anchor, str):
             self.anchor = Anchor(self.anchor)
 
-    def to_markdown(self, page_path: Optional[Path] = None) -> SpacedText:
+    def to_markdown(self, **kwargs) -> MdOut:
         heading = mdt.Header.Header.choose_header(
             self.level, self.title, self.style
         ).strip("\n")
 
         if isinstance(self.anchor, Anchor):
             # note, string conversion to Anchor done in post-init
-            heading += self.anchor.to_markdown(page_path).text
+            heading += self.anchor.to_markdown(**kwargs).body.text
 
-        return SpacedText(
-            heading,
-            (2, 2),
+        return MdOut(
+            body=SpacedText(
+                heading,
+                (2, 2),
+            )
         )
 
 

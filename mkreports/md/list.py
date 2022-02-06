@@ -1,8 +1,7 @@
-from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable, Literal, Optional, Sequence, Union
 
-from .base import MdObj, MdSeq, Raw
+from .base import MdObj, MdOut, MdSeq, Raw
 from .text import SpacedText, Text
 
 
@@ -48,12 +47,14 @@ class List(MdObj):
         return len(self.list)
 
     def __add__(self, other) -> "List":
+        del other
         raise NotImplementedError("Addition not supported for MdList")
 
     def __radd__(self, other) -> "List":
+        del other
         raise NotImplementedError("Addition not supported for MdList")
 
-    def to_markdown(self, path: Optional[Path] = None) -> SpacedText:
+    def to_markdown(self, **kwargs) -> MdOut:
         # create the markdown output for every item; indent it appropriately
         # and then put it all together.
 
@@ -64,8 +65,8 @@ class List(MdObj):
             prefix = [f"{self.marker} "] * len(self)
 
         md_list = [
-            indent_hanging(elem.to_markdown(path).text, hanging=prefix)
+            indent_hanging(elem.to_markdown(**kwargs).body.text, hanging=prefix)
             for elem, prefix in zip(self.list.items, prefix)
         ]
 
-        return SpacedText("\n".join(md_list), (2, 2))
+        return MdOut(body=SpacedText("\n".join(md_list), (2, 2)))

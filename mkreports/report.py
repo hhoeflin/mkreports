@@ -17,14 +17,13 @@ import yaml
 from frontmatter.default_handlers import DEFAULT_POST_TEMPLATE, YAMLHandler
 from immutabledict import immutabledict
 
-from .counters import Counters
 from .exceptions import (ReportExistsError, ReportNotExistsError,
                          ReportNotValidError, TrackerEmptyError,
                          TrackerIncompleteError)
-from .md import MdObj, Raw, SpacedText, Tab, Text
+from .md import IDStore, MdObj, Raw, SpacedText, Tab, Text, merge_settings
 from .md_proxy import MdProxy
-from .settings import (NavEntry, add_nav_entry, load_yaml, merge_settings,
-                       path_to_nav_entry, save_yaml)
+from .settings import (NavEntry, add_nav_entry, load_yaml, path_to_nav_entry,
+                       save_yaml)
 from .stack import Tracker
 from .utils import relative_repo_root
 
@@ -250,9 +249,9 @@ class Page:
         self._path = path.absolute()
         if init_counter_time:
             # use time in ms
-            self._counters = Counters(start_with=int(time.time() * 1000))
+            self._idstore = IDStore(start_with=int(time.time() * 1000))
         else:
-            self._counters = Counters()
+            self._idstore = IDStore()
         self.report = report
 
         # check if the page already exists
@@ -263,8 +262,6 @@ class Page:
         self._md = MdProxy(
             store_path=self.gen_asset_path,
             report_path=self.report.path,
-            datatable_id=lambda hash: self._counters.counted_id(f"datatable-{hash}"),
-            altair_id=lambda hash: self._counters.counted_id(f"altair-{hash}"),
         )
 
         self.append_code_file = append_code_file
@@ -276,6 +273,7 @@ class Page:
         return self
 
     def __exit__(self, exc_type, exc_val, traceback) -> None:
+        del exc_type, exc_val, traceback
         if self.append_code_file:
             try:
                 self.add(
@@ -366,7 +364,8 @@ class Page:
             self.reset_tracker()
 
         # call the markdown and the backmatter
-        md_text = item.to_md_with_bm(page_path=self.path)
+        md_out = item.to_markdown(page_path=self.path, idstore=self._idstore)
+        md_text = md_out.body + md_out.back
 
         req = item.req_settings()
         if len(req.mkdocs) > 0:

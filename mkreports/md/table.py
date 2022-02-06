@@ -7,10 +7,11 @@ from pathlib import Path
 from typing import Any, Callable, Dict, Optional, Union
 
 import pandas as pd
-from mkreports.settings import Settings
 
-from .base import MdObj
-from .file import File, relpath_html, true_stem
+from .base import MdObj, MdOut, comment_ids
+from .file import File, relpath_html
+from .idstore import IDStore
+from .settings import Settings
 from .text import SpacedText
 
 
@@ -24,10 +25,11 @@ class Table(MdObj):
         # think about making this a static-frame
         self.table = deepcopy(table)
 
-    def to_markdown(self, page_path: Optional[Path] = None) -> SpacedText:
+    def to_markdown(self, **kwargs) -> MdOut:
+        del kwargs
         table_md = self.table.to_markdown(**self.kwargs)
         table_md = table_md if table_md is not None else ""
-        return SpacedText(table_md, (2, 2))
+        return MdOut(body=SpacedText(table_md, (2, 2)))
 
 
 class DataTable(File):
@@ -35,7 +37,6 @@ class DataTable(File):
         self,
         table: pd.DataFrame,
         store_path: Path,
-        table_id: Union[str, Callable[[str], str]] = lambda hash: f"datatable-{hash}",
         column_settings: Optional[dict] = None,
         **kwargs,
     ):
@@ -49,12 +50,6 @@ class DataTable(File):
             super().__init__(
                 path=path, store_path=store_path, allow_copy=True, use_hash=True
             )
-
-        # use the hashed table name as the id if there is no other
-        if isinstance(table_id, Callable):
-            self.table_id = table_id(self.hash)
-        else:
-            self.table_id = table_id
 
         # prepare the table settings
         col_set = {col: {"title": col} for col in table.columns}
@@ -83,31 +78,33 @@ class DataTable(File):
         )
         return settings
 
-    def to_markdown(self, page_path: Path):
-        if page_path is None:
-            raise ValueError(
-                "page_path must be set for relative referencing of json data file."
-            )
+    def to_markdown(self, page_path: Path, idstore: IDStore, **kwargs) -> MdOut:
+        del kwargs
+        datatable_id = idstore.next_id("datatable_id")
+        body_html = inspect.cleandoc(
+            f"""
+            <table id='{datatable_id}' class='display' style='width:100%'> </table>
+            """
+        )
 
-        # now we insert the data table on the page
-        # note: as we are inserting directly into html, we have to do one addition
-        # level deeper for the relative path
         rel_table_path = relpath_html(self.path, page_path)
         table_settings = copy.deepcopy(self.table_settings)
         table_settings["ajax"] = str(rel_table_path)
         settings_str = json.dumps(table_settings)
-        raw_html = inspect.cleandoc(
+        back_html = inspect.cleandoc(
             f"""
-            <table id='{self.table_id}' class='display' style='width:100%'> </table>
             <script>
             $(document).ready( function () {{
-            $('#{self.table_id}').DataTable({settings_str});
+            $('#{datatable_id}').DataTable({settings_str});
             }} );
             </script>
             """
         )
 
-        return SpacedText(raw_html, (2, 2))
+        return MdOut(
+            body=SpacedText(body_html, (2, 2)),
+            back=SpacedText(back_html, (2, 2)) + comment_ids(datatable_id),
+        )
 
 
 class Tabulator(File):
@@ -115,7 +112,6 @@ class Tabulator(File):
         self,
         table: pd.DataFrame,
         store_path: Path,
-        table_id: Union[str, Callable[[str], str]] = lambda hash: f"tabulator-{hash}",
         column_settings: Optional[dict] = None,
         **kwargs,
     ):
@@ -129,12 +125,6 @@ class Tabulator(File):
             super().__init__(
                 path=path, store_path=store_path, allow_copy=True, use_hash=True
             )
-
-        # use the hashed table name as the id if there is no other
-        if isinstance(table_id, Callable):
-            self.table_id = table_id(self.hash)
-        else:
-            self.table_id = table_id
 
         # prepare the table settings
         col_set = {col: {"title": col} for col in table.columns}
@@ -164,26 +154,29 @@ class Tabulator(File):
         )
         return settings
 
-    def to_markdown(self, page_path: Path):
-        if page_path is None:
-            raise ValueError(
-                "page_path must be set for relative referencing of json data file."
-            )
+    def to_markdown(self, page_path: Path, idstore: IDStore, **kwargs) -> MdOut:
+        del kwargs
 
-        # now we insert the data table on the page
-        # note: as we are inserting directly into html, we have to do one addition
-        # level deeper for the relative path
+        tabulator_id = idstore.next_id("tabulator_id")
+        body_html = inspect.cleandoc(
+            f"""
+            <div id='{tabulator_id}' class='display' style='width:100%'> </div>
+            """
+        )
+
         rel_table_path = relpath_html(self.path, page_path)
         table_settings = copy.deepcopy(self.table_settings)
         table_settings["ajaxURL"] = str(rel_table_path)
         settings_str = json.dumps(table_settings)
-        raw_html = inspect.cleandoc(
+        back_html = inspect.cleandoc(
             f"""
-            <div id='{self.table_id}' class='display' style='width:100%'> </div>
             <script>
-            var table = new Tabulator('#{self.table_id}', {settings_str});
+            var table = new Tabulator('#{tabulator_id}', {settings_str});
             </script>
             """
         )
 
-        return SpacedText(raw_html, (2, 2))
+        return MdOut(
+            body=SpacedText(body_html, (2, 2)),
+            back=SpacedText(back_html, (2, 2)) + comment_ids(tabulator_id),
+        )

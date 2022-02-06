@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Optional, Union
+from typing import Union
 
 from .report import Report
 from .settings import NavEntry, path_to_nav_entry

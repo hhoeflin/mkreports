@@ -34,7 +34,7 @@ class ConsoleWriter(Magics):
         # identify an mkreport
         if "MKREPORTS_DIR" in os.environ:
             self.report = Report(
-                os.environ["MKREPORTS_DIR"], site_name="Mkreports console", create=True
+                os.environ["MKREPORTS_DIR"], report_name="Mkreports console"
             )
             self.open_console()
         else:
@@ -131,6 +131,7 @@ class ConsoleWriter(Magics):
         Function to archive the console. This is also a line magic, however
         the line itself will be ignored.
         """
+        del line
         # we also need to add a navigation entry
         new_entry = ["Console", f"{datetime.now().strftime('%Y/%m/%d %H:%M:%S')}.md"]
         new_path = (

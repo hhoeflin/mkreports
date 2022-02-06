@@ -147,7 +147,7 @@ accessed and saved in the same fashion as for matplotlib.
 
 === "Content"
 
-    <div id='altair-a7a2eb773c7d9454c694b490a77e5a7e_1'> </div>
+    <div id='altair_id-0'> </div>
 
 === "Code"
 
@@ -172,17 +172,19 @@ accessed and saved in the same fashion as for matplotlib.
     ```
 
 <script>
-    vegaEmbed("#altair-a7a2eb773c7d9454c694b490a77e5a7e_1", "../images_gen_assets/altair-a7a2eb773c7d9454c694b490a77e5a7e.csv")
+    vegaEmbed("#altair_id-0", "../images_gen_assets/altair-a7a2eb773c7d9454c694b490a77e5a7e.csv")
     // result.view provides access to the Vega View API
     .then(result => console.log(result))
     .catch(console.warn);
 </script>
 
+[comment]: # (id: altair_id-0)
+
 ### Plotly
 
 === "Content"
 
-    <div id='plotly-2c4e085bcb294e03c4c01a147570a8c5'> </div>
+    <div id='plotly_id-0'> </div>
 
 === "Code"
 
@@ -205,12 +207,14 @@ accessed and saved in the same fashion as for matplotlib.
             console.log('error: ' + err);
         });
     function doPlotly(plotlyJson) {
-        Plotly.newPlot("plotly-2c4e085bcb294e03c4c01a147570a8c5", {
+        Plotly.newPlot("plotly_id-0", {
             "data": plotlyJson["data"],
             "layout": plotlyJson["layout"]
         })
     }
 </script>
+
+[comment]: # (id: plotly_id-0)
 
 ## Different image sizes
 

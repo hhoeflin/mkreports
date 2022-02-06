@@ -3,16 +3,21 @@ import html
 import textwrap
 from abc import ABC, abstractmethod
 from collections.abc import Sequence
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from os.path import relpath
 from pathlib import Path
-from typing import Any, Dict, Iterable, Optional, Tuple, Union
+from typing import Any, Dict, Iterable, NamedTuple, Optional, Tuple, Union
 
-from mkreports.settings import Settings
-
+from .idstore import IDStore
+from .settings import Settings
 from .text import SpacedText, Text
 
 store_path_dict = {}
+
+
+class MdOut(NamedTuple):
+    body: SpacedText = SpacedText("")
+    back: SpacedText = SpacedText("")
 
 
 class MdObj(ABC):
@@ -35,12 +40,8 @@ class MdObj(ABC):
 
         return first + second
 
-    def backmatter(self, page_path: Optional[Path]) -> SpacedText:
-        """Return the parts of the object required for the backmatter."""
-        return SpacedText("")
-
     @abstractmethod
-    def to_markdown(self, page_path: Optional[Path]) -> SpacedText:
+    def to_markdown(self, page_path: Path, idstore: IDStore, **kwargs) -> MdOut:
         """
         Convert the object to markdown.
 
@@ -48,18 +49,6 @@ class MdObj(ABC):
         and counting.
         """
         pass
-
-    def to_md_with_bm(self, page_path: Optional[Path]) -> SpacedText:
-        """
-        Convert to markdown and attach the backmatter.
-        """
-        backmatter = self.backmatter(page_path)
-        if backmatter.text == "":
-            return self.to_markdown(page_path)
-        else:
-            return SpacedText(self.to_markdown(page_path), (1, 2)) + SpacedText(
-                self.backmatter(page_path), (2, 1)
-            )
 
     def req_settings(self) -> Settings:
         return Settings()
@@ -98,14 +87,15 @@ class MdSeq(MdObj, Sequence):
         second_items = other if type(other) == MdSeq else (other,)
         return MdSeq(second_items + self.items)
 
-    def backmatter(self, path: Optional[Path] = None) -> SpacedText:
-        return functools.reduce(
-            lambda x, y: x + y, [elem.backmatter(path) for elem in self.items]
-        )
-
-    def to_markdown(self, path: Optional[Path] = None) -> SpacedText:
-        return functools.reduce(
-            lambda x, y: x + y, [elem.to_markdown(path) for elem in self.items]
+    def to_markdown(self, **kwargs) -> MdOut:
+        mdout_list = [x.to_markdown(**kwargs) for x in self.items]
+        return MdOut(
+            body=functools.reduce(
+                lambda x, y: x + y, [elem.body for elem in mdout_list]
+            ),
+            back=functools.reduce(
+                lambda x, y: x + y, [elem.back for elem in mdout_list]
+            ),
         )
 
     def req_settings(self) -> Settings:
@@ -146,16 +136,18 @@ class Raw(MdObj):
             mkdocs=self.mkdocs_settings if self.mkdocs_settings is not None else {},
         )
 
-    def to_markdown(self, path: Optional[Path] = None) -> SpacedText:
-        return SpacedText(self.raw)
+    def to_markdown(self, **kwargs) -> MdOut:
+        del kwargs
+        return MdOut(body=SpacedText(self.raw))
 
 
 @dataclass()
 class Anchor(MdObj):
     name: str
 
-    def to_markdown(self, page_path: Optional[Path] = None) -> SpacedText:
-        return SpacedText(f"[](){{:name='{self.name}'}}", (0, 0))
+    def to_markdown(self, **kwargs) -> MdOut:
+        del kwargs
+        return MdOut(body=SpacedText(f"[](){{:name='{self.name}'}}", (0, 0)))
 
 
 @dataclass()
@@ -165,7 +157,8 @@ class Link(MdObj):
     anchor: Optional[Union[str, Anchor]] = None
     url: Optional[str] = None
 
-    def to_markdown(self, page_path: Optional[Path] = None) -> SpacedText:
+    def to_markdown(self, page_path: Path, **kwargs) -> MdOut:
+        del kwargs
         if self.url is not None:
             link = self.url
         else:
@@ -194,7 +187,7 @@ class Link(MdObj):
                     )
                     link = f"{relpath(self.to_page_path, start=page_path.parent)}#{anchor_id}"
 
-        return SpacedText(f"[{html.escape(self.text)}]({link})", (0, 0))
+        return MdOut(body=SpacedText(f"[{html.escape(self.text)}]({link})", (0, 0)))
 
 
 @dataclass
@@ -212,14 +205,22 @@ class Paragraph(MdObj):
         self.obj = obj if not isinstance(obj, str) else Raw(obj)
         self.anchor = anchor if not isinstance(anchor, str) else Anchor(anchor)
 
-    def backmatter(self, page_path: Optional[Path] = None) -> SpacedText:
-        return self.obj.backmatter(page_path)
-
-    def to_markdown(self, page_path: Optional[Path] = None) -> SpacedText:
-        p_text = self.obj.to_markdown(page_path)
+    def to_markdown(self, **kwargs) -> MdOut:
+        obj_out = self.obj.to_markdown(**kwargs)
         if isinstance(self.anchor, Anchor):
             # note, string conversion to Anchor done in post-init
-            p_text = SpacedText(p_text.text, (0, 1)) + self.anchor.to_markdown(
-                page_path
+            res_body = (
+                SpacedText(obj_out.body.text, (0, 1))
+                + self.anchor.to_markdown(**kwargs).body
             )
-        return SpacedText(p_text, (2, 2))
+        else:
+            res_body = obj_out.body
+        return MdOut(body=SpacedText(res_body, (2, 2)), back=obj_out.back)
+
+
+def comment(x: str) -> SpacedText:
+    return SpacedText(f"[comment]: # ({x})", (2, 1))
+
+
+def comment_ids(id: str) -> SpacedText:
+    return comment(f"id: {id}")

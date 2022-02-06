@@ -4,8 +4,7 @@ from os.path import relpath
 from pathlib import Path
 from typing import Optional, Union
 
-from .base import MdObj
-from .text import SpacedText
+from .base import MdObj, MdOut
 
 
 def true_stem(path: Path) -> str:
@@ -79,5 +78,6 @@ class File(MdObj):
             self._hash = md5_hash_file(self.path)
         return self._hash
 
-    def to_markdown(self, page_path: Optional[Path] = None) -> SpacedText:
-        return SpacedText("")
+    def to_markdown(self, page_path: Optional[Path] = None) -> MdOut:
+        del page_path
+        return MdOut()
