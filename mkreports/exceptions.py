@@ -33,3 +33,7 @@ class TrackerActiveError(Exception):
 
 class TrackerNotActiveError(Exception):
     pass
+
+
+class IncorrectSuffixError(Exception):
+    pass

@@ -17,9 +17,9 @@ import yaml
 from frontmatter.default_handlers import DEFAULT_POST_TEMPLATE, YAMLHandler
 from immutabledict import immutabledict
 
-from .exceptions import (ReportExistsError, ReportNotExistsError,
-                         ReportNotValidError, TrackerEmptyError,
-                         TrackerIncompleteError)
+from .exceptions import (IncorrectSuffixError, ReportExistsError,
+                         ReportNotExistsError, ReportNotValidError,
+                         TrackerEmptyError, TrackerIncompleteError)
 from .md import IDStore, MdObj, Raw, SpacedText, Tab, Text, merge_settings
 from .md_proxy import MdProxy
 from .settings import (NavEntry, add_nav_entry, load_yaml, path_to_nav_entry,
@@ -151,7 +151,11 @@ class Report:
     ) -> "Report":
         path = Path(path)
         # create the directory
-        (path / "docs").mkdir(exist_ok=exist_ok, parents=True)
+        try:
+            (path / "docs").mkdir(exist_ok=exist_ok, parents=True)
+        except FileExistsError:
+            raise ReportExistsError(f"{path / 'docs'} already exists.")
+
         # index.md created, but done nothing if it exists
         # if exist_ok=False, the previousalready failed otherwise
         (path / "docs" / "index.md").touch()
@@ -240,6 +244,12 @@ class Page:
         append_code_file: Optional[Union[Path, str]] = None,
     ) -> None:
         self._path = path.absolute()
+        # check that the file exists and ends with .md
+        if not self.path.exists():
+            raise FileNotFoundError(f"file {self.path} does not exist.")
+        if not self.path.suffix == ".md":
+            raise IncorrectSuffixError(f"file {self.path} does not have suffix '.md'")
+
         if init_counter_time:
             # use time in ms
             self._idstore = IDStore(start_with=int(time.time() * 1000))
