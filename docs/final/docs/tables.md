@@ -65,3 +65,12 @@ var table = new Tabulator('#tabulator_id-0', {"autoColumns": true, "pagination":
 </script>
 
 [comment]: # (id: tabulator_id-0)
+
+## Notes
+
+Internally, the tables are serialized to json so that 
+they can be displayed in the web-browser. For any types 
+that are non-native to json (e.g. Path-instances), as a
+default handler the `str` funtion is called. If this
+is not ok, please transform the table columns accordingly.
+
