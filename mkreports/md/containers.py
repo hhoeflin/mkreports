@@ -33,7 +33,7 @@ class Admonition(MdObj):
     ] = "note"
     collapse: bool = False
 
-    def req_settings(self) -> Settings:
+    def to_markdown(self, **kwargs) -> MdOut:
         cont_settings = Settings(
             mkdocs={
                 "markdown_extensions": [
@@ -44,15 +44,10 @@ class Admonition(MdObj):
             }
         )
         if isinstance(self.text, MdObj):
-            return cont_settings + self.text.req_settings()
+            admon_text, back, settings = self.text.to_markdown(**kwargs)
+            settings = cont_settings + settings
         else:
-            return cont_settings
-
-    def to_markdown(self, **kwargs) -> MdOut:
-        if isinstance(self.text, MdObj):
-            admon_text, back = self.text.to_markdown(**kwargs)
-        else:
-            admon_text, back = str(self.text), SpacedText()
+            admon_text, back, settings = str(self.text), SpacedText(), cont_settings
 
         if self.title is None:
             title_md = ""
@@ -66,6 +61,7 @@ class Admonition(MdObj):
             )
             + SpacedText(indent(str(admon_text), "    "), (2, 2)),
             back=back,
+            settings=settings,
         )
 
 
@@ -74,7 +70,7 @@ class Tab(MdObj):
     text: Union[Text, MdObj]
     title: Optional[str] = None
 
-    def req_settings(self) -> Settings:
+    def to_markdown(self, **kwargs) -> MdOut:
         tab_settings = Settings(
             mkdocs={
                 "markdown_extensions": [
@@ -84,15 +80,10 @@ class Tab(MdObj):
             }
         )
         if isinstance(self.text, MdObj):
-            return tab_settings + self.text.req_settings()
+            tab_text, back, settings = self.text.to_markdown(**kwargs)
+            settings = tab_settings + settings
         else:
-            return tab_settings
-
-    def to_markdown(self, **kwargs) -> MdOut:
-        if isinstance(self.text, MdObj):
-            tab_text, back = self.text.to_markdown(**kwargs)
-        else:
-            tab_text, back = str(self.text), SpacedText()
+            tab_text, back, settings = str(self.text), SpacedText(), tab_settings
 
         if self.title is not None:
             title_text = html.escape(self.title)
@@ -103,6 +94,7 @@ class Tab(MdObj):
             body=SpacedText(f'=== "{title_text}"', (2, 2))
             + SpacedText(indent(str(tab_text), "    "), (2, 2)),
             back=back,
+            settings=settings,
         )
 
 
@@ -116,14 +108,6 @@ class Code(MdObj):
     hl_lines: Optional[Tuple[int, int]] = None
     language: Optional[str] = "python"
     dedent: bool = True
-
-    def req_settings(self):
-        settings = Settings(
-            mkdocs=dict(
-                markdown_extensions=[{"pymdownx.highlight": dict(use_pygments=True)}]
-            )
-        )
-        return settings
 
     def to_markdown(self, **kwargs) -> MdOut:
         del kwargs
@@ -148,10 +132,16 @@ class Code(MdObj):
         if hl_lines is not None:
             annots = annots + f' hl_lines="{hl_lines[0]}-{hl_lines[1]}"'
 
+        settings = Settings(
+            mkdocs=dict(
+                markdown_extensions=[{"pymdownx.highlight": dict(use_pygments=True)}]
+            )
+        )
         return MdOut(
             body=SpacedText(
                 TextUtils.insert_code(textwrap.dedent(self.code), annots), (2, 2)
-            )
+            ),
+            settings=settings,
         )
 
 
@@ -180,18 +170,6 @@ class CodeFile(File):
         self.hl_lines = hl_lines
         self.language = language
 
-    def req_settings(self):
-        settings = Settings(mkdocs=dict(markdown_extensions="pymdownx.snippets"))
-        settings = Settings(
-            mkdocs=dict(
-                markdown_extensions=[
-                    "pymdownx.snippets",
-                    {"pymdownx.highlight": dict(use_pygments=True)},
-                ]
-            )
-        )
-        return settings
-
     def to_markdown(self, **kwargs) -> MdOut:
         del kwargs
         annots = ""
@@ -204,11 +182,20 @@ class CodeFile(File):
         if hl_lines is not None:
             annots = annots + f' hl_lines="{hl_lines[0]}-{hl_lines[1]}"'
 
+        settings = Settings(
+            mkdocs=dict(
+                markdown_extensions=[
+                    "pymdownx.snippets",
+                    {"pymdownx.highlight": dict(use_pygments=True)},
+                ]
+            )
+        )
         return MdOut(
             body=SpacedText(
                 TextUtils.insert_code(
                     f"--8<-- '{self.path.relative_to(self.report_path)}'", annots
                 ),
                 (2, 2),
-            )
+            ),
+            settings=settings,
         )

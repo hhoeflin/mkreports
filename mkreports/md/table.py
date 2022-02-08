@@ -67,20 +67,6 @@ class DataTable(File):
             "columns": [col_set[col] for col in table.columns],
         }
 
-    def req_settings(self):
-        settings = Settings(
-            page=dict(
-                # the following needs to be loaded in the header of the page, not the footer
-                # this enables activating the tables in the body
-                javascript=[
-                    "https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js",
-                    "https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js",
-                ],
-                css=["https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css"],
-            )
-        )
-        return settings
-
     def to_markdown(self, page_path: Path, idstore: IDStore, **kwargs) -> MdOut:
         del kwargs
         datatable_id = idstore.next_id("datatable_id")
@@ -103,10 +89,22 @@ class DataTable(File):
             </script>
             """
         )
+        settings = Settings(
+            page=dict(
+                # the following needs to be loaded in the header of the page, not the footer
+                # this enables activating the tables in the body
+                javascript=[
+                    "https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js",
+                    "https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js",
+                ],
+                css=["https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css"],
+            )
+        )
 
         return MdOut(
             body=SpacedText(body_html, (2, 2)),
             back=SpacedText(back_html, (2, 2)) + comment_ids(datatable_id),
+            settings=settings,
         )
 
 
@@ -122,7 +120,6 @@ def series_to_filter(series: pd.Series) -> Dict[str, Any]:
             headerFilter="select",
             headerFilterParams=dict(
                 values=[""] + series.cat.categories.values.tolist(),
-                multiselect=True,
             ),
         )
     if types.is_numeric_dtype(series.dtype):
@@ -196,21 +193,6 @@ class Tabulator(File):
         )
         self.table_settings["columns"] = col_list
 
-    def req_settings(self):
-        settings = Settings(
-            page=dict(
-                # the following needs to be loaded in the header of the page, not the footer
-                # this enables activating the tables in the body
-                javascript=[
-                    "https://unpkg.com/tabulator-tables@5.1.0/dist/js/tabulator.min.js",
-                ],
-                css=[
-                    "https://unpkg.com/tabulator-tables@5.1.0/dist/css/tabulator.min.css"
-                ],
-            )
-        )
-        return settings
-
     def to_markdown(self, page_path: Path, idstore: IDStore, **kwargs) -> MdOut:
         del kwargs
 
@@ -244,8 +226,21 @@ class Tabulator(File):
             </script>
             """
         )
+        settings = Settings(
+            page=dict(
+                # the following needs to be loaded in the header of the page, not the footer
+                # this enables activating the tables in the body
+                javascript=[
+                    "https://unpkg.com/tabulator-tables@5.1.0/dist/js/tabulator.min.js",
+                ],
+                css=[
+                    "https://unpkg.com/tabulator-tables@5.1.0/dist/css/tabulator.min.css"
+                ],
+            )
+        )
 
         return MdOut(
             body=SpacedText(body_html, (2, 2)),
             back=SpacedText(back_html, (2, 2)) + comment_ids(tabulator_id),
+            settings=settings,
         )

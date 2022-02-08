@@ -139,20 +139,6 @@ class Altair(File):
                 path=path, store_path=store_path, allow_copy=True, use_hash=True
             )
 
-    def req_settings(self):
-        settings = Settings(
-            page=dict(
-                # the following needs to be loaded in the header of the page, not the footer
-                # this enables activating the tables in the body
-                javascript=[
-                    "https://cdn.jsdelivr.net/npm/vega@5",
-                    "https://cdn.jsdelivr.net/npm/vega-lite@5",
-                    "https://cdn.jsdelivr.net/npm/vega-embed@6",
-                ],
-            )
-        )
-        return settings
-
     def to_markdown(self, page_path: Path, idstore: IDStore, **kwargs) -> MdOut:
         del kwargs
         # note; in the body we just insert the div.
@@ -178,10 +164,22 @@ class Altair(File):
             </script>
             """
         )
+        settings = Settings(
+            page=dict(
+                # the following needs to be loaded in the header of the page, not the footer
+                # this enables activating the tables in the body
+                javascript=[
+                    "https://cdn.jsdelivr.net/npm/vega@5",
+                    "https://cdn.jsdelivr.net/npm/vega-lite@5",
+                    "https://cdn.jsdelivr.net/npm/vega-embed@6",
+                ],
+            )
+        )
 
         return MdOut(
             body=SpacedText(body_html, (2, 2)),
             back=SpacedText(back_html, (2, 2)) + comment_ids(altair_id),
+            settings=settings,
         )
 
 
@@ -203,18 +201,6 @@ class Plotly(File):
             super().__init__(
                 path=path, store_path=store_path, allow_copy=True, use_hash=True
             )
-
-    def req_settings(self):
-        settings = Settings(
-            page=dict(
-                # the following needs to be loaded in the header of the page, not the footer
-                # this enables activating the tables in the body
-                javascript=[
-                    "https://cdn.plot.ly/plotly-2.8.3.min.js",
-                ],
-            )
-        )
-        return settings
 
     def to_markdown(self, page_path: Path, idstore: IDStore, **kwargs) -> MdOut:
         del kwargs
@@ -255,9 +241,19 @@ class Plotly(File):
             """
         )
 
+        settings = Settings(
+            page=dict(
+                # the following needs to be loaded in the header of the page, not the footer
+                # this enables activating the tables in the body
+                javascript=[
+                    "https://cdn.plot.ly/plotly-2.8.3.min.js",
+                ],
+            )
+        )
         return MdOut(
             body=SpacedText(body_html, (2, 2)),
             back=SpacedText(back_html, (2, 2)) + comment_ids(plotly_id),
+            settings=settings,
         )
 
 

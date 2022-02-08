@@ -18,6 +18,7 @@ store_path_dict = {}
 class MdOut(NamedTuple):
     body: SpacedText = SpacedText("")
     back: SpacedText = SpacedText("")
+    settings: Settings = Settings()
 
 
 class MdObj(ABC):
@@ -49,9 +50,6 @@ class MdObj(ABC):
         and counting.
         """
         pass
-
-    def req_settings(self) -> Settings:
-        return Settings()
 
 
 class MdSeq(MdObj, Sequence):
@@ -96,15 +94,10 @@ class MdSeq(MdObj, Sequence):
             back=functools.reduce(
                 lambda x, y: x + y, [elem.back for elem in mdout_list]
             ),
+            settings=functools.reduce(
+                lambda x, y: x + y, [elem.settings for elem in mdout_list]
+            ),
         )
-
-    def req_settings(self) -> Settings:
-        """Requirements for the object."""
-        # merge the requirements for all individual elements
-        res = Settings()
-        for elem in self.items:
-            res += elem.req_settings()
-        return res
 
 
 @dataclass()
@@ -130,15 +123,15 @@ class Raw(MdObj):
         self.page_settings = page_settings
         self.mkdocs_settings = mkdocs_settings
 
-    def req_settings(self) -> Settings:
-        return Settings(
-            page=self.page_settings if self.page_settings is not None else {},
-            mkdocs=self.mkdocs_settings if self.mkdocs_settings is not None else {},
-        )
-
     def to_markdown(self, **kwargs) -> MdOut:
         del kwargs
-        return MdOut(body=SpacedText(self.raw))
+        return MdOut(
+            body=SpacedText(self.raw),
+            settings=Settings(
+                page=self.page_settings if self.page_settings is not None else {},
+                mkdocs=self.mkdocs_settings if self.mkdocs_settings is not None else {},
+            ),
+        )
 
 
 @dataclass()

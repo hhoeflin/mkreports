@@ -9,7 +9,6 @@ included.
 import contextlib
 import os
 import shutil
-import time
 from pathlib import Path
 from typing import Any, ContextManager, Dict, Mapping, Optional, Tuple, Union
 
@@ -364,7 +363,7 @@ class Page:
         md_out = item.to_markdown(page_path=self.path, idstore=self._idstore)
         md_text = md_out.body + md_out.back
 
-        req = item.req_settings()
+        req = md_out.settings
         if len(req.mkdocs) > 0:
             # merge these things into mkdocs
             # there is not allowed to be a nav here

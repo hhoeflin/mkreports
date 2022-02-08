@@ -39,9 +39,6 @@ nav:
     - settings: Reference/mkreports/settings.md
     - stack: Reference/mkreports/stack.md
     - utils: Reference/mkreports/utils.md
-plugins:
-- search
-- mkdocstrings
 site_name: Mkreports documentations
 theme:
   custom_dir: overrides
