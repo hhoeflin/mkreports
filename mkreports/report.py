@@ -141,8 +141,8 @@ class Report:
         return self.docs_dir / "index.md"
 
     @property
-    def javascript_dir(self) -> Path:
-        return self.path / "javascript"
+    def javascript_path(self) -> Path:
+        return self.docs_dir / "javascript"
 
     @classmethod
     def create(
@@ -255,9 +255,9 @@ class Page:
         self.report = report
 
         self._md = MdProxy(
-            store_path=self.gen_asset_path,
+            store_path=self.store_path,
             report_path=self.report.path,
-            javascript_path=self.report.javascript_dir,
+            javascript_path=self.report.javascript_path,
         )
 
         self.append_code_file = append_code_file
@@ -309,12 +309,12 @@ class Page:
         return self._path
 
     @property
-    def gen_asset_path(self) -> Path:
-        return self.path.parent / (self._path.stem + "_gen_assets")
+    def store_path(self) -> Path:
+        return self.path.parent / (self._path.stem + "_store")
 
     def clear(self) -> None:
         """Clear the page markdown file and the generated assets directory."""
-        shutil.rmtree(self.gen_asset_path)
+        shutil.rmtree(self.store_path)
         self.path.unlink()
 
     def reset_tracker(self) -> None:

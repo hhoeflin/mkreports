@@ -137,6 +137,7 @@ class Tabulator(File):
         self,
         table: pd.DataFrame,
         store_path: Path,
+        javascript_path: Path,
         table_settings: Optional[dict] = None,
         add_header_filters: bool = True,
         prettify_colnames: bool = True,
@@ -155,7 +156,8 @@ class Tabulator(File):
             )
 
         # create the javascript file
-        self.min_max_filter_path = store_path / "min_max_filter.js"
+        self.min_max_filter_path = javascript_path / "min_max_filter.js"
+        self.min_max_filter_path.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy(
             Path(__file__).parent / "tabulator_js" / "min_max_filter.js",
             self.min_max_filter_path,
@@ -220,7 +222,6 @@ class Tabulator(File):
 
         back_html = inspect.cleandoc(
             f"""
-            <script type='text/javascript' src='{rel_filter_path}'></script>
             <script>
             var table = new Tabulator('#{tabulator_id}', {settings_str});
             </script>
@@ -232,6 +233,7 @@ class Tabulator(File):
                 # this enables activating the tables in the body
                 javascript=[
                     "https://unpkg.com/tabulator-tables@5.1.0/dist/js/tabulator.min.js",
+                    rel_filter_path,
                 ],
                 css=[
                     "https://unpkg.com/tabulator-tables@5.1.0/dist/css/tabulator.min.css"

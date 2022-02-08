@@ -72,7 +72,7 @@ admonition so that the file is hidden.
 ??? info 
 
     ```python
-    --8<-- 'docs/code_blocks_gen_assets/code_blocks-5213d2858a4a2b65eebeb18ccd0eaed4.py'
+    --8<-- 'docs/code_blocks_store/code_blocks-5213d2858a4a2b65eebeb18ccd0eaed4.py'
     ```
 
 And at the end will add another copy of the code-file, 
@@ -81,5 +81,5 @@ but automatically when ending the page context manager.
 ??? info "docs/staging/code_blocks.py"
 
     ```python
-    --8<-- 'docs/code_blocks_gen_assets/code_blocks-5213d2858a4a2b65eebeb18ccd0eaed4.py'
+    --8<-- 'docs/code_blocks_store/code_blocks-5213d2858a4a2b65eebeb18ccd0eaed4.py'
     ```

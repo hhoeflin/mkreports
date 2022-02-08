@@ -27,7 +27,7 @@ and grey square.
 
 === "Content"
 
-    ![](images_gen_assets/pil_image-c8343f974dc12426173f781a465749d2.png)
+    ![](images_store/pil_image-c8343f974dc12426173f781a465749d2.png)
 
 === "Code"
 
@@ -54,7 +54,7 @@ choice or the backend being used for plotting.
 
 === "Content"
 
-    ![](images_gen_assets/image-9eacde53d07030438d059ea6a19b8285.png)
+    ![](images_store/image-9eacde53d07030438d059ea6a19b8285.png)
 
 === "Code"
 
@@ -78,7 +78,7 @@ is from the beginner example of the library.
 
 === "Content"
 
-    ![](images_gen_assets/image-41a828f4fba906604a976d3f9ad1138a.png)
+    ![](images_store/image-41a828f4fba906604a976d3f9ad1138a.png)
 
 === "Code"
 
@@ -107,7 +107,7 @@ accessed and saved in the same fashion as for matplotlib.
 
 === "Content"
 
-    ![](images_gen_assets/image-c3fb8cb2918f73795ffbae41eb5404ae.png)
+    ![](images_store/image-c3fb8cb2918f73795ffbae41eb5404ae.png)
 
 === "Code"
 
@@ -172,7 +172,7 @@ accessed and saved in the same fashion as for matplotlib.
     ```
 
 <script>
-    vegaEmbed("#altair_id-0", "../images_gen_assets/altair-a7a2eb773c7d9454c694b490a77e5a7e.csv")
+    vegaEmbed("#altair_id-0", "../images_store/altair-a7a2eb773c7d9454c694b490a77e5a7e.csv")
     // result.view provides access to the Vega View API
     .then(result => console.log(result))
     .catch(console.warn);
@@ -196,7 +196,7 @@ accessed and saved in the same fashion as for matplotlib.
     ```
 
 <script>
-    fetch('../images_gen_assets/plotly-2c4e085bcb294e03c4c01a147570a8c5.json')
+    fetch('../images_store/plotly-2c4e085bcb294e03c4c01a147570a8c5.json')
         .then(function (response) {
             return response.json();
         })

@@ -6,6 +6,7 @@ javascript:
 - https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js
 - https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js
 - https://unpkg.com/tabulator-tables@5.1.0/dist/js/tabulator.min.js
+- ../javascript/min_max_filter.js
 ---
 
 
@@ -46,7 +47,7 @@ by columns.
 
 <script>
 $(document).ready( function () {
-$('#datatable_id-0').DataTable({"scrollX": "true", "columns": [{"title": "name"}, {"title": "mpg"}, {"title": "cyl"}, {"title": "disp"}, {"title": "hp"}, {"title": "drat"}, {"title": "wt"}, {"title": "qsec"}, {"title": "vs"}, {"title": "am"}, {"title": "gear"}, {"title": "carb"}], "ajax": "../tables_gen_assets/datatable-ca9b6f052f673e1d46f468ebb1ccc5d1.json"});
+$('#datatable_id-0').DataTable({"scrollX": "true", "columns": [{"title": "name"}, {"title": "mpg"}, {"title": "cyl"}, {"title": "disp"}, {"title": "hp"}, {"title": "drat"}, {"title": "wt"}, {"title": "qsec"}, {"title": "vs"}, {"title": "am"}, {"title": "gear"}, {"title": "carb"}], "ajax": "../tables_store/datatable-ca9b6f052f673e1d46f468ebb1ccc5d1.json"});
 } );
 </script>
 
@@ -60,9 +61,8 @@ functionality. Currently limited support.
 
 <div id='tabulator_id-0' class='display'> </div>
 
-<script type='text/javascript' src='../tables_gen_assets/min_max_filter.js'></script>
 <script>
-var table = new Tabulator('#tabulator_id-0', {"layout": "fitDataTable", "pagination": true, "paginationSize": 10, "paginationSizeSelector": true, "columns": [{"field": "name", "title": "name"}, {"field": "mpg", "title": "mpg"}, {"field": "cyl", "title": "cyl"}, {"field": "disp", "title": "disp"}, {"field": "hp", "title": "hp"}, {"field": "drat", "title": "drat"}, {"field": "wt", "title": "wt"}, {"field": "qsec", "title": "qsec"}, {"field": "vs", "title": "vs"}, {"field": "am", "title": "am"}, {"field": "gear", "title": "gear"}, {"field": "carb", "title": "carb"}], "ajaxURL": "../tables_gen_assets/tabulator-c8469972d60cd61d98262704e068f4e9.json"});
+var table = new Tabulator('#tabulator_id-0', {"layout": "fitDataTable", "pagination": true, "paginationSize": 10, "paginationSizeSelector": true, "columns": [{"field": "name", "title": "name"}, {"field": "mpg", "title": "mpg"}, {"field": "cyl", "title": "cyl"}, {"field": "disp", "title": "disp"}, {"field": "hp", "title": "hp"}, {"field": "drat", "title": "drat"}, {"field": "wt", "title": "wt"}, {"field": "qsec", "title": "qsec"}, {"field": "vs", "title": "vs"}, {"field": "am", "title": "am"}, {"field": "gear", "title": "gear"}, {"field": "carb", "title": "carb"}], "ajaxURL": "../tables_store/tabulator-c8469972d60cd61d98262704e068f4e9.json"});
 </script>
 
 [comment]: # (id: tabulator_id-0)
@@ -89,9 +89,8 @@ The applied filters are
 
 <div id='tabulator_id-1' class='display'> </div>
 
-<script type='text/javascript' src='../tables_gen_assets/min_max_filter.js'></script>
 <script>
-var table = new Tabulator('#tabulator_id-1', {"layout": "fitDataTable", "pagination": true, "paginationSize": 10, "paginationSizeSelector": true, "columns": [{"field": "name", "headerFilter": "input", "title": "Name"}, {"field": "age", "width": 80, "headerFilter": minMaxFilterEditor, "headerFilterFunc": minMaxFilterFunction, "headerFilterLiveFilter": false, "title": "Age"}, {"field": "hair", "headerFilter": "select", "headerFilterParams": {"values": ["", "brown", "green", "red"]}, "title": "Hair"}, {"field": "married", "headerFilter": "tickCross", "formatter": "tickCross", "headerFilterParams": {"tristate": true}, "title": "Married"}], "ajaxURL": "../tables_gen_assets/tabulator-75b468c8a8bcf5fff9d211e88d0e6972.json"});
+var table = new Tabulator('#tabulator_id-1', {"layout": "fitDataTable", "pagination": true, "paginationSize": 10, "paginationSizeSelector": true, "columns": [{"field": "name", "headerFilter": "input", "title": "Name"}, {"field": "age", "width": 80, "headerFilter": minMaxFilterEditor, "headerFilterFunc": minMaxFilterFunction, "headerFilterLiveFilter": false, "title": "Age"}, {"field": "hair", "headerFilter": "select", "headerFilterParams": {"values": ["", "brown", "green", "red"]}, "title": "Hair"}, {"field": "married", "headerFilter": "tickCross", "formatter": "tickCross", "headerFilterParams": {"tristate": true}, "title": "Married"}], "ajaxURL": "../tables_store/tabulator-75b468c8a8bcf5fff9d211e88d0e6972.json"});
 </script>
 
 [comment]: # (id: tabulator_id-1)
