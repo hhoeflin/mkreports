@@ -1,5 +1,4 @@
-from pathlib import Path
-from typing import Iterable, Literal, Optional, Sequence, Union
+from typing import Iterable, Literal, Sequence, Union
 
 from .base import MdObj, MdOut, MdSeq, Raw
 from .text import SpacedText, Text

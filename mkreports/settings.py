@@ -6,19 +6,11 @@ from typing import Any, Dict, List, Mapping, Tuple, Union
 import yaml
 from more_itertools import unique_everseen
 
+from .utils import snake_to_text
+
 NavEntry = Tuple[List[str], Path]
 Nav = List[NavEntry]
 MkdocsNav = List[Union[str, Mapping[str, Union[str, "MkdocsNav"]]]]
-
-
-def true_stem(path: Path) -> str:
-    """True stem of a path, without all suffixes, not just last."""
-    return path.name[: -(len("".join(path.suffixes)))]
-
-
-def snake_to_text(x: str) -> str:
-    """Convert snake case to regular text, with each word capitalized."""
-    return " ".join([w.capitalize() for w in x.split("_")])
 
 
 def path_to_nav_entry(path: Path) -> NavEntry:

@@ -33,8 +33,10 @@ class ConsoleWriter(Magics):
 
         # identify an mkreport
         if "MKREPORTS_DIR" in os.environ:
-            self.report = Report(
-                os.environ["MKREPORTS_DIR"], report_name="Mkreports console"
+            self.report = Report.create(
+                os.environ["MKREPORTS_DIR"],
+                report_name="Mkreports console",
+                exist_ok=True,
             )
             self.open_console()
         else:
@@ -116,7 +118,7 @@ class ConsoleWriter(Magics):
 
     def open_console(self) -> None:
         self.console = self.report.page(
-            Path("console/active.md"), init_counter_time=True
+            Path("console/active.md"),
         )
         # make sure the table of contents does not get shown
         self.console.add(

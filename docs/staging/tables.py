@@ -48,8 +48,46 @@ def use_tables(report: Report) -> None:
                 functionality. Currently limited support.
                 """
             )
-            p.Tabulator(pd.DataFrame(mtcars))
+            p.Tabulator(
+                pd.DataFrame(mtcars), add_header_filters=False, prettify_colnames=False
+            )
 
+            with p.H3("Header filters"):
+                p.add(
+                    """
+                    We also can enable header filtering. For the datatypes
+
+                    - numeric
+                    - boolean
+                    - categorical 
+                    - str
+                    
+                    default filter options have been defined. Below
+                    we create a table with various different data types
+                    to show these functions.
+
+                    The applied filters are
+
+                    - Input filter for the names
+                    - Range filter with min and max for age
+                    - Select dropdown for hair color
+                    - and checkbox for marital status
+                    """
+                )
+                ex_table = pd.DataFrame(
+                    [
+                        {"name": "Alfred", "age": 30, "hair": "red", "married": True},
+                        {"name": "Beate", "age": 50, "hair": "brown", "married": False},
+                        {
+                            "name": "Caro",
+                            "age": 7,
+                            "hair": "green",
+                            "married": False,
+                        },
+                    ]
+                )
+                ex_table["hair"] = pd.Categorical(ex_table.hair)
+                p.Tabulator(ex_table, add_header_filters=True, prettify_colnames=True)
         with p.H2("Notes"):
             p.add(
                 """

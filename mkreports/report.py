@@ -25,7 +25,7 @@ from .md_proxy import MdProxy
 from .settings import (NavEntry, add_nav_entry, load_yaml, path_to_nav_entry,
                        save_yaml)
 from .stack import Tracker
-from .utils import relative_repo_root
+from .utils import find_comment_ids, relative_repo_root
 
 default_settings = immutabledict(
     {
@@ -141,6 +141,10 @@ class Report:
     def index_file(self) -> Path:
         return self.docs_dir / "index.md"
 
+    @property
+    def javascript_dir(self) -> Path:
+        return self.path / "javascript"
+
     @classmethod
     def create(
         cls,
@@ -194,7 +198,6 @@ class Report:
         self,
         page_name: Union[NavEntry, Path, str],
         truncate: bool = False,
-        init_counter_time: bool = False,
         append_code_file: Optional[Union[str, Path]] = None,
     ) -> "Page":
         # if the page_name is just a string, we turn it into a dictionary
@@ -230,7 +233,6 @@ class Report:
         return Page(
             self.docs_dir / path,
             report=self,
-            init_counter_time=init_counter_time,
             append_code_file=append_code_file,
         )
 
@@ -240,7 +242,6 @@ class Page:
         self,
         path: Path,
         report: Report,
-        init_counter_time: bool = False,
         append_code_file: Optional[Union[Path, str]] = None,
     ) -> None:
         self._path = path.absolute()
@@ -250,16 +251,14 @@ class Page:
         if not self.path.suffix == ".md":
             raise IncorrectSuffixError(f"file {self.path} does not have suffix '.md'")
 
-        if init_counter_time:
-            # use time in ms
-            self._idstore = IDStore(start_with=int(time.time() * 1000))
-        else:
-            self._idstore = IDStore()
+        # we need to parse the file for ids
+        self._idstore = IDStore(used_ids=find_comment_ids(self.path.read_text()))
         self.report = report
 
         self._md = MdProxy(
             store_path=self.gen_asset_path,
             report_path=self.report.path,
+            javascript_path=self.report.javascript_dir,
         )
 
         self.append_code_file = append_code_file

@@ -3,7 +3,7 @@ import html
 import textwrap
 from abc import ABC, abstractmethod
 from collections.abc import Sequence
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from os.path import relpath
 from pathlib import Path
 from typing import Any, Dict, Iterable, NamedTuple, Optional, Tuple, Union

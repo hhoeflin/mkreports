@@ -2,7 +2,7 @@ import inspect
 import tempfile
 from copy import deepcopy
 from pathlib import Path
-from typing import Callable, Literal, Optional, Union
+from typing import Literal, Optional, Union
 
 from mdutils.tools.Image import Image as UtilsImage
 

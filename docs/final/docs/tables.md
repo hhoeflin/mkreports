@@ -58,13 +58,43 @@ This time, we use the [Tabulator](http://tabulator.info)
 library. A library with a lot of interesting 
 functionality. Currently limited support.
 
-<div id='tabulator_id-0' class='display' style='width:100%'> </div>
+<div id='tabulator_id-0' class='display'> </div>
 
+<script type='text/javascript' src='../tables_gen_assets/min_max_filter.js'></script>
 <script>
-var table = new Tabulator('#tabulator_id-0', {"autoColumns": true, "pagination": true, "paginationSize": 10, "paginationSizeSelector": true, "ajaxURL": "../tables_gen_assets/tabulator-c8469972d60cd61d98262704e068f4e9.json"});
+var table = new Tabulator('#tabulator_id-0', {"layout": "fitDataTable", "pagination": true, "paginationSize": 10, "paginationSizeSelector": true, "columns": [{"field": "name", "title": "name"}, {"field": "mpg", "title": "mpg"}, {"field": "cyl", "title": "cyl"}, {"field": "disp", "title": "disp"}, {"field": "hp", "title": "hp"}, {"field": "drat", "title": "drat"}, {"field": "wt", "title": "wt"}, {"field": "qsec", "title": "qsec"}, {"field": "vs", "title": "vs"}, {"field": "am", "title": "am"}, {"field": "gear", "title": "gear"}, {"field": "carb", "title": "carb"}], "ajaxURL": "../tables_gen_assets/tabulator-c8469972d60cd61d98262704e068f4e9.json"});
 </script>
 
 [comment]: # (id: tabulator_id-0)
+
+### Header filters
+
+We also can enable header filtering. For the datatypes
+
+- numeric
+- boolean
+- categorical 
+- str
+
+default filter options have been defined. Below
+we create a table with various different data types
+to show these functions.
+
+The applied filters are
+
+- Input filter for the names
+- Range filter with min and max for age
+- Select dropdown for hair color
+- and checkbox for marital status
+
+<div id='tabulator_id-1' class='display'> </div>
+
+<script type='text/javascript' src='../tables_gen_assets/min_max_filter.js'></script>
+<script>
+var table = new Tabulator('#tabulator_id-1', {"layout": "fitDataTable", "pagination": true, "paginationSize": 10, "paginationSizeSelector": true, "columns": [{"field": "name", "headerFilter": "input", "title": "Name"}, {"field": "age", "width": 80, "headerFilter": minMaxFilterEditor, "headerFilterFunc": minMaxFilterFunction, "headerFilterLiveFilter": false, "title": "Age"}, {"field": "hair", "headerFilter": "select", "headerFilterParams": {"values": ["", "brown", "green", "red"], "multiselect": true}, "title": "Hair"}, {"field": "married", "headerFilter": "tickCross", "formatter": "tickCross", "headerFilterParams": {"tristate": true}, "title": "Married"}], "ajaxURL": "../tables_gen_assets/tabulator-75b468c8a8bcf5fff9d211e88d0e6972.json"});
+</script>
+
+[comment]: # (id: tabulator_id-1)
 
 ## Notes
 

@@ -1,17 +1,20 @@
 import copy
 import inspect
 import json
+import shutil
 import tempfile
 from copy import deepcopy
 from pathlib import Path
-from typing import Any, Callable, Dict, Optional, Union
+from typing import Any, Dict, Optional
 
 import pandas as pd
+from mkreports.utils import snake_to_text
+from pandas.api import types
 
 from .base import MdObj, MdOut, comment_ids
 from .file import File, relpath_html
 from .idstore import IDStore
-from .settings import Settings
+from .settings import Settings, merge_settings
 from .text import SpacedText
 
 
@@ -107,11 +110,39 @@ class DataTable(File):
         )
 
 
+def series_to_filter(series: pd.Series) -> Dict[str, Any]:
+    if types.is_bool_dtype(series.dtype):
+        return dict(
+            headerFilter="tickCross",
+            formatter="tickCross",
+            headerFilterParams=dict(tristate=True),
+        )
+    if types.is_categorical_dtype(series.dtype):
+        return dict(
+            headerFilter="select",
+            headerFilterParams=dict(
+                values=[""] + series.cat.categories.values.tolist(),
+                multiselect=True,
+            ),
+        )
+    if types.is_numeric_dtype(series.dtype):
+        return dict(
+            width=80,
+            headerFilter="minMaxFilterEditor",
+            headerFilterFunc="minMaxFilterFunction",
+            headerFilterLiveFilter=False,
+        )
+    return dict(headerFilter="input")
+
+
 class Tabulator(File):
     def __init__(
         self,
         table: pd.DataFrame,
         store_path: Path,
+        table_settings: Optional[dict] = None,
+        add_header_filters: bool = True,
+        prettify_colnames: bool = True,
         column_settings: Optional[dict] = None,
         **kwargs,
     ):
@@ -126,18 +157,44 @@ class Tabulator(File):
                 path=path, store_path=store_path, allow_copy=True, use_hash=True
             )
 
-        # prepare the table settings
-        col_set = {col: {"title": col} for col in table.columns}
-        if column_settings is not None:
-            # only pick out settings for columns that occur in the table
-            col_set.update({col: column_settings[col] for col in table.columns})
-
-        self.table_settings: Dict[str, Any] = dict(
-            autoColumns=True,
-            pagination=True,
-            paginationSize=10,
-            paginationSizeSelector=True,
+        # create the javascript file
+        self.min_max_filter_path = store_path / "min_max_filter.js"
+        shutil.copy(
+            Path(__file__).parent / "tabulator_js" / "min_max_filter.js",
+            self.min_max_filter_path,
         )
+
+        # produce the column settings
+        col_set_dict = {}
+        for colname in table.columns:
+            assert isinstance(colname, str)
+            inner_dict: Dict[str, Any] = {"field": colname}
+            if add_header_filters:
+                # depending on the type of the column, choose a different filter
+                filter_dict = series_to_filter(table[colname])
+                inner_dict.update(filter_dict)
+            if prettify_colnames:
+                inner_dict["title"] = snake_to_text(colname)
+            else:
+                inner_dict["title"] = colname
+            col_set_dict[colname] = inner_dict
+        col_set_dict = merge_settings(
+            col_set_dict, column_settings if column_settings is not None else {}
+        )
+
+        col_list = list(col_set_dict.values())
+
+        # put the other settings together
+        self.table_settings: Dict[str, Any] = merge_settings(
+            dict(
+                layout="fitDataTable",
+                pagination=True,
+                paginationSize=10,
+                paginationSizeSelector=True,
+            ),
+            table_settings if table_settings is not None else {},
+        )
+        self.table_settings["columns"] = col_list
 
     def req_settings(self):
         settings = Settings(
@@ -160,16 +217,28 @@ class Tabulator(File):
         tabulator_id = idstore.next_id("tabulator_id")
         body_html = inspect.cleandoc(
             f"""
-            <div id='{tabulator_id}' class='display' style='width:100%'> </div>
+            <div id='{tabulator_id}' class='display'> </div>
             """
         )
 
+        rel_filter_path = relpath_html(self.min_max_filter_path, page_path)
         rel_table_path = relpath_html(self.path, page_path)
         table_settings = copy.deepcopy(self.table_settings)
         table_settings["ajaxURL"] = str(rel_table_path)
+
+        # here we have to be careful to remove the '' around
+        # the minMaxFilter function reference
         settings_str = json.dumps(table_settings)
+        settings_str = settings_str.replace(
+            '"minMaxFilterFunction"', "minMaxFilterFunction"
+        )
+        settings_str = settings_str.replace(
+            '"minMaxFilterEditor"', "minMaxFilterEditor"
+        )
+
         back_html = inspect.cleandoc(
             f"""
+            <script type='text/javascript' src='{rel_filter_path}'></script>
             <script>
             var table = new Tabulator('#{tabulator_id}', {settings_str});
             </script>
