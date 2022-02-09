@@ -197,6 +197,7 @@ class Report:
         self,
         page_name: Union[NavEntry, Path, str],
         truncate: bool = False,
+        add_bottom: bool = True,
         append_code_file: Optional[Union[str, Path]] = None,
     ) -> "Page":
         # if the page_name is just a string, we turn it into a dictionary
@@ -232,6 +233,7 @@ class Report:
         return Page(
             self.docs_dir / path,
             report=self,
+            add_bottom=add_bottom,
             append_code_file=append_code_file,
         )
 
@@ -241,6 +243,7 @@ class Page:
         self,
         path: Path,
         report: Report,
+        add_bottom: bool = True,
         append_code_file: Optional[Union[Path, str]] = None,
     ) -> None:
         self._path = path.absolute()
@@ -253,6 +256,7 @@ class Page:
         # we need to parse the file for ids
         self._idstore = IDStore(used_ids=find_comment_ids(self.path.read_text()))
         self.report = report
+        self.add_bottom = add_bottom
 
         self._md = MdProxy(
             store_path=self.store_path,
@@ -342,13 +346,19 @@ class Page:
         )
 
     def add(
-        self, item: Union[MdObj, Text], add_code: bool = False, bottom: bool = True
+        self,
+        item: Union[MdObj, Text],
+        add_code: bool = False,
+        bottom: Optional[bool] = None,
     ) -> ContextManager["Page"]:
         # first ensure that item is an MdObj
         if isinstance(item, str):
             item = Raw(item, dedent=True)
         elif isinstance(item, SpacedText):
             item = Raw(item)
+
+        if bottom is None:
+            bottom = self.add_bottom
 
         if add_code:
             # we wrap it all in a tabs, with one tab the main output, the other

@@ -117,9 +117,7 @@ class ConsoleWriter(Magics):
             return None
 
     def open_console(self) -> None:
-        self.console = self.report.page(
-            Path("console/active.md"),
-        )
+        self.console = self.report.page(Path("console/active.md"), add_bottom=False)
         # make sure the table of contents does not get shown
         self.console.add(
             md.Raw(
@@ -135,7 +133,7 @@ class ConsoleWriter(Magics):
         """
         del line
         # we also need to add a navigation entry
-        new_entry = ["Console", f"{datetime.now().strftime('%Y/%m/%d %H:%M:%S')}.md"]
+        new_entry = ["Console", f"{datetime.now().strftime('%Y/%m/%d %H:%M:%S')}"]
         new_path = (
             self.console.path.parent / f"{datetime.now().strftime('%Y%m%d_%H%M%S')}.md"
         )
@@ -178,7 +176,7 @@ class ConsoleWriter(Magics):
                     + md_obj
                     + md.Raw(md.SpacedText("---", (2, 2)))
                 )
-                self.console.add(post, add_code=False, bottom=False)
+                self.console.add(post, add_code=False)
                 self.stored_code = []
 
 
