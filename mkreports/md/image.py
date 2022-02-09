@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import Literal, Optional, Union
 
 from mdutils.tools.Image import Image as UtilsImage
+from mkreports.md_proxy import register_md
 
 from .base import MdOut, comment_ids
 from .file import File, relpath_html
@@ -13,6 +14,7 @@ from .settings import Settings
 from .text import SpacedText
 
 
+@register_md("ImageFile")
 class ImageFile(File):
     text: str
     tooltip: str
@@ -53,6 +55,7 @@ class ImageFile(File):
             raise ValueError(f"Unknown type {self.link_type}")
 
 
+@register_md("Image")
 class Image(ImageFile):
     def __init__(
         self,
@@ -94,6 +97,7 @@ class Image(ImageFile):
             raise ValueError("Unsupported image type")
 
 
+@register_md("PIL")
 class PIL(ImageFile):
     def __init__(
         self,
@@ -120,6 +124,7 @@ class PIL(ImageFile):
             )
 
 
+@register_md("Altair")
 class Altair(File):
     def __init__(
         self,
@@ -183,6 +188,7 @@ class Altair(File):
         )
 
 
+@register_md("Plotly")
 class Plotly(File):
     def __init__(
         self,

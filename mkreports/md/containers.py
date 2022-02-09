@@ -6,6 +6,7 @@ from textwrap import indent
 from typing import Literal, Optional, Tuple, Union
 
 from mdutils.tools.TextUtils import TextUtils
+from mkreports.md_proxy import register_md
 
 from .base import MdObj, MdOut
 from .file import File
@@ -13,6 +14,7 @@ from .settings import Settings
 from .text import SpacedText, Text
 
 
+@register_md("Admonition")
 @dataclass
 class Admonition(MdObj):
     text: Union[Text, MdObj]
@@ -65,6 +67,7 @@ class Admonition(MdObj):
         )
 
 
+@register_md("Tab")
 @dataclass
 class Tab(MdObj):
     text: Union[Text, MdObj]
@@ -98,6 +101,7 @@ class Tab(MdObj):
         )
 
 
+@register_md("Code")
 @dataclass(frozen=True)
 class Code(MdObj):
     """Wrapper class for code."""
@@ -145,6 +149,7 @@ class Code(MdObj):
         )
 
 
+@register_md("CodeFile")
 class CodeFile(File):
     """
     Code block with the content of a file.

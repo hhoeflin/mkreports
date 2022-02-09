@@ -1,14 +1,15 @@
 import functools
 from dataclasses import dataclass
-from pathlib import Path
 from typing import Literal, Optional, Union
 
 import mdutils.tools as mdt
+from mkreports.md_proxy import register_md
 
 from .base import Anchor, MdObj, MdOut
 from .text import SpacedText
 
 
+@register_md("Heading")
 @dataclass
 class Heading(MdObj):
     title: str
@@ -37,10 +38,10 @@ class Heading(MdObj):
         )
 
 
-H1 = functools.partial(Heading, level=1)
-H2 = functools.partial(Heading, level=2)
-H3 = functools.partial(Heading, level=3)
-H4 = functools.partial(Heading, level=4)
-H5 = functools.partial(Heading, level=5)
-H6 = functools.partial(Heading, level=6)
-H7 = functools.partial(Heading, level=7)
+H1 = register_md("H1")(functools.partial(Heading, level=1))
+H2 = register_md("H2")(functools.partial(Heading, level=2))
+H3 = register_md("H3")(functools.partial(Heading, level=3))
+H4 = register_md("H4")(functools.partial(Heading, level=4))
+H5 = register_md("H5")(functools.partial(Heading, level=5))
+H6 = register_md("H6")(functools.partial(Heading, level=6))
+H7 = register_md("H7")(functools.partial(Heading, level=7))

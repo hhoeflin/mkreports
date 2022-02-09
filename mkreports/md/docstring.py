@@ -1,8 +1,11 @@
+from mkreports.md_proxy import register_md
+
 from .base import MdObj, MdOut
 from .settings import Settings
 from .text import SpacedText
 
 
+@register_md("Docstring")
 class Docstring(MdObj):
     def __init__(self, obj_name: str) -> None:
         super().__init__()

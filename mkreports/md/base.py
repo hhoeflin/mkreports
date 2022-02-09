@@ -8,6 +8,8 @@ from os.path import relpath
 from pathlib import Path
 from typing import Any, Dict, Iterable, NamedTuple, Optional, Tuple, Union
 
+from mkreports.md_proxy import register_md
+
 from .idstore import IDStore
 from .settings import Settings
 from .text import SpacedText, Text
@@ -52,6 +54,7 @@ class MdObj(ABC):
         pass
 
 
+@register_md("MdSeq")
 class MdSeq(MdObj, Sequence):
     """
     Class to caputre a list of other MdObjs.
@@ -100,6 +103,7 @@ class MdSeq(MdObj, Sequence):
         )
 
 
+@register_md("Raw")
 @dataclass()
 class Raw(MdObj):
     """
@@ -134,6 +138,7 @@ class Raw(MdObj):
         )
 
 
+@register_md("Anchor")
 @dataclass()
 class Anchor(MdObj):
     name: str
@@ -143,6 +148,7 @@ class Anchor(MdObj):
         return MdOut(body=SpacedText(f"[](){{:name='{self.name}'}}", (0, 0)))
 
 
+@register_md("Link")
 @dataclass()
 class Link(MdObj):
     text: str = ""
@@ -183,6 +189,8 @@ class Link(MdObj):
         return MdOut(body=SpacedText(f"[{html.escape(self.text)}]({link})", (0, 0)))
 
 
+@register_md("P")
+@register_md("Paragraph")
 @dataclass
 class Paragraph(MdObj):
     """

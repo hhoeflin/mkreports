@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Any, Dict, Optional
 
 import pandas as pd
+from mkreports.md_proxy import register_md
 from mkreports.utils import snake_to_text
 from pandas.api import types
 
@@ -18,6 +19,7 @@ from .settings import Settings, merge_settings
 from .text import SpacedText
 
 
+@register_md("Table")
 class Table(MdObj):
     table: pd.DataFrame
     kwargs: Dict[str, Any]
@@ -35,6 +37,7 @@ class Table(MdObj):
         return MdOut(body=SpacedText(table_md, (2, 2)))
 
 
+@register_md("DataTable")
 class DataTable(File):
     def __init__(
         self,
@@ -132,6 +135,7 @@ def series_to_filter(series: pd.Series) -> Dict[str, Any]:
     return dict(headerFilter="input")
 
 
+@register_md("Tabulator")
 class Tabulator(File):
     def __init__(
         self,

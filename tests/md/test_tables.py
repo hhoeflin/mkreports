@@ -18,4 +18,4 @@ class TestTables:
         # create a table instance
         # here we don't need to call 'to_markdown' as the
         # serialization is done during initialization.
-        md.Tabulator(test_table, store_path=tmp_path)
+        md.Tabulator(test_table, store_path=tmp_path, javascript_path=tmp_path)

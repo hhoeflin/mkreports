@@ -1,11 +1,22 @@
 import inspect
 from functools import partial
 from pathlib import Path
+from typing import Any, Dict
 
 from . import md
 
 
+def register_md(name):
+    def register_md_named(cls):
+        MdProxy.proxied_classes[name] = cls
+        return cls
+
+    return register_md_named
+
+
 class MdProxy:
+    proxied_classes: Dict[str, Any] = dict()
+
     def __init__(self, store_path: Path, report_path: Path, javascript_path: Path):
         self.store_path = store_path
         self.report_path = report_path
@@ -13,7 +24,10 @@ class MdProxy:
 
     def __getattr__(self, name):
         # we are not checking if it is included; if not, should raise error
-        obj = getattr(md, name)
+        if name in self.proxied_classes:
+            obj = self.proxied_classes[name]
+        else:
+            raise AttributeError(name)
 
         # if is a class; try to fix the init method
         if inspect.isclass(obj):

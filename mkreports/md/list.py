@@ -1,5 +1,7 @@
 from typing import Iterable, Literal, Sequence, Union
 
+from mkreports.md_proxy import register_md
+
 from .base import MdObj, MdOut, MdSeq, Raw
 from .text import SpacedText, Text
 
@@ -15,6 +17,7 @@ def indent_hanging(x: str, hanging: str, spaces: int = 4):
     return "\n".join(x_lines)
 
 
+@register_md("List")
 class List(MdObj):
     marker: Literal["-", "*", "+", "1"]
     list: MdSeq
