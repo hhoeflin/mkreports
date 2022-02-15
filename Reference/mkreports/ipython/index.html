@@ -200,6 +200,21 @@
   
   
     <li class="md-nav__item">
+      <a href="../../../quickstart/" class="md-nav__link">
+        Quickstart
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../../markdown/" class="md-nav__link">
         Markdown
       </a>
@@ -280,18 +295,18 @@
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7" type="checkbox" id="__nav_7" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8" type="checkbox" id="__nav_8" checked>
       
       
       
       
-        <label class="md-nav__link" for="__nav_7">
+        <label class="md-nav__link" for="__nav_8">
           Reference
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="Reference" data-md-level="1">
-        <label class="md-nav__title" for="__nav_7">
+        <label class="md-nav__title" for="__nav_8">
           <span class="md-nav__icon md-icon"></span>
           Reference
         </label>
@@ -308,18 +323,18 @@
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7_1" type="checkbox" id="__nav_7_1" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_1" type="checkbox" id="__nav_8_1" checked>
       
       
       
       
-        <label class="md-nav__link" for="__nav_7_1">
+        <label class="md-nav__link" for="__nav_8_1">
           mkreports
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="mkreports" data-md-level="2">
-        <label class="md-nav__title" for="__nav_7_1">
+        <label class="md-nav__title" for="__nav_8_1">
           <span class="md-nav__icon md-icon"></span>
           mkreports
         </label>
@@ -331,8 +346,22 @@
   
   
     <li class="md-nav__item">
-      <a href="../counters/" class="md-nav__link">
-        counters
+      <a href="../_stack/" class="md-nav__link">
+        _stack
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../code_context/" class="md-nav__link">
+        code_context
       </a>
     </li>
   
@@ -468,18 +497,18 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7_1_5" type="checkbox" id="__nav_7_1_5" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_1_6" type="checkbox" id="__nav_8_1_6" >
       
       
       
       
-        <label class="md-nav__link" for="__nav_7_1_5">
+        <label class="md-nav__link" for="__nav_8_1_6">
           md
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="md" data-md-level="3">
-        <label class="md-nav__title" for="__nav_7_1_5">
+        <label class="md-nav__title" for="__nav_8_1_6">
           <span class="md-nav__icon md-icon"></span>
           md
         </label>
@@ -493,6 +522,20 @@
     <li class="md-nav__item">
       <a href="../md/base/" class="md-nav__link">
         base
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../md/combo/" class="md-nav__link">
+        combo
       </a>
     </li>
   
@@ -561,6 +604,20 @@
   
   
     <li class="md-nav__item">
+      <a href="../md/idstore/" class="md-nav__link">
+        idstore
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../md/image/" class="md-nav__link">
         image
       </a>
@@ -577,6 +634,20 @@
     <li class="md-nav__item">
       <a href="../md/list/" class="md-nav__link">
         list
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../md/settings/" class="md-nav__link">
+        settings
       </a>
     </li>
   
@@ -680,8 +751,8 @@
   
   
     <li class="md-nav__item">
-      <a href="../stack/" class="md-nav__link">
-        stack
+      <a href="../tracker/" class="md-nav__link">
+        tracker
       </a>
     </li>
   
@@ -850,8 +921,10 @@ ConsoleWriter            (<span title="IPython.core.magic.Magics">Magics</span>)
 
         <span class="c1"># identify an mkreport</span>
         <span class="k">if</span> <span class="s2">&quot;MKREPORTS_DIR&quot;</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">report</span> <span class="o">=</span> <span class="n">Report</span><span class="p">(</span>
-                <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;MKREPORTS_DIR&quot;</span><span class="p">],</span> <span class="n">site_name</span><span class="o">=</span><span class="s2">&quot;Mkreports console&quot;</span><span class="p">,</span> <span class="n">create</span><span class="o">=</span><span class="kc">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">report</span> <span class="o">=</span> <span class="n">Report</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;MKREPORTS_DIR&quot;</span><span class="p">],</span>
+                <span class="n">report_name</span><span class="o">=</span><span class="s2">&quot;Mkreports console&quot;</span><span class="p">,</span>
+                <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">open_console</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
@@ -932,9 +1005,7 @@ ConsoleWriter            (<span title="IPython.core.magic.Magics">Magics</span>)
             <span class="k">return</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="nf">open_console</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">console</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="o">.</span><span class="n">page</span><span class="p">(</span>
-            <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;console/active.md&quot;</span><span class="p">),</span> <span class="n">init_counter_time</span><span class="o">=</span><span class="kc">True</span>
-        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">console</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="o">.</span><span class="n">page</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;console/active.md&quot;</span><span class="p">),</span> <span class="n">add_bottom</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="c1"># make sure the table of contents does not get shown</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">console</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
             <span class="n">md</span><span class="o">.</span><span class="n">Raw</span><span class="p">(</span>
@@ -948,8 +1019,9 @@ ConsoleWriter            (<span title="IPython.core.magic.Magics">Magics</span>)
 <span class="sd">        Function to archive the console. This is also a line magic, however</span>
 <span class="sd">        the line itself will be ignored.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">del</span> <span class="n">line</span>
         <span class="c1"># we also need to add a navigation entry</span>
-        <span class="n">new_entry</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Console&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y/%m/</span><span class="si">%d</span><span class="s1"> %H:%M:%S&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">.md&quot;</span><span class="p">]</span>
+        <span class="n">new_entry</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Console&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y/%m/</span><span class="si">%d</span><span class="s1"> %H:%M:%S&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
         <span class="n">new_path</span> <span class="o">=</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">console</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y%m</span><span class="si">%d</span><span class="s1">_%H%M%S&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">.md&quot;</span>
         <span class="p">)</span>
@@ -992,7 +1064,7 @@ ConsoleWriter            (<span title="IPython.core.magic.Magics">Magics</span>)
                     <span class="o">+</span> <span class="n">md_obj</span>
                     <span class="o">+</span> <span class="n">md</span><span class="o">.</span><span class="n">Raw</span><span class="p">(</span><span class="n">md</span><span class="o">.</span><span class="n">SpacedText</span><span class="p">(</span><span class="s2">&quot;---&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
                 <span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">console</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">post</span><span class="p">,</span> <span class="n">add_code</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">console</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">post</span><span class="p">,</span> <span class="n">add_code</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">stored_code</span> <span class="o">=</span> <span class="p">[]</span>
 </code></pre></div>
         </details>
@@ -1035,8 +1107,9 @@ the line itself will be ignored.</p>
 <span class="sd">    Function to archive the console. This is also a line magic, however</span>
 <span class="sd">    the line itself will be ignored.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">del</span> <span class="n">line</span>
     <span class="c1"># we also need to add a navigation entry</span>
-    <span class="n">new_entry</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Console&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y/%m/</span><span class="si">%d</span><span class="s1"> %H:%M:%S&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">.md&quot;</span><span class="p">]</span>
+    <span class="n">new_entry</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Console&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y/%m/</span><span class="si">%d</span><span class="s1"> %H:%M:%S&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
     <span class="n">new_path</span> <span class="o">=</span> <span class="p">(</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">console</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y%m</span><span class="si">%d</span><span class="s1">_%H%M%S&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">.md&quot;</span>
     <span class="p">)</span>
@@ -1107,7 +1180,7 @@ These will then also have the corresponding code attached to them.</p>
                 <span class="o">+</span> <span class="n">md_obj</span>
                 <span class="o">+</span> <span class="n">md</span><span class="o">.</span><span class="n">Raw</span><span class="p">(</span><span class="n">md</span><span class="o">.</span><span class="n">SpacedText</span><span class="p">(</span><span class="s2">&quot;---&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
             <span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">console</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">post</span><span class="p">,</span> <span class="n">add_code</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">console</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">post</span><span class="p">,</span> <span class="n">add_code</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">stored_code</span> <span class="o">=</span> <span class="p">[]</span>
 </code></pre></div>
         </details>

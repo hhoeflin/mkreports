@@ -14,7 +14,7 @@
     
     
       
-        <title>Markdown - Mkreports documentations</title>
+        <title>Quickstart - Mkreports documentations</title>
       
     
     
@@ -45,6 +45,21 @@
     
 
   
+    
+        <link rel="stylesheet" href="../javascript/code_admonition.css">
+    
+        <link rel="stylesheet" href="https://unpkg.com/tabulator-tables@5.1.0/dist/css/tabulator.min.css">
+    
+
+  
+
+  
+
+    
+        <script type="text/javascript" src="https://unpkg.com/tabulator-tables@5.1.0/dist/js/tabulator.min.js"></script>
+    
+        <script type="text/javascript" src="../javascript/min_max_filter.js"></script>
+    
 
   
 
@@ -66,7 +81,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#adding-markdown-elements-to-a-page" class="md-skip">
+        <a href="#quickstart" class="md-skip">
           Skip to content
         </a>
       
@@ -99,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Markdown
+              Quickstart
             
           </span>
         </div>
@@ -198,21 +213,6 @@
 
   
   
-  
-    <li class="md-nav__item">
-      <a href="../quickstart/" class="md-nav__link">
-        Quickstart
-      </a>
-    </li>
-  
-
-    
-      
-      
-      
-
-  
-  
     
   
   
@@ -225,12 +225,12 @@
       
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
-          Markdown
+          Quickstart
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
-        Markdown
+        Quickstart
       </a>
       
         
@@ -249,43 +249,16 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#opening-pages" class="md-nav__link">
-    Opening pages
+  <a href="#data-as-a-table" class="md-nav__link">
+    Data as a table
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#adding-markdown" class="md-nav__link">
-    Adding markdown
+  <a href="#some-simple-plots" class="md-nav__link">
+    Some simple plots
   </a>
-  
-    <nav class="md-nav" aria-label="Adding markdown">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#md-module" class="md-nav__link">
-    md module
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#md-attribute-of-a-page" class="md-nav__link">
-    md-attribute of a page
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#markdown-attributes-of-a-page" class="md-nav__link">
-    Markdown attributes of a page
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -293,6 +266,21 @@
   
 </nav>
       
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../markdown/" class="md-nav__link">
+        Markdown
+      </a>
     </li>
   
 
@@ -806,43 +794,16 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#opening-pages" class="md-nav__link">
-    Opening pages
+  <a href="#data-as-a-table" class="md-nav__link">
+    Data as a table
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#adding-markdown" class="md-nav__link">
-    Adding markdown
+  <a href="#some-simple-plots" class="md-nav__link">
+    Some simple plots
   </a>
-  
-    <nav class="md-nav" aria-label="Adding markdown">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#md-module" class="md-nav__link">
-    md module
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#md-attribute-of-a-page" class="md-nav__link">
-    md-attribute of a page
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#markdown-attributes-of-a-page" class="md-nav__link">
-    Markdown attributes of a page
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -859,57 +820,93 @@
               
                 
 
-<h1 id="adding-markdown-elements-to-a-page">Adding markdown elements to a page</h1>
-<h2 id="opening-pages">Opening pages</h2>
-<p>The first step is to define a <em>report</em> directory and open a page in it.
-There is always at least the 'index.md' page included in any report,
-which is listed in the navigation under <em>Home</em>.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">mkreports</span> <span class="kn">import</span> <span class="n">Report</span>
+<h1 id="quickstart">Quickstart</h1>
+<details class="code">
+<summary>Code</summary>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">plotnine</span> <span class="k">as</span> <span class="nn">p9</span>
+<span class="kn">from</span> <span class="nn">mkreports</span> <span class="kn">import</span> <span class="n">Report</span>
+<span class="kn">from</span> <span class="nn">plotnine.data</span> <span class="kn">import</span> <span class="n">mtcars</span>
 
-<span class="n">report</span> <span class="o">=</span> <span class="n">Report</span><span class="p">()</span>
-<span class="n">page</span> <span class="o">=</span> <span class="n">report</span><span class="o">.</span><span class="n">page</span><span class="p">(</span><span class="s1">&#39;index.md&#39;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">use_quickstart</span><span class="p">(</span><span class="n">report</span><span class="p">:</span> <span class="n">Report</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">report</span><span class="o">.</span><span class="n">page</span><span class="p">(</span><span class="s2">&quot;quickstart&quot;</span><span class="p">)</span>
+
+    <span class="n">p</span><span class="o">.</span><span class="n">H1</span><span class="p">(</span><span class="s2">&quot;Quickstart&quot;</span><span class="p">)</span>
+
+    <span class="n">p</span><span class="o">.</span><span class="n">CollapsedCodeFile</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span>
+
+    <span class="n">p</span><span class="o">.</span><span class="n">P</span><span class="p">(</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        We are quickly analyzing the mtcars dataset </span>
+<span class="sd">        that is included with plotnine.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+    <span class="p">)</span>
+
+    <span class="k">with</span> <span class="n">p</span><span class="o">.</span><span class="n">H2</span><span class="p">(</span><span class="s2">&quot;Data as a table&quot;</span><span class="p">):</span>
+
+        <span class="n">p</span><span class="o">.</span><span class="n">Tabulator</span><span class="p">(</span><span class="n">mtcars</span><span class="p">,</span> <span class="n">add_header_filters</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">prettify_colnames</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="n">p</span><span class="o">.</span><span class="n">H2</span><span class="p">(</span><span class="s2">&quot;Some simple plots&quot;</span><span class="p">):</span>
+
+        <span class="n">p</span><span class="o">.</span><span class="n">Image</span><span class="p">(</span>
+            <span class="p">(</span>
+                <span class="n">p9</span><span class="o">.</span><span class="n">ggplot</span><span class="p">(</span><span class="n">mtcars</span><span class="p">,</span> <span class="n">p9</span><span class="o">.</span><span class="n">aes</span><span class="p">(</span><span class="s2">&quot;wt&quot;</span><span class="p">,</span> <span class="s2">&quot;mpg&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;factor(gear)&quot;</span><span class="p">))</span>
+                <span class="o">+</span> <span class="n">p9</span><span class="o">.</span><span class="n">geom_point</span><span class="p">()</span>
+                <span class="o">+</span> <span class="n">p9</span><span class="o">.</span><span class="n">stat_smooth</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;lm&quot;</span><span class="p">)</span>
+                <span class="o">+</span> <span class="n">p9</span><span class="o">.</span><span class="n">facet_wrap</span><span class="p">(</span><span class="s2">&quot;~gear&quot;</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
 </code></pre></div>
-<h2 id="adding-markdown">Adding markdown</h2>
-<p>There are overall 3 ways to use and add markdown elements to a page.
-Each of these provides a different level of convenient. As a summary
-for the user:
-- If you want to add an element immediately to a page, use the markdown
-  classes directly available as attributes in the page itself. These
-  preset certain parameters and add the markdown object directly to the
-  page after it is instantiated.
-- If you need to build up more complicated markdown objects before adding
-  it to a page (e.g. in the case of nested objects), use the <code>Page.md</code> attribute
-  to get the markdown object that pre-populates certain parameters to
-  sensible defaults
-- In some special circumstances it may be necessary to get the raw markdown
-  with full control. In this case the <code>mkreports.md</code> module can be used.</p>
-<p>In more detail below the three options, in reverse order from most basic to
-most convenient.</p>
-<h3 id="md-module">md module</h3>
-<p>The <code>mkreports.md</code> module provides all markdown functionality that
-can be used in the package. In the rest of this documentation, various
-of these are being explained. As the most basic there is however certain
-information that can get cumbersome to input. One example is
-the <code>store_path</code>. Certain markdown elements, such as tables, store
-the information to be displayed in a file in subdirectory of
-the reports directory. As the page on which the markdown element is added
-is not specified at this point (and neither is the report), this <code>store_path</code>
-needs to be explicitly passed into the element. For most use-cases, this
-basic level does not need to be used by the end-user.</p>
-<p>This markdown object then has to be added to a page using the <code>add</code> method.</p>
-<h3 id="md-attribute-of-a-page">md-attribute of a page</h3>
-<p>Each <code>Page</code> instance also <code>md</code> attribute. This attribute is a proxy-object
-to the <code>md</code>-submodule. When requesting an object, the <code>store_path</code> and certain
-required <code>ids</code> (e.g. for Altair or DataTable objects) will be pre-populated
-by the <code>page</code> instance so that the user doesn't have to worry about it.</p>
-<p>The resulting markdown object then has to be added to the page again using
-the <code>add</code> method.</p>
-<h3 id="markdown-attributes-of-a-page">Markdown attributes of a page</h3>
-<p>This is very similar to the <code>Page.md</code> attribute, except that the markdown
-classes are directly available as attributes on the <code>Page</code> class. After instantiating
-the markdown element, it immediately gets added to the page automatically.
-Keyword parameters that are available on <code>Page.add</code> can also be specified and will
-be passed along appropriately.</p>
+</details>
+<p>We are quickly analyzing the mtcars dataset 
+that is included with plotnine.</p>
+<h2 id="data-as-a-table">Data as a table</h2>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Content</label><label for="__tabbed_1_2">Code</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p><div id='tabulator_id-0' class='display'> </div></p>
+</div>
+<div class="tabbed-block">
+<table class="highlighttable"><tr><th colspan="2" class="filename"><div class="highlight"><span class="filename">/home/hhoeflin/projects/mkreports/docs/staging/quickstart.py</span></div></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">23</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="n">p</span><span class="o">.</span><span class="n">Tabulator</span><span class="p">(</span><span class="n">mtcars</span><span class="p">,</span> <span class="n">add_header_filters</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">prettify_colnames</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+</td></tr></table>
+</div>
+</div>
+</div>
+<hr />
+<script>
+var table = new Tabulator('#tabulator_id-0', {"layout": "fitDataTable", "pagination": true, "paginationSize": 10, "paginationSizeSelector": true, "columns": [{"field": "name", "headerFilter": "input", "title": "Name"}, {"field": "mpg", "width": 80, "headerFilter": minMaxFilterEditor, "headerFilterFunc": minMaxFilterFunction, "headerFilterLiveFilter": false, "title": "Mpg"}, {"field": "cyl", "width": 80, "headerFilter": minMaxFilterEditor, "headerFilterFunc": minMaxFilterFunction, "headerFilterLiveFilter": false, "title": "Cyl"}, {"field": "disp", "width": 80, "headerFilter": minMaxFilterEditor, "headerFilterFunc": minMaxFilterFunction, "headerFilterLiveFilter": false, "title": "Disp"}, {"field": "hp", "width": 80, "headerFilter": minMaxFilterEditor, "headerFilterFunc": minMaxFilterFunction, "headerFilterLiveFilter": false, "title": "Hp"}, {"field": "drat", "width": 80, "headerFilter": minMaxFilterEditor, "headerFilterFunc": minMaxFilterFunction, "headerFilterLiveFilter": false, "title": "Drat"}, {"field": "wt", "width": 80, "headerFilter": minMaxFilterEditor, "headerFilterFunc": minMaxFilterFunction, "headerFilterLiveFilter": false, "title": "Wt"}, {"field": "qsec", "width": 80, "headerFilter": minMaxFilterEditor, "headerFilterFunc": minMaxFilterFunction, "headerFilterLiveFilter": false, "title": "Qsec"}, {"field": "vs", "width": 80, "headerFilter": minMaxFilterEditor, "headerFilterFunc": minMaxFilterFunction, "headerFilterLiveFilter": false, "title": "Vs"}, {"field": "am", "width": 80, "headerFilter": minMaxFilterEditor, "headerFilterFunc": minMaxFilterFunction, "headerFilterLiveFilter": false, "title": "Am"}, {"field": "gear", "width": 80, "headerFilter": minMaxFilterEditor, "headerFilterFunc": minMaxFilterFunction, "headerFilterLiveFilter": false, "title": "Gear"}, {"field": "carb", "width": 80, "headerFilter": minMaxFilterEditor, "headerFilterFunc": minMaxFilterFunction, "headerFilterLiveFilter": false, "title": "Carb"}], "ajaxURL": "../quickstart_store/tabulator-c8469972d60cd61d98262704e068f4e9.json"});
+</script>
+
+<h2 id="some-simple-plots">Some simple plots</h2>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">Content</label><label for="__tabbed_2_2">Code</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p><img alt="" src="../quickstart_store/image-41a828f4fba906604a976d3f9ad1138a.png" /></p>
+</div>
+<div class="tabbed-block">
+<table class="highlighttable"><tr><th colspan="2" class="filename"><div class="highlight"><span class="filename">/home/hhoeflin/projects/mkreports/docs/staging/quickstart.py</span></div></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="n">p</span><span class="o">.</span><span class="n">Image</span><span class="p">(</span>
+    <span class="p">(</span>
+        <span class="n">p9</span><span class="o">.</span><span class="n">ggplot</span><span class="p">(</span><span class="n">mtcars</span><span class="p">,</span> <span class="n">p9</span><span class="o">.</span><span class="n">aes</span><span class="p">(</span><span class="s2">&quot;wt&quot;</span><span class="p">,</span> <span class="s2">&quot;mpg&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;factor(gear)&quot;</span><span class="p">))</span>
+        <span class="o">+</span> <span class="n">p9</span><span class="o">.</span><span class="n">geom_point</span><span class="p">()</span>
+        <span class="o">+</span> <span class="n">p9</span><span class="o">.</span><span class="n">stat_smooth</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;lm&quot;</span><span class="p">)</span>
+        <span class="o">+</span> <span class="n">p9</span><span class="o">.</span><span class="n">facet_wrap</span><span class="p">(</span><span class="s2">&quot;~gear&quot;</span><span class="p">)</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+</code></pre></div>
+</td></tr></table>
+</div>
+</div>
+</div>
+<hr />
 
               
             </article>
@@ -923,7 +920,7 @@ be passed along appropriately.</p>
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
         
-        <a href="../quickstart/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Quickstart" rel="prev">
+        <a href=".." class="md-footer__link md-footer__link--prev" aria-label="Previous: Home" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
           </div>
@@ -932,20 +929,20 @@ be passed along appropriately.</p>
               <span class="md-footer__direction">
                 Previous
               </span>
-              Quickstart
+              Home
             </div>
           </div>
         </a>
       
       
         
-        <a href="../basic/" class="md-footer__link md-footer__link--next" aria-label="Next: Basic" rel="next">
+        <a href="../markdown/" class="md-footer__link md-footer__link--next" aria-label="Next: Markdown" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              Basic
+              Markdown
             </div>
           </div>
           <div class="md-footer__button md-icon">

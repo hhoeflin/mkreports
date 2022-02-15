@@ -48,6 +48,8 @@
     
         <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
     
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/vedmack/yadcf@332407eeacbda299e6253530e24c15041b270227/dist/jquery.dataTables.yadcf.css">
+    
         <link rel="stylesheet" href="https://unpkg.com/tabulator-tables@5.1.0/dist/css/tabulator.min.css">
     
 
@@ -60,7 +62,11 @@
     
         <script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
     
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/vedmack/yadcf@332407eeacbda299e6253530e24c15041b270227/dist/jquery.dataTables.yadcf.js"></script>
+    
         <script type="text/javascript" src="https://unpkg.com/tabulator-tables@5.1.0/dist/js/tabulator.min.js"></script>
+    
+        <script type="text/javascript" src="../javascript/min_max_filter.js"></script>
     
 
   
@@ -217,6 +223,21 @@
   
   
     <li class="md-nav__item">
+      <a href="../quickstart/" class="md-nav__link">
+        Quickstart
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../markdown/" class="md-nav__link">
         Markdown
       </a>
@@ -307,11 +328,44 @@
     DataTable javascript library
   </a>
   
+    <nav class="md-nav" aria-label="DataTable javascript library">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#header-filters" class="md-nav__link">
+    Header filters
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
   <a href="#tabulator-javascript-library" class="md-nav__link">
     Tabulator javascript library
+  </a>
+  
+    <nav class="md-nav" aria-label="Tabulator javascript library">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#header-filters_1" class="md-nav__link">
+    Header filters
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#notes" class="md-nav__link">
+    Notes
   </a>
   
 </li>
@@ -350,18 +404,18 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7" type="checkbox" id="__nav_7" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8" type="checkbox" id="__nav_8" >
       
       
       
       
-        <label class="md-nav__link" for="__nav_7">
+        <label class="md-nav__link" for="__nav_8">
           Reference
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="Reference" data-md-level="1">
-        <label class="md-nav__title" for="__nav_7">
+        <label class="md-nav__title" for="__nav_8">
           <span class="md-nav__icon md-icon"></span>
           Reference
         </label>
@@ -376,18 +430,18 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7_1" type="checkbox" id="__nav_7_1" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_1" type="checkbox" id="__nav_8_1" >
       
       
       
       
-        <label class="md-nav__link" for="__nav_7_1">
+        <label class="md-nav__link" for="__nav_8_1">
           mkreports
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="mkreports" data-md-level="2">
-        <label class="md-nav__title" for="__nav_7_1">
+        <label class="md-nav__title" for="__nav_8_1">
           <span class="md-nav__icon md-icon"></span>
           mkreports
         </label>
@@ -399,8 +453,22 @@
   
   
     <li class="md-nav__item">
-      <a href="../Reference/mkreports/counters/" class="md-nav__link">
-        counters
+      <a href="../Reference/mkreports/_stack/" class="md-nav__link">
+        _stack
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Reference/mkreports/code_context/" class="md-nav__link">
+        code_context
       </a>
     </li>
   
@@ -458,18 +526,18 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7_1_5" type="checkbox" id="__nav_7_1_5" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_1_6" type="checkbox" id="__nav_8_1_6" >
       
       
       
       
-        <label class="md-nav__link" for="__nav_7_1_5">
+        <label class="md-nav__link" for="__nav_8_1_6">
           md
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="md" data-md-level="3">
-        <label class="md-nav__title" for="__nav_7_1_5">
+        <label class="md-nav__title" for="__nav_8_1_6">
           <span class="md-nav__icon md-icon"></span>
           md
         </label>
@@ -483,6 +551,20 @@
     <li class="md-nav__item">
       <a href="../Reference/mkreports/md/base/" class="md-nav__link">
         base
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Reference/mkreports/md/combo/" class="md-nav__link">
+        combo
       </a>
     </li>
   
@@ -551,6 +633,20 @@
   
   
     <li class="md-nav__item">
+      <a href="../Reference/mkreports/md/idstore/" class="md-nav__link">
+        idstore
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../Reference/mkreports/md/image/" class="md-nav__link">
         image
       </a>
@@ -567,6 +663,20 @@
     <li class="md-nav__item">
       <a href="../Reference/mkreports/md/list/" class="md-nav__link">
         list
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Reference/mkreports/md/settings/" class="md-nav__link">
+        settings
       </a>
     </li>
   
@@ -670,8 +780,8 @@
   
   
     <li class="md-nav__item">
-      <a href="../Reference/mkreports/stack/" class="md-nav__link">
-        stack
+      <a href="../Reference/mkreports/tracker/" class="md-nav__link">
+        tracker
       </a>
     </li>
   
@@ -743,11 +853,44 @@
     DataTable javascript library
   </a>
   
+    <nav class="md-nav" aria-label="DataTable javascript library">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#header-filters" class="md-nav__link">
+    Header filters
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
   <a href="#tabulator-javascript-library" class="md-nav__link">
     Tabulator javascript library
+  </a>
+  
+    <nav class="md-nav" aria-label="Tabulator javascript library">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#header-filters_1" class="md-nav__link">
+    Header filters
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#notes" class="md-nav__link">
+    Notes
   </a>
   
 </li>
@@ -771,6 +914,9 @@ any type of report. Standard tables in markdown format
 can be very useful for this for limited amout of data, but for 
 larger tables more sophisticated libraries are needed. </p>
 <h2 id="markdown-tables">Markdown tables</h2>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Content</label><label for="__tabbed_1_2">Code</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
 <p>Below an example of a regular markdown table. As it is very wide,
 horizontal scrolling is enabled by default. In addition, the number
 of rows is limited to 10 as there is no automatic paging available.</p>
@@ -934,26 +1080,261 @@ of rows is limited to 10 as there is no automatic paging available.</p>
 </tr>
 </tbody>
 </table>
+</div>
+<div class="tabbed-block">
+<table class="highlighttable"><tr><th colspan="2" class="filename"><div class="highlight"><span class="filename">/home/hhoeflin/projects/mkreports/docs/staging/tables.py</span></div></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="n">p</span><span class="o">.</span><span class="n">Raw</span><span class="p">(</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Below an example of a regular markdown table. As it is very wide,</span>
+<span class="sd">    horizontal scrolling is enabled by default. In addition, the number</span>
+<span class="sd">    of rows is limited to 10 as there is no automatic paging available.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">md</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">mtcars</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+</code></pre></div>
+</td></tr></table>
+</div>
+</div>
+</div>
+<hr />
 <h2 id="datatable-javascript-library">DataTable javascript library</h2>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">Content</label><label for="__tabbed_2_2">Code</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
 <p>Here the same table, but displayed using the 
 <a href="https://datatables.net/">DataTables</a><br />
 plugin. With this, we get automatic paging, searching as well as sorting
 by columns. </p>
-<table id='datatable-ca9b6f052f673e1d46f468ebb1ccc5d1_1' class='display' style='width:100%'> </table>
+<p><table id='datatable_id-0' class='display' style='width:100%'> </table></p>
+<h3 id="header-filters">Header filters</h3>
+<p>Below a DataTable example with column filters in the header.
+The header in use is determined by the column type of the pandas
+table used for display. </p>
+<ul>
+<li>A numeric column gets a range selector</li>
+<li>A categorical or boolean column a dropdown selection</li>
+<li>Any other column a text-field.</li>
+</ul>
+<p><table id='datatable_id-1' class='display' style='width:100%'> </table></p>
+</div>
+<div class="tabbed-block">
+<table class="highlighttable"><tr><th colspan="2" class="filename"><div class="highlight"><span class="filename">/home/hhoeflin/projects/mkreports/docs/staging/tables.py</span></div></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="n">p</span><span class="o">.</span><span class="n">Raw</span><span class="p">(</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Here the same table, but displayed using the </span>
+<span class="sd">    [DataTables](https://datatables.net/)  </span>
+<span class="sd">    plugin. With this, we get automatic paging, searching as well as sorting</span>
+<span class="sd">    by columns. </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<span class="p">)</span>
+<span class="c1"># and as a DataTable</span>
+<span class="n">p</span><span class="o">.</span><span class="n">DataTable</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">mtcars</span><span class="p">))</span>
+
+<span class="k">with</span> <span class="n">p</span><span class="o">.</span><span class="n">H3</span><span class="p">(</span><span class="s2">&quot;Header filters&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">notrack</span><span class="p">:</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">Raw</span><span class="p">(</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Below a DataTable example with column filters in the header.</span>
+<span class="sd">        The header in use is determined by the column type of the pandas</span>
+<span class="sd">        table used for display. </span>
+
+<span class="sd">        - A numeric column gets a range selector</span>
+<span class="sd">        - A categorical or boolean column a dropdown selection</span>
+<span class="sd">        - Any other column a text-field.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+    <span class="p">)</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">DataTable</span><span class="p">(</span><span class="n">ex_table</span><span class="p">,</span> <span class="n">add_header_filters</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+</td></tr></table>
+</div>
+</div>
+</div>
+<hr />
 <script>
 $(document).ready( function () {
-$('#datatable-ca9b6f052f673e1d46f468ebb1ccc5d1_1').DataTable({"scrollX": "true", "columns": [{"title": "name"}, {"title": "mpg"}, {"title": "cyl"}, {"title": "disp"}, {"title": "hp"}, {"title": "drat"}, {"title": "wt"}, {"title": "qsec"}, {"title": "vs"}, {"title": "am"}, {"title": "gear"}, {"title": "carb"}], "ajax": "../tables_gen_assets/datatable-ca9b6f052f673e1d46f468ebb1ccc5d1.json"});
+var myTable = $('#datatable_id-0').DataTable({"scrollX": "true", "columns": [{"title": "name"}, {"title": "mpg"}, {"title": "cyl"}, {"title": "disp"}, {"title": "hp"}, {"title": "drat"}, {"title": "wt"}, {"title": "qsec"}, {"title": "vs"}, {"title": "am"}, {"title": "gear"}, {"title": "carb"}], "ajax": "../tables_store/datatable-ca9b6f052f673e1d46f468ebb1ccc5d1.json"});
+
+} );
+</script>
+
+<script>
+$(document).ready( function () {
+var myTable = $('#datatable_id-1').DataTable({"scrollX": "true", "columns": [{"title": "name"}, {"title": "age"}, {"title": "hair"}, {"title": "married"}], "ajax": "../tables_store/datatable-580c4149445c9b58b5740c532e20a5a0.json"});
+yadcf.init(myTable, [{"column_number": 0, "filter_type": "text"}, {"column_number": 1, "filter_type": "range_number"}, {"column_number": 2, "filter_type": "select"}, {"column_number": 3, "filter_type": "select"}]);
 } );
 </script>
 
 <h2 id="tabulator-javascript-library">Tabulator javascript library</h2>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">Content</label><label for="__tabbed_3_2">Code</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
 <p>This time, we use the <a href="http://tabulator.info">Tabulator</a>
 library. A library with a lot of interesting 
 functionality. Currently limited support.</p>
-<div id='tabulator-c8469972d60cd61d98262704e068f4e9' class='display' style='width:100%'> </div>
+<p><div id='tabulator_id-0' class='display'> </div></p>
+<h3 id="header-filters_1">Header filters</h3>
+<p>We also can enable header filtering. For the datatypes</p>
+<ul>
+<li>numeric</li>
+<li>boolean</li>
+<li>categorical </li>
+<li>str</li>
+</ul>
+<p>default filter options have been defined. Below
+we create a table with various different data types
+to show these functions.</p>
+<p>The applied filters are</p>
+<ul>
+<li>Input filter for the names</li>
+<li>Range filter with min and max for age</li>
+<li>Select dropdown for hair color</li>
+<li>and checkbox for marital status</li>
+</ul>
+<p><div id='tabulator_id-1' class='display'> </div></p>
+</div>
+<div class="tabbed-block">
+<table class="highlighttable"><tr><th colspan="2" class="filename"><div class="highlight"><span class="filename">/home/hhoeflin/projects/mkreports/docs/staging/tables.py</span></div></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 71</span>
+<span class="normal"> 72</span>
+<span class="normal"> 73</span>
+<span class="normal"> 74</span>
+<span class="normal"> 75</span>
+<span class="normal"> 76</span>
+<span class="normal"> 77</span>
+<span class="normal"> 78</span>
+<span class="normal"> 79</span>
+<span class="normal"> 80</span>
+<span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="n">p</span><span class="o">.</span><span class="n">Raw</span><span class="p">(</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This time, we use the [Tabulator](http://tabulator.info)</span>
+<span class="sd">    library. A library with a lot of interesting </span>
+<span class="sd">    functionality. Currently limited support.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">Tabulator</span><span class="p">(</span>
+    <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">mtcars</span><span class="p">),</span> <span class="n">add_header_filters</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">prettify_colnames</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">)</span>
+
+<span class="k">with</span> <span class="n">p</span><span class="o">.</span><span class="n">H3</span><span class="p">(</span><span class="s2">&quot;Header filters&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">notrack</span><span class="p">:</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">Raw</span><span class="p">(</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        We also can enable header filtering. For the datatypes</span>
+
+<span class="sd">        - numeric</span>
+<span class="sd">        - boolean</span>
+<span class="sd">        - categorical </span>
+<span class="sd">        - str</span>
+
+<span class="sd">        default filter options have been defined. Below</span>
+<span class="sd">        we create a table with various different data types</span>
+<span class="sd">        to show these functions.</span>
+
+<span class="sd">        The applied filters are</span>
+
+<span class="sd">        - Input filter for the names</span>
+<span class="sd">        - Range filter with min and max for age</span>
+<span class="sd">        - Select dropdown for hair color</span>
+<span class="sd">        - and checkbox for marital status</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+    <span class="p">)</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">Tabulator</span><span class="p">(</span><span class="n">ex_table</span><span class="p">,</span> <span class="n">add_header_filters</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">prettify_colnames</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+</td></tr></table>
+</div>
+</div>
+</div>
+<hr />
 <script>
-var table = new Tabulator('#tabulator-c8469972d60cd61d98262704e068f4e9', {"autoColumns": true, "pagination": true, "paginationSize": 10, "paginationSizeSelector": true, "ajaxURL": "../tables_gen_assets/tabulator-c8469972d60cd61d98262704e068f4e9.json"});
+var table = new Tabulator('#tabulator_id-0', {"layout": "fitDataTable", "pagination": true, "paginationSize": 10, "paginationSizeSelector": true, "columns": [{"field": "name", "title": "name"}, {"field": "mpg", "title": "mpg"}, {"field": "cyl", "title": "cyl"}, {"field": "disp", "title": "disp"}, {"field": "hp", "title": "hp"}, {"field": "drat", "title": "drat"}, {"field": "wt", "title": "wt"}, {"field": "qsec", "title": "qsec"}, {"field": "vs", "title": "vs"}, {"field": "am", "title": "am"}, {"field": "gear", "title": "gear"}, {"field": "carb", "title": "carb"}], "ajaxURL": "../tables_store/tabulator-c8469972d60cd61d98262704e068f4e9.json"});
 </script>
+
+<script>
+var table = new Tabulator('#tabulator_id-1', {"layout": "fitDataTable", "pagination": true, "paginationSize": 10, "paginationSizeSelector": true, "columns": [{"field": "name", "headerFilter": "input", "title": "Name"}, {"field": "age", "width": 80, "headerFilter": minMaxFilterEditor, "headerFilterFunc": minMaxFilterFunction, "headerFilterLiveFilter": false, "title": "Age"}, {"field": "hair", "headerFilter": "select", "headerFilterParams": {"values": ["", "brown", "green", "red"]}, "title": "Hair"}, {"field": "married", "headerFilter": "tickCross", "formatter": "tickCross", "headerFilterParams": {"tristate": true}, "title": "Married"}], "ajaxURL": "../tables_store/tabulator-75b468c8a8bcf5fff9d211e88d0e6972.json"});
+</script>
+
+<h2 id="notes">Notes</h2>
+<div class="tabbed-set tabbed-alternate" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><input id="__tabbed_4_2" name="__tabbed_4" type="radio" /><div class="tabbed-labels"><label for="__tabbed_4_1">Content</label><label for="__tabbed_4_2">Code</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>Internally, the tables are serialized to json so that 
+they can be displayed in the web-browser. For any types 
+that are non-native to json (e.g. Path-instances), as a
+default handler the <code>str</code> funtion is called. If this
+is not ok, please transform the table columns accordingly.</p>
+</div>
+<div class="tabbed-block">
+<table class="highlighttable"><tr><th colspan="2" class="filename"><div class="highlight"><span class="filename">/home/hhoeflin/projects/mkreports/docs/staging/tables.py</span></div></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="n">p</span><span class="o">.</span><span class="n">Raw</span><span class="p">(</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Internally, the tables are serialized to json so that </span>
+<span class="sd">    they can be displayed in the web-browser. For any types </span>
+<span class="sd">    that are non-native to json (e.g. Path-instances), as a</span>
+<span class="sd">    default handler the `str` funtion is called. If this</span>
+<span class="sd">    is not ok, please transform the table columns accordingly.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<span class="p">)</span>
+</code></pre></div>
+</td></tr></table>
+</div>
+</div>
+</div>
+<hr />
 
               
             </article>

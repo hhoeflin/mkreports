@@ -200,6 +200,21 @@
   
   
     <li class="md-nav__item">
+      <a href="../../../../quickstart/" class="md-nav__link">
+        Quickstart
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../../../markdown/" class="md-nav__link">
         Markdown
       </a>
@@ -280,18 +295,18 @@
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7" type="checkbox" id="__nav_7" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8" type="checkbox" id="__nav_8" checked>
       
       
       
       
-        <label class="md-nav__link" for="__nav_7">
+        <label class="md-nav__link" for="__nav_8">
           Reference
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="Reference" data-md-level="1">
-        <label class="md-nav__title" for="__nav_7">
+        <label class="md-nav__title" for="__nav_8">
           <span class="md-nav__icon md-icon"></span>
           Reference
         </label>
@@ -308,18 +323,18 @@
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7_1" type="checkbox" id="__nav_7_1" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_1" type="checkbox" id="__nav_8_1" checked>
       
       
       
       
-        <label class="md-nav__link" for="__nav_7_1">
+        <label class="md-nav__link" for="__nav_8_1">
           mkreports
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="mkreports" data-md-level="2">
-        <label class="md-nav__title" for="__nav_7_1">
+        <label class="md-nav__title" for="__nav_8_1">
           <span class="md-nav__icon md-icon"></span>
           mkreports
         </label>
@@ -331,8 +346,22 @@
   
   
     <li class="md-nav__item">
-      <a href="../../counters/" class="md-nav__link">
-        counters
+      <a href="../../_stack/" class="md-nav__link">
+        _stack
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../code_context/" class="md-nav__link">
+        code_context
       </a>
     </li>
   
@@ -392,18 +421,18 @@
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7_1_5" type="checkbox" id="__nav_7_1_5" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_1_6" type="checkbox" id="__nav_8_1_6" checked>
       
       
       
       
-        <label class="md-nav__link" for="__nav_7_1_5">
+        <label class="md-nav__link" for="__nav_8_1_6">
           md
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="md" data-md-level="3">
-        <label class="md-nav__title" for="__nav_7_1_5">
+        <label class="md-nav__title" for="__nav_8_1_6">
           <span class="md-nav__icon md-icon"></span>
           md
         </label>
@@ -417,6 +446,20 @@
     <li class="md-nav__item">
       <a href="../base/" class="md-nav__link">
         base
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../combo/" class="md-nav__link">
+        combo
       </a>
     </li>
   
@@ -556,6 +599,20 @@
   
   
     <li class="md-nav__item">
+      <a href="../idstore/" class="md-nav__link">
+        idstore
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../image/" class="md-nav__link">
         image
       </a>
@@ -572,6 +629,20 @@
     <li class="md-nav__item">
       <a href="../list/" class="md-nav__link">
         list
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../settings/" class="md-nav__link">
+        settings
       </a>
     </li>
   
@@ -675,8 +746,8 @@
   
   
     <li class="md-nav__item">
-      <a href="../../stack/" class="md-nav__link">
-        stack
+      <a href="../../tracker/" class="md-nav__link">
+        tracker
       </a>
     </li>
   
@@ -824,7 +895,8 @@ File            (<a title="mkreports.md.base.MdObj" href="../base/#mkreports.md.
 
         <details class="quote">
           <summary>Source code in <code>mkreports/md/file.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">File</span><span class="p">(</span><span class="n">MdObj</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="nd">@register_md</span><span class="p">(</span><span class="s1">&#39;File&#39;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">File</span><span class="p">(</span><span class="n">MdObj</span><span class="p">):</span>
 
     <span class="n">path</span><span class="p">:</span> <span class="n">Path</span>
     <span class="n">allow_copy</span><span class="p">:</span> <span class="nb">bool</span>
@@ -870,8 +942,9 @@ File            (<a title="mkreports.md.base.MdObj" href="../base/#mkreports.md.
             <span class="bp">self</span><span class="o">.</span><span class="n">_hash</span> <span class="o">=</span> <span class="n">md5_hash_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hash</span>
 
-    <span class="k">def</span> <span class="nf">to_markdown</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SpacedText</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">SpacedText</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">to_markdown</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MdOut</span><span class="p">:</span>
+        <span class="k">del</span> <span class="n">page_path</span>
+        <span class="k">return</span> <span class="n">MdOut</span><span class="p">()</span>
 </code></pre></div>
         </details>
 
@@ -907,8 +980,9 @@ and counting.</p>
 
         <details class="quote">
           <summary>Source code in <code>mkreports/md/file.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">to_markdown</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SpacedText</span><span class="p">:</span>
-    <span class="k">return</span> <span class="n">SpacedText</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">to_markdown</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MdOut</span><span class="p">:</span>
+    <span class="k">del</span> <span class="n">page_path</span>
+    <span class="k">return</span> <span class="n">MdOut</span><span class="p">()</span>
 </code></pre></div>
         </details>
     </div>
