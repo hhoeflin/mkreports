@@ -1,5 +1,6 @@
+import json
 from pathlib import Path
-from typing import Set, Union
+from typing import Any, Set, Union
 
 import parse
 from git.repo import Repo
@@ -41,3 +42,12 @@ def find_comment_ids(text: str) -> Set[str]:
 def snake_to_text(x: str) -> str:
     """Convert snake case to regular text, with each word capitalized."""
     return " ".join([w.capitalize() for w in x.split("_")])
+
+
+def func_ref(x: str) -> str:
+    return f"____{x}____"
+
+
+def serialize_json(obj: Any) -> str:
+    """Serialize an object to JSON, removing quotes for special strings."""
+    return json.dumps(obj).replace('"____', "").replace('____"', "")

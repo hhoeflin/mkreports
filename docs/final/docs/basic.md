@@ -7,17 +7,40 @@
 
 ## Headings[](){:name='my-headings'}
 
-```python title="Available headings"
+=== "Content"
 
-md.H1("Header type 1")
-md.H2("Header type 2")
-md.H3("Header type 3")
-md.H4("Header type 4")
-md.H5("Header type 5")
-md.H6("Header type 6")
-md.H7("Header type 7")
+    ```python title="Available headings"
 
-```
+    md.H1("Header type 1")
+    md.H2("Header type 2")
+    md.H3("Header type 3")
+    md.H4("Header type 4")
+    md.H5("Header type 5")
+    md.H6("Header type 6")
+    md.H7("Header type 7")
+
+    ```
+
+=== "Code"
+
+    ```python title="/home/hhoeflin/projects/mkreports/docs/staging/basic.py" linenums="10"
+    p.Code(
+        """
+        md.H1("Header type 1")
+        md.H2("Header type 2")
+        md.H3("Header type 3")
+        md.H4("Header type 4")
+        md.H5("Header type 5")
+        md.H6("Header type 6")
+        md.H7("Header type 7")
+        """,
+        title="Available headings",
+    )
+
+
+    ```
+
+---
 
 ## Lists
 
@@ -41,7 +64,7 @@ md.H7("Header type 7")
 
 === "Code"
 
-    ```python title="basic.py" linenums="28"
+    ```python title="/home/hhoeflin/projects/mkreports/docs/staging/basic.py" linenums="24"
     numbered_list = (
         md.List(marker="1")
         .append("First item")
@@ -63,14 +86,19 @@ md.H7("Header type 7")
         ),
     )
 
+    p2.add(numbered_list)
+
+
     ```
+
+---
 
 ## Links
 
-A number of different types of links are possible. Those within
-a page to an anchor or to another page (with or without anchor)
-
 === "Content"
+
+    A number of different types of links are possible. Those within
+    a page to an anchor or to another page (with or without anchor)
 
     A link back to the [first heading](#my-headings)
 
@@ -82,20 +110,23 @@ a page to an anchor or to another page (with or without anchor)
 
 === "Code"
 
-    ```python title="basic.py" linenums="59"
-    x = md.P(
-        "A link back to the "
-        + md.Link(anchor=heading_anchor, text="first heading")
+    ```python title="/home/hhoeflin/projects/mkreports/docs/staging/basic.py" linenums="48"
+    p2.Raw(
+        """
+        A number of different types of links are possible. Those within
+        a page to an anchor or to another page (with or without anchor)
+        """
     )
-    x += md.P(
+    p2.P(
+        "A link back to the " + md.Link(anchor=heading_anchor, text="first heading")
+    )
+    p2.P(
         "A link to another page "
         + md.Link("Images", to_page_path=report.page("images.md").path)
     )
-    x += md.P(
-        "Or just to any page " + md.Link("Google", url="https://google.com")
-    )
-    x += md.P(
-        "Or of course also just straight markdown [Google](https://google.com)"
-    )
+    p2.P("Or just to any page " + md.Link("Google", url="https://google.com"))
+    p2.P("Or of course also just straight markdown [Google](https://google.com)")
 
     ```
+
+---

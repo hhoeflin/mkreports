@@ -5,11 +5,11 @@ import shutil
 import tempfile
 from copy import deepcopy
 from pathlib import Path
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional
 
 import pandas as pd
 from mkreports.md_proxy import register_md
-from mkreports.utils import snake_to_text
+from mkreports.utils import func_ref, serialize_json, snake_to_text
 from pandas.api import types
 
 from .base import MdObj, MdOut, comment_ids
@@ -37,6 +37,44 @@ class Table(MdObj):
         return MdOut(body=SpacedText(table_md, (2, 2)))
 
 
+def create_yadcf_settings_datatable(
+    df: pd.DataFrame,
+    yadcf_settings: Dict[str, Dict[str, Any]],
+) -> List[Dict[str, Any]]:
+    # produce the column settings
+    col_set_dict = {}
+    for index, colname in enumerate(df.columns):
+        assert isinstance(colname, str)
+        # set the name of the column
+        inner_dict: Dict[str, Any] = {"column_number": index}
+        # only add header filters if requested
+        filter_dict = series_to_filter_yadcf(df[colname])
+        inner_dict.update(filter_dict)
+        col_set_dict[colname] = inner_dict
+    col_set_dict = merge_settings(
+        col_set_dict, yadcf_settings if yadcf_settings is not None else {}
+    )
+
+    col_list = list(col_set_dict.values())
+    return col_list
+
+
+def series_to_filter_yadcf(series: pd.Series) -> Dict[str, Any]:
+    if types.is_bool_dtype(series.dtype):
+        return dict(
+            filter_type="select",
+        )
+    if types.is_categorical_dtype(series.dtype):
+        return dict(
+            filter_type="select",
+        )
+    if types.is_numeric_dtype(series.dtype):
+        return dict(
+            filter_type="range_number",
+        )
+    return dict(filter_type="text")
+
+
 @register_md("DataTable")
 class DataTable(File):
     def __init__(
@@ -44,6 +82,8 @@ class DataTable(File):
         table: pd.DataFrame,
         store_path: Path,
         column_settings: Optional[dict] = None,
+        add_header_filters: bool = False,
+        yadcf_settings: Optional[dict] = None,
         **kwargs,
     ):
         with tempfile.TemporaryDirectory() as dir:
@@ -62,6 +102,12 @@ class DataTable(File):
         if column_settings is not None:
             # only pick out settings for columns that occur in the table
             col_set.update({col: column_settings[col] for col in table.columns})
+
+        self.add_header_filters = add_header_filters
+        if add_header_filters:
+            self.yadcf_settings = create_yadcf_settings_datatable(
+                table, yadcf_settings if yadcf_settings is not None else {}
+            )
 
         # put together the settings for the table
         # there, the columns are a list in the correct order
@@ -82,16 +128,30 @@ class DataTable(File):
         rel_table_path = relpath_html(self.path, page_path)
         table_settings = copy.deepcopy(self.table_settings)
         table_settings["ajax"] = str(rel_table_path)
-        settings_str = json.dumps(table_settings)
+        settings_str = serialize_json(table_settings)
+
+        # prepare the header script if necessary
+        if self.add_header_filters:
+            yadcf_settings_str = serialize_json(self.yadcf_settings)
+            yadcf_script = inspect.cleandoc(
+                f"""
+                yadcf.init(myTable, {yadcf_settings_str});
+                """
+            )
+        else:
+            yadcf_script = ""
+
         back_html = inspect.cleandoc(
             f"""
             <script>
             $(document).ready( function () {{
-            $('#{datatable_id}').DataTable({settings_str});
+            var myTable = $('#{datatable_id}').DataTable({settings_str});
+            {yadcf_script}
             }} );
             </script>
             """
         )
+
         settings = Settings(
             page=dict(
                 # the following needs to be loaded in the header of the page, not the footer
@@ -99,8 +159,12 @@ class DataTable(File):
                 javascript=[
                     "https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js",
                     "https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js",
+                    "https://cdn.jsdelivr.net/gh/vedmack/yadcf@332407eeacbda299e6253530e24c15041b270227/dist/jquery.dataTables.yadcf.js",
                 ],
-                css=["https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css"],
+                css=[
+                    "https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css",
+                    "https://cdn.jsdelivr.net/gh/vedmack/yadcf@332407eeacbda299e6253530e24c15041b270227/dist/jquery.dataTables.yadcf.css",
+                ],
             )
         )
 
@@ -111,7 +175,35 @@ class DataTable(File):
         )
 
 
-def series_to_filter(series: pd.Series) -> Dict[str, Any]:
+def create_col_settings_tabulator(
+    df: pd.DataFrame,
+    add_header_filters: bool,
+    prettify_colnames: bool,
+    col_settings: Dict[str, Dict[str, Any]],
+) -> List[Dict[str, Any]]:
+    # produce the column settings
+    col_set_dict = {}
+    for colname in df.columns:
+        assert isinstance(colname, str)
+        inner_dict: Dict[str, Any] = {"field": colname}
+        if add_header_filters:
+            # depending on the type of the column, choose a different filter
+            filter_dict = series_to_filter_tabulator(df[colname])
+            inner_dict.update(filter_dict)
+        if prettify_colnames:
+            inner_dict["title"] = snake_to_text(colname)
+        else:
+            inner_dict["title"] = colname
+        col_set_dict[colname] = inner_dict
+    col_set_dict = merge_settings(
+        col_set_dict, col_settings if col_settings is not None else {}
+    )
+
+    col_list = list(col_set_dict.values())
+    return col_list
+
+
+def series_to_filter_tabulator(series: pd.Series) -> Dict[str, Any]:
     if types.is_bool_dtype(series.dtype):
         return dict(
             headerFilter="tickCross",
@@ -128,8 +220,8 @@ def series_to_filter(series: pd.Series) -> Dict[str, Any]:
     if types.is_numeric_dtype(series.dtype):
         return dict(
             width=80,
-            headerFilter="minMaxFilterEditor",
-            headerFilterFunc="minMaxFilterFunction",
+            headerFilter=func_ref("minMaxFilterEditor"),
+            headerFilterFunc=func_ref("minMaxFilterFunction"),
             headerFilterLiveFilter=False,
         )
     return dict(headerFilter="input")
@@ -145,7 +237,7 @@ class Tabulator(File):
         table_settings: Optional[dict] = None,
         add_header_filters: bool = True,
         prettify_colnames: bool = True,
-        column_settings: Optional[dict] = None,
+        col_settings: Optional[dict] = None,
         **kwargs,
     ):
         with tempfile.TemporaryDirectory() as dir:
@@ -168,24 +260,12 @@ class Tabulator(File):
         )
 
         # produce the column settings
-        col_set_dict = {}
-        for colname in table.columns:
-            assert isinstance(colname, str)
-            inner_dict: Dict[str, Any] = {"field": colname}
-            if add_header_filters:
-                # depending on the type of the column, choose a different filter
-                filter_dict = series_to_filter(table[colname])
-                inner_dict.update(filter_dict)
-            if prettify_colnames:
-                inner_dict["title"] = snake_to_text(colname)
-            else:
-                inner_dict["title"] = colname
-            col_set_dict[colname] = inner_dict
-        col_set_dict = merge_settings(
-            col_set_dict, column_settings if column_settings is not None else {}
+        col_list = create_col_settings_tabulator(
+            table,
+            add_header_filters=add_header_filters,
+            prettify_colnames=prettify_colnames,
+            col_settings=col_settings if col_settings is not None else {},
         )
-
-        col_list = list(col_set_dict.values())
 
         # put the other settings together
         self.table_settings: Dict[str, Any] = merge_settings(
@@ -216,13 +296,7 @@ class Tabulator(File):
 
         # here we have to be careful to remove the '' around
         # the minMaxFilter function reference
-        settings_str = json.dumps(table_settings)
-        settings_str = settings_str.replace(
-            '"minMaxFilterFunction"', "minMaxFilterFunction"
-        )
-        settings_str = settings_str.replace(
-            '"minMaxFilterEditor"', "minMaxFilterEditor"
-        )
+        settings_str = serialize_json(table_settings)
 
         back_html = inspect.cleandoc(
             f"""

@@ -6,24 +6,26 @@ responsible for creating a mkdocs project if it doesn't exist
 already and ensuring that the neccessary settings are all 
 included. 
 """
-import contextlib
 import os
 import shutil
+from contextlib import nullcontext
 from pathlib import Path
-from typing import Any, ContextManager, Dict, Mapping, Optional, Tuple, Union
+from typing import (Any, ContextManager, Dict, Literal, Mapping, Optional,
+                    Tuple, Union)
 
 import yaml
 from frontmatter.default_handlers import DEFAULT_POST_TEMPLATE, YAMLHandler
 from immutabledict import immutabledict
 
-from .exceptions import (IncorrectSuffixError, ReportExistsError,
-                         ReportNotExistsError, ReportNotValidError,
-                         TrackerEmptyError, TrackerIncompleteError)
-from .md import IDStore, MdObj, Raw, SpacedText, Tab, Text, merge_settings
+from .code_context import CodeContext, Layouts
+from .exceptions import (ContextActiveError, IncorrectSuffixError,
+                         ReportExistsError, ReportNotExistsError,
+                         ReportNotValidError, TrackerEmptyError,
+                         TrackerIncompleteError)
+from .md import IDStore, MdObj, Raw, SpacedText, Text, merge_settings
 from .md_proxy import MdProxy
 from .settings import (NavEntry, add_nav_entry, load_yaml, path_to_nav_entry,
                        save_yaml)
-from .stack import Tracker
 from .utils import find_comment_ids, relative_repo_root
 
 default_settings = immutabledict(
@@ -198,7 +200,6 @@ class Report:
         page_name: Union[NavEntry, Path, str],
         truncate: bool = False,
         add_bottom: bool = True,
-        append_code_file: Optional[Union[str, Path]] = None,
     ) -> "Page":
         # if the page_name is just a string, we turn it into a dictionary
         # based on the hierarchical names
@@ -234,7 +235,6 @@ class Report:
             self.docs_dir / path,
             report=self,
             add_bottom=add_bottom,
-            append_code_file=append_code_file,
         )
 
 
@@ -243,8 +243,9 @@ class Page:
         self,
         path: Path,
         report: Report,
+        code_layout: Layouts = "tabbed",
+        code_name_only: bool = False,
         add_bottom: bool = True,
-        append_code_file: Optional[Union[Path, str]] = None,
     ) -> None:
         self._path = path.absolute()
         # check that the file exists and ends with .md
@@ -257,6 +258,8 @@ class Page:
         self._idstore = IDStore(used_ids=find_comment_ids(self.path.read_text()))
         self.report = report
         self.add_bottom = add_bottom
+        self.code_layout: Layouts = code_layout
+        self.code_name_only = code_name_only
 
         self._md = MdProxy(
             store_path=self.store_path,
@@ -264,49 +267,72 @@ class Page:
             javascript_path=self.report.javascript_path,
         )
 
-        self.append_code_file = append_code_file
-
-        # a tracker for tracking code to be printed
-        self.reset_tracker()
+        self.code_context: Optional[CodeContext] = None
 
     def __enter__(self) -> "Page":
+        """
+        Return a copy of the page with a new CodeContext set
+        """
+        if self.code_context is not None and self.code_context.active:
+            raise ContextActiveError("The context manager is already active")
+        if self.code_context is None:
+            self.code_context = CodeContext(
+                layout=self.code_layout,
+                name_only=self.code_name_only,
+                add_bottom=self.add_bottom,
+            )
+        self.code_context.__enter__()
+        return self
+
+    def ctx(
+        self,
+        layout: Optional[Layouts] = None,
+        name_only: Optional[bool] = None,
+        add_bottom: Optional[bool] = None,
+    ) -> "Page":
+        if self.code_context is not None and self.code_context.active:
+            raise ContextActiveError("The context manager is already active")
+        self.code_context = CodeContext(
+            layout=layout if layout is not None else self.code_layout,
+            name_only=name_only if name_only is not None else self.code_name_only,
+            add_bottom=add_bottom if add_bottom is not None else self.add_bottom,
+        )
         return self
 
     def __exit__(self, exc_type, exc_val, traceback) -> None:
-        del exc_type, exc_val, traceback
-        if self.append_code_file:
-            try:
-                self.add(
-                    self.md.Admonition(
-                        self.md.CodeFile(self.append_code_file),
-                        collapse=True,
-                        kind="info",
-                        title=relative_repo_root(self.append_code_file),
-                    )
-                )
-            except Exception:
-                pass
+        """
+        Exit the code context and add output.
+        """
+        if self.code_context is None:
+            raise Exception("__exit__ called before __enter__")
+        self.code_context.__exit__(exc_type, exc_val, traceback)
+        self._add_to_page(
+            self.code_context.md_obj(javascript_path=self.report.javascript_path)
+        )
+        self.code_context = None
 
     def __getattr__(self, name):
         md_class = self.md.__getattr__(name)
 
         def md_and_add(*args, **kwargs):
-            kwargs_add = {
-                name: value
-                for name, value in kwargs.items()
-                if name in ["add_code", "bottom"]
-            }
-            kwargs_md = {
-                name: value
-                for name, value in kwargs.items()
-                if name not in ["add_code", "bottom"]
-            }
+            kwargs_add = {}
+            kwargs_md = kwargs
 
             # now apply to md
             md_obj = md_class(*args, **kwargs_md)
             return self.add(md_obj, **kwargs_add)
 
         return md_and_add
+
+    def __copy__(self):
+        cls = self.__class__
+        result = cls.__new__(cls)
+        result.__dict__.update(self.__dict__)
+        return result
+
+    @property
+    def notrack(self) -> ContextManager["Page"]:
+        return nullcontext(self)
 
     @property
     def path(self) -> Path:
@@ -321,20 +347,6 @@ class Page:
         shutil.rmtree(self.store_path)
         self.path.unlink()
 
-    def reset_tracker(self) -> None:
-        # note: tracker is designed to be passed outside
-        self.tracker = Tracker(omit_levels=0)
-
-    def track_code(self):
-        self.reset_tracker()
-        return self.tracker
-
-    def track_code_start(self):
-        self.tracker.__enter__()
-
-    def track_code_end(self):
-        self.tracker.__exit__(None, None, None)
-
     def md_code(self, highlight: bool = True, full_filename: bool = False) -> MdObj:
         """Print code as markdown that has been tracked."""
         if self.tracker.ctx_active:
@@ -348,27 +360,36 @@ class Page:
     def add(
         self,
         item: Union[MdObj, Text],
-        add_code: bool = False,
-        bottom: Optional[bool] = None,
-    ) -> ContextManager["Page"]:
+    ) -> "Page":
         # first ensure that item is an MdObj
         if isinstance(item, str):
             item = Raw(item, dedent=True)
         elif isinstance(item, SpacedText):
             item = Raw(item)
 
-        if bottom is None:
-            bottom = self.add_bottom
+        # if a context-manager is active, pass along the object into there
+        if self.code_context is not None:
+            self.code_context.add(item)
+        else:  # else pass it directly to the page
+            self._add_to_page(item)
 
-        if add_code:
-            # we wrap it all in a tabs, with one tab the main output, the other
-            # the code;
-            item = Tab(item, title="Content") + Tab(
-                self.md_code(highlight=False), title="Code"
-            )
-            # reset the tracker
-            self.reset_tracker()
+        # we return a copy of the page, but with the code context not copied
+        # the copy is therefore a shallow copy
+        # page_copy = copy.copy(self)
+        # page_copy.code_context = None
+        return self
 
+    def _add_to_page(
+        self,
+        item: MdObj,
+    ) -> None:
+        """
+        Read the frontmatter and merge it with the additional settings.
+
+        The reason that we do this separately is a minor issue in the
+        frontmatter library, that filters the newlines at the end of the file.
+        https://github.com/eyeseast/python-frontmatter/issues/87
+        """
         # call the markdown and the backmatter
         md_out = item.to_markdown(page_path=self.path, idstore=self._idstore)
         md_text = md_out.body + md_out.back
@@ -384,34 +405,14 @@ class Page:
             mkdocs_settings = merge_settings(mkdocs_settings, req.mkdocs)
             save_yaml(mkdocs_settings, self.report.mkdocs_file)
 
-        if bottom:
-            self._add_to_page(top=None, bottom=md_text, page_settings=req.page)
-        else:
-            self._add_to_page(top=md_text, bottom=None, page_settings=req.page)
-
-        return contextlib.nullcontext(self)
-
-    def _add_to_page(
-        self,
-        top: Optional[SpacedText],
-        bottom: Optional[SpacedText],
-        page_settings: Dict[str, Any],
-    ) -> None:
-        """
-        Read the frontmatter and merge it with the additional settings.
-
-        The reason that we do this separately is a minor issue in the
-        frontmatter library, that filters the newlines at the end of the file.
-        https://github.com/eyeseast/python-frontmatter/issues/87
-        """
         metadata, content = load_page(self.path)
         # we need to read the whole page anyway
-        metadata = merge_settings(metadata, page_settings)
+        metadata = merge_settings(metadata, req.page)
 
-        if top is not None:
-            content = top.format_text("", content) + content
-        if bottom is not None:
-            content = content + bottom.format_text(content, "")
+        if self.add_bottom:
+            content = content + md_text.format_text(content, "")
+        else:
+            content = md_text.format_text("", content) + content
 
         write_page(self.path, metadata, content)
 

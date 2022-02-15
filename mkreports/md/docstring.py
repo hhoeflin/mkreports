@@ -11,7 +11,8 @@ class Docstring(MdObj):
         super().__init__()
         self.obj_name = obj_name
 
-    def req_settings(self) -> Settings:
+    def to_markdown(self, **kwargs) -> MdOut:
+        del kwargs
         cont_settings = Settings(
             mkdocs={
                 "plugins": [
@@ -20,8 +21,6 @@ class Docstring(MdObj):
                 ]
             }
         )
-        return cont_settings
-
-    def to_markdown(self, **kwargs) -> MdOut:
-        del kwargs
-        return MdOut(body=SpacedText(f"::: {self.obj_name}", (2, 2)))
+        return MdOut(
+            body=SpacedText(f"::: {self.obj_name}", (2, 2)), settings=cont_settings
+        )

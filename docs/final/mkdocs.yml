@@ -4,10 +4,10 @@ markdown_extensions:
 - pymdownx.extra
 - pymdownx.details
 - pymdownx.superfences
-- pymdownx.highlight:
-    use_pygments: true
 - pymdownx.tabbed:
     alternate_style: true
+- pymdownx.highlight:
+    use_pygments: true
 - pymdownx.snippets
 nav:
 - Home: index.md
@@ -18,11 +18,14 @@ nav:
 - Code Blocks: code_blocks.md
 - Reference:
   - mkreports:
+    - _stack: Reference/mkreports/_stack.md
+    - code_context: Reference/mkreports/code_context.md
     - docs: Reference/mkreports/docs.md
     - exceptions: Reference/mkreports/exceptions.md
     - ipython: Reference/mkreports/ipython.md
     - md:
       - base: Reference/mkreports/md/base.md
+      - combo: Reference/mkreports/md/combo.md
       - containers: Reference/mkreports/md/containers.md
       - docstring: Reference/mkreports/md/docstring.md
       - file: Reference/mkreports/md/file.md
@@ -37,8 +40,11 @@ nav:
     - parser: Reference/mkreports/parser.md
     - report: Reference/mkreports/report.md
     - settings: Reference/mkreports/settings.md
-    - stack: Reference/mkreports/stack.md
+    - tracker: Reference/mkreports/tracker.md
     - utils: Reference/mkreports/utils.md
+plugins:
+- search
+- mkdocstrings
 site_name: Mkreports documentations
 theme:
   custom_dir: overrides

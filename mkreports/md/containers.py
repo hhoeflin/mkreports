@@ -1,4 +1,5 @@
 import html
+import shutil
 import textwrap
 from dataclasses import dataclass
 from pathlib import Path
@@ -9,7 +10,7 @@ from mdutils.tools.TextUtils import TextUtils
 from mkreports.md_proxy import register_md
 
 from .base import MdObj, MdOut
-from .file import File
+from .file import File, relpath_html
 from .settings import Settings
 from .text import SpacedText, Text
 
@@ -18,6 +19,7 @@ from .text import SpacedText, Text
 @dataclass
 class Admonition(MdObj):
     text: Union[Text, MdObj]
+    javascript_path: Path
     title: Optional[str] = None
     kind: Literal[
         "note",
@@ -32,10 +34,26 @@ class Admonition(MdObj):
         "bug",
         "example",
         "quote",
+        "code",
     ] = "note"
     collapse: bool = False
 
-    def to_markdown(self, **kwargs) -> MdOut:
+    def __post_init__(self):
+        if self.kind == "code":
+            # create a css file that creates a 'code' admonition
+            self.css_path = self.javascript_path / "code_admonition.css"
+            shutil.copy(
+                Path(__file__).parent / "code_admonition.css",
+                self.css_path,
+            )
+
+    def to_markdown(self, page_path: Path, **kwargs) -> MdOut:
+        # if code-admonition, we need to load additional css
+        if self.kind == "code":
+            rel_css_path = relpath_html(self.css_path, page_path)
+            page_settings = dict(css=[rel_css_path])
+        else:
+            page_settings = {}
         cont_settings = Settings(
             mkdocs={
                 "markdown_extensions": [
@@ -43,7 +61,8 @@ class Admonition(MdObj):
                     "pymdownx.details",
                     "pymdownx.superfences",
                 ]
-            }
+            },
+            page=page_settings,
         )
         if isinstance(self.text, MdObj):
             admon_text, back, settings = self.text.to_markdown(**kwargs)

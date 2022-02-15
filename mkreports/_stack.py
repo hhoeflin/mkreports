@@ -15,6 +15,7 @@ from intervaltree import Interval
 from . import parser
 from .exceptions import TrackerActiveError, TrackerNotActiveError
 from .md import Code, MdObj, Raw, Tab
+from .tracker import read_file
 
 logger = logging.getLogger(__name__)
 
@@ -340,22 +341,6 @@ class FrameInfo(NodeMixin):
 
 
 Stack = List[FrameInfo]
-
-
-def read_file(
-    path: Path, from_line: Optional[int] = None, to_line: Optional[int] = None
-) -> List[str]:
-
-    """
-    Read a part of a file.
-
-    Reads a file from a line to a certain line. All line numbers are assumed to
-    start with 0.
-    """
-    with path.open("r") as f:
-        lines = f.readlines()
-
-    return lines[slice(from_line, to_line, 1)]
 
 
 def get_stack(omit_levels: int = 0) -> Stack:

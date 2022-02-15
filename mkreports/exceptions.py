@@ -35,5 +35,13 @@ class TrackerNotActiveError(Exception):
     pass
 
 
+class CannotTrackError(Exception):
+    pass
+
+
 class IncorrectSuffixError(Exception):
+    pass
+
+
+class ContextActiveError(Exception):
     pass

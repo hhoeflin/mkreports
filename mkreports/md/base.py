@@ -89,18 +89,21 @@ class MdSeq(MdObj, Sequence):
         return MdSeq(second_items + self.items)
 
     def to_markdown(self, **kwargs) -> MdOut:
-        mdout_list = [x.to_markdown(**kwargs) for x in self.items]
-        return MdOut(
-            body=functools.reduce(
-                lambda x, y: x + y, [elem.body for elem in mdout_list]
-            ),
-            back=functools.reduce(
-                lambda x, y: x + y, [elem.back for elem in mdout_list]
-            ),
-            settings=functools.reduce(
-                lambda x, y: x + y, [elem.settings for elem in mdout_list]
-            ),
-        )
+        if len(self.items) == 0:
+            return MdOut()
+        else:
+            mdout_list = [x.to_markdown(**kwargs) for x in self.items]
+            return MdOut(
+                body=functools.reduce(
+                    lambda x, y: x + y, [elem.body for elem in mdout_list]
+                ),
+                back=functools.reduce(
+                    lambda x, y: x + y, [elem.back for elem in mdout_list]
+                ),
+                settings=functools.reduce(
+                    lambda x, y: x + y, [elem.settings for elem in mdout_list]
+                ),
+            )
 
 
 @register_md("Raw")
@@ -115,7 +118,12 @@ class Raw(MdObj):
     mkdocs_settings: Dict[str, Any]
 
     def __init__(
-        self, raw: Text = "", dedent=True, page_settings=None, mkdocs_settings=None
+        self,
+        raw: Text = "",
+        dedent=True,
+        back="",
+        page_settings=None,
+        mkdocs_settings=None,
     ):
         super().__init__()
         if dedent:
@@ -124,6 +132,7 @@ class Raw(MdObj):
                 raw = textwrap.dedent(raw)
 
         self.raw = raw
+        self.back = back
         self.page_settings = page_settings
         self.mkdocs_settings = mkdocs_settings
 
@@ -131,6 +140,7 @@ class Raw(MdObj):
         del kwargs
         return MdOut(
             body=SpacedText(self.raw),
+            back=SpacedText(self.back),
             settings=Settings(
                 page=self.page_settings if self.page_settings is not None else {},
                 mkdocs=self.mkdocs_settings if self.mkdocs_settings is not None else {},

@@ -13,3 +13,10 @@ def test_paragraph():
     assert (
         p.to_markdown().body.format_text(" ", " ") == "\n\n" + test_paragraph + "\n\n"
     )
+
+
+def test_mdseq():
+    """Test that sequences of MdObj work."""
+    # check that an empty MdSeq object does not throw an error
+    md_seq = md.MdSeq(())
+    assert md_seq.to_markdown() == md.MdOut()

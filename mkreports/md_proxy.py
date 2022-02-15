@@ -3,19 +3,17 @@ from functools import partial
 from pathlib import Path
 from typing import Any, Dict
 
-from . import md
-
 
 def register_md(name):
     def register_md_named(cls):
-        MdProxy.proxied_classes[name] = cls
+        MdProxy._proxied_classes[name] = cls
         return cls
 
     return register_md_named
 
 
 class MdProxy:
-    proxied_classes: Dict[str, Any] = dict()
+    _proxied_classes: Dict[str, Any] = dict()
 
     def __init__(self, store_path: Path, report_path: Path, javascript_path: Path):
         self.store_path = store_path
@@ -24,10 +22,10 @@ class MdProxy:
 
     def __getattr__(self, name):
         # we are not checking if it is included; if not, should raise error
-        if name in self.proxied_classes:
-            obj = self.proxied_classes[name]
+        if name in self._proxied_classes:
+            obj = self._proxied_classes[name]
         else:
-            raise AttributeError(name)
+            raise AttributeError(f"No MdObj of name '{name}' registered")
 
         # if is a class; try to fix the init method
         if inspect.isclass(obj):
@@ -48,3 +46,7 @@ class MdProxy:
 
         else:
             return obj
+
+    @property
+    def proxied_clases(self):
+        return self._proxied_classes

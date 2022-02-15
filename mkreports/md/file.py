@@ -1,4 +1,5 @@
 import hashlib
+from mkreports.md_proxy import register_md
 import shutil
 from os.path import relpath
 from pathlib import Path
@@ -31,7 +32,7 @@ def relpath_html(target: Path, page_path: Path):
         # for translating to html, will be converted to path.parent / path.stem / index.html
         return relpath(target, page_path)
 
-
+@register_md('File')
 class File(MdObj):
 
     path: Path
