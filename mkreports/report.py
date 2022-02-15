@@ -205,6 +205,8 @@ class Report:
         # based on the hierarchical names
         if isinstance(page_name, (str, Path)):
             path = Path(page_name)
+            if path.suffix == "":
+                path = path.with_suffix(".md")
             nav_entry = path_to_nav_entry(path)
         else:
             nav_entry = page_name

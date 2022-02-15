@@ -4,13 +4,14 @@ markdown_extensions:
 - pymdownx.extra
 - pymdownx.details
 - pymdownx.superfences
-- pymdownx.tabbed:
-    alternate_style: true
+- pymdownx.snippets
 - pymdownx.highlight:
     use_pygments: true
-- pymdownx.snippets
+- pymdownx.tabbed:
+    alternate_style: true
 nav:
 - Home: index.md
+- Quickstart: quickstart.md
 - Markdown: markdown.md
 - Basic: basic.md
 - Images: images.md

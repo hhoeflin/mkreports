@@ -42,6 +42,7 @@ class Admonition(MdObj):
         if self.kind == "code":
             # create a css file that creates a 'code' admonition
             self.css_path = self.javascript_path / "code_admonition.css"
+            self.javascript_path.mkdir(parents=True, exist_ok=True)
             shutil.copy(
                 Path(__file__).parent / "code_admonition.css",
                 self.css_path,

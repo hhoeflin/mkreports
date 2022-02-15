@@ -9,6 +9,7 @@ from mkreports import Report, add_pkg_docs
 from .basic import use_basic
 from .code_blocks import use_code_blocks
 from .images import use_images
+from .quickstart import use_quickstart
 from .tables import use_tables
 
 
@@ -25,6 +26,7 @@ def add_md_pages(report: Report):
 
 
 def run_all(report: Report):
+    use_quickstart(report)
     add_md_pages(report)
     use_basic(report)
     # documentation for images
