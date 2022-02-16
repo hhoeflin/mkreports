@@ -2,7 +2,8 @@ from pathlib import Path
 
 import pytest
 from mkreports.md import Settings
-from mkreports.settings import mkdocs_to_nav, nav_to_mkdocs, path_to_nav_entry
+from mkreports.settings import (NavEntry, mkdocs_to_nav, nav_to_mkdocs,
+                                path_to_nav_entry)
 
 
 def test_settings():
@@ -32,7 +33,7 @@ def test_path_nav_entry():
 
     test_nav = path_to_nav_entry(test_page)
     test_nav2 = path_to_nav_entry(test_page2)
-    assert test_nav == (["Test", "Test2", "Test3"], test_page)
+    assert test_nav == NavEntry(tuple(["Test", "Test2", "Test3"]), test_page)
 
     mkdocs_nav = [
         {"Home": "index.md"},
