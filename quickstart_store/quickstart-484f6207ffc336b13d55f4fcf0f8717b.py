@@ -4,18 +4,26 @@ from mkreports import Report
 from plotnine.data import mtcars
 
 
-def use_quickstart(report: Report) -> None:
+def do_quickstart(report: Report) -> None:
     p = report.page("quickstart")
 
     p.H1("Quickstart")
 
-    p.CollapsedCodeFile(__file__)
+    p.P(
+        """
+        First, below the code that was used to create this page. 
+        It is a very brief example of an page with a table and an image
+        as well as some text, like here.
+        """
+    )
+
+    p.CodeFile(__file__)
 
     p.P(
         """
         We are quickly analyzing the mtcars dataset 
         that is included with plotnine.
-            """
+        """
     )
 
     with p.H2("Data as a table"):

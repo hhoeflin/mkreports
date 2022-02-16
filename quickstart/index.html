@@ -46,8 +46,6 @@
 
   
     
-        <link rel="stylesheet" href="../javascript/code_admonition.css">
-    
         <link rel="stylesheet" href="https://unpkg.com/tabulator-tables@5.1.0/dist/css/tabulator.min.css">
     
 
@@ -821,26 +819,35 @@
                 
 
 <h1 id="quickstart">Quickstart</h1>
-<details class="code">
-<summary>Code</summary>
+<p>First, below the code that was used to create this page. 
+It is a very brief example of an page with a table and an image
+as well as some text, like here.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">plotnine</span> <span class="k">as</span> <span class="nn">p9</span>
 <span class="kn">from</span> <span class="nn">mkreports</span> <span class="kn">import</span> <span class="n">Report</span>
 <span class="kn">from</span> <span class="nn">plotnine.data</span> <span class="kn">import</span> <span class="n">mtcars</span>
 
 
-<span class="k">def</span> <span class="nf">use_quickstart</span><span class="p">(</span><span class="n">report</span><span class="p">:</span> <span class="n">Report</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">do_quickstart</span><span class="p">(</span><span class="n">report</span><span class="p">:</span> <span class="n">Report</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="n">p</span> <span class="o">=</span> <span class="n">report</span><span class="o">.</span><span class="n">page</span><span class="p">(</span><span class="s2">&quot;quickstart&quot;</span><span class="p">)</span>
 
     <span class="n">p</span><span class="o">.</span><span class="n">H1</span><span class="p">(</span><span class="s2">&quot;Quickstart&quot;</span><span class="p">)</span>
 
-    <span class="n">p</span><span class="o">.</span><span class="n">CollapsedCodeFile</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">P</span><span class="p">(</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        First, below the code that was used to create this page. </span>
+<span class="sd">        It is a very brief example of an page with a table and an image</span>
+<span class="sd">        as well as some text, like here.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+    <span class="p">)</span>
+
+    <span class="n">p</span><span class="o">.</span><span class="n">CodeFile</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span>
 
     <span class="n">p</span><span class="o">.</span><span class="n">P</span><span class="p">(</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        We are quickly analyzing the mtcars dataset </span>
 <span class="sd">        that is included with plotnine.</span>
-<span class="sd">            &quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
     <span class="p">)</span>
 
     <span class="k">with</span> <span class="n">p</span><span class="o">.</span><span class="n">H2</span><span class="p">(</span><span class="s2">&quot;Data as a table&quot;</span><span class="p">):</span>
@@ -858,7 +865,6 @@
             <span class="p">)</span>
         <span class="p">)</span>
 </code></pre></div>
-</details>
 <p>We are quickly analyzing the mtcars dataset 
 that is included with plotnine.</p>
 <h2 id="data-as-a-table">Data as a table</h2>
@@ -868,7 +874,7 @@ that is included with plotnine.</p>
 <p><div id='tabulator_id-0' class='display'> </div></p>
 </div>
 <div class="tabbed-block">
-<table class="highlighttable"><tr><th colspan="2" class="filename"><div class="highlight"><span class="filename">/home/hhoeflin/projects/mkreports/docs/staging/quickstart.py</span></div></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">23</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="n">p</span><span class="o">.</span><span class="n">Tabulator</span><span class="p">(</span><span class="n">mtcars</span><span class="p">,</span> <span class="n">add_header_filters</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">prettify_colnames</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<table class="highlighttable"><tr><th colspan="2" class="filename"><div class="highlight"><span class="filename">/home/hhoeflin/projects/mkreports/docs/staging/quickstart.py</span></div></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">31</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="n">p</span><span class="o">.</span><span class="n">Tabulator</span><span class="p">(</span><span class="n">mtcars</span><span class="p">,</span> <span class="n">add_header_filters</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">prettify_colnames</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </code></pre></div>
 </td></tr></table>
 </div>
@@ -886,14 +892,14 @@ var table = new Tabulator('#tabulator_id-0', {"layout": "fitDataTable", "paginat
 <p><img alt="" src="../quickstart_store/image-41a828f4fba906604a976d3f9ad1138a.png" /></p>
 </div>
 <div class="tabbed-block">
-<table class="highlighttable"><tr><th colspan="2" class="filename"><div class="highlight"><span class="filename">/home/hhoeflin/projects/mkreports/docs/staging/quickstart.py</span></div></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">27</span>
-<span class="normal">28</span>
-<span class="normal">29</span>
-<span class="normal">30</span>
-<span class="normal">31</span>
-<span class="normal">32</span>
-<span class="normal">33</span>
-<span class="normal">34</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="n">p</span><span class="o">.</span><span class="n">Image</span><span class="p">(</span>
+<table class="highlighttable"><tr><th colspan="2" class="filename"><div class="highlight"><span class="filename">/home/hhoeflin/projects/mkreports/docs/staging/quickstart.py</span></div></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="n">p</span><span class="o">.</span><span class="n">Image</span><span class="p">(</span>
     <span class="p">(</span>
         <span class="n">p9</span><span class="o">.</span><span class="n">ggplot</span><span class="p">(</span><span class="n">mtcars</span><span class="p">,</span> <span class="n">p9</span><span class="o">.</span><span class="n">aes</span><span class="p">(</span><span class="s2">&quot;wt&quot;</span><span class="p">,</span> <span class="s2">&quot;mpg&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;factor(gear)&quot;</span><span class="p">))</span>
         <span class="o">+</span> <span class="n">p9</span><span class="o">.</span><span class="n">geom_point</span><span class="p">()</span>
