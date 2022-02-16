@@ -1,6 +1,59 @@
 ![Pytest](https://github.com/hhoeflin/mkreports/actions/workflows/pytest.yml/badge.svg)
 
-*This project is in very early status; all APIs can change at any point in time.*
+*This project is in early status; all APIs can change at any point in time.*
+
+# Quickstart
+
+It is very easy to create new reports and pages. Below an example that
+creates a report in the `example_report` directory and creates one page
+`quickstart` in which a table and a plot of some data is shown together
+with the code used to create those items.
+
+```python
+import pandas as pd
+import plotnine as p9
+from mkreports import Report
+from plotnine.data import mtcars
+
+report = Report.create("example_report", report_name="Mkreports documentations")
+
+p = report.page("quickstart")
+
+p.H1("Quickstart")
+
+p.P(
+    """
+    First, below the code that was used to create this page.
+    It is a very brief example of an page with a table and an image
+    as well as some text, like here.
+    """
+)
+
+p.CodeFile(__file__)
+
+p.P(
+    """
+    We are quickly analyzing the mtcars dataset
+    that is included with plotnine.
+    """
+)
+
+with p.H2("Data as a table"):
+
+    p.Tabulator(mtcars, add_header_filters=True, prettify_colnames=True)
+
+with p.H2("Some simple plots"):
+
+    p.Image(
+        (
+            p9.ggplot(mtcars, p9.aes("wt", "mpg", color="factor(gear)"))
+            + p9.geom_point()
+            + p9.stat_smooth(method="lm")
+            + p9.facet_wrap("~gear")
+        )
+    )
+
+```
 
 # Mkdocs based data analysis reports
 
