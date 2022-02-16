@@ -1,4 +1,5 @@
 import difflib
+import sys
 from filecmp import dircmp
 from pathlib import Path
 from typing import Sequence
@@ -15,12 +16,10 @@ def cmp_dirs_recursive(left_dir: Path, right_dir: Path, ignore: Sequence[Path]) 
     ):
         if len(cmp_dirs.diff_files) > 0:
             for diff_file in cmp_dirs.diff_files:
-                print(
-                    list(
-                        difflib.unified_diff(
-                            (left_dir / diff_file).read_text(),
-                            (right_dir / diff_file).read_text(),
-                        )
+                sys.stdout.writelines(
+                    difflib.unified_diff(
+                        (left_dir / diff_file).read_text(),
+                        (right_dir / diff_file).read_text(),
                     )
                 )
         return False
