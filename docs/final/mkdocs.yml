@@ -43,6 +43,14 @@ nav:
     - settings: Reference/mkreports/settings.md
     - tracker: Reference/mkreports/tracker.md
     - utils: Reference/mkreports/utils.md
+- Site Code:
+  - Main: site_code/main.md
+  - Basic: site_code/basic.md
+  - '  Init  ': site_code/__init__.md
+  - Images: site_code/images.md
+  - Code Blocks: site_code/code_blocks.md
+  - Tables: site_code/tables.md
+  - Quickstart: site_code/quickstart.md
 plugins:
 - search
 - mkdocstrings

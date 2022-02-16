@@ -1,21 +1,28 @@
 from collections import defaultdict
 from copy import deepcopy
 from pathlib import Path
-from typing import Any, Dict, List, Mapping, Tuple, Union
+from typing import Any, Dict, List, Mapping, NamedTuple, Sequence, Tuple, Union
 
 import yaml
 from more_itertools import unique_everseen
 
 from .utils import snake_to_text
 
-NavEntry = Tuple[List[str], Path]
+
+class NavEntry(NamedTuple):
+    hierarchy: Sequence[str]
+    file: Path
+
+
 Nav = List[NavEntry]
 MkdocsNav = List[Union[str, Mapping[str, Union[str, "MkdocsNav"]]]]
 
 
 def path_to_nav_entry(path: Path) -> NavEntry:
-    return (
-        [snake_to_text(x) for x in path.parent.parts] + [snake_to_text(path.stem)],
+    return NavEntry(
+        tuple(
+            [snake_to_text(x) for x in path.parent.parts] + [snake_to_text(path.stem)]
+        ),
         path,
     )
 
@@ -40,7 +47,7 @@ def mkdocs_to_nav(mkdocs_nav: MkdocsNav) -> Nav:
             if isinstance(val, str):
                 res.append(([key], Path(val)))
             elif isinstance(val, List):
-                res = res + [([key] + h, p) for (h, p) in mkdocs_to_nav(val)]
+                res = res + [((key,) + tuple(h), p) for (h, p) in mkdocs_to_nav(val)]
             else:
                 raise Exception("Not expected type")
         else:

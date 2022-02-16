@@ -26,8 +26,8 @@ def add_pkg_docs(
             continue
         else:
             # now create the new nav_entry for this page
-            module_nav_entry = (
-                parent_name[0] + list(module_path.parts),
+            module_nav_entry = NavEntry(
+                parent_name[0] + tuple(module_path.parts),
                 (parent_name[1] / module_path).with_suffix(".md"),
             )
 

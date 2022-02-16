@@ -1,3 +1,8 @@
+---
+{}
+---
+
+```python title="main.py"
 import inspect
 import shutil
 from pathlib import Path
@@ -61,3 +66,5 @@ def main(report_dir: Path):
 
 if __name__ == "__main__":
     typer.run(main)
+
+```
