@@ -26,7 +26,9 @@ def add_md_pages(report: Report):
 
 
 def add_code_pages(report: Report, code_dir: Path):
-    for code_file in code_dir.glob("**/*.py"):
+    code_files = list(code_dir.glob("**/*.py"))
+    code_files.sort()
+    for code_file in code_files:
         rel_code_file = code_file.relative_to(code_dir)
         site_file_name = "site_code" / rel_code_file.with_suffix(".md")
         p = report.page(site_file_name)
