@@ -40,3 +40,8 @@ def do_quickstart(report: Report) -> None:
                 + p9.facet_wrap("~gear")
             )
         )
+
+
+if __name__ == "__main__":
+    report = Report.create("mkreports_docs", report_name="Mkreports documentations")
+    do_quickstart(report)
