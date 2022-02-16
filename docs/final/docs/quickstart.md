@@ -28,7 +28,7 @@ that is included with plotnine.
 
 === "Code"
 
-    ```python title="/home/hhoeflin/projects/mkreports/docs/staging/quickstart.py" linenums="31"
+    ```python title="docs/staging/quickstart.py" linenums="31"
     p.Tabulator(mtcars, add_header_filters=True, prettify_colnames=True)
 
 
@@ -50,7 +50,7 @@ var table = new Tabulator('#tabulator_id-0', {"layout": "fitDataTable", "paginat
 
 === "Code"
 
-    ```python title="/home/hhoeflin/projects/mkreports/docs/staging/quickstart.py" linenums="35"
+    ```python title="docs/staging/quickstart.py" linenums="35"
     p.Image(
         (
             p9.ggplot(mtcars, p9.aes("wt", "mpg", color="factor(gear)"))

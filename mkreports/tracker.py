@@ -28,7 +28,6 @@ class CodeBlock:
                 to_line=self.line_end,
             )
         )
-
         try:
             assert relative_to is not None
             filename_to_use = str(Path(self.filename).relative_to(relative_to))

@@ -1,9 +1,19 @@
 import json
 from pathlib import Path
-from typing import Any, Set, Union
+from typing import Any, Optional, Set, Union
 
 import parse
 from git.repo import Repo
+
+
+def repo_root(path: Path = Path(".")) -> Optional[Path]:
+    try:
+        repo = Repo(path, search_parent_directories=True)
+        return repo.working_tree_dir
+    except Exception:
+        pass
+
+    return None
 
 
 def relative_repo_root(path: Union[Path, str]) -> str:

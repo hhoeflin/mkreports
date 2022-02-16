@@ -26,7 +26,7 @@ from .md import IDStore, MdObj, Raw, SpacedText, Text, merge_settings
 from .md_proxy import MdProxy
 from .settings import (NavEntry, add_nav_entry, load_yaml, path_to_nav_entry,
                        save_yaml)
-from .utils import find_comment_ids, relative_repo_root
+from .utils import find_comment_ids, repo_root
 
 default_settings = immutabledict(
     {
@@ -106,6 +106,7 @@ class Report:
     def __init__(
         self,
         path: Optional[Union[str, Path]] = None,
+        project_root: Optional[Union[str, Path]] = None,
     ) -> None:
         # need to ensure it is of type Path
         if path is None:
@@ -125,6 +126,15 @@ class Report:
             raise ReportNotValidError(f"{self.docs_dir} does not exist")
         if not self.index_file.exists() or not self.index_file.is_file():
             raise ReportNotValidError(f"{self.index_file} does not exist")
+
+        if project_root is None:
+            root = repo_root()
+            if root is None:
+                self.project_root = Path("/")
+            else:
+                self.project_root = root
+        else:
+            self.project_root = Path(project_root)
 
     @property
     def path(self) -> Path:
@@ -187,9 +197,9 @@ class Report:
         # check that the nav-entry is relative; if absolute,
         # make it relative to the docs_dir
         if isinstance(nav_entry[1], str):
-            nav_entry = (nav_entry[0], Path(nav_entry[1]))
+            nav_entry = NavEntry(nav_entry[0], Path(nav_entry[1]))
         if nav_entry[1].is_absolute():
-            nav_entry = (nav_entry[0], nav_entry[1].relative_to(self.docs_dir))
+            nav_entry = NavEntry(nav_entry[0], nav_entry[1].relative_to(self.docs_dir))
 
         mkdocs_settings = load_yaml(self.mkdocs_file)
         mkdocs_settings = add_nav_entry(mkdocs_settings, nav_entry)
@@ -233,11 +243,18 @@ class Report:
             # update the report settings
             self._add_nav_entry(nav_entry)
 
-        return Page(
+        page = Page(
             self.docs_dir / path,
             report=self,
             add_bottom=add_bottom,
         )
+
+        # if truncate, we also get rid of the store path
+        if truncate:
+            if page.store_path.exists():
+                shutil.rmtree(page.store_path)
+
+        return page
 
 
 class Page:
@@ -267,6 +284,7 @@ class Page:
             store_path=self.store_path,
             report_path=self.report.path,
             javascript_path=self.report.javascript_path,
+            project_root=self.report.project_root,
         )
 
         self.code_context: Optional[CodeContext] = None
@@ -282,6 +300,7 @@ class Page:
                 layout=self.code_layout,
                 name_only=self.code_name_only,
                 add_bottom=self.add_bottom,
+                relative_to=self.report.project_root,
             )
         self.code_context.__enter__()
         return self
@@ -298,6 +317,7 @@ class Page:
             layout=layout if layout is not None else self.code_layout,
             name_only=name_only if name_only is not None else self.code_name_only,
             add_bottom=add_bottom if add_bottom is not None else self.add_bottom,
+            relative_to=self.report.project_root,
         )
         return self
 

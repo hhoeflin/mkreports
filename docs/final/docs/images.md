@@ -30,7 +30,7 @@ image manually and then include it as an `ImageFile` object.
 
 === "Code"
 
-    ```python title="/home/hhoeflin/projects/mkreports/docs/staging/images.py" linenums="31"
+    ```python title="docs/staging/images.py" linenums="31"
     p.Raw(
         """
         PIL is the standard python image library. `Image` objects are written
@@ -60,7 +60,7 @@ image manually and then include it as an `ImageFile` object.
 
 === "Code"
 
-    ```python title="/home/hhoeflin/projects/mkreports/docs/staging/images.py" linenums="47"
+    ```python title="docs/staging/images.py" linenums="47"
     p.Raw(
         """
         For many scientific graphing purposes, `matplotlib` is either the direct
@@ -87,7 +87,7 @@ image manually and then include it as an `ImageFile` object.
 
 === "Code"
 
-    ```python title="/home/hhoeflin/projects/mkreports/docs/staging/images.py" linenums="59"
+    ```python title="docs/staging/images.py" linenums="59"
     p.Raw(
         """
         Any plots created by `plotnine` can be included directly. The code below
@@ -118,7 +118,7 @@ image manually and then include it as an `ImageFile` object.
 
 === "Code"
 
-    ```python title="/home/hhoeflin/projects/mkreports/docs/staging/images.py" linenums="74"
+    ```python title="docs/staging/images.py" linenums="74"
     p.add(
         """
         Another well known option is Seaborn. The interface is similar to the 
@@ -161,7 +161,7 @@ image manually and then include it as an `ImageFile` object.
 
 === "Code"
 
-    ```python title="/home/hhoeflin/projects/mkreports/docs/staging/images.py" linenums="104"
+    ```python title="docs/staging/images.py" linenums="104"
     import altair as alt
     import pandas as pd
 
@@ -198,7 +198,7 @@ image manually and then include it as an `ImageFile` object.
 
 === "Code"
 
-    ```python title="/home/hhoeflin/projects/mkreports/docs/staging/images.py" linenums="119"
+    ```python title="docs/staging/images.py" linenums="119"
     import plotly.express as px
 
     fig = px.scatter(x=[0, 1, 2, 3, 4], y=[0, 1, 4, 9, 16])

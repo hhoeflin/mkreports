@@ -23,7 +23,7 @@
 
 === "Code"
 
-    ```python title="/home/hhoeflin/projects/mkreports/docs/staging/basic.py" linenums="10"
+    ```python title="docs/staging/basic.py" linenums="10"
     p.Code(
         """
         md.H1("Header type 1")
@@ -64,7 +64,7 @@
 
 === "Code"
 
-    ```python title="/home/hhoeflin/projects/mkreports/docs/staging/basic.py" linenums="24"
+    ```python title="docs/staging/basic.py" linenums="24"
     numbered_list = (
         md.List(marker="1")
         .append("First item")
@@ -110,7 +110,7 @@
 
 === "Code"
 
-    ```python title="/home/hhoeflin/projects/mkreports/docs/staging/basic.py" linenums="48"
+    ```python title="docs/staging/basic.py" linenums="48"
     p2.Raw(
         """
         A number of different types of links are possible. Those within

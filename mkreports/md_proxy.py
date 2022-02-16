@@ -15,10 +15,17 @@ def register_md(name):
 class MdProxy:
     _proxied_classes: Dict[str, Any] = dict()
 
-    def __init__(self, store_path: Path, report_path: Path, javascript_path: Path):
+    def __init__(
+        self,
+        store_path: Path,
+        report_path: Path,
+        javascript_path: Path,
+        project_root: Path,
+    ):
         self.store_path = store_path
         self.report_path = report_path
         self.javascript_path = javascript_path
+        self.project_root = project_root
 
     def __getattr__(self, name):
         # we are not checking if it is included; if not, should raise error
@@ -38,6 +45,8 @@ class MdProxy:
                 partial_kwargs["report_path"] = self.report_path
             if "javascript_path" in obj_sig.parameters:
                 partial_kwargs["javascript_path"] = self.javascript_path
+            if "project_root" in obj_sig.parameters:
+                partial_kwargs["project_root"] = self.project_root
 
             if len(partial_kwargs) > 0:
                 return partial(obj, **partial_kwargs)

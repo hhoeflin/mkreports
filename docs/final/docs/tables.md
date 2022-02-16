@@ -42,7 +42,7 @@ larger tables more sophisticated libraries are needed.
 
 === "Code"
 
-    ```python title="/home/hhoeflin/projects/mkreports/docs/staging/tables.py" linenums="35"
+    ```python title="docs/staging/tables.py" linenums="35"
     p.Raw(
         """
         Below an example of a regular markdown table. As it is very wide,
@@ -82,7 +82,7 @@ larger tables more sophisticated libraries are needed.
 
 === "Code"
 
-    ```python title="/home/hhoeflin/projects/mkreports/docs/staging/tables.py" linenums="45"
+    ```python title="docs/staging/tables.py" linenums="45"
     p.Raw(
         """
         Here the same table, but displayed using the 
@@ -165,7 +165,7 @@ yadcf.init(myTable, [{"column_number": 0, "filter_type": "text"}, {"column_numbe
 
 === "Code"
 
-    ```python title="/home/hhoeflin/projects/mkreports/docs/staging/tables.py" linenums="71"
+    ```python title="docs/staging/tables.py" linenums="71"
     p.Raw(
         """
         This time, we use the [Tabulator](http://tabulator.info)
@@ -230,7 +230,7 @@ var table = new Tabulator('#tabulator_id-1', {"layout": "fitDataTable", "paginat
 
 === "Code"
 
-    ```python title="/home/hhoeflin/projects/mkreports/docs/staging/tables.py" linenums="107"
+    ```python title="docs/staging/tables.py" linenums="107"
     p.Raw(
         """
         Internally, the tables are serialized to json so that 

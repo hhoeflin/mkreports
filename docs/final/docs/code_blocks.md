@@ -31,7 +31,7 @@ css:
 
 === "Code"
 
-    ```python title="/home/hhoeflin/projects/mkreports/docs/staging/code_blocks.py" linenums="21"
+    ```python title="docs/staging/code_blocks.py" linenums="21"
     p.Raw(
         """
         One of the features of mkreports is that we can include
@@ -71,7 +71,7 @@ css:
 
 ??? code "Code"
 
-    ```python title="/home/hhoeflin/projects/mkreports/docs/staging/code_blocks.py" linenums="52"
+    ```python title="docs/staging/code_blocks.py" linenums="52"
     p.P("The code as a collapsed admonition before the output.")
     x = 4
     a = fib(x)
@@ -89,7 +89,7 @@ fib(4) = 3
 
 ## Tracking code (top-o)
 
-```python title="/home/hhoeflin/projects/mkreports/docs/staging/code_blocks.py" linenums="59"
+```python title="docs/staging/code_blocks.py" linenums="59"
 p.P("The code as an open code block before the output.")
 x = 5
 a = fib(x)
@@ -113,7 +113,7 @@ fib(6) = 8
 
 ??? code "Code"
 
-    ```python title="/home/hhoeflin/projects/mkreports/docs/staging/code_blocks.py" linenums="66"
+    ```python title="docs/staging/code_blocks.py" linenums="66"
     p.P("The code as a collapsed admoniton after the output.")
     x = 6
     a = fib(x)
@@ -131,7 +131,7 @@ The code as an open code block after the output.
 
 fib(7) = 13
 
-```python title="/home/hhoeflin/projects/mkreports/docs/staging/code_blocks.py" linenums="73"
+```python title="docs/staging/code_blocks.py" linenums="73"
 p.P("The code as an open code block after the output.")
 x = 7
 a = fib(x)
@@ -160,7 +160,7 @@ p.P(f"fib({x}) = {a}")
 
 === "Code"
 
-    ```python title="/home/hhoeflin/projects/mkreports/docs/staging/code_blocks.py" linenums="80"
+    ```python title="docs/staging/code_blocks.py" linenums="80"
     p.P(
         """
         In addtion we can also add entire code files, for 
