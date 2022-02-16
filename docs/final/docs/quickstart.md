@@ -1,6 +1,5 @@
 ---
 css:
-- ../javascript/code_admonition.css
 - https://unpkg.com/tabulator-tables@5.1.0/dist/css/tabulator.min.css
 javascript:
 - https://unpkg.com/tabulator-tables@5.1.0/dist/js/tabulator.min.js
@@ -10,11 +9,13 @@ javascript:
 
 # Quickstart
 
-??? code "Code"
+First, below the code that was used to create this page. 
+It is a very brief example of an page with a table and an image
+as well as some text, like here.
 
-    ```python
-    --8<-- 'docs/quickstart_store/quickstart-ffe0e227719ee455d3a54e64af73567a.py'
-    ```
+```python
+--8<-- 'docs/quickstart_store/quickstart-e782f294b2819da0bca02b03259b347e.py'
+```
 
 We are quickly analyzing the mtcars dataset 
 that is included with plotnine.
@@ -27,7 +28,7 @@ that is included with plotnine.
 
 === "Code"
 
-    ```python title="/home/hhoeflin/projects/mkreports/docs/staging/quickstart.py" linenums="23"
+    ```python title="/home/hhoeflin/projects/mkreports/docs/staging/quickstart.py" linenums="31"
     p.Tabulator(mtcars, add_header_filters=True, prettify_colnames=True)
 
 
@@ -49,7 +50,7 @@ var table = new Tabulator('#tabulator_id-0', {"layout": "fitDataTable", "paginat
 
 === "Code"
 
-    ```python title="/home/hhoeflin/projects/mkreports/docs/staging/quickstart.py" linenums="27"
+    ```python title="/home/hhoeflin/projects/mkreports/docs/staging/quickstart.py" linenums="35"
     p.Image(
         (
             p9.ggplot(mtcars, p9.aes("wt", "mpg", color="factor(gear)"))
@@ -58,6 +59,7 @@ var table = new Tabulator('#tabulator_id-0', {"layout": "fitDataTable", "paginat
             + p9.facet_wrap("~gear")
         )
     )
+
 
     ```
 
