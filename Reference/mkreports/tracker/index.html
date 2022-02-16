@@ -1020,7 +1020,6 @@ CodeBlock        </code>
                 <span class="n">to_line</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">line_end</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="p">)</span>
-
         <span class="k">try</span><span class="p">:</span>
             <span class="k">assert</span> <span class="n">relative_to</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
             <span class="n">filename_to_use</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">relative_to</span><span class="p">(</span><span class="n">relative_to</span><span class="p">))</span>

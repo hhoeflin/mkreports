@@ -913,7 +913,9 @@
 
 
 <span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">report_dir</span><span class="p">:</span> <span class="n">Path</span><span class="p">):</span>
-    <span class="n">report</span> <span class="o">=</span> <span class="n">Report</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">report_dir</span><span class="p">,</span> <span class="n">report_name</span><span class="o">=</span><span class="s2">&quot;Mkreports documentations&quot;</span><span class="p">)</span>
+    <span class="n">report</span> <span class="o">=</span> <span class="n">Report</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+        <span class="n">report_dir</span><span class="p">,</span> <span class="n">report_name</span><span class="o">=</span><span class="s2">&quot;Mkreports documentations&quot;</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span>
     <span class="n">run_all</span><span class="p">(</span><span class="n">report</span><span class="p">)</span>
 
 

@@ -1053,6 +1053,13 @@ CodeContext        </code>
     <span class="k">def</span> <span class="nf">md_obj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">javascript_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MdObj</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return the markdown object that represents output and code.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            javascript_path (Path): Path to where the javascript files will be written.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            MdObj: Markdown object representing the formatted output in the</span>
+<span class="sd">                requested layout</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">content</span> <span class="o">=</span> <span class="n">MdSeq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">obj_list</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">layout</span> <span class="o">==</span> <span class="s2">&quot;nocode&quot;</span><span class="p">:</span>
@@ -1143,11 +1150,53 @@ CodeContext        </code>
 
       <p>Return the markdown object that represents output and code.</p>
 
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>javascript_path</code></td>
+        <td><code>Path</code></td>
+        <td><p>Path to where the javascript files will be written.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>MdObj</code></td>
+      <td><p>Markdown object representing the formatted output in the
+    requested layout</p></td>
+    </tr>
+  </tbody>
+</table>
         <details class="quote">
           <summary>Source code in <code>mkreports/code_context.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">md_obj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">javascript_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MdObj</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Return the markdown object that represents output and code.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        javascript_path (Path): Path to where the javascript files will be written.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        MdObj: Markdown object representing the formatted output in the</span>
+<span class="sd">            requested layout</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">content</span> <span class="o">=</span> <span class="n">MdSeq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">obj_list</span><span class="p">)</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">layout</span> <span class="o">==</span> <span class="s2">&quot;nocode&quot;</span><span class="p">:</span>

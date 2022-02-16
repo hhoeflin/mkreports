@@ -1086,6 +1086,7 @@ Page        </code>
             <span class="n">store_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">store_path</span><span class="p">,</span>
             <span class="n">report_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
             <span class="n">javascript_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="o">.</span><span class="n">javascript_path</span><span class="p">,</span>
+            <span class="n">project_root</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="o">.</span><span class="n">project_root</span><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">code_context</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">CodeContext</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
@@ -1101,6 +1102,7 @@ Page        </code>
                 <span class="n">layout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">code_layout</span><span class="p">,</span>
                 <span class="n">name_only</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">code_name_only</span><span class="p">,</span>
                 <span class="n">add_bottom</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">add_bottom</span><span class="p">,</span>
+                <span class="n">relative_to</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="o">.</span><span class="n">project_root</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">code_context</span><span class="o">.</span><span class="fm">__enter__</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span>
@@ -1117,6 +1119,7 @@ Page        </code>
             <span class="n">layout</span><span class="o">=</span><span class="n">layout</span> <span class="k">if</span> <span class="n">layout</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">code_layout</span><span class="p">,</span>
             <span class="n">name_only</span><span class="o">=</span><span class="n">name_only</span> <span class="k">if</span> <span class="n">name_only</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">code_name_only</span><span class="p">,</span>
             <span class="n">add_bottom</span><span class="o">=</span><span class="n">add_bottom</span> <span class="k">if</span> <span class="n">add_bottom</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_bottom</span><span class="p">,</span>
+            <span class="n">relative_to</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="o">.</span><span class="n">project_root</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span>
 
@@ -1315,6 +1318,7 @@ Page        </code>
             <span class="n">layout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">code_layout</span><span class="p">,</span>
             <span class="n">name_only</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">code_name_only</span><span class="p">,</span>
             <span class="n">add_bottom</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">add_bottom</span><span class="p">,</span>
+            <span class="n">relative_to</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="o">.</span><span class="n">project_root</span><span class="p">,</span>
         <span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">code_context</span><span class="o">.</span><span class="fm">__enter__</span><span class="p">()</span>
     <span class="k">return</span> <span class="bp">self</span>
