@@ -18,7 +18,7 @@ import inspect
 from pathlib import Path
 from typing import Literal, Optional
 
-from .md import Admonition, HLine, MdObj, MdSeq, Raw, SpacedText, Tab
+from .md import Admonition, HLine, MdObj, MdSeq, Tab
 from .tracker import BaseTracker, SimpleTracker
 
 Layouts = Literal["top-c", "top-o", "bottom-c", "bottom-o", "tabbed", "nocode"]
@@ -67,6 +67,13 @@ class CodeContext:
     def md_obj(self, javascript_path: Path) -> MdObj:
         """
         Return the markdown object that represents output and code.
+
+        Args:
+            javascript_path (Path): Path to where the javascript files will be written.
+
+        Returns:
+            MdObj: Markdown object representing the formatted output in the
+                requested layout
         """
         content = MdSeq(self.obj_list)
         if self.layout == "nocode":
