@@ -24,6 +24,9 @@ def add_md_pages(report: Report):
     markdown_page = report.page("markdown.md")
     shutil.copy(Path(__file__).parent / "markdown.md", markdown_page.path)
 
+    markdown_page = report.page("ipython.md")
+    shutil.copy(Path(__file__).parent / "ipython.md", markdown_page.path)
+
 
 def add_code_pages(report: Report, code_dir: Path):
     code_files = list(code_dir.glob("**/*.py"))

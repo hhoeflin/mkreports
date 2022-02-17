@@ -29,38 +29,31 @@ for the user:
 - In some special circumstances it may be necessary to get the raw markdown
   with full control. In this case the `mkreports.md` module can be used.
 
-In more detail below the three options, in reverse order from most basic to
-most convenient.
+### Markdown attributes of a page
+
+All markdown objects are available under their name directory for a
+`Page` object (created from a `Report`). For these, all parameters related to
+a page and project such as
+
+- `store_path`
+- `page_path`
+- `report_page`
+- `project_root`
+- `javascript_path`
+- `idstore`
+
+are pre-filled and only the remaining parameters need to be specified.
+The resulting object will directly be added to the page.
+
+### `md` attribute of a `Page`
+
+Each `Page` instance also has a `md` attribute. These expose the markdown
+object same as explained above, except that they will not be added to the page.
+This would have to be done manually. This is sometimes useful if more
+complex nested objects need to be created (e.g. for lists).
 
 ### md module
 
-The `mkreports.md` module provides all markdown functionality that
-can be used in the package. In the rest of this documentation, various
-of these are being explained. As the most basic there is however certain
-information that can get cumbersome to input. One example is
-the `store_path`. Certain markdown elements, such as tables, store
-the information to be displayed in a file in subdirectory of
-the reports directory. As the page on which the markdown element is added
-is not specified at this point (and neither is the report), this `store_path`
-needs to be explicitly passed into the element. For most use-cases, this
-basic level does not need to be used by the end-user.
-
-This markdown object then has to be added to a page using the `add` method.
-
-### md-attribute of a page
-
-Each `Page` instance also `md` attribute. This attribute is a proxy-object
-to the `md`-submodule. When requesting an object, the `store_path` and certain
-required `ids` (e.g. for Altair or DataTable objects) will be pre-populated
-by the `page` instance so that the user doesn't have to worry about it.
-
-The resulting markdown object then has to be added to the page again using
-the `add` method.
-
-### Markdown attributes of a page
-
-This is very similar to the `Page.md` attribute, except that the markdown
-classes are directly available as attributes on the `Page` class. After instantiating
-the markdown element, it immediately gets added to the page automatically.
-Keyword parameters that are available on `Page.add` can also be specified and will
-be passed along appropriately.
+Also available is the `mkreports.md` module. These are the base objects
+with no parameters pre-filled. This is only intended for experts that need
+special behavior that is not covered by the regular `Page` object.

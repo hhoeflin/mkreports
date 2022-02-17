@@ -59,6 +59,17 @@ with p.H2("Some simple plots"):
 
 ```
 
+Now change to the folder `example_report` and run
+
+```bash
+mkdocs serve
+```
+
+and go to that page. The report will be shown in the browser. As the development
+server of mkdocs supports automatic reload, as you run code, it will update automatically.
+This is particularly convenient when running the IPython extension for interactive
+analyses.
+
 # Mkdocs based data analysis reports
 
 In this reports we want to provide an easier way to create static

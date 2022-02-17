@@ -1,5 +1,6 @@
 ---
 css:
+- ../javascript/code_admonition.css
 - https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css
 - https://cdn.jsdelivr.net/gh/vedmack/yadcf@332407eeacbda299e6253530e24c15041b270227/dist/jquery.dataTables.yadcf.css
 - https://unpkg.com/tabulator-tables@5.1.0/dist/css/tabulator.min.css
@@ -13,6 +14,12 @@ javascript:
 
 
 # Different ways of handling tables
+
+??? code "Code"
+
+    ```python
+    --8<-- 'docs/tables_store/tables-44029c7348ddd388a7e7e8e5a57f5ecc.py'
+    ```
 
 Conveying information with tables is very important for 
 any type of report. Standard tables in markdown format 
@@ -42,7 +49,7 @@ larger tables more sophisticated libraries are needed.
 
 === "Code"
 
-    ```python title="docs/staging/tables.py" linenums="35"
+    ```python title="docs/staging/tables.py" linenums="39"
     p.Raw(
         """
         Below an example of a regular markdown table. As it is very wide,
@@ -82,7 +89,7 @@ larger tables more sophisticated libraries are needed.
 
 === "Code"
 
-    ```python title="docs/staging/tables.py" linenums="45"
+    ```python title="docs/staging/tables.py" linenums="49"
     p.Raw(
         """
         Here the same table, but displayed using the 
@@ -165,7 +172,7 @@ yadcf.init(myTable, [{"column_number": 0, "filter_type": "text"}, {"column_numbe
 
 === "Code"
 
-    ```python title="docs/staging/tables.py" linenums="71"
+    ```python title="docs/staging/tables.py" linenums="75"
     p.Raw(
         """
         This time, we use the [Tabulator](http://tabulator.info)
@@ -230,7 +237,7 @@ var table = new Tabulator('#tabulator_id-1', {"layout": "fitDataTable", "paginat
 
 === "Code"
 
-    ```python title="docs/staging/tables.py" linenums="107"
+    ```python title="docs/staging/tables.py" linenums="111"
     p.Raw(
         """
         Internally, the tables are serialized to json so that 

@@ -6,7 +6,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
-from mkreports import Report, md
+from mkreports import Report
 from PIL import Image
 from plotnine import aes, facet_wrap, geom_point, ggplot, stat_smooth
 from plotnine.data import mtcars
@@ -20,6 +20,8 @@ def use_images(report: Report) -> None:
 
     # we don't need an indentation for everything if we don't want
     p.H1("Images")
+
+    p.CollapsedCodeFile(__file__)
 
     p.H2("Supported formats")
     p.Raw(

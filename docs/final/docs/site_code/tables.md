@@ -25,8 +25,12 @@ def use_tables(report: Report) -> None:
         ]
     )
     ex_table["hair"] = pd.Categorical(ex_table.hair)
+
     p = report.page("tables.md", truncate=True)
+
     p.H1("Different ways of handling tables")
+
+    p.CollapsedCodeFile(__file__)
 
     p.Raw(
         """

@@ -11,6 +11,8 @@ def use_basic(report: Report) -> None:
 
     p.H1("Basic formatting elements")
 
+    p.CollapsedCodeFile(__file__)
+
     with p.H2("Headings", anchor=(heading_anchor := md.Anchor("my-headings"))):
         p.Code(
             """

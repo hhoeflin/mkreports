@@ -1,4 +1,6 @@
 ---
+css:
+- ../javascript/code_admonition.css
 javascript:
 - https://cdn.jsdelivr.net/npm/vega@5
 - https://cdn.jsdelivr.net/npm/vega-lite@5
@@ -8,6 +10,12 @@ javascript:
 
 
 # Images
+
+??? code "Code"
+
+    ```python
+    --8<-- 'docs/images_store/images-3dc4a61a29c99ed90932c0eb7a1c575c.py'
+    ```
 
 ## Supported formats
 
@@ -30,7 +38,7 @@ image manually and then include it as an `ImageFile` object.
 
 === "Code"
 
-    ```python title="docs/staging/images.py" linenums="31"
+    ```python title="docs/staging/images.py" linenums="33"
     p.Raw(
         """
         PIL is the standard python image library. `Image` objects are written
@@ -60,7 +68,7 @@ image manually and then include it as an `ImageFile` object.
 
 === "Code"
 
-    ```python title="docs/staging/images.py" linenums="47"
+    ```python title="docs/staging/images.py" linenums="49"
     p.Raw(
         """
         For many scientific graphing purposes, `matplotlib` is either the direct
@@ -87,7 +95,7 @@ image manually and then include it as an `ImageFile` object.
 
 === "Code"
 
-    ```python title="docs/staging/images.py" linenums="59"
+    ```python title="docs/staging/images.py" linenums="61"
     p.Raw(
         """
         Any plots created by `plotnine` can be included directly. The code below
@@ -118,7 +126,7 @@ image manually and then include it as an `ImageFile` object.
 
 === "Code"
 
-    ```python title="docs/staging/images.py" linenums="74"
+    ```python title="docs/staging/images.py" linenums="76"
     p.add(
         """
         Another well known option is Seaborn. The interface is similar to the 
@@ -161,7 +169,7 @@ image manually and then include it as an `ImageFile` object.
 
 === "Code"
 
-    ```python title="docs/staging/images.py" linenums="104"
+    ```python title="docs/staging/images.py" linenums="106"
     import altair as alt
     import pandas as pd
 
@@ -198,7 +206,7 @@ image manually and then include it as an `ImageFile` object.
 
 === "Code"
 
-    ```python title="docs/staging/images.py" linenums="119"
+    ```python title="docs/staging/images.py" linenums="121"
     import plotly.express as px
 
     fig = px.scatter(x=[0, 1, 2, 3, 4], y=[0, 1, 4, 9, 16])
