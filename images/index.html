@@ -45,6 +45,11 @@
     
 
   
+    
+        <link rel="stylesheet" href="../javascript/code_admonition.css">
+    
+
+  
 
   
 
@@ -242,6 +247,21 @@
   
   
     <li class="md-nav__item">
+      <a href="../ipython/" class="md-nav__link">
+        Ipython
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../basic/" class="md-nav__link">
         Basic
       </a>
@@ -401,18 +421,18 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8" type="checkbox" id="__nav_8" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9" type="checkbox" id="__nav_9" >
       
       
       
       
-        <label class="md-nav__link" for="__nav_8">
+        <label class="md-nav__link" for="__nav_9">
           Reference
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="Reference" data-md-level="1">
-        <label class="md-nav__title" for="__nav_8">
+        <label class="md-nav__title" for="__nav_9">
           <span class="md-nav__icon md-icon"></span>
           Reference
         </label>
@@ -427,18 +447,18 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_1" type="checkbox" id="__nav_8_1" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9_1" type="checkbox" id="__nav_9_1" >
       
       
       
       
-        <label class="md-nav__link" for="__nav_8_1">
+        <label class="md-nav__link" for="__nav_9_1">
           mkreports
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="mkreports" data-md-level="2">
-        <label class="md-nav__title" for="__nav_8_1">
+        <label class="md-nav__title" for="__nav_9_1">
           <span class="md-nav__icon md-icon"></span>
           mkreports
         </label>
@@ -523,18 +543,18 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_1_6" type="checkbox" id="__nav_8_1_6" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9_1_6" type="checkbox" id="__nav_9_1_6" >
       
       
       
       
-        <label class="md-nav__link" for="__nav_8_1_6">
+        <label class="md-nav__link" for="__nav_9_1_6">
           md
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="md" data-md-level="3">
-        <label class="md-nav__title" for="__nav_8_1_6">
+        <label class="md-nav__title" for="__nav_9_1_6">
           <span class="md-nav__icon md-icon"></span>
           md
         </label>
@@ -823,18 +843,18 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9" type="checkbox" id="__nav_9" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_10" type="checkbox" id="__nav_10" >
       
       
       
       
-        <label class="md-nav__link" for="__nav_9">
+        <label class="md-nav__link" for="__nav_10">
           Site Code
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="Site Code" data-md-level="1">
-        <label class="md-nav__title" for="__nav_9">
+        <label class="md-nav__title" for="__nav_10">
           <span class="md-nav__icon md-icon"></span>
           Site Code
         </label>
@@ -1046,6 +1066,137 @@
                 
 
 <h1 id="images">Images</h1>
+<details class="code">
+<summary>Code</summary>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">from</span> <span class="nn">mkreports</span> <span class="kn">import</span> <span class="n">Report</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">from</span> <span class="nn">plotnine</span> <span class="kn">import</span> <span class="n">aes</span><span class="p">,</span> <span class="n">facet_wrap</span><span class="p">,</span> <span class="n">geom_point</span><span class="p">,</span> <span class="n">ggplot</span><span class="p">,</span> <span class="n">stat_smooth</span>
+<span class="kn">from</span> <span class="nn">plotnine.data</span> <span class="kn">import</span> <span class="n">mtcars</span>
+
+
+<span class="k">def</span> <span class="nf">use_images</span><span class="p">(</span><span class="n">report</span><span class="p">:</span> <span class="n">Report</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Show all different ways on how we can include images.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">report</span><span class="o">.</span><span class="n">page</span><span class="p">(</span><span class="s2">&quot;images.md&quot;</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># we don&#39;t need an indentation for everything if we don&#39;t want</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">H1</span><span class="p">(</span><span class="s2">&quot;Images&quot;</span><span class="p">)</span>
+
+    <span class="n">p</span><span class="o">.</span><span class="n">CollapsedCodeFile</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span>
+
+    <span class="n">p</span><span class="o">.</span><span class="n">H2</span><span class="p">(</span><span class="s2">&quot;Supported formats&quot;</span><span class="p">)</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">Raw</span><span class="p">(</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Mkreports supports inclusion out of the box of a number of different imaging </span>
+<span class="sd">        libraries. For each supported library, an example is show below.</span>
+
+<span class="sd">        For any not supported library, it is still possible to write out the </span>
+<span class="sd">        image manually and then include it as an `ImageFile` object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+    <span class="p">)</span>
+
+    <span class="k">with</span> <span class="n">p</span><span class="o">.</span><span class="n">H3</span><span class="p">(</span><span class="s2">&quot;PIL&quot;</span><span class="p">):</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">Raw</span><span class="p">(</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            PIL is the standard python image library. `Image` objects are written</span>
+<span class="sd">            out to files and included in the markdown.</span>
+
+<span class="sd">            Here as an example we simply have a black and white image of a black</span>
+<span class="sd">            and grey square.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+        <span class="p">)</span>
+        <span class="n">img_np</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">200</span><span class="p">,</span> <span class="mi">400</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+        <span class="n">img_np</span><span class="p">[:,</span> <span class="mi">200</span><span class="p">:</span><span class="mi">400</span><span class="p">]</span> <span class="o">=</span> <span class="mi">128</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">img_np</span><span class="p">)</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">PIL</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="n">p</span><span class="o">.</span><span class="n">H3</span><span class="p">(</span><span class="s2">&quot;Matplotlib&quot;</span><span class="p">):</span>
+
+        <span class="n">p</span><span class="o">.</span><span class="n">Raw</span><span class="p">(</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            For many scientific graphing purposes, `matplotlib` is either the direct</span>
+<span class="sd">            choice or the backend being used for plotting. </span>
+<span class="sd">            &quot;&quot;&quot;</span>
+        <span class="p">)</span>
+
+        <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">Image</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="n">p</span><span class="o">.</span><span class="n">H3</span><span class="p">(</span><span class="s2">&quot;Plotnine&quot;</span><span class="p">):</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">Raw</span><span class="p">(</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Any plots created by `plotnine` can be included directly. The code below</span>
+<span class="sd">            is from the beginner example of the library.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+        <span class="p">)</span>
+
+        <span class="n">p</span><span class="o">.</span><span class="n">Image</span><span class="p">(</span>
+            <span class="n">ggplot</span><span class="p">(</span><span class="n">mtcars</span><span class="p">,</span> <span class="n">aes</span><span class="p">(</span><span class="s2">&quot;wt&quot;</span><span class="p">,</span> <span class="s2">&quot;mpg&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;factor(gear)&quot;</span><span class="p">))</span>
+            <span class="o">+</span> <span class="n">geom_point</span><span class="p">()</span>
+            <span class="o">+</span> <span class="n">stat_smooth</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;lm&quot;</span><span class="p">)</span>
+            <span class="o">+</span> <span class="n">facet_wrap</span><span class="p">(</span><span class="s2">&quot;~gear&quot;</span><span class="p">),</span>
+        <span class="p">)</span>
+
+    <span class="k">with</span> <span class="n">p</span><span class="o">.</span><span class="n">H3</span><span class="p">(</span><span class="s2">&quot;Seaborn&quot;</span><span class="p">):</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Another well known option is Seaborn. The interface is similar to the </span>
+<span class="sd">            ones before. Under the hood, the `figure` attribute of the seaborn plot is </span>
+<span class="sd">            accessed and saved in the same fashion as for matplotlib.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+        <span class="p">)</span>
+
+        <span class="n">sns</span><span class="o">.</span><span class="n">set_theme</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="s2">&quot;ticks&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Load the example dataset for Anscombe&#39;s quartet</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">load_dataset</span><span class="p">(</span><span class="s2">&quot;anscombe&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Show the results of a linear regression within each dataset</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">Image</span><span class="p">(</span>
+            <span class="n">sns</span><span class="o">.</span><span class="n">lmplot</span><span class="p">(</span>
+                <span class="n">x</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span>
+                <span class="n">y</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span>
+                <span class="n">col</span><span class="o">=</span><span class="s2">&quot;dataset&quot;</span><span class="p">,</span>
+                <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;dataset&quot;</span><span class="p">,</span>
+                <span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+                <span class="n">col_wrap</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                <span class="n">ci</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">palette</span><span class="o">=</span><span class="s2">&quot;muted&quot;</span><span class="p">,</span>
+                <span class="n">height</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+                <span class="n">scatter_kws</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;s&quot;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span> <span class="s2">&quot;alpha&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+
+    <span class="k">with</span> <span class="n">p</span><span class="o">.</span><span class="n">H3</span><span class="p">(</span><span class="s2">&quot;Altair&quot;</span><span class="p">):</span>
+        <span class="kn">import</span> <span class="nn">altair</span> <span class="k">as</span> <span class="nn">alt</span>
+        <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+        <span class="n">source</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="s2">&quot;D&quot;</span><span class="p">,</span> <span class="s2">&quot;E&quot;</span><span class="p">,</span> <span class="s2">&quot;F&quot;</span><span class="p">,</span> <span class="s2">&quot;G&quot;</span><span class="p">,</span> <span class="s2">&quot;H&quot;</span><span class="p">,</span> <span class="s2">&quot;I&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">28</span><span class="p">,</span> <span class="mi">55</span><span class="p">,</span> <span class="mi">43</span><span class="p">,</span> <span class="mi">91</span><span class="p">,</span> <span class="mi">81</span><span class="p">,</span> <span class="mi">53</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">87</span><span class="p">,</span> <span class="mi">52</span><span class="p">],</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+
+        <span class="n">p</span><span class="o">.</span><span class="n">Altair</span><span class="p">(</span>
+            <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">(</span><span class="n">source</span><span class="p">)</span><span class="o">.</span><span class="n">mark_bar</span><span class="p">()</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;b&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">properties</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">600</span><span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="k">with</span> <span class="n">p</span><span class="o">.</span><span class="n">H3</span><span class="p">(</span><span class="s2">&quot;Plotly&quot;</span><span class="p">):</span>
+        <span class="kn">import</span> <span class="nn">plotly.express</span> <span class="k">as</span> <span class="nn">px</span>
+
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">16</span><span class="p">])</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">Plotly</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
+
+    <span class="n">p</span><span class="o">.</span><span class="n">H2</span><span class="p">(</span><span class="s2">&quot;Different image sizes&quot;</span><span class="p">)</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">Admonition</span><span class="p">(</span><span class="s2">&quot;Still to be implemented&quot;</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;warning&quot;</span><span class="p">)</span>
+</code></pre></div>
+</details>
 <h2 id="supported-formats">Supported formats</h2>
 <p>Mkreports supports inclusion out of the box of a number of different imaging 
 libraries. For each supported library, an example is show below.</p>
@@ -1062,9 +1213,7 @@ and grey square.
 <img alt="" src="../images_store/pil_image-c8343f974dc12426173f781a465749d2.png" /></p>
 </div>
 <div class="tabbed-block">
-<table class="highlighttable"><tr><th colspan="2" class="filename"><div class="highlight"><span class="filename">docs/staging/images.py</span></div></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">31</span>
-<span class="normal">32</span>
-<span class="normal">33</span>
+<table class="highlighttable"><tr><th colspan="2" class="filename"><div class="highlight"><span class="filename">docs/staging/images.py</span></div></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">33</span>
 <span class="normal">34</span>
 <span class="normal">35</span>
 <span class="normal">36</span>
@@ -1074,7 +1223,9 @@ and grey square.
 <span class="normal">40</span>
 <span class="normal">41</span>
 <span class="normal">42</span>
-<span class="normal">43</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="n">p</span><span class="o">.</span><span class="n">Raw</span><span class="p">(</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="n">p</span><span class="o">.</span><span class="n">Raw</span><span class="p">(</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    PIL is the standard python image library. `Image` objects are written</span>
 <span class="sd">    out to files and included in the markdown.</span>
@@ -1102,16 +1253,16 @@ choice or the backend being used for plotting.
 <img alt="" src="../images_store/image-9eacde53d07030438d059ea6a19b8285.png" /></p>
 </div>
 <div class="tabbed-block">
-<table class="highlighttable"><tr><th colspan="2" class="filename"><div class="highlight"><span class="filename">docs/staging/images.py</span></div></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">47</span>
-<span class="normal">48</span>
-<span class="normal">49</span>
+<table class="highlighttable"><tr><th colspan="2" class="filename"><div class="highlight"><span class="filename">docs/staging/images.py</span></div></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">49</span>
 <span class="normal">50</span>
 <span class="normal">51</span>
 <span class="normal">52</span>
 <span class="normal">53</span>
 <span class="normal">54</span>
 <span class="normal">55</span>
-<span class="normal">56</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="n">p</span><span class="o">.</span><span class="n">Raw</span><span class="p">(</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="n">p</span><span class="o">.</span><span class="n">Raw</span><span class="p">(</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    For many scientific graphing purposes, `matplotlib` is either the direct</span>
 <span class="sd">    choice or the backend being used for plotting. </span>
@@ -1136,9 +1287,7 @@ is from the beginner example of the library.
 <img alt="" src="../images_store/image-41a828f4fba906604a976d3f9ad1138a.png" /></p>
 </div>
 <div class="tabbed-block">
-<table class="highlighttable"><tr><th colspan="2" class="filename"><div class="highlight"><span class="filename">docs/staging/images.py</span></div></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">59</span>
-<span class="normal">60</span>
-<span class="normal">61</span>
+<table class="highlighttable"><tr><th colspan="2" class="filename"><div class="highlight"><span class="filename">docs/staging/images.py</span></div></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">61</span>
 <span class="normal">62</span>
 <span class="normal">63</span>
 <span class="normal">64</span>
@@ -1148,7 +1297,9 @@ is from the beginner example of the library.
 <span class="normal">68</span>
 <span class="normal">69</span>
 <span class="normal">70</span>
-<span class="normal">71</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="n">p</span><span class="o">.</span><span class="n">Raw</span><span class="p">(</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="n">p</span><span class="o">.</span><span class="n">Raw</span><span class="p">(</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Any plots created by `plotnine` can be included directly. The code below</span>
 <span class="sd">    is from the beginner example of the library.</span>
@@ -1177,9 +1328,7 @@ accessed and saved in the same fashion as for matplotlib.
 <img alt="" src="../images_store/image-c3fb8cb2918f73795ffbae41eb5404ae.png" /></p>
 </div>
 <div class="tabbed-block">
-<table class="highlighttable"><tr><th colspan="2" class="filename"><div class="highlight"><span class="filename">docs/staging/images.py</span></div></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 74</span>
-<span class="normal"> 75</span>
-<span class="normal"> 76</span>
+<table class="highlighttable"><tr><th colspan="2" class="filename"><div class="highlight"><span class="filename">docs/staging/images.py</span></div></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 76</span>
 <span class="normal"> 77</span>
 <span class="normal"> 78</span>
 <span class="normal"> 79</span>
@@ -1204,7 +1353,9 @@ accessed and saved in the same fashion as for matplotlib.
 <span class="normal"> 98</span>
 <span class="normal"> 99</span>
 <span class="normal">100</span>
-<span class="normal">101</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="n">p</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="n">p</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Another well known option is Seaborn. The interface is similar to the </span>
 <span class="sd">    ones before. Under the hood, the `figure` attribute of the seaborn plot is </span>
@@ -1245,9 +1396,7 @@ accessed and saved in the same fashion as for matplotlib.
 <p><div id='altair_id-0'> </div></p>
 </div>
 <div class="tabbed-block">
-<table class="highlighttable"><tr><th colspan="2" class="filename"><div class="highlight"><span class="filename">docs/staging/images.py</span></div></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">104</span>
-<span class="normal">105</span>
-<span class="normal">106</span>
+<table class="highlighttable"><tr><th colspan="2" class="filename"><div class="highlight"><span class="filename">docs/staging/images.py</span></div></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">106</span>
 <span class="normal">107</span>
 <span class="normal">108</span>
 <span class="normal">109</span>
@@ -1257,7 +1406,9 @@ accessed and saved in the same fashion as for matplotlib.
 <span class="normal">113</span>
 <span class="normal">114</span>
 <span class="normal">115</span>
-<span class="normal">116</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">altair</span> <span class="k">as</span> <span class="nn">alt</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">altair</span> <span class="k">as</span> <span class="nn">alt</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
 <span class="n">source</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
@@ -1290,10 +1441,10 @@ accessed and saved in the same fashion as for matplotlib.
 <p><div id='plotly_id-0'> </div></p>
 </div>
 <div class="tabbed-block">
-<table class="highlighttable"><tr><th colspan="2" class="filename"><div class="highlight"><span class="filename">docs/staging/images.py</span></div></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">119</span>
-<span class="normal">120</span>
-<span class="normal">121</span>
-<span class="normal">122</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">plotly.express</span> <span class="k">as</span> <span class="nn">px</span>
+<table class="highlighttable"><tr><th colspan="2" class="filename"><div class="highlight"><span class="filename">docs/staging/images.py</span></div></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">plotly.express</span> <span class="k">as</span> <span class="nn">px</span>
 
 <span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">16</span><span class="p">])</span>
 <span class="n">p</span><span class="o">.</span><span class="n">Plotly</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>

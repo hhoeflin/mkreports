@@ -45,6 +45,11 @@
     
 
   
+    
+        <link rel="stylesheet" href="../javascript/code_admonition.css">
+    
+
+  
 
   
 
@@ -228,6 +233,21 @@
 
   
   
+  
+    <li class="md-nav__item">
+      <a href="../ipython/" class="md-nav__link">
+        Ipython
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
     
   
   
@@ -348,18 +368,18 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8" type="checkbox" id="__nav_8" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9" type="checkbox" id="__nav_9" >
       
       
       
       
-        <label class="md-nav__link" for="__nav_8">
+        <label class="md-nav__link" for="__nav_9">
           Reference
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="Reference" data-md-level="1">
-        <label class="md-nav__title" for="__nav_8">
+        <label class="md-nav__title" for="__nav_9">
           <span class="md-nav__icon md-icon"></span>
           Reference
         </label>
@@ -374,18 +394,18 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_1" type="checkbox" id="__nav_8_1" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9_1" type="checkbox" id="__nav_9_1" >
       
       
       
       
-        <label class="md-nav__link" for="__nav_8_1">
+        <label class="md-nav__link" for="__nav_9_1">
           mkreports
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="mkreports" data-md-level="2">
-        <label class="md-nav__title" for="__nav_8_1">
+        <label class="md-nav__title" for="__nav_9_1">
           <span class="md-nav__icon md-icon"></span>
           mkreports
         </label>
@@ -470,18 +490,18 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_1_6" type="checkbox" id="__nav_8_1_6" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9_1_6" type="checkbox" id="__nav_9_1_6" >
       
       
       
       
-        <label class="md-nav__link" for="__nav_8_1_6">
+        <label class="md-nav__link" for="__nav_9_1_6">
           md
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="md" data-md-level="3">
-        <label class="md-nav__title" for="__nav_8_1_6">
+        <label class="md-nav__title" for="__nav_9_1_6">
           <span class="md-nav__icon md-icon"></span>
           md
         </label>
@@ -770,18 +790,18 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9" type="checkbox" id="__nav_9" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_10" type="checkbox" id="__nav_10" >
       
       
       
       
-        <label class="md-nav__link" for="__nav_9">
+        <label class="md-nav__link" for="__nav_10">
           Site Code
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="Site Code" data-md-level="1">
-        <label class="md-nav__title" for="__nav_9">
+        <label class="md-nav__title" for="__nav_10">
           <span class="md-nav__icon md-icon"></span>
           Site Code
         </label>
@@ -952,6 +972,75 @@
                 
 
 <h1 id="basic-formatting-elements">Basic formatting elements</h1>
+<details class="code">
+<summary>Code</summary>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">mkreports</span> <span class="kn">import</span> <span class="n">Report</span><span class="p">,</span> <span class="n">md</span>
+
+
+<span class="k">def</span> <span class="nf">use_basic</span><span class="p">(</span><span class="n">report</span><span class="p">:</span> <span class="n">Report</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">report</span><span class="o">.</span><span class="n">page</span><span class="p">(</span><span class="s2">&quot;basic.md&quot;</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">p</span><span class="o">.</span><span class="n">H1</span><span class="p">(</span><span class="s2">&quot;Basic formatting elements&quot;</span><span class="p">)</span>
+
+    <span class="n">p</span><span class="o">.</span><span class="n">CollapsedCodeFile</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="n">p</span><span class="o">.</span><span class="n">H2</span><span class="p">(</span><span class="s2">&quot;Headings&quot;</span><span class="p">,</span> <span class="n">anchor</span><span class="o">=</span><span class="p">(</span><span class="n">heading_anchor</span> <span class="o">:=</span> <span class="n">md</span><span class="o">.</span><span class="n">Anchor</span><span class="p">(</span><span class="s2">&quot;my-headings&quot;</span><span class="p">))):</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">Code</span><span class="p">(</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            md.H1(&quot;Header type 1&quot;)</span>
+<span class="sd">            md.H2(&quot;Header type 2&quot;)</span>
+<span class="sd">            md.H3(&quot;Header type 3&quot;)</span>
+<span class="sd">            md.H4(&quot;Header type 4&quot;)</span>
+<span class="sd">            md.H5(&quot;Header type 5&quot;)</span>
+<span class="sd">            md.H6(&quot;Header type 6&quot;)</span>
+<span class="sd">            md.H7(&quot;Header type 7&quot;)</span>
+<span class="sd">            &quot;&quot;&quot;</span><span class="p">,</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Available headings&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">with</span> <span class="n">p</span><span class="o">.</span><span class="n">H2</span><span class="p">(</span><span class="s2">&quot;Lists&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">p2</span><span class="p">:</span>
+        <span class="n">numbered_list</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">md</span><span class="o">.</span><span class="n">List</span><span class="p">(</span><span class="n">marker</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;First item&quot;</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Second item&quot;</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Third item&quot;</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">unordered_list</span> <span class="o">=</span> <span class="n">md</span><span class="o">.</span><span class="n">List</span><span class="p">((</span><span class="s2">&quot;apples&quot;</span><span class="p">,</span> <span class="s2">&quot;pears&quot;</span><span class="p">,</span> <span class="s2">&quot;strawberry&quot;</span><span class="p">),</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;*&quot;</span><span class="p">)</span>
+
+        <span class="n">numbered_list</span> <span class="o">=</span> <span class="n">numbered_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="n">md</span><span class="o">.</span><span class="n">Raw</span><span class="p">(</span><span class="s2">&quot;Some fruit:&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="n">unordered_list</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="n">md</span><span class="o">.</span><span class="n">Raw</span><span class="p">(</span><span class="s2">&quot;A code block:&quot;</span><span class="p">)</span>
+            <span class="o">+</span> <span class="n">md</span><span class="o">.</span><span class="n">Code</span><span class="p">(</span>
+                <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">                print(&quot;Hello world&quot;)                    </span>
+<span class="sd">                &quot;&quot;&quot;</span><span class="p">,</span>
+                <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Hello world&quot;</span><span class="p">,</span>
+                <span class="n">language</span><span class="o">=</span><span class="s2">&quot;python&quot;</span><span class="p">,</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+
+        <span class="n">p2</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">numbered_list</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="n">p</span><span class="o">.</span><span class="n">H2</span><span class="p">(</span><span class="s2">&quot;Links&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">p2</span><span class="p">:</span>
+        <span class="n">p2</span><span class="o">.</span><span class="n">Raw</span><span class="p">(</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            A number of different types of links are possible. Those within</span>
+<span class="sd">            a page to an anchor or to another page (with or without anchor)</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+        <span class="p">)</span>
+        <span class="n">p2</span><span class="o">.</span><span class="n">P</span><span class="p">(</span>
+            <span class="s2">&quot;A link back to the &quot;</span>
+            <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">md</span><span class="o">.</span><span class="n">Link</span><span class="p">(</span><span class="n">anchor</span><span class="o">=</span><span class="n">heading_anchor</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;first heading&quot;</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">p2</span><span class="o">.</span><span class="n">P</span><span class="p">(</span>
+            <span class="s2">&quot;A link to another page &quot;</span>
+            <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">md</span><span class="o">.</span><span class="n">Link</span><span class="p">(</span><span class="s2">&quot;Images&quot;</span><span class="p">,</span> <span class="n">to_page_path</span><span class="o">=</span><span class="n">report</span><span class="o">.</span><span class="n">page</span><span class="p">(</span><span class="s2">&quot;images.md&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">p2</span><span class="o">.</span><span class="n">P</span><span class="p">(</span><span class="s2">&quot;Or just to any page &quot;</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">md</span><span class="o">.</span><span class="n">Link</span><span class="p">(</span><span class="s2">&quot;Google&quot;</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="s2">&quot;https://google.com&quot;</span><span class="p">))</span>
+        <span class="n">p2</span><span class="o">.</span><span class="n">P</span><span class="p">(</span><span class="s2">&quot;Or of course also just straight markdown [Google](https://google.com)&quot;</span><span class="p">)</span>
+</code></pre></div>
+</details>
 <h2 id="headings">Headings<a href="" name="my-headings"></a></h2>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Content</label><label for="__tabbed_1_2">Code</label></div>
 <div class="tabbed-content">
@@ -966,9 +1055,7 @@
 </code></pre></div>
 </div>
 <div class="tabbed-block">
-<table class="highlighttable"><tr><th colspan="2" class="filename"><div class="highlight"><span class="filename">docs/staging/basic.py</span></div></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">10</span>
-<span class="normal">11</span>
-<span class="normal">12</span>
+<table class="highlighttable"><tr><th colspan="2" class="filename"><div class="highlight"><span class="filename">docs/staging/basic.py</span></div></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">12</span>
 <span class="normal">13</span>
 <span class="normal">14</span>
 <span class="normal">15</span>
@@ -977,7 +1064,9 @@
 <span class="normal">18</span>
 <span class="normal">19</span>
 <span class="normal">20</span>
-<span class="normal">21</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="n">p</span><span class="o">.</span><span class="n">Code</span><span class="p">(</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="n">p</span><span class="o">.</span><span class="n">Code</span><span class="p">(</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    md.H1(&quot;Header type 1&quot;)</span>
 <span class="sd">    md.H2(&quot;Header type 2&quot;)</span>
@@ -1019,9 +1108,7 @@
 </ol>
 </div>
 <div class="tabbed-block">
-<table class="highlighttable"><tr><th colspan="2" class="filename"><div class="highlight"><span class="filename">docs/staging/basic.py</span></div></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">24</span>
-<span class="normal">25</span>
-<span class="normal">26</span>
+<table class="highlighttable"><tr><th colspan="2" class="filename"><div class="highlight"><span class="filename">docs/staging/basic.py</span></div></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">26</span>
 <span class="normal">27</span>
 <span class="normal">28</span>
 <span class="normal">29</span>
@@ -1040,7 +1127,9 @@
 <span class="normal">42</span>
 <span class="normal">43</span>
 <span class="normal">44</span>
-<span class="normal">45</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="n">numbered_list</span> <span class="o">=</span> <span class="p">(</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="n">numbered_list</span> <span class="o">=</span> <span class="p">(</span>
     <span class="n">md</span><span class="o">.</span><span class="n">List</span><span class="p">(</span><span class="n">marker</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="p">)</span>
     <span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;First item&quot;</span><span class="p">)</span>
     <span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Second item&quot;</span><span class="p">)</span>
@@ -1080,9 +1169,7 @@ a page to an anchor or to another page (with or without anchor)</p>
 <p>Or of course also just straight markdown <a href="https://google.com">Google</a></p>
 </div>
 <div class="tabbed-block">
-<table class="highlighttable"><tr><th colspan="2" class="filename"><div class="highlight"><span class="filename">docs/staging/basic.py</span></div></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">48</span>
-<span class="normal">49</span>
-<span class="normal">50</span>
+<table class="highlighttable"><tr><th colspan="2" class="filename"><div class="highlight"><span class="filename">docs/staging/basic.py</span></div></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">50</span>
 <span class="normal">51</span>
 <span class="normal">52</span>
 <span class="normal">53</span>
@@ -1094,20 +1181,24 @@ a page to an anchor or to another page (with or without anchor)</p>
 <span class="normal">59</span>
 <span class="normal">60</span>
 <span class="normal">61</span>
-<span class="normal">62</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="n">p2</span><span class="o">.</span><span class="n">Raw</span><span class="p">(</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="n">p2</span><span class="o">.</span><span class="n">Raw</span><span class="p">(</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A number of different types of links are possible. Those within</span>
 <span class="sd">    a page to an anchor or to another page (with or without anchor)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 <span class="p">)</span>
 <span class="n">p2</span><span class="o">.</span><span class="n">P</span><span class="p">(</span>
-    <span class="s2">&quot;A link back to the &quot;</span> <span class="o">+</span> <span class="n">md</span><span class="o">.</span><span class="n">Link</span><span class="p">(</span><span class="n">anchor</span><span class="o">=</span><span class="n">heading_anchor</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;first heading&quot;</span><span class="p">)</span>
+    <span class="s2">&quot;A link back to the &quot;</span>
+    <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">md</span><span class="o">.</span><span class="n">Link</span><span class="p">(</span><span class="n">anchor</span><span class="o">=</span><span class="n">heading_anchor</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;first heading&quot;</span><span class="p">)</span>
 <span class="p">)</span>
 <span class="n">p2</span><span class="o">.</span><span class="n">P</span><span class="p">(</span>
     <span class="s2">&quot;A link to another page &quot;</span>
-    <span class="o">+</span> <span class="n">md</span><span class="o">.</span><span class="n">Link</span><span class="p">(</span><span class="s2">&quot;Images&quot;</span><span class="p">,</span> <span class="n">to_page_path</span><span class="o">=</span><span class="n">report</span><span class="o">.</span><span class="n">page</span><span class="p">(</span><span class="s2">&quot;images.md&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+    <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">md</span><span class="o">.</span><span class="n">Link</span><span class="p">(</span><span class="s2">&quot;Images&quot;</span><span class="p">,</span> <span class="n">to_page_path</span><span class="o">=</span><span class="n">report</span><span class="o">.</span><span class="n">page</span><span class="p">(</span><span class="s2">&quot;images.md&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
 <span class="p">)</span>
-<span class="n">p2</span><span class="o">.</span><span class="n">P</span><span class="p">(</span><span class="s2">&quot;Or just to any page &quot;</span> <span class="o">+</span> <span class="n">md</span><span class="o">.</span><span class="n">Link</span><span class="p">(</span><span class="s2">&quot;Google&quot;</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="s2">&quot;https://google.com&quot;</span><span class="p">))</span>
+<span class="n">p2</span><span class="o">.</span><span class="n">P</span><span class="p">(</span><span class="s2">&quot;Or just to any page &quot;</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">md</span><span class="o">.</span><span class="n">Link</span><span class="p">(</span><span class="s2">&quot;Google&quot;</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="s2">&quot;https://google.com&quot;</span><span class="p">))</span>
 <span class="n">p2</span><span class="o">.</span><span class="n">P</span><span class="p">(</span><span class="s2">&quot;Or of course also just straight markdown [Google](https://google.com)&quot;</span><span class="p">)</span>
 </code></pre></div>
 </td></tr></table>
@@ -1128,7 +1219,7 @@ a page to an anchor or to another page (with or without anchor)</p>
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
         
-        <a href="../markdown/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Markdown" rel="prev">
+        <a href="../ipython/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Ipython" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
           </div>
@@ -1137,7 +1228,7 @@ a page to an anchor or to another page (with or without anchor)</p>
               <span class="md-footer__direction">
                 Previous
               </span>
-              Markdown
+              Ipython
             </div>
           </div>
         </a>

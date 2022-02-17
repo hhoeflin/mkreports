@@ -1,4 +1,3 @@
-import pandas as pd
 import plotnine as p9
 from mkreports import Report
 from plotnine.data import mtcars

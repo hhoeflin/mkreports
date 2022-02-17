@@ -230,6 +230,21 @@
   
   
     <li class="md-nav__item">
+      <a href="../../../ipython/" class="md-nav__link">
+        Ipython
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../../basic/" class="md-nav__link">
         Basic
       </a>
@@ -295,18 +310,18 @@
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8" type="checkbox" id="__nav_8" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9" type="checkbox" id="__nav_9" checked>
       
       
       
       
-        <label class="md-nav__link" for="__nav_8">
+        <label class="md-nav__link" for="__nav_9">
           Reference
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="Reference" data-md-level="1">
-        <label class="md-nav__title" for="__nav_8">
+        <label class="md-nav__title" for="__nav_9">
           <span class="md-nav__icon md-icon"></span>
           Reference
         </label>
@@ -323,18 +338,18 @@
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_1" type="checkbox" id="__nav_8_1" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9_1" type="checkbox" id="__nav_9_1" checked>
       
       
       
       
-        <label class="md-nav__link" for="__nav_8_1">
+        <label class="md-nav__link" for="__nav_9_1">
           mkreports
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="mkreports" data-md-level="2">
-        <label class="md-nav__title" for="__nav_8_1">
+        <label class="md-nav__title" for="__nav_9_1">
           <span class="md-nav__icon md-icon"></span>
           mkreports
         </label>
@@ -419,18 +434,18 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_1_6" type="checkbox" id="__nav_8_1_6" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9_1_6" type="checkbox" id="__nav_9_1_6" >
       
       
       
       
-        <label class="md-nav__link" for="__nav_8_1_6">
+        <label class="md-nav__link" for="__nav_9_1_6">
           md
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="md" data-md-level="3">
-        <label class="md-nav__title" for="__nav_8_1_6">
+        <label class="md-nav__title" for="__nav_9_1_6">
           <span class="md-nav__icon md-icon"></span>
           md
         </label>
@@ -804,18 +819,18 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9" type="checkbox" id="__nav_9" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_10" type="checkbox" id="__nav_10" >
       
       
       
       
-        <label class="md-nav__link" for="__nav_9">
+        <label class="md-nav__link" for="__nav_10">
           Site Code
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="Site Code" data-md-level="1">
-        <label class="md-nav__title" for="__nav_9">
+        <label class="md-nav__title" for="__nav_10">
           <span class="md-nav__icon md-icon"></span>
           Site Code
         </label>
@@ -1087,6 +1102,8 @@ Page        </code>
             <span class="n">report_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
             <span class="n">javascript_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="o">.</span><span class="n">javascript_path</span><span class="p">,</span>
             <span class="n">project_root</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="o">.</span><span class="n">project_root</span><span class="p">,</span>
+            <span class="n">idstore</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_idstore</span><span class="p">,</span>
+            <span class="n">page_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">code_context</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">CodeContext</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
@@ -1131,7 +1148,9 @@ Page        </code>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;__exit__ called before __enter__&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">code_context</span><span class="o">.</span><span class="fm">__exit__</span><span class="p">(</span><span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">traceback</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_add_to_page</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">code_context</span><span class="o">.</span><span class="n">md_obj</span><span class="p">(</span><span class="n">javascript_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="o">.</span><span class="n">javascript_path</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">code_context</span><span class="o">.</span><span class="n">md_obj</span><span class="p">(</span>
+                <span class="n">javascript_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="o">.</span><span class="n">javascript_path</span><span class="p">,</span> <span class="n">page_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span>
+            <span class="p">)</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">code_context</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -1215,10 +1234,9 @@ Page        </code>
 <span class="sd">        https://github.com/eyeseast/python-frontmatter/issues/87</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># call the markdown and the backmatter</span>
-        <span class="n">md_out</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">to_markdown</span><span class="p">(</span><span class="n">page_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">idstore</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_idstore</span><span class="p">)</span>
-        <span class="n">md_text</span> <span class="o">=</span> <span class="n">md_out</span><span class="o">.</span><span class="n">body</span> <span class="o">+</span> <span class="n">md_out</span><span class="o">.</span><span class="n">back</span>
+        <span class="n">md_text</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">body</span> <span class="o">+</span> <span class="n">item</span><span class="o">.</span><span class="n">back</span>
 
-        <span class="n">req</span> <span class="o">=</span> <span class="n">md_out</span><span class="o">.</span><span class="n">settings</span>
+        <span class="n">req</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">settings</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">req</span><span class="o">.</span><span class="n">mkdocs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="c1"># merge these things into mkdocs</span>
             <span class="c1"># there is not allowed to be a nav here</span>
@@ -1357,7 +1375,9 @@ Page        </code>
         <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;__exit__ called before __enter__&quot;</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">code_context</span><span class="o">.</span><span class="fm">__exit__</span><span class="p">(</span><span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">traceback</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_add_to_page</span><span class="p">(</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">code_context</span><span class="o">.</span><span class="n">md_obj</span><span class="p">(</span><span class="n">javascript_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="o">.</span><span class="n">javascript_path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">code_context</span><span class="o">.</span><span class="n">md_obj</span><span class="p">(</span>
+            <span class="n">javascript_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="o">.</span><span class="n">javascript_path</span><span class="p">,</span> <span class="n">page_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span>
+        <span class="p">)</span>
     <span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">code_context</span> <span class="o">=</span> <span class="kc">None</span>
 </code></pre></div>

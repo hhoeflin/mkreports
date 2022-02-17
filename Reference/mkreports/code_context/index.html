@@ -230,6 +230,21 @@
   
   
     <li class="md-nav__item">
+      <a href="../../../ipython/" class="md-nav__link">
+        Ipython
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../../basic/" class="md-nav__link">
         Basic
       </a>
@@ -295,18 +310,18 @@
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8" type="checkbox" id="__nav_8" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9" type="checkbox" id="__nav_9" checked>
       
       
       
       
-        <label class="md-nav__link" for="__nav_8">
+        <label class="md-nav__link" for="__nav_9">
           Reference
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="Reference" data-md-level="1">
-        <label class="md-nav__title" for="__nav_8">
+        <label class="md-nav__title" for="__nav_9">
           <span class="md-nav__icon md-icon"></span>
           Reference
         </label>
@@ -323,18 +338,18 @@
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_1" type="checkbox" id="__nav_8_1" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9_1" type="checkbox" id="__nav_9_1" checked>
       
       
       
       
-        <label class="md-nav__link" for="__nav_8_1">
+        <label class="md-nav__link" for="__nav_9_1">
           mkreports
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="mkreports" data-md-level="2">
-        <label class="md-nav__title" for="__nav_8_1">
+        <label class="md-nav__title" for="__nav_9_1">
           <span class="md-nav__icon md-icon"></span>
           mkreports
         </label>
@@ -476,18 +491,18 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_1_6" type="checkbox" id="__nav_8_1_6" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9_1_6" type="checkbox" id="__nav_9_1_6" >
       
       
       
       
-        <label class="md-nav__link" for="__nav_8_1_6">
+        <label class="md-nav__link" for="__nav_9_1_6">
           md
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="md" data-md-level="3">
-        <label class="md-nav__title" for="__nav_8_1_6">
+        <label class="md-nav__title" for="__nav_9_1_6">
           <span class="md-nav__icon md-icon"></span>
           md
         </label>
@@ -776,18 +791,18 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9" type="checkbox" id="__nav_9" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_10" type="checkbox" id="__nav_10" >
       
       
       
       
-        <label class="md-nav__link" for="__nav_9">
+        <label class="md-nav__link" for="__nav_10">
           Site Code
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="Site Code" data-md-level="1">
-        <label class="md-nav__title" for="__nav_9">
+        <label class="md-nav__title" for="__nav_10">
           <span class="md-nav__icon md-icon"></span>
           Site Code
         </label>
@@ -1050,7 +1065,7 @@ CodeContext        </code>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">obj_list</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">md_obj</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">md_obj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">javascript_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MdObj</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">md_obj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">javascript_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MdObj</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return the markdown object that represents output and code.</span>
 
@@ -1084,6 +1099,7 @@ CodeContext        </code>
                 <span class="k">return</span> <span class="p">(</span>
                     <span class="n">Admonition</span><span class="p">(</span>
                         <span class="n">code_final</span><span class="p">,</span>
+                        <span class="n">page_path</span><span class="o">=</span><span class="n">page_path</span><span class="p">,</span>
                         <span class="n">javascript_path</span><span class="o">=</span><span class="n">javascript_path</span><span class="p">,</span>
                         <span class="n">collapse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                         <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Code&quot;</span><span class="p">,</span>
@@ -1099,6 +1115,7 @@ CodeContext        </code>
                     <span class="n">content</span>
                     <span class="o">+</span> <span class="n">Admonition</span><span class="p">(</span>
                         <span class="n">code_final</span><span class="p">,</span>
+                        <span class="n">page_path</span><span class="o">=</span><span class="n">page_path</span><span class="p">,</span>
                         <span class="n">javascript_path</span><span class="o">=</span><span class="n">javascript_path</span><span class="p">,</span>
                         <span class="n">collapse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                         <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Code&quot;</span><span class="p">,</span>
@@ -1141,7 +1158,7 @@ CodeContext        </code>
 
 
 <h3 id="mkreports.code_context.CodeContext.md_obj" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">md_obj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">javascript_path</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">md_obj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_path</span><span class="p">,</span> <span class="n">javascript_path</span><span class="p">)</span></code>
 
 
 </h3>
@@ -1187,7 +1204,7 @@ CodeContext        </code>
 </table>
         <details class="quote">
           <summary>Source code in <code>mkreports/code_context.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">md_obj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">javascript_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MdObj</span><span class="p">:</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">md_obj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">javascript_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MdObj</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Return the markdown object that represents output and code.</span>
 
@@ -1221,6 +1238,7 @@ CodeContext        </code>
             <span class="k">return</span> <span class="p">(</span>
                 <span class="n">Admonition</span><span class="p">(</span>
                     <span class="n">code_final</span><span class="p">,</span>
+                    <span class="n">page_path</span><span class="o">=</span><span class="n">page_path</span><span class="p">,</span>
                     <span class="n">javascript_path</span><span class="o">=</span><span class="n">javascript_path</span><span class="p">,</span>
                     <span class="n">collapse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                     <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Code&quot;</span><span class="p">,</span>
@@ -1236,6 +1254,7 @@ CodeContext        </code>
                 <span class="n">content</span>
                 <span class="o">+</span> <span class="n">Admonition</span><span class="p">(</span>
                     <span class="n">code_final</span><span class="p">,</span>
+                    <span class="n">page_path</span><span class="o">=</span><span class="n">page_path</span><span class="p">,</span>
                     <span class="n">javascript_path</span><span class="o">=</span><span class="n">javascript_path</span><span class="p">,</span>
                     <span class="n">collapse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                     <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Code&quot;</span><span class="p">,</span>

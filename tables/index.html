@@ -46,6 +46,8 @@
 
   
     
+        <link rel="stylesheet" href="../javascript/code_admonition.css">
+    
         <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
     
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/vedmack/yadcf@332407eeacbda299e6253530e24c15041b270227/dist/jquery.dataTables.yadcf.css">
@@ -253,6 +255,21 @@
   
   
     <li class="md-nav__item">
+      <a href="../ipython/" class="md-nav__link">
+        Ipython
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../basic/" class="md-nav__link">
         Basic
       </a>
@@ -404,18 +421,18 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8" type="checkbox" id="__nav_8" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9" type="checkbox" id="__nav_9" >
       
       
       
       
-        <label class="md-nav__link" for="__nav_8">
+        <label class="md-nav__link" for="__nav_9">
           Reference
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="Reference" data-md-level="1">
-        <label class="md-nav__title" for="__nav_8">
+        <label class="md-nav__title" for="__nav_9">
           <span class="md-nav__icon md-icon"></span>
           Reference
         </label>
@@ -430,18 +447,18 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_1" type="checkbox" id="__nav_8_1" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9_1" type="checkbox" id="__nav_9_1" >
       
       
       
       
-        <label class="md-nav__link" for="__nav_8_1">
+        <label class="md-nav__link" for="__nav_9_1">
           mkreports
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="mkreports" data-md-level="2">
-        <label class="md-nav__title" for="__nav_8_1">
+        <label class="md-nav__title" for="__nav_9_1">
           <span class="md-nav__icon md-icon"></span>
           mkreports
         </label>
@@ -526,18 +543,18 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_1_6" type="checkbox" id="__nav_8_1_6" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9_1_6" type="checkbox" id="__nav_9_1_6" >
       
       
       
       
-        <label class="md-nav__link" for="__nav_8_1_6">
+        <label class="md-nav__link" for="__nav_9_1_6">
           md
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="md" data-md-level="3">
-        <label class="md-nav__title" for="__nav_8_1_6">
+        <label class="md-nav__title" for="__nav_9_1_6">
           <span class="md-nav__icon md-icon"></span>
           md
         </label>
@@ -826,18 +843,18 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9" type="checkbox" id="__nav_9" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_10" type="checkbox" id="__nav_10" >
       
       
       
       
-        <label class="md-nav__link" for="__nav_9">
+        <label class="md-nav__link" for="__nav_10">
           Site Code
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="Site Code" data-md-level="1">
-        <label class="md-nav__title" for="__nav_9">
+        <label class="md-nav__title" for="__nav_10">
           <span class="md-nav__icon md-icon"></span>
           Site Code
         </label>
@@ -1041,6 +1058,129 @@
                 
 
 <h1 id="different-ways-of-handling-tables">Different ways of handling tables</h1>
+<details class="code">
+<summary>Code</summary>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">mkreports</span> <span class="kn">import</span> <span class="n">Report</span><span class="p">,</span> <span class="n">md</span>
+<span class="kn">from</span> <span class="nn">plotnine.data</span> <span class="kn">import</span> <span class="n">mtcars</span>
+
+
+<span class="k">def</span> <span class="nf">use_tables</span><span class="p">(</span><span class="n">report</span><span class="p">:</span> <span class="n">Report</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Show all the different ways on how we can work with tables.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ex_table</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Alfred&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span> <span class="s2">&quot;hair&quot;</span><span class="p">:</span> <span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="s2">&quot;married&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
+            <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Beate&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span> <span class="s2">&quot;hair&quot;</span><span class="p">:</span> <span class="s2">&quot;brown&quot;</span><span class="p">,</span> <span class="s2">&quot;married&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Caro&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span>
+                <span class="s2">&quot;hair&quot;</span><span class="p">:</span> <span class="s2">&quot;green&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;married&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
+    <span class="n">ex_table</span><span class="p">[</span><span class="s2">&quot;hair&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Categorical</span><span class="p">(</span><span class="n">ex_table</span><span class="o">.</span><span class="n">hair</span><span class="p">)</span>
+
+    <span class="n">p</span> <span class="o">=</span> <span class="n">report</span><span class="o">.</span><span class="n">page</span><span class="p">(</span><span class="s2">&quot;tables.md&quot;</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">p</span><span class="o">.</span><span class="n">H1</span><span class="p">(</span><span class="s2">&quot;Different ways of handling tables&quot;</span><span class="p">)</span>
+
+    <span class="n">p</span><span class="o">.</span><span class="n">CollapsedCodeFile</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span>
+
+    <span class="n">p</span><span class="o">.</span><span class="n">Raw</span><span class="p">(</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Conveying information with tables is very important for </span>
+<span class="sd">        any type of report. Standard tables in markdown format </span>
+<span class="sd">        can be very useful for this for limited amout of data, but for </span>
+<span class="sd">        larger tables more sophisticated libraries are needed. </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+    <span class="p">)</span>
+    <span class="k">with</span> <span class="n">p</span><span class="o">.</span><span class="n">H2</span><span class="p">(</span><span class="s2">&quot;Markdown tables&quot;</span><span class="p">):</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">Raw</span><span class="p">(</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Below an example of a regular markdown table. As it is very wide,</span>
+<span class="sd">            horizontal scrolling is enabled by default. In addition, the number</span>
+<span class="sd">            of rows is limited to 10 as there is no automatic paging available.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+        <span class="p">)</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">md</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">mtcars</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+
+    <span class="k">with</span> <span class="n">p</span><span class="o">.</span><span class="n">H2</span><span class="p">(</span><span class="s2">&quot;DataTable javascript library&quot;</span><span class="p">):</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">Raw</span><span class="p">(</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Here the same table, but displayed using the </span>
+<span class="sd">            [DataTables](https://datatables.net/)  </span>
+<span class="sd">            plugin. With this, we get automatic paging, searching as well as sorting</span>
+<span class="sd">            by columns. </span>
+<span class="sd">            &quot;&quot;&quot;</span>
+        <span class="p">)</span>
+        <span class="c1"># and as a DataTable</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">DataTable</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">mtcars</span><span class="p">))</span>
+
+        <span class="k">with</span> <span class="n">p</span><span class="o">.</span><span class="n">H3</span><span class="p">(</span><span class="s2">&quot;Header filters&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">notrack</span><span class="p">:</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">Raw</span><span class="p">(</span>
+                <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">                Below a DataTable example with column filters in the header.</span>
+<span class="sd">                The header in use is determined by the column type of the pandas</span>
+<span class="sd">                table used for display. </span>
+
+<span class="sd">                - A numeric column gets a range selector</span>
+<span class="sd">                - A categorical or boolean column a dropdown selection</span>
+<span class="sd">                - Any other column a text-field.</span>
+<span class="sd">                &quot;&quot;&quot;</span>
+            <span class="p">)</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">DataTable</span><span class="p">(</span><span class="n">ex_table</span><span class="p">,</span> <span class="n">add_header_filters</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="n">p</span><span class="o">.</span><span class="n">H2</span><span class="p">(</span><span class="s2">&quot;Tabulator javascript library&quot;</span><span class="p">):</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">Raw</span><span class="p">(</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            This time, we use the [Tabulator](http://tabulator.info)</span>
+<span class="sd">            library. A library with a lot of interesting </span>
+<span class="sd">            functionality. Currently limited support.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+        <span class="p">)</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">Tabulator</span><span class="p">(</span>
+            <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">mtcars</span><span class="p">),</span> <span class="n">add_header_filters</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">prettify_colnames</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">)</span>
+
+        <span class="k">with</span> <span class="n">p</span><span class="o">.</span><span class="n">H3</span><span class="p">(</span><span class="s2">&quot;Header filters&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">notrack</span><span class="p">:</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">Raw</span><span class="p">(</span>
+                <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">                We also can enable header filtering. For the datatypes</span>
+
+<span class="sd">                - numeric</span>
+<span class="sd">                - boolean</span>
+<span class="sd">                - categorical </span>
+<span class="sd">                - str</span>
+
+<span class="sd">                default filter options have been defined. Below</span>
+<span class="sd">                we create a table with various different data types</span>
+<span class="sd">                to show these functions.</span>
+
+<span class="sd">                The applied filters are</span>
+
+<span class="sd">                - Input filter for the names</span>
+<span class="sd">                - Range filter with min and max for age</span>
+<span class="sd">                - Select dropdown for hair color</span>
+<span class="sd">                - and checkbox for marital status</span>
+<span class="sd">                &quot;&quot;&quot;</span>
+            <span class="p">)</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">Tabulator</span><span class="p">(</span><span class="n">ex_table</span><span class="p">,</span> <span class="n">add_header_filters</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">prettify_colnames</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="n">p</span><span class="o">.</span><span class="n">H2</span><span class="p">(</span><span class="s2">&quot;Notes&quot;</span><span class="p">):</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">Raw</span><span class="p">(</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Internally, the tables are serialized to json so that </span>
+<span class="sd">            they can be displayed in the web-browser. For any types </span>
+<span class="sd">            that are non-native to json (e.g. Path-instances), as a</span>
+<span class="sd">            default handler the `str` funtion is called. If this</span>
+<span class="sd">            is not ok, please transform the table columns accordingly.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+        <span class="p">)</span>
+</code></pre></div>
+</details>
 <p>Conveying information with tables is very important for 
 any type of report. Standard tables in markdown format 
 can be very useful for this for limited amout of data, but for 
@@ -1214,14 +1354,14 @@ of rows is limited to 10 as there is no automatic paging available.</p>
 </table>
 </div>
 <div class="tabbed-block">
-<table class="highlighttable"><tr><th colspan="2" class="filename"><div class="highlight"><span class="filename">docs/staging/tables.py</span></div></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">35</span>
-<span class="normal">36</span>
-<span class="normal">37</span>
-<span class="normal">38</span>
-<span class="normal">39</span>
+<table class="highlighttable"><tr><th colspan="2" class="filename"><div class="highlight"><span class="filename">docs/staging/tables.py</span></div></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">39</span>
 <span class="normal">40</span>
 <span class="normal">41</span>
-<span class="normal">42</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="n">p</span><span class="o">.</span><span class="n">Raw</span><span class="p">(</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="n">p</span><span class="o">.</span><span class="n">Raw</span><span class="p">(</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Below an example of a regular markdown table. As it is very wide,</span>
 <span class="sd">    horizontal scrolling is enabled by default. In addition, the number</span>
@@ -1256,11 +1396,7 @@ table used for display. </p>
 <p><table id='datatable_id-1' class='display' style='width:100%'> </table></p>
 </div>
 <div class="tabbed-block">
-<table class="highlighttable"><tr><th colspan="2" class="filename"><div class="highlight"><span class="filename">docs/staging/tables.py</span></div></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">45</span>
-<span class="normal">46</span>
-<span class="normal">47</span>
-<span class="normal">48</span>
-<span class="normal">49</span>
+<table class="highlighttable"><tr><th colspan="2" class="filename"><div class="highlight"><span class="filename">docs/staging/tables.py</span></div></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">49</span>
 <span class="normal">50</span>
 <span class="normal">51</span>
 <span class="normal">52</span>
@@ -1279,7 +1415,11 @@ table used for display. </p>
 <span class="normal">65</span>
 <span class="normal">66</span>
 <span class="normal">67</span>
-<span class="normal">68</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="n">p</span><span class="o">.</span><span class="n">Raw</span><span class="p">(</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="n">p</span><span class="o">.</span><span class="n">Raw</span><span class="p">(</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Here the same table, but displayed using the </span>
 <span class="sd">    [DataTables](https://datatables.net/)  </span>
@@ -1352,11 +1492,7 @@ to show these functions.</p>
 <p><div id='tabulator_id-1' class='display'> </div></p>
 </div>
 <div class="tabbed-block">
-<table class="highlighttable"><tr><th colspan="2" class="filename"><div class="highlight"><span class="filename">docs/staging/tables.py</span></div></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 71</span>
-<span class="normal"> 72</span>
-<span class="normal"> 73</span>
-<span class="normal"> 74</span>
-<span class="normal"> 75</span>
+<table class="highlighttable"><tr><th colspan="2" class="filename"><div class="highlight"><span class="filename">docs/staging/tables.py</span></div></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 75</span>
 <span class="normal"> 76</span>
 <span class="normal"> 77</span>
 <span class="normal"> 78</span>
@@ -1385,7 +1521,11 @@ to show these functions.</p>
 <span class="normal">101</span>
 <span class="normal">102</span>
 <span class="normal">103</span>
-<span class="normal">104</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="n">p</span><span class="o">.</span><span class="n">Raw</span><span class="p">(</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="n">p</span><span class="o">.</span><span class="n">Raw</span><span class="p">(</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This time, we use the [Tabulator](http://tabulator.info)</span>
 <span class="sd">    library. A library with a lot of interesting </span>
@@ -1444,15 +1584,15 @@ default handler the <code>str</code> funtion is called. If this
 is not ok, please transform the table columns accordingly.</p>
 </div>
 <div class="tabbed-block">
-<table class="highlighttable"><tr><th colspan="2" class="filename"><div class="highlight"><span class="filename">docs/staging/tables.py</span></div></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">107</span>
-<span class="normal">108</span>
-<span class="normal">109</span>
-<span class="normal">110</span>
-<span class="normal">111</span>
+<table class="highlighttable"><tr><th colspan="2" class="filename"><div class="highlight"><span class="filename">docs/staging/tables.py</span></div></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">111</span>
 <span class="normal">112</span>
 <span class="normal">113</span>
 <span class="normal">114</span>
-<span class="normal">115</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="n">p</span><span class="o">.</span><span class="n">Raw</span><span class="p">(</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="n">p</span><span class="o">.</span><span class="n">Raw</span><span class="p">(</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Internally, the tables are serialized to json so that </span>
 <span class="sd">    they can be displayed in the web-browser. For any types </span>
