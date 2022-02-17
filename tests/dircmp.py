@@ -22,6 +22,7 @@ def cmp_dirs_recursive(left_dir: Path, right_dir: Path, ignore: Sequence[Path]) 
                         (right_dir / diff_file).read_text().split("\n"),
                     )
                 )
+        print(cmp_dirs)
         return False
     else:
         for subdir in cmp_dirs.common_dirs:

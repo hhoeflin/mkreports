@@ -29,6 +29,7 @@ def test_all(tmp_path, ignore_images):
             Path("docs/images.md"),
             Path("docs/quickstart.md"),
             Path("docs/images_store"),
+            Path("docs/quickstart_store"),
         ]
     else:
         ignore = [Path("site")]
