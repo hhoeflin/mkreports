@@ -2,6 +2,10 @@
 
 *This project is in early status; all APIs can change at any point in time.*
 
+Below is an example of a simple page. However, the documentation for this
+package is also created with `mkreports`. The code can be found in the
+[documentation](https://hhoeflin.github.io/mkreports/site_code/main/).
+
 # Quickstart
 
 It is very easy to create new reports and pages. Below an example that
