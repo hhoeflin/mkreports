@@ -18,8 +18,8 @@ def cmp_dirs_recursive(left_dir: Path, right_dir: Path, ignore: Sequence[Path]) 
             for diff_file in cmp_dirs.diff_files:
                 sys.stdout.writelines(
                     difflib.unified_diff(
-                        (left_dir / diff_file).read_text(),
-                        (right_dir / diff_file).read_text(),
+                        (left_dir / diff_file).read_text().split("\n"),
+                        (right_dir / diff_file).read_text().split("\n"),
                     )
                 )
         return False
