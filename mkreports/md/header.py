@@ -5,7 +5,7 @@ from typing import Literal, Optional, Union
 import mdutils.tools as mdt
 from mkreports.md_proxy import register_md
 
-from .base import Anchor, MdObj, MdOut
+from .base import Anchor, MdObj
 from .text import SpacedText
 
 
@@ -21,21 +21,21 @@ class Heading(MdObj):
         if isinstance(self.anchor, str):
             self.anchor = Anchor(self.anchor)
 
-    def to_markdown(self, **kwargs) -> MdOut:
         heading = mdt.Header.Header.choose_header(
             self.level, self.title, self.style
         ).strip("\n")
 
         if isinstance(self.anchor, Anchor):
             # note, string conversion to Anchor done in post-init
-            heading += self.anchor.to_markdown(**kwargs).body.text
+            heading += self.anchor.body.text
 
-        return MdOut(
-            body=SpacedText(
-                heading,
-                (2, 2),
-            )
+        self._body = SpacedText(
+            heading,
+            (2, 2),
         )
+
+        self._back = None
+        self._settings = None
 
 
 H1 = register_md("H1")(functools.partial(Heading, level=1))

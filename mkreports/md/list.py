@@ -2,7 +2,7 @@ from typing import Iterable, Literal, Sequence, Union
 
 from mkreports.md_proxy import register_md
 
-from .base import MdObj, MdOut, MdSeq, Raw
+from .base import MdObj, MdSeq, Raw
 from .text import SpacedText, Text
 
 
@@ -31,6 +31,27 @@ class List(MdObj):
         self.list = MdSeq(items)
         self.marker = marker
 
+        # create the markdown output for every item; indent it appropriately
+        # and then put it all together.
+
+        self._back = None
+        self._settings = None
+
+    @property
+    def body(self):
+        # now we need to attach the right element at the beginning
+        if self.marker == "1":
+            prefix = [f"{i}. " for i in range(len(self))]
+        else:
+            prefix = [f"{self.marker} "] * len(self)
+
+        md_list = [
+            indent_hanging(elem.body.text, hanging=prefix)
+            for elem, prefix in zip(self.list.items, prefix)
+        ]
+
+        return SpacedText("\n".join(md_list), (2, 2))
+
     def append(self, item: Union[Text, MdObj]) -> "List":
         if isinstance(item, (str, SpacedText)):
             item = Raw(item)
@@ -55,20 +76,3 @@ class List(MdObj):
     def __radd__(self, other) -> "List":
         del other
         raise NotImplementedError("Addition not supported for MdList")
-
-    def to_markdown(self, **kwargs) -> MdOut:
-        # create the markdown output for every item; indent it appropriately
-        # and then put it all together.
-
-        # now we need to attach the right element at the beginning
-        if self.marker == "1":
-            prefix = [f"{i}. " for i in range(len(self))]
-        else:
-            prefix = [f"{self.marker} "] * len(self)
-
-        md_list = [
-            indent_hanging(elem.to_markdown(**kwargs).body.text, hanging=prefix)
-            for elem, prefix in zip(self.list.items, prefix)
-        ]
-
-        return MdOut(body=SpacedText("\n".join(md_list), (2, 2)))

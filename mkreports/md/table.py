@@ -1,6 +1,5 @@
 import copy
 import inspect
-import json
 import shutil
 import tempfile
 from copy import deepcopy
@@ -12,7 +11,7 @@ from mkreports.md_proxy import register_md
 from mkreports.utils import func_ref, serialize_json, snake_to_text
 from pandas.api import types
 
-from .base import MdObj, MdOut, comment_ids
+from .base import MdObj, comment_ids
 from .file import File, relpath_html
 from .idstore import IDStore
 from .settings import Settings, merge_settings
@@ -30,11 +29,12 @@ class Table(MdObj):
         # think about making this a static-frame
         self.table = deepcopy(table)
 
-    def to_markdown(self, **kwargs) -> MdOut:
-        del kwargs
         table_md = self.table.to_markdown(**self.kwargs)
         table_md = table_md if table_md is not None else ""
-        return MdOut(body=SpacedText(table_md, (2, 2)))
+
+        self._body = SpacedText(table_md, (2, 2))
+        self._back = None
+        self._settings = None
 
 
 def create_yadcf_settings_datatable(
@@ -81,6 +81,8 @@ class DataTable(File):
         self,
         table: pd.DataFrame,
         store_path: Path,
+        page_path: Path,
+        idstore: IDStore,
         column_settings: Optional[dict] = None,
         add_header_filters: bool = False,
         yadcf_settings: Optional[dict] = None,
@@ -116,8 +118,6 @@ class DataTable(File):
             "columns": [col_set[col] for col in table.columns],
         }
 
-    def to_markdown(self, page_path: Path, idstore: IDStore, **kwargs) -> MdOut:
-        del kwargs
         datatable_id = idstore.next_id("datatable_id")
         body_html = inspect.cleandoc(
             f"""
@@ -168,11 +168,9 @@ class DataTable(File):
             )
         )
 
-        return MdOut(
-            body=SpacedText(body_html, (2, 2)),
-            back=SpacedText(back_html, (2, 2)) + comment_ids(datatable_id),
-            settings=settings,
-        )
+        self._body = SpacedText(body_html, (2, 2))
+        self._back = SpacedText(back_html, (2, 2)) + comment_ids(datatable_id)
+        self._settings = settings
 
 
 def create_col_settings_tabulator(
@@ -233,6 +231,8 @@ class Tabulator(File):
         self,
         table: pd.DataFrame,
         store_path: Path,
+        page_path: Path,
+        idstore: IDStore,
         javascript_path: Path,
         table_settings: Optional[dict] = None,
         add_header_filters: bool = True,
@@ -279,9 +279,6 @@ class Tabulator(File):
         )
         self.table_settings["columns"] = col_list
 
-    def to_markdown(self, page_path: Path, idstore: IDStore, **kwargs) -> MdOut:
-        del kwargs
-
         tabulator_id = idstore.next_id("tabulator_id")
         body_html = inspect.cleandoc(
             f"""
@@ -319,8 +316,6 @@ class Tabulator(File):
             )
         )
 
-        return MdOut(
-            body=SpacedText(body_html, (2, 2)),
-            back=SpacedText(back_html, (2, 2)) + comment_ids(tabulator_id),
-            settings=settings,
-        )
+        self._body = SpacedText(body_html, (2, 2))
+        self._back = SpacedText(back_html, (2, 2)) + comment_ids(tabulator_id)
+        self._settings = settings

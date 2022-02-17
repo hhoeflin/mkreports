@@ -99,14 +99,7 @@
 
     A number of different types of links are possible. Those within
     a page to an anchor or to another page (with or without anchor)
-
-    A link back to the [first heading](#my-headings)
-
-    A link to another page [Images](images.md)
-
-    Or just to any page [Google](https://google.com)
-
-    Or of course also just straight markdown [Google](https://google.com)
+    A link back to the [first heading](#my-headings)A link to another page [Images](images.md)Or just to any page [Google](https://google.com)Or of course also just straight markdown [Google](https://google.com)
 
 === "Code"
 
@@ -118,13 +111,14 @@
         """
     )
     p2.P(
-        "A link back to the " + md.Link(anchor=heading_anchor, text="first heading")
+        "A link back to the "
+        + p.md.Link(anchor=heading_anchor, text="first heading")
     )
     p2.P(
         "A link to another page "
-        + md.Link("Images", to_page_path=report.page("images.md").path)
+        + p.md.Link("Images", to_page_path=report.page("images.md").path)
     )
-    p2.P("Or just to any page " + md.Link("Google", url="https://google.com"))
+    p2.P("Or just to any page " + p.md.Link("Google", url="https://google.com"))
     p2.P("Or of course also just straight markdown [Google](https://google.com)")
 
     ```

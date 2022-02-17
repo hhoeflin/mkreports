@@ -1,4 +1,4 @@
-from .base import Anchor, Link, MdObj, MdOut, MdSeq, Paragraph, Raw
+from .base import Anchor, Link, MdObj, MdSeq, Paragraph, Raw
 from .combo import HLine
 from .containers import Admonition, Code, CodeFile, Tab
 from .docstring import Docstring
@@ -17,7 +17,6 @@ __all__ = [
     "Anchor",
     "Link",
     "MdObj",
-    "MdOut",
     "MdSeq",
     "Paragraph",
     "P",

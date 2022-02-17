@@ -7,7 +7,7 @@ from typing import Literal, Optional, Union
 from mdutils.tools.Image import Image as UtilsImage
 from mkreports.md_proxy import register_md
 
-from .base import MdOut, comment_ids
+from .base import comment_ids
 from .file import File, relpath_html
 from .idstore import IDStore
 from .settings import Settings
@@ -24,6 +24,7 @@ class ImageFile(File):
         self,
         path: Union[str, Path],
         store_path: Path,
+        page_path: Path,
         link_type: Literal["inline", "ref"] = "inline",
         text: str = "",
         tooltip: str = "",
@@ -37,18 +38,16 @@ class ImageFile(File):
         self.tooltip = tooltip
         self.link_type = link_type
 
-    def to_markdown(self, page_path: Path, **kwargs) -> MdOut:
-        del kwargs
         if self.link_type == "inline":
-            return MdOut(
-                body=SpacedText(
-                    UtilsImage.new_inline_image(
-                        text=self.text,
-                        path=str(relpath_html(self.path, page_path.parent)),
-                        tooltip=self.tooltip,
-                    )
+            self._body = SpacedText(
+                UtilsImage.new_inline_image(
+                    text=self.text,
+                    path=str(relpath_html(self.path, page_path.parent)),
+                    tooltip=self.tooltip,
                 )
             )
+            self._back = None
+            self._settings = None
         elif type == "ref":
             raise NotImplementedError()
         else:
@@ -61,6 +60,7 @@ class Image(ImageFile):
         self,
         image,
         store_path: Path,
+        page_path: Path,
         width: Optional[float] = None,
         height: Optional[float] = None,
         units: Literal["in", "cm", "mm"] = "in",
@@ -87,6 +87,7 @@ class Image(ImageFile):
                 super().__init__(
                     path=path,
                     store_path=store_path,
+                    page_path=page_path,
                     link_type=link_type,
                     text=text,
                     tooltip=tooltip,
@@ -103,6 +104,7 @@ class PIL(ImageFile):
         self,
         image,
         store_path: Path,
+        page_path: Path,
         link_type: Literal["inline", "ref"] = "inline",
         text: str = "",
         tooltip: str = "",
@@ -116,6 +118,7 @@ class PIL(ImageFile):
             super().__init__(
                 path=path,
                 store_path=store_path,
+                page_path=page_path,
                 link_type=link_type,
                 text=text,
                 tooltip=tooltip,
@@ -130,6 +133,8 @@ class Altair(File):
         self,
         altair,
         store_path: Path,
+        page_path: Path,
+        idstore: IDStore,
         **kwargs,
     ):
         with tempfile.TemporaryDirectory() as dir:
@@ -141,11 +146,12 @@ class Altair(File):
 
             # Make sure the file is moved to the rigth place
             super().__init__(
-                path=path, store_path=store_path, allow_copy=True, use_hash=True
+                path=path,
+                store_path=store_path,
+                allow_copy=True,
+                use_hash=True,
             )
 
-    def to_markdown(self, page_path: Path, idstore: IDStore, **kwargs) -> MdOut:
-        del kwargs
         # note; in the body we just insert the div.
         # The reason is that this part can be indented, e.g.
         # inside a tab. But then <script> content can be escaped, leading to errors for '=>'
@@ -181,11 +187,9 @@ class Altair(File):
             )
         )
 
-        return MdOut(
-            body=SpacedText(body_html, (2, 2)),
-            back=SpacedText(back_html, (2, 2)) + comment_ids(altair_id),
-            settings=settings,
-        )
+        self._body = SpacedText(body_html, (2, 2))
+        self._back = SpacedText(back_html, (2, 2)) + comment_ids(altair_id)
+        self._settings = settings
 
 
 @register_md("Plotly")
@@ -194,6 +198,8 @@ class Plotly(File):
         self,
         plotly,
         store_path: Path,
+        page_path: Path,
+        idstore: IDStore,
         **kwargs,
     ):
         with tempfile.TemporaryDirectory() as dir:
@@ -207,9 +213,6 @@ class Plotly(File):
             super().__init__(
                 path=path, store_path=store_path, allow_copy=True, use_hash=True
             )
-
-    def to_markdown(self, page_path: Path, idstore: IDStore, **kwargs) -> MdOut:
-        del kwargs
 
         # note; in the body we just insert the div.
         # The reason is that this part can be indented, e.g.
@@ -256,11 +259,10 @@ class Plotly(File):
                 ],
             )
         )
-        return MdOut(
-            body=SpacedText(body_html, (2, 2)),
-            back=SpacedText(back_html, (2, 2)) + comment_ids(plotly_id),
-            settings=settings,
-        )
+
+        self._body = SpacedText(body_html, (2, 2))
+        self._back = SpacedText(back_html, (2, 2)) + comment_ids(plotly_id)
+        self._settings = settings
 
 
 image_save_funcs = dict()

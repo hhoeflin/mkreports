@@ -1,11 +1,12 @@
 import hashlib
-from mkreports.md_proxy import register_md
 import shutil
 from os.path import relpath
 from pathlib import Path
 from typing import Optional, Union
 
-from .base import MdObj, MdOut
+from mkreports.md_proxy import register_md
+
+from .base import MdObj
 
 
 def true_stem(path: Path) -> str:
@@ -32,12 +33,14 @@ def relpath_html(target: Path, page_path: Path):
         # for translating to html, will be converted to path.parent / path.stem / index.html
         return relpath(target, page_path)
 
-@register_md('File')
+
+@register_md("File")
 class File(MdObj):
 
     path: Path
     allow_copy: bool
     store_path: Path
+    page_path: Path
     use_hash: bool
     _hash: Optional[str] = None
 
@@ -73,12 +76,13 @@ class File(MdObj):
             shutil.copy(path, new_path)
             self.path = new_path
 
+        # it returns nothing
+        self._body = None
+        self._back = None
+        self._settings = None
+
     @property
     def hash(self) -> str:
         if self._hash is None:
             self._hash = md5_hash_file(self.path)
         return self._hash
-
-    def to_markdown(self, page_path: Optional[Path] = None) -> MdOut:
-        del page_path
-        return MdOut()

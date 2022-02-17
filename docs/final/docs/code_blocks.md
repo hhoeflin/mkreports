@@ -14,9 +14,7 @@ css:
     code right from the script into the output. This is done by 
     starting a context manager and all code in the 
     scope of the context manager will be recorded.
-
     fib(3) = 2
-
     By default, the **tabbed** version will be used, but there
     are also the options
 
@@ -81,9 +79,7 @@ css:
 
     ```
 
-The code as a collapsed admonition before the output.
-
-fib(4) = 3
+The code as a collapsed admonition before the output.fib(4) = 3
 
 ---
 
@@ -99,17 +95,12 @@ p.P(f"fib({x}) = {a}")
 
 ```
 
-The code as an open code block before the output.
-
-fib(5) = 5
+The code as an open code block before the output.fib(5) = 5
 
 ---
 
 ## Tracking code (bottom-c)
-
-The code as a collapsed admoniton after the output.
-
-fib(6) = 8
+The code as a collapsed admoniton after the output.fib(6) = 8
 
 ??? code "Code"
 
@@ -126,10 +117,7 @@ fib(6) = 8
 ---
 
 ## Tracking code (bottom-o)
-
-The code as an open code block after the output.
-
-fib(7) = 13
+The code as an open code block after the output.fib(7) = 13
 
 ```python title="docs/staging/code_blocks.py" linenums="73"
 p.P("The code as an open code block after the output.")

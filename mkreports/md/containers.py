@@ -9,7 +9,7 @@ from typing import Literal, Optional, Tuple, Union
 from mdutils.tools.TextUtils import TextUtils
 from mkreports.md_proxy import register_md
 
-from .base import MdObj, MdOut
+from .base import MdObj
 from .file import File, relpath_html
 from .settings import Settings
 from .text import SpacedText, Text
@@ -19,6 +19,7 @@ from .text import SpacedText, Text
 @dataclass
 class Admonition(MdObj):
     text: Union[Text, MdObj]
+    page_path: Path
     javascript_path: Path
     title: Optional[str] = None
     kind: Literal[
@@ -48,10 +49,9 @@ class Admonition(MdObj):
                 self.css_path,
             )
 
-    def to_markdown(self, page_path: Path, **kwargs) -> MdOut:
         # if code-admonition, we need to load additional css
         if self.kind == "code":
-            rel_css_path = relpath_html(self.css_path, page_path)
+            rel_css_path = relpath_html(self.css_path, self.page_path)
             page_settings = dict(css=[rel_css_path])
         else:
             page_settings = {}
@@ -66,7 +66,9 @@ class Admonition(MdObj):
             page=page_settings,
         )
         if isinstance(self.text, MdObj):
-            admon_text, back, settings = self.text.to_markdown(**kwargs)
+            admon_text = self.text.body
+            back = self.text.back
+            settings = self.text.settings
             settings = cont_settings + settings
         else:
             admon_text, back, settings = str(self.text), SpacedText(), cont_settings
@@ -76,15 +78,11 @@ class Admonition(MdObj):
         else:
             title_md = f'"{self.title}"'
 
-        return MdOut(
-            body=SpacedText(
-                f"{'???' if self.collapse else '!!!'} {self.kind} {title_md}",
-                (2, 2),
-            )
-            + SpacedText(indent(str(admon_text), "    "), (2, 2)),
-            back=back,
-            settings=settings,
-        )
+        self._body = SpacedText(
+            f"{'???' if self.collapse else '!!!'} {self.kind} {title_md}", (2, 2)
+        ) + SpacedText(indent(str(admon_text), "    "), (2, 2))
+        self._back = back
+        self._settings = settings
 
 
 @register_md("Tab")
@@ -93,7 +91,7 @@ class Tab(MdObj):
     text: Union[Text, MdObj]
     title: Optional[str] = None
 
-    def to_markdown(self, **kwargs) -> MdOut:
+    def __post_init__(self):
         tab_settings = Settings(
             mkdocs={
                 "markdown_extensions": [
@@ -103,7 +101,9 @@ class Tab(MdObj):
             }
         )
         if isinstance(self.text, MdObj):
-            tab_text, back, settings = self.text.to_markdown(**kwargs)
+            tab_text = self.text.body
+            back = self.text.back
+            settings = self.text.settings
             settings = tab_settings + settings
         else:
             tab_text, back, settings = str(self.text), SpacedText(), tab_settings
@@ -113,16 +113,15 @@ class Tab(MdObj):
         else:
             title_text = ""
 
-        return MdOut(
-            body=SpacedText(f'=== "{title_text}"', (2, 2))
-            + SpacedText(indent(str(tab_text), "    "), (2, 2)),
-            back=back,
-            settings=settings,
+        self._body = SpacedText(f'=== "{title_text}"', (2, 2)) + SpacedText(
+            indent(str(tab_text), "    "), (2, 2)
         )
+        self._back = back
+        self._settings = settings
 
 
 @register_md("Code")
-@dataclass(frozen=True)
+@dataclass
 class Code(MdObj):
     """Wrapper class for code."""
 
@@ -133,8 +132,7 @@ class Code(MdObj):
     language: Optional[str] = "python"
     dedent: bool = True
 
-    def to_markdown(self, **kwargs) -> MdOut:
-        del kwargs
+    def __post_init__(self):
         annots = ""
         if self.language is not None:
             annots = annots + self.language
@@ -161,12 +159,11 @@ class Code(MdObj):
                 markdown_extensions=[{"pymdownx.highlight": dict(use_pygments=True)}]
             )
         )
-        return MdOut(
-            body=SpacedText(
-                TextUtils.insert_code(textwrap.dedent(self.code), annots), (2, 2)
-            ),
-            settings=settings,
+        self._body = SpacedText(
+            TextUtils.insert_code(textwrap.dedent(self.code), annots), (2, 2)
         )
+        self._back = None
+        self._settings = settings
 
 
 @register_md("CodeFile")
@@ -195,8 +192,6 @@ class CodeFile(File):
         self.hl_lines = hl_lines
         self.language = language
 
-    def to_markdown(self, **kwargs) -> MdOut:
-        del kwargs
         annots = ""
         if self.language is not None:
             annots = annots + self.language
@@ -215,12 +210,11 @@ class CodeFile(File):
                 ]
             )
         )
-        return MdOut(
-            body=SpacedText(
-                TextUtils.insert_code(
-                    f"--8<-- '{self.path.relative_to(self.report_path)}'", annots
-                ),
-                (2, 2),
+        self._body = SpacedText(
+            TextUtils.insert_code(
+                f"--8<-- '{self.path.relative_to(self.report_path)}'", annots
             ),
-            settings=settings,
+            (2, 2),
         )
+        self._back = None
+        self._settings = settings

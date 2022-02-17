@@ -176,7 +176,7 @@ class ConsoleWriter(Magics):
                     + md_obj
                     + md.Raw(md.SpacedText("---", (2, 2)))
                 )
-                self.console.add(post, add_code=False)
+                self.console.add(post)
                 self.stored_code = []
 
 

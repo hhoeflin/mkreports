@@ -1,6 +1,6 @@
 from mkreports.md_proxy import register_md
 
-from .base import MdObj, MdOut
+from .base import MdObj
 from .settings import Settings
 from .text import SpacedText
 
@@ -11,8 +11,6 @@ class Docstring(MdObj):
         super().__init__()
         self.obj_name = obj_name
 
-    def to_markdown(self, **kwargs) -> MdOut:
-        del kwargs
         cont_settings = Settings(
             mkdocs={
                 "plugins": [
@@ -21,6 +19,6 @@ class Docstring(MdObj):
                 ]
             }
         )
-        return MdOut(
-            body=SpacedText(f"::: {self.obj_name}", (2, 2)), settings=cont_settings
-        )
+        self._body = SpacedText(f"::: {self.obj_name}", (2, 2))
+        self._back = None
+        self._settings = cont_settings

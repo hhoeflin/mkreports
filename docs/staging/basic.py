@@ -52,11 +52,12 @@ def use_basic(report: Report) -> None:
             """
         )
         p2.P(
-            "A link back to the " + md.Link(anchor=heading_anchor, text="first heading")
+            "A link back to the "
+            + p.md.Link(anchor=heading_anchor, text="first heading")
         )
         p2.P(
             "A link to another page "
-            + md.Link("Images", to_page_path=report.page("images.md").path)
+            + p.md.Link("Images", to_page_path=report.page("images.md").path)
         )
-        p2.P("Or just to any page " + md.Link("Google", url="https://google.com"))
+        p2.P("Or just to any page " + p.md.Link("Google", url="https://google.com"))
         p2.P("Or of course also just straight markdown [Google](https://google.com)")

@@ -3,7 +3,7 @@ from typing import Optional
 
 from mkreports.md_proxy import register_md
 
-from .base import MdObj, MdOut, Raw
+from .base import MdObj, Raw
 from .containers import Admonition, CodeFile
 from .text import SpacedText
 
@@ -19,6 +19,7 @@ class CollapsedCodeFile(MdObj):
     def __init__(
         self,
         file: Path,
+        page_path: Path,
         store_path: Path,
         report_path: Path,
         javascript_path: Path,
@@ -27,11 +28,12 @@ class CollapsedCodeFile(MdObj):
         self.obj = Admonition(
             CodeFile(file, title=title, store_path=store_path, report_path=report_path),
             collapse=True,
+            page_path=page_path,
             title="Code",
             kind="code",
             javascript_path=javascript_path,
         )
 
-    def to_markdown(self, **kwargs) -> MdOut:
-        md_out = self.obj.to_markdown(**kwargs)
-        return md_out
+        self._body = self.obj.body
+        self._back = self.obj.back
+        self._settings = self.obj.settings

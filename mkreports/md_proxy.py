@@ -3,6 +3,8 @@ from functools import partial
 from pathlib import Path
 from typing import Any, Dict
 
+from .md.idstore import IDStore
+
 
 def register_md(name):
     def register_md_named(cls):
@@ -19,6 +21,8 @@ class MdProxy:
         self,
         store_path: Path,
         report_path: Path,
+        page_path: Path,
+        idstore: IDStore,
         javascript_path: Path,
         project_root: Path,
     ):
@@ -26,6 +30,8 @@ class MdProxy:
         self.report_path = report_path
         self.javascript_path = javascript_path
         self.project_root = project_root
+        self.page_path = page_path
+        self.idstore = idstore
 
     def __getattr__(self, name):
         # we are not checking if it is included; if not, should raise error
@@ -47,6 +53,10 @@ class MdProxy:
                 partial_kwargs["javascript_path"] = self.javascript_path
             if "project_root" in obj_sig.parameters:
                 partial_kwargs["project_root"] = self.project_root
+            if "page_path" in obj_sig.parameters:
+                partial_kwargs["page_path"] = self.page_path
+            if "idstore" in obj_sig.parameters:
+                partial_kwargs["idstore"] = self.idstore
 
             if len(partial_kwargs) > 0:
                 return partial(obj, **partial_kwargs)

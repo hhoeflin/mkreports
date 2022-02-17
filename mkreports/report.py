@@ -10,8 +10,7 @@ import os
 import shutil
 from contextlib import nullcontext
 from pathlib import Path
-from typing import (Any, ContextManager, Dict, Literal, Mapping, Optional,
-                    Tuple, Union)
+from typing import Any, ContextManager, Dict, Mapping, Optional, Tuple, Union
 
 import yaml
 from frontmatter.default_handlers import DEFAULT_POST_TEMPLATE, YAMLHandler
@@ -285,6 +284,8 @@ class Page:
             report_path=self.report.path,
             javascript_path=self.report.javascript_path,
             project_root=self.report.project_root,
+            idstore=self._idstore,
+            page_path=self.path,
         )
 
         self.code_context: Optional[CodeContext] = None
@@ -329,7 +330,9 @@ class Page:
             raise Exception("__exit__ called before __enter__")
         self.code_context.__exit__(exc_type, exc_val, traceback)
         self._add_to_page(
-            self.code_context.md_obj(javascript_path=self.report.javascript_path)
+            self.code_context.md_obj(
+                javascript_path=self.report.javascript_path, page_path=self.path
+            )
         )
         self.code_context = None
 
@@ -413,10 +416,9 @@ class Page:
         https://github.com/eyeseast/python-frontmatter/issues/87
         """
         # call the markdown and the backmatter
-        md_out = item.to_markdown(page_path=self.path, idstore=self._idstore)
-        md_text = md_out.body + md_out.back
+        md_text = item.body + item.back
 
-        req = md_out.settings
+        req = item.settings
         if len(req.mkdocs) > 0:
             # merge these things into mkdocs
             # there is not allowed to be a nav here
