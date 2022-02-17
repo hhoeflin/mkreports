@@ -221,9 +221,10 @@ class Paragraph(MdObj):
 
         if isinstance(self.anchor, Anchor):
             # note, string conversion to Anchor done in post-init
-            self._body = SpacedText(self.obj.body.text, (0, 1)) + self.anchor.body
+            res_body = SpacedText(self.obj.body.text, (0, 1)) + self.anchor.body
         else:
-            self._body = self.obj.body
+            res_body = self.obj.body
+        self._body = SpacedText(res_body, (2, 2))
         self._back = None
         self._settings = None
 

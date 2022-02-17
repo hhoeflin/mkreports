@@ -106,7 +106,14 @@ css:
 
     A number of different types of links are possible. Those within
     a page to an anchor or to another page (with or without anchor)
-    A link back to the [first heading](#my-headings)A link to another page [Images](images.md)Or just to any page [Google](https://google.com)Or of course also just straight markdown [Google](https://google.com)
+
+    A link back to the [first heading](#my-headings)
+
+    A link to another page [Images](images.md)
+
+    Or just to any page [Google](https://google.com)
+
+    Or of course also just straight markdown [Google](https://google.com)
 
 === "Code"
 
