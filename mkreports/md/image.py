@@ -1,5 +1,6 @@
 import inspect
 import tempfile
+from contextlib import suppress
 from copy import deepcopy
 from pathlib import Path
 from typing import Literal, Optional, Union
@@ -269,7 +270,7 @@ image_save_funcs = dict()
 
 
 # for plotnine
-try:
+with suppress(ImportError):
     from plotnine.ggplot import ggplot
 
     def ggplot_save(
@@ -292,11 +293,9 @@ try:
         )
 
     image_save_funcs[ggplot] = ggplot_save
-except Exception:
-    pass
 
 # for matplotlib
-try:
+with suppress(ImportError):
     from matplotlib.figure import Figure as MplFigure
 
     def matplotlib_save(
@@ -341,11 +340,9 @@ try:
 
     image_save_funcs[MplFigure] = matplotlib_save
 
-except Exception:
-    pass
 
 # seaborn; if seaborn loads we can assume so does matplotlib
-try:
+with suppress(ImportError):
     from seaborn import FacetGrid as SnsFacetGrid
     from seaborn import JointGrid as SnsJointGrid
     from seaborn import PairGrid as SnsPairGrid
@@ -372,6 +369,3 @@ try:
     image_save_funcs[SnsFacetGrid] = seaborn_save
     image_save_funcs[SnsJointGrid] = seaborn_save
     image_save_funcs[SnsPairGrid] = seaborn_save
-
-except Exception:
-    pass

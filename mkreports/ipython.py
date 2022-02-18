@@ -1,5 +1,6 @@
 import os
 import shutil
+from contextlib import suppress
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
@@ -45,7 +46,7 @@ class ConsoleWriter(Magics):
     def _set_default_handlers(self):
         self.handlers = []
         # handler for tables
-        try:
+        with suppress(ImportError):
             import pandas as pd
 
             self.handlers.append(
@@ -56,11 +57,9 @@ class ConsoleWriter(Magics):
                     add_code=True,
                 )
             )
-        except Exception:
-            pass
 
         # handler for matplotlib
-        try:
+        with suppress(ImportError):
             from matplotlib.figure import Figure as MplFigure
 
             self.handlers.append(
@@ -71,10 +70,8 @@ class ConsoleWriter(Magics):
                     add_code=True,
                 )
             )
-        except Exception:
-            pass
 
-        try:
+        with suppress(ImportError):
             from plotnine.ggplot import ggplot
 
             self.handlers.append(
@@ -85,10 +82,8 @@ class ConsoleWriter(Magics):
                     add_code=True,
                 )
             )
-        except Exception:
-            pass
 
-        try:
+        with suppress(ImportError):
             from seaborn import FacetGrid as SnsFacetGrid
             from seaborn import JointGrid as SnsJointGrid
             from seaborn import PairGrid as SnsPairGrid
@@ -101,9 +96,6 @@ class ConsoleWriter(Magics):
                     add_code=True,
                 )
             )
-
-        except Exception:
-            pass
 
         self.handlers.append(
             Handler(name="mdobj", class_type=md.MdObj, func=lambda x: x, add_code=False)
