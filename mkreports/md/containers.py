@@ -19,8 +19,6 @@ from .text import SpacedText, Text
 @dataclass
 class Admonition(MdObj):
     text: Union[Text, MdObj]
-    page_path: Path
-    javascript_path: Path
     title: Optional[str] = None
     kind: Literal[
         "note",
@@ -38,9 +36,12 @@ class Admonition(MdObj):
         "code",
     ] = "note"
     collapse: bool = False
+    page_path: Optional[Path] = None
+    javascript_path: Optional[Path] = None
 
     def __post_init__(self):
         if self.kind == "code":
+            assert self.javascript_path is not None
             # create a css file that creates a 'code' admonition
             self.css_path = self.javascript_path / "code_admonition.css"
             self.javascript_path.mkdir(parents=True, exist_ok=True)
@@ -51,6 +52,7 @@ class Admonition(MdObj):
 
         # if code-admonition, we need to load additional css
         if self.kind == "code":
+            assert self.page_path is not None
             rel_css_path = relpath_html(self.css_path, self.page_path)
             page_settings = dict(css=[rel_css_path])
         else:
