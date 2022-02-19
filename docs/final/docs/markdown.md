@@ -34,17 +34,28 @@ for the user:
 
 All markdown objects are available under their name directory for a
 `Page` object (created from a `Report`). For these, all parameters related to
-a page and project such as
+a page and project are captured in a single parameter `page_info` that expects
+and object of type `PageInfo` with names:
 
 - `store_path`
 - `page_path`
-- `report_page`
+- `report_path`
 - `project_root`
 - `javascript_path`
 - `idstore`
 
-are pre-filled and only the remaining parameters need to be specified.
-The resulting object will directly be added to the page.
+When requesting a markdown object from a page, this is automatically added.
+The object is immediately added to the page.
+
+A list of all available object can be obtained with
+
+```python
+page.md.proxied_classes
+```
+
+where `page` is a `Page` and the returned object is a dict of all registered
+markdown objects. The key of the dict is the name under which it is available
+as an attribute from the page.
 
 ### `md` attribute of a `Page`
 

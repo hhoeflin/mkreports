@@ -1,5 +1,6 @@
 import copy
 import inspect
+import logging
 import shutil
 import tempfile
 from copy import deepcopy
@@ -16,17 +17,26 @@ from .md_proxy import register_md
 from .settings import PageInfo, Settings, merge_settings
 from .text import SpacedText
 
+logger = logging.getLogger(__name__)
+
 
 @register_md("Table")
 class Table(MdObj):
     table: pd.DataFrame
     kwargs: Dict[str, Any]
 
-    def __init__(self, table: pd.DataFrame, **kwargs):
+    def __init__(self, table: pd.DataFrame, max_rows: Optional[int] = 100, **kwargs):
         super().__init__()
         self.kwargs = kwargs
         # think about making this a static-frame
         self.table = deepcopy(table)
+
+        # check if the table has too many rows
+        if max_rows is not None and table.shape[0] > max_rows:
+            logger.warning(
+                f"Table has {table.shape[0]} rows, but only {max_rows} allowed. Truncating."
+            )
+            self.table = self.table.iloc[0:max_rows]
 
         table_md = self.table.to_markdown(**self.kwargs)
         table_md = table_md if table_md is not None else ""
@@ -80,6 +90,7 @@ class DataTable(File):
         self,
         table: pd.DataFrame,
         page_info: PageInfo,
+        max_rows: Optional[int] = 1000,
         column_settings: Optional[dict] = None,
         add_header_filters: bool = False,
         yadcf_settings: Optional[dict] = None,
@@ -91,6 +102,11 @@ class DataTable(File):
         with tempfile.TemporaryDirectory() as dir:
             path = Path(dir) / ("datatable.json")
             # here we use the split method; the index and columns
+            if max_rows is not None and table.shape[0] > max_rows:
+                logger.warning(
+                    f"Table has {table.shape[0]} rows, but only {max_rows} allowed. Truncating."
+                )
+                table = table.iloc[0:max_rows]
             # are not useful, but the rest gets set as 'data', which we need
             table.to_json(path, orient="split", default_handler=str, **kwargs)
 
@@ -231,6 +247,7 @@ class Tabulator(File):
         self,
         table: pd.DataFrame,
         page_info: PageInfo,
+        max_rows: Optional[int] = 1000,
         table_settings: Optional[dict] = None,
         add_header_filters: bool = True,
         prettify_colnames: bool = True,
@@ -245,6 +262,11 @@ class Tabulator(File):
             path = Path(dir) / ("tabulator.json")
             # here we use the split method; the index and columns
             # are not useful, but the rest gets set as 'data', which we need
+            if max_rows is not None and table.shape[0] > max_rows:
+                logger.warning(
+                    f"Table has {table.shape[0]} rows, but only {max_rows} allowed. Truncating."
+                )
+                table = table.iloc[0:max_rows]
             table.to_json(path, orient="records", default_handler=str, **kwargs)
 
             # Make sure the file is moved to the right place
