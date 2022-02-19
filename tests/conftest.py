@@ -1,3 +1,19 @@
+import pytest
+from mkreports.md import IDStore, PageInfo
+
+
+@pytest.fixture
+def page_info(tmp_path):
+    return PageInfo(
+        store_path=tmp_path,
+        report_path=tmp_path,
+        javascript_path=tmp_path,
+        project_root=tmp_path,
+        page_path=tmp_path,
+        idstore=IDStore(),
+    )
+
+
 def pytest_addoption(parser):
     parser.addoption("--ignore-images", action="store_true", default=False)
 

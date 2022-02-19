@@ -1,6 +1,5 @@
-from mkreports.md_proxy import register_md
-
 from .base import MdObj
+from .md_proxy import register_md
 from .settings import Settings
 from .text import SpacedText
 

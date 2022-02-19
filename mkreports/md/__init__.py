@@ -7,7 +7,8 @@ from .header import H1, H2, H3, H4, H5, H6, H7, Heading
 from .idstore import IDStore
 from .image import PIL, Altair, Image, ImageFile, Plotly
 from .list import List
-from .settings import Settings, merge_settings
+from .md_proxy import MdProxy, register_md
+from .settings import PageInfo, Settings, merge_settings
 from .table import DataTable, Table, Tabulator
 from .text import SpacedText, Text
 
@@ -43,6 +44,9 @@ __all__ = [
     "ImageFile",
     "Plotly",
     "List",
+    "MdProxy",
+    "register_md",
+    "PageInfo",
     "Settings",
     "merge_settings",
     "DataTable",

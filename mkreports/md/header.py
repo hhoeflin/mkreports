@@ -3,9 +3,9 @@ from dataclasses import dataclass
 from typing import Literal, Optional, Union
 
 import mdutils.tools as mdt
-from mkreports.md_proxy import register_md
 
 from .base import Anchor, MdObj
+from .md_proxy import register_md
 from .text import SpacedText
 
 

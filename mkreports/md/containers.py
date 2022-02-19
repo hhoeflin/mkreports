@@ -7,11 +7,11 @@ from textwrap import indent
 from typing import Literal, Optional, Tuple, Union
 
 from mdutils.tools.TextUtils import TextUtils
-from mkreports.md_proxy import register_md
 
 from .base import MdObj
 from .file import File, relpath_html
-from .settings import Settings
+from .md_proxy import register_md
+from .settings import PageInfo, Settings
 from .text import SpacedText, Text
 
 
@@ -36,15 +36,16 @@ class Admonition(MdObj):
         "code",
     ] = "note"
     collapse: bool = False
-    page_path: Optional[Path] = None
-    javascript_path: Optional[Path] = None
+    page_info: Optional[PageInfo] = None
 
     def __post_init__(self):
         if self.kind == "code":
-            assert self.javascript_path is not None
+            assert self.page_info is not None
+            assert self.page_info.javascript_path is not None
+            javascript_path = self.page_info.javascript_path
             # create a css file that creates a 'code' admonition
-            self.css_path = self.javascript_path / "code_admonition.css"
-            self.javascript_path.mkdir(parents=True, exist_ok=True)
+            self.css_path = javascript_path / "code_admonition.css"
+            javascript_path.mkdir(parents=True, exist_ok=True)
             shutil.copy(
                 Path(__file__).parent / "code_admonition.css",
                 self.css_path,
@@ -52,8 +53,9 @@ class Admonition(MdObj):
 
         # if code-admonition, we need to load additional css
         if self.kind == "code":
-            assert self.page_path is not None
-            rel_css_path = relpath_html(self.css_path, self.page_path)
+            assert self.page_info is not None
+            assert self.page_info.page_path is not None
+            rel_css_path = relpath_html(self.css_path, self.page_info.page_path)
             page_settings = dict(css=[rel_css_path])
         else:
             page_settings = {}
@@ -177,8 +179,7 @@ class CodeFile(File):
     def __init__(
         self,
         path: Path,
-        store_path: Path,
-        report_path: Path,
+        page_info: PageInfo,
         title: Optional[str] = None,
         hl_lines: Optional[Tuple[int, int]] = None,
         language: Optional[str] = "python",
@@ -186,10 +187,8 @@ class CodeFile(File):
         """
         Move a code-file into the store-dir and reference it in code block.
         """
-        super().__init__(
-            path=path, store_path=store_path, allow_copy=True, use_hash=True
-        )
-        self.report_path = report_path
+        assert page_info.report_path is not None
+        super().__init__(path=path, page_info=page_info, allow_copy=True, use_hash=True)
         self.title = title
         self.hl_lines = hl_lines
         self.language = language
@@ -214,7 +213,7 @@ class CodeFile(File):
         )
         self._body = SpacedText(
             TextUtils.insert_code(
-                f"--8<-- '{self.path.relative_to(self.report_path)}'", annots
+                f"--8<-- '{self.path.relative_to(page_info.report_path)}'", annots
             ),
             (2, 2),
         )

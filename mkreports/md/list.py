@@ -1,8 +1,7 @@
 from typing import Iterable, Literal, Sequence, Union
 
-from mkreports.md_proxy import register_md
-
 from .base import MdObj, MdSeq, Raw
+from .md_proxy import register_md
 from .text import SpacedText, Text
 
 

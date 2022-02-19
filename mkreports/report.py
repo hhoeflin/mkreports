@@ -21,8 +21,8 @@ from .exceptions import (ContextActiveError, IncorrectSuffixError,
                          ReportExistsError, ReportNotExistsError,
                          ReportNotValidError, TrackerEmptyError,
                          TrackerIncompleteError)
-from .md import IDStore, MdObj, Raw, SpacedText, Text, merge_settings
-from .md_proxy import MdProxy
+from .md import (IDStore, MdObj, MdProxy, PageInfo, Raw, SpacedText, Text,
+                 merge_settings)
 from .settings import (NavEntry, add_nav_entry, load_yaml, path_to_nav_entry,
                        save_yaml)
 from .utils import find_comment_ids, repo_root
@@ -279,14 +279,7 @@ class Page:
         self.code_layout: Layouts = code_layout
         self.code_name_only = code_name_only
 
-        self._md = MdProxy(
-            store_path=self.store_path,
-            report_path=self.report.path,
-            javascript_path=self.report.javascript_path,
-            project_root=self.report.project_root,
-            idstore=self._idstore,
-            page_path=self.path,
-        )
+        self._md = MdProxy(page_info=self.page_info)
 
         self.code_context: Optional[CodeContext] = None
 
@@ -329,11 +322,7 @@ class Page:
         if self.code_context is None:
             raise Exception("__exit__ called before __enter__")
         self.code_context.__exit__(exc_type, exc_val, traceback)
-        self._add_to_page(
-            self.code_context.md_obj(
-                javascript_path=self.report.javascript_path, page_path=self.path
-            )
-        )
+        self._add_to_page(self.code_context.md_obj(page_info=self.page_info))
         self.code_context = None
 
     def __getattr__(self, name):
@@ -354,6 +343,17 @@ class Page:
         result = cls.__new__(cls)
         result.__dict__.update(self.__dict__)
         return result
+
+    @property
+    def page_info(self):
+        return PageInfo(
+            store_path=self.store_path,
+            report_path=self.report.path,
+            javascript_path=self.report.javascript_path,
+            project_root=self.report.project_root,
+            idstore=self._idstore,
+            page_path=self.path,
+        )
 
     @property
     def notrack(self) -> ContextManager["Page"]:
