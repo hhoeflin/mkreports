@@ -14,7 +14,7 @@ javascript:
 ??? code "Code"
 
     ```python
-    --8<-- 'docs/images_store/images-3dc4a61a29c99ed90932c0eb7a1c575c.py'
+    --8<-- 'docs/images_store/images-01d224d074540cda2f6954ed73bf30d4.py'
     ```
 
 ## Supported formats
@@ -239,6 +239,51 @@ image manually and then include it as an `ImageFile` object.
 [comment]: # (id: plotly_id-0)
 
 ## Different image sizes
+
+In order to change the size of the image, use the width
+and height parameters. But please note that ultimately,
+the number of pixels determines the size  - i.e. doubling height
+and width while halfing dpi does not change the size, but 
+internally how it is rendered may change.
+
+### Plotnine
+
+=== "Content"
+
+    #### Larger
+
+    ![](images_store/image-3ec0200f5d28f661895e19b17605e80f.png)
+
+    #### Smaller
+
+    ![](images_store/image-938d1d3f8e637526be808c610415dfb9.png)
+
+=== "Code"
+
+    ```python title="docs/staging/images.py" linenums="139"
+        p.H4("Larger")
+        p.Image(
+            ggplot(mtcars, aes("wt", "mpg", color="factor(gear)"))
+            + geom_point()
+            + stat_smooth(method="lm")
+            + facet_wrap("~gear"),
+            width=10,
+            height=6,
+        )
+        p.H4("Smaller")
+        p.Image(
+            ggplot(mtcars, aes("wt", "mpg", color="factor(gear)"))
+            + geom_point()
+            + stat_smooth(method="lm")
+            + facet_wrap("~gear"),
+            width=5,
+            height=3,
+        )
+    p.Admonition("Still to be implemented", kind="warning")
+
+    ```
+
+---
 
 !!! warning 
 

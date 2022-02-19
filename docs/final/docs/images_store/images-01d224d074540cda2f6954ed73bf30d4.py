@@ -124,4 +124,34 @@ def use_images(report: Report) -> None:
         p.Plotly(fig)
 
     p.H2("Different image sizes")
+
+    p.P(
+        """
+        In order to change the size of the image, use the width
+        and height parameters. But please note that ultimately,
+        the number of pixels determines the size  - i.e. doubling height
+        and width while halfing dpi does not change the size, but 
+        internally how it is rendered may change.
+        """
+    )
+
+    with p.H3("Plotnine"):
+        p.H4("Larger")
+        p.Image(
+            ggplot(mtcars, aes("wt", "mpg", color="factor(gear)"))
+            + geom_point()
+            + stat_smooth(method="lm")
+            + facet_wrap("~gear"),
+            width=10,
+            height=6,
+        )
+        p.H4("Smaller")
+        p.Image(
+            ggplot(mtcars, aes("wt", "mpg", color="factor(gear)"))
+            + geom_point()
+            + stat_smooth(method="lm")
+            + facet_wrap("~gear"),
+            width=5,
+            height=3,
+        )
     p.Admonition("Still to be implemented", kind="warning")
