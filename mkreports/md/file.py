@@ -4,9 +4,9 @@ from os.path import relpath
 from pathlib import Path
 from typing import Optional, Union
 
-from mkreports.md_proxy import register_md
-
 from .base import MdObj
+from .md_proxy import register_md
+from .settings import PageInfo
 
 
 def true_stem(path: Path) -> str:
@@ -39,24 +39,25 @@ class File(MdObj):
 
     path: Path
     allow_copy: bool
-    store_path: Path
-    page_path: Path
     use_hash: bool
     _hash: Optional[str] = None
 
     def __init__(
         self,
         path: Union[str, Path],
-        store_path: Path,
+        page_info: PageInfo,
         allow_copy: bool = True,
         use_hash: bool = False,
     ) -> None:
         super().__init__()
 
+        # store path needs to be set
+        assert page_info.store_path is not None
+
         # set the existing attributes
         self.allow_copy = allow_copy
         self.use_hash = use_hash
-        self.store_path = store_path
+        self.store_path = page_info.store_path
 
         # for the path we first have to see if they will be copied
         self.path = Path(path).absolute()

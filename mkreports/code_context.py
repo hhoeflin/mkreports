@@ -18,7 +18,7 @@ import inspect
 from pathlib import Path
 from typing import Literal, Optional
 
-from .md import Admonition, HLine, MdObj, MdSeq, Tab
+from .md import Admonition, HLine, MdObj, MdSeq, PageInfo, Tab
 from .tracker import BaseTracker, SimpleTracker
 
 Layouts = Literal["top-c", "top-o", "bottom-c", "bottom-o", "tabbed", "nocode"]
@@ -64,7 +64,7 @@ class CodeContext:
         else:
             self.obj_list.insert(0, md_obj)
 
-    def md_obj(self, page_path: Path, javascript_path: Path) -> MdObj:
+    def md_obj(self, page_info: PageInfo) -> MdObj:
         """
         Return the markdown object that represents output and code.
 
@@ -98,8 +98,7 @@ class CodeContext:
                 return (
                     Admonition(
                         code_final,
-                        page_path=page_path,
-                        javascript_path=javascript_path,
+                        page_info=page_info,
                         collapse=True,
                         title="Code",
                         kind="code",
@@ -114,8 +113,7 @@ class CodeContext:
                     content
                     + Admonition(
                         code_final,
-                        page_path=page_path,
-                        javascript_path=javascript_path,
+                        page_info=page_info,
                         collapse=True,
                         title="Code",
                         kind="code",

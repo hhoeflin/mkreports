@@ -1,10 +1,10 @@
 from pathlib import Path
 from typing import Optional
 
-from mkreports.md_proxy import register_md
-
 from .base import MdObj, Raw
 from .containers import Admonition, CodeFile
+from .md_proxy import register_md
+from .settings import PageInfo
 from .text import SpacedText
 
 
@@ -19,19 +19,15 @@ class CollapsedCodeFile(MdObj):
     def __init__(
         self,
         file: Path,
-        page_path: Path,
-        store_path: Path,
-        report_path: Path,
-        javascript_path: Path,
+        page_info: PageInfo,
         title: Optional[str] = None,
     ) -> None:
         self.obj = Admonition(
-            CodeFile(file, title=title, store_path=store_path, report_path=report_path),
+            CodeFile(file, title=title, page_info=page_info),
             collapse=True,
-            page_path=page_path,
             title="Code",
             kind="code",
-            javascript_path=javascript_path,
+            page_info=page_info,
         )
 
         self._body = self.obj.body
