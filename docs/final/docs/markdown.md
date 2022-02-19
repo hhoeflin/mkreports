@@ -18,6 +18,7 @@ page = report.page('index.md')
 There are overall 3 ways to use and add markdown elements to a page.
 Each of these provides a different level of convenient. As a summary
 for the user:
+
 - If you want to add an element immediately to a page, use the markdown
   classes directly available as attributes in the page itself. These
   preset certain parameters and add the markdown object directly to the

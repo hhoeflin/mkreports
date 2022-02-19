@@ -6,12 +6,12 @@ from pathlib import Path
 from typing import Literal, Optional, Union
 
 from mdutils.tools.Image import Image as UtilsImage
-from mkreports.md_proxy import register_md
 
 from .base import comment_ids
 from .file import File, relpath_html
 from .idstore import IDStore
-from .settings import Settings
+from .md_proxy import register_md
+from .settings import PageInfo, Settings
 from .text import SpacedText
 
 
@@ -24,8 +24,7 @@ class ImageFile(File):
     def __init__(
         self,
         path: Union[str, Path],
-        store_path: Path,
-        page_path: Path,
+        page_info: PageInfo,
         link_type: Literal["inline", "ref"] = "inline",
         text: str = "",
         tooltip: str = "",
@@ -33,17 +32,20 @@ class ImageFile(File):
         use_hash: bool = True,
     ) -> None:
         super().__init__(
-            path=path, store_path=store_path, allow_copy=allow_copy, use_hash=use_hash
+            path=path, page_info=page_info, allow_copy=allow_copy, use_hash=use_hash
         )
         self.text = text
         self.tooltip = tooltip
         self.link_type = link_type
 
+        # page_info needs to be set
+        assert page_info.page_path is not None
+
         if self.link_type == "inline":
             self._body = SpacedText(
                 UtilsImage.new_inline_image(
                     text=self.text,
-                    path=str(relpath_html(self.path, page_path.parent)),
+                    path=str(relpath_html(self.path, page_info.page_path.parent)),
                     tooltip=self.tooltip,
                 )
             )
@@ -60,8 +62,7 @@ class Image(ImageFile):
     def __init__(
         self,
         image,
-        store_path: Path,
-        page_path: Path,
+        page_info: PageInfo,
         width: Optional[float] = None,
         height: Optional[float] = None,
         units: Literal["in", "cm", "mm"] = "in",
@@ -87,8 +88,7 @@ class Image(ImageFile):
                 # which will also move it into the store
                 super().__init__(
                     path=path,
-                    store_path=store_path,
-                    page_path=page_path,
+                    page_info=page_info,
                     link_type=link_type,
                     text=text,
                     tooltip=tooltip,
@@ -104,8 +104,7 @@ class PIL(ImageFile):
     def __init__(
         self,
         image,
-        store_path: Path,
-        page_path: Path,
+        page_info: PageInfo,
         link_type: Literal["inline", "ref"] = "inline",
         text: str = "",
         tooltip: str = "",
@@ -118,8 +117,7 @@ class PIL(ImageFile):
             # which will also move it into the store
             super().__init__(
                 path=path,
-                store_path=store_path,
-                page_path=page_path,
+                page_info=page_info,
                 link_type=link_type,
                 text=text,
                 tooltip=tooltip,
@@ -133,11 +131,12 @@ class Altair(File):
     def __init__(
         self,
         altair,
-        store_path: Path,
-        page_path: Path,
-        idstore: IDStore,
+        page_info: PageInfo,
         **kwargs,
     ):
+        assert page_info.page_path is not None
+        assert page_info.idstore is not None
+
         with tempfile.TemporaryDirectory() as dir:
             path = Path(dir) / ("altair.csv")
             # here we use the split method; the index and columns
@@ -148,7 +147,7 @@ class Altair(File):
             # Make sure the file is moved to the rigth place
             super().__init__(
                 path=path,
-                store_path=store_path,
+                page_info=page_info,
                 allow_copy=True,
                 use_hash=True,
             )
@@ -158,14 +157,14 @@ class Altair(File):
         # inside a tab. But then <script> content can be escaped, leading to errors for '=>'
         # so the script tag itself gets done in the backmatter
 
-        altair_id = idstore.next_id("altair_id")
+        altair_id = page_info.idstore.next_id("altair_id")
         body_html = inspect.cleandoc(
             f"""
             <div id='{altair_id}'> </div>
             """
         )
 
-        rel_spec_path = str(relpath_html(self.path, page_path))
+        rel_spec_path = str(relpath_html(self.path, page_info.page_path))
         back_html = inspect.cleandoc(
             f"""
             <script>
@@ -198,11 +197,12 @@ class Plotly(File):
     def __init__(
         self,
         plotly,
-        store_path: Path,
-        page_path: Path,
-        idstore: IDStore,
+        page_info: PageInfo,
         **kwargs,
     ):
+        assert page_info.page_path is not None
+        assert page_info.idstore is not None
+
         with tempfile.TemporaryDirectory() as dir:
             path = Path(dir) / ("plotly.json")
             # here we use the split method; the index and columns
@@ -212,7 +212,7 @@ class Plotly(File):
 
             # Make sure the file is moved to the rigth place
             super().__init__(
-                path=path, store_path=store_path, allow_copy=True, use_hash=True
+                path=path, page_info=page_info, allow_copy=True, use_hash=True
             )
 
         # note; in the body we just insert the div.
@@ -220,14 +220,14 @@ class Plotly(File):
         # inside a tab. But then <script> content can be escaped, leading to errors for '=>'
         # so the script tag itself gets done in the backmatter
 
-        plotly_id = idstore.next_id("plotly_id")
+        plotly_id = page_info.idstore.next_id("plotly_id")
         body_html = inspect.cleandoc(
             f"""
             <div id='{plotly_id}'> </div>
             """
         )
 
-        rel_spec_path = str(relpath_html(self.path, page_path))
+        rel_spec_path = str(relpath_html(self.path, page_info.page_path))
         back_html = inspect.cleandoc(
             f"""
             <script>

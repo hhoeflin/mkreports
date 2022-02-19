@@ -7,14 +7,13 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 import pandas as pd
-from mkreports.md_proxy import register_md
 from mkreports.utils import func_ref, serialize_json, snake_to_text
 from pandas.api import types
 
 from .base import MdObj, comment_ids
 from .file import File, relpath_html
-from .idstore import IDStore
-from .settings import Settings, merge_settings
+from .md_proxy import register_md
+from .settings import PageInfo, Settings, merge_settings
 from .text import SpacedText
 
 
@@ -80,14 +79,15 @@ class DataTable(File):
     def __init__(
         self,
         table: pd.DataFrame,
-        store_path: Path,
-        page_path: Path,
-        idstore: IDStore,
+        page_info: PageInfo,
         column_settings: Optional[dict] = None,
         add_header_filters: bool = False,
         yadcf_settings: Optional[dict] = None,
         **kwargs,
     ):
+        assert page_info.idstore is not None
+        assert page_info.page_path is not None
+
         with tempfile.TemporaryDirectory() as dir:
             path = Path(dir) / ("datatable.json")
             # here we use the split method; the index and columns
@@ -96,7 +96,7 @@ class DataTable(File):
 
             # Make sure the file is moved to the right place
             super().__init__(
-                path=path, store_path=store_path, allow_copy=True, use_hash=True
+                path=path, page_info=page_info, allow_copy=True, use_hash=True
             )
 
         # prepare the table settings
@@ -118,14 +118,14 @@ class DataTable(File):
             "columns": [col_set[col] for col in table.columns],
         }
 
-        datatable_id = idstore.next_id("datatable_id")
+        datatable_id = page_info.idstore.next_id("datatable_id")
         body_html = inspect.cleandoc(
             f"""
             <table id='{datatable_id}' class='display' style='width:100%'> </table>
             """
         )
 
-        rel_table_path = relpath_html(self.path, page_path)
+        rel_table_path = relpath_html(self.path, page_info.page_path)
         table_settings = copy.deepcopy(self.table_settings)
         table_settings["ajax"] = str(rel_table_path)
         settings_str = serialize_json(table_settings)
@@ -230,16 +230,17 @@ class Tabulator(File):
     def __init__(
         self,
         table: pd.DataFrame,
-        store_path: Path,
-        page_path: Path,
-        idstore: IDStore,
-        javascript_path: Path,
+        page_info: PageInfo,
         table_settings: Optional[dict] = None,
         add_header_filters: bool = True,
         prettify_colnames: bool = True,
         col_settings: Optional[dict] = None,
         **kwargs,
     ):
+        assert page_info.idstore is not None
+        assert page_info.page_path is not None
+        assert page_info.javascript_path is not None
+
         with tempfile.TemporaryDirectory() as dir:
             path = Path(dir) / ("tabulator.json")
             # here we use the split method; the index and columns
@@ -248,11 +249,11 @@ class Tabulator(File):
 
             # Make sure the file is moved to the right place
             super().__init__(
-                path=path, store_path=store_path, allow_copy=True, use_hash=True
+                path=path, page_info=page_info, allow_copy=True, use_hash=True
             )
 
         # create the javascript file
-        self.min_max_filter_path = javascript_path / "min_max_filter.js"
+        self.min_max_filter_path = page_info.javascript_path / "min_max_filter.js"
         self.min_max_filter_path.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy(
             Path(__file__).parent / "tabulator_js" / "min_max_filter.js",
@@ -279,15 +280,15 @@ class Tabulator(File):
         )
         self.table_settings["columns"] = col_list
 
-        tabulator_id = idstore.next_id("tabulator_id")
+        tabulator_id = page_info.idstore.next_id("tabulator_id")
         body_html = inspect.cleandoc(
             f"""
             <div id='{tabulator_id}' class='display'> </div>
             """
         )
 
-        rel_filter_path = relpath_html(self.min_max_filter_path, page_path)
-        rel_table_path = relpath_html(self.path, page_path)
+        rel_filter_path = relpath_html(self.min_max_filter_path, page_info.page_path)
+        rel_table_path = relpath_html(self.path, page_info.page_path)
         table_settings = copy.deepcopy(self.table_settings)
         table_settings["ajaxURL"] = str(rel_table_path)
 

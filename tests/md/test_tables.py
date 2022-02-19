@@ -5,7 +5,7 @@ from mkreports import md
 
 
 class TestTables:
-    def test_non_json_types(self, tmp_path):
+    def test_non_json_types(self, page_info):
         """Test if table with non-JSON types can be created."""
         # create an example table with path objects
         test_table = pd.DataFrame(
@@ -20,8 +20,5 @@ class TestTables:
         # serialization is done during initialization.
         md.Tabulator(
             test_table,
-            store_path=tmp_path,
-            javascript_path=tmp_path,
-            page_path=tmp_path,
-            idstore=md.IDStore(),
+            page_info=page_info,
         )

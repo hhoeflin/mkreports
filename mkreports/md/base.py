@@ -8,9 +8,8 @@ from os.path import relpath
 from pathlib import Path
 from typing import Any, Dict, Iterable, Optional, Tuple, Union
 
-from mkreports.md_proxy import register_md
-
-from .settings import Settings
+from .md_proxy import register_md
+from .settings import PageInfo, Settings
 from .text import SpacedText, Text
 
 store_path_dict = {}
@@ -163,7 +162,7 @@ class Anchor(MdObj):
 @dataclass()
 class Link(MdObj):
     text: str = ""
-    page_path: Optional[Path] = None
+    page_info: Optional[PageInfo] = None
     to_page_path: Optional[Path] = None
     anchor: Optional[Union[str, Anchor]] = None
     url: Optional[str] = None
@@ -172,7 +171,9 @@ class Link(MdObj):
         if self.url is not None:
             link = self.url
         else:
-            if self.page_path is None or self.to_page_path is None:
+            assert self.page_info is not None
+            page_path = self.page_info.page_path
+            if page_path is None or self.to_page_path is None:
                 if self.anchor is None:
                     raise ValueError(
                         "Either id or to_page_path and page_path have to be defined"
@@ -188,14 +189,14 @@ class Link(MdObj):
             else:
                 # both are not none, do relative
                 if self.anchor is None:
-                    link = f"{relpath(self.to_page_path, start=self.page_path.parent)}"
+                    link = f"{relpath(self.to_page_path, start=page_path.parent)}"
                 else:
                     anchor_id = (
                         self.anchor
                         if isinstance(self.anchor, str)
                         else self.anchor.name
                     )
-                    link = f"{relpath(self.to_page_path, start=self.page_path.parent)}#{anchor_id}"
+                    link = f"{relpath(self.to_page_path, start=page_path.parent)}#{anchor_id}"
 
         self._body = SpacedText(f"[{html.escape(self.text)}]({link})", (0, 0))
         self._back = None

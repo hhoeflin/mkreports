@@ -35,10 +35,10 @@ nav:
       - idstore: Reference/mkreports/md/idstore.md
       - image: Reference/mkreports/md/image.md
       - list: Reference/mkreports/md/list.md
+      - md_proxy: Reference/mkreports/md/md_proxy.md
       - settings: Reference/mkreports/md/settings.md
       - table: Reference/mkreports/md/table.md
       - text: Reference/mkreports/md/text.md
-    - md_proxy: Reference/mkreports/md_proxy.md
     - parser: Reference/mkreports/parser.md
     - report: Reference/mkreports/report.md
     - settings: Reference/mkreports/settings.md
