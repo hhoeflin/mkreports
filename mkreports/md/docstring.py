@@ -6,6 +6,8 @@ from .text import SpacedText
 
 @register_md("Docstring")
 class Docstring(MdObj):
+    """Add a docstring to the page."""
+
     def __init__(self, obj_name: str) -> None:
         super().__init__()
         self.obj_name = obj_name

@@ -24,6 +24,47 @@ from .tracker import BaseTracker, SimpleTracker
 Layouts = Literal["top-c", "top-o", "bottom-c", "bottom-o", "tabbed", "nocode"]
 
 
+def do_layout(
+    code: Optional[MdObj], content: MdObj, layout: Layouts, page_info: PageInfo
+) -> MdObj:
+    if layout == "nocode":
+        return content
+    else:
+        assert code is not None
+        if layout == "top-c":
+            return (
+                Admonition(
+                    code,
+                    page_info=page_info,
+                    collapse=True,
+                    title="Code",
+                    kind="code",
+                )
+                + content
+                + HLine()
+            )
+        elif layout == "top-o":
+            return code + content + HLine()
+        elif layout == "bottom-c":
+            return (
+                content
+                + Admonition(
+                    code,
+                    page_info=page_info,
+                    collapse=True,
+                    title="Code",
+                    kind="code",
+                )
+                + HLine()
+            )
+        elif layout == "bottom-o":
+            return content + code + HLine()
+        elif layout == "tabbed":
+            return Tab(content, title="Content") + Tab(code, title="Code") + HLine()
+        else:
+            raise Exception("Unknown layout type.")
+
+
 class CodeContext:
     tracker: BaseTracker
 
@@ -35,7 +76,7 @@ class CodeContext:
         add_bottom: bool = True,
         stack_level: int = 2,
     ):
-        self.layout = layout
+        self.layout: Layouts = layout
         self.do_tracking = layout != "nocode"
         self.tracker = SimpleTracker()
         self.stack_level = stack_level
@@ -77,7 +118,7 @@ class CodeContext:
         """
         content = MdSeq(self.obj_list)
         if self.layout == "nocode":
-            return content
+            code_final = None
         else:
             code_blocks = self.tracker.code()
             # turn code blocks into md
@@ -94,39 +135,6 @@ class CodeContext:
                 # just keep the code block as is
                 code_final = code_md_list[0]
 
-            if self.layout == "top-c":
-                return (
-                    Admonition(
-                        code_final,
-                        page_info=page_info,
-                        collapse=True,
-                        title="Code",
-                        kind="code",
-                    )
-                    + content
-                    + HLine()
-                )
-            elif self.layout == "top-o":
-                return code_final + content + HLine()
-            elif self.layout == "bottom-c":
-                return (
-                    content
-                    + Admonition(
-                        code_final,
-                        page_info=page_info,
-                        collapse=True,
-                        title="Code",
-                        kind="code",
-                    )
-                    + HLine()
-                )
-            elif self.layout == "bottom-o":
-                return content + code_final + HLine()
-            elif self.layout == "tabbed":
-                return (
-                    Tab(content, title="Content")
-                    + Tab(code_final, title="Code")
-                    + HLine()
-                )
-            else:
-                raise Exception("Unknown layout type.")
+        return do_layout(
+            code=code_final, content=content, page_info=page_info, layout=self.layout
+        )

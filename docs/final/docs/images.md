@@ -14,7 +14,7 @@ javascript:
 ??? code "Code"
 
     ```python
-    --8<-- 'docs/images_store/images-01d224d074540cda2f6954ed73bf30d4.py'
+    --8<-- 'docs/images_store/images-b15a9beb14db06eb4b8e10cd108bfddf.py'
     ```
 
 ## Supported formats
@@ -261,30 +261,25 @@ internally how it is rendered may change.
 === "Code"
 
     ```python title="docs/staging/images.py" linenums="139"
-        p.H4("Larger")
-        p.Image(
-            ggplot(mtcars, aes("wt", "mpg", color="factor(gear)"))
-            + geom_point()
-            + stat_smooth(method="lm")
-            + facet_wrap("~gear"),
-            width=10,
-            height=6,
-        )
-        p.H4("Smaller")
-        p.Image(
-            ggplot(mtcars, aes("wt", "mpg", color="factor(gear)"))
-            + geom_point()
-            + stat_smooth(method="lm")
-            + facet_wrap("~gear"),
-            width=5,
-            height=3,
-        )
-    p.Admonition("Still to be implemented", kind="warning")
+    p.H4("Larger")
+    p.Image(
+        ggplot(mtcars, aes("wt", "mpg", color="factor(gear)"))
+        + geom_point()
+        + stat_smooth(method="lm")
+        + facet_wrap("~gear"),
+        width=10,
+        height=6,
+    )
+    p.H4("Smaller")
+    p.Image(
+        ggplot(mtcars, aes("wt", "mpg", color="factor(gear)"))
+        + geom_point()
+        + stat_smooth(method="lm")
+        + facet_wrap("~gear"),
+        width=5,
+        height=3,
+    )
 
     ```
 
 ---
-
-!!! warning 
-
-    Still to be implemented

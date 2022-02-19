@@ -9,6 +9,7 @@ from typing import Any, Callable, List, Optional, Tuple, Union
 from IPython.core.magic import Magics, line_magic, magics_class
 
 from . import md
+from .code_context import do_layout
 from .report import Page, Report
 
 
@@ -17,7 +18,6 @@ class Handler:
     name: str
     class_type: Union[type, Tuple[type, ...]]
     func: Callable
-    add_code: bool
 
 
 @magics_class
@@ -54,7 +54,6 @@ class ConsoleWriter(Magics):
                     name="datatable",
                     class_type=pd.DataFrame,
                     func=lambda x: self.console.md.DataTable(x),
-                    add_code=True,
                 )
             )
 
@@ -67,7 +66,6 @@ class ConsoleWriter(Magics):
                     name="matplotlib",
                     class_type=MplFigure,
                     func=lambda x: self.console.md.Image(x),
-                    add_code=True,
                 )
             )
 
@@ -79,7 +77,6 @@ class ConsoleWriter(Magics):
                     name="plotnine",
                     class_type=ggplot,
                     func=lambda x: self.console.md.Image(x),
-                    add_code=True,
                 )
             )
 
@@ -93,12 +90,11 @@ class ConsoleWriter(Magics):
                     name="seaborn",
                     class_type=(SnsFacetGrid, SnsJointGrid, SnsPairGrid),
                     func=lambda x: self.console.md.Image(x),
-                    add_code=True,
                 )
             )
 
         self.handlers.append(
-            Handler(name="mdobj", class_type=md.MdObj, func=lambda x: x, add_code=False)
+            Handler(name="mdobj", class_type=md.MdObj, func=lambda x: x)
         )
 
     def get_handler(self, obj: Any) -> Optional[Handler]:
@@ -111,11 +107,7 @@ class ConsoleWriter(Magics):
     def open_console(self) -> None:
         self.console = self.report.page(Path("console/active.md"), add_bottom=False)
         # make sure the table of contents does not get shown
-        self.console.add(
-            md.Raw(
-                page_settings={"hide": ["toc"]},
-            )
-        )
+        self.console.HideToc()
 
     @line_magic
     def archive_console(self, line):
@@ -151,22 +143,19 @@ class ConsoleWriter(Magics):
             self.stored_code.append(result.info.raw_cell)
             handler = self.get_handler(result.result)
             if handler is not None:
-                md_obj = handler.func(result.result)
+                content = handler.func(result.result)
+                code = md.Code("\n".join(self.stored_code), language="python")
 
-                if handler.add_code:
-                    # we now want to attach this together with the stored code
-                    content = md.Tab(md_obj, title="Content")
-                    code = md.Tab(
-                        md.Code("\n".join(self.stored_code), language="python"),
-                        title="Code",
-                    )
-                    md_obj = content + code
-
+                code_content = do_layout(
+                    code=code,
+                    content=content,
+                    layout=self.console.code_layout,
+                    page_info=self.console.page_info,
+                )
                 # and we also want a separator and a date
                 post = (
                     md.H6(f"{datetime.now().strftime('%Y/%m/%d %H:%M:%S')}")
-                    + md_obj
-                    + md.Raw(md.SpacedText("---", (2, 2)))
+                    + code_content
                 )
                 self.console.add(post)
                 self.stored_code = []

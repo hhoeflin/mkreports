@@ -154,4 +154,3 @@ def use_images(report: Report) -> None:
             width=5,
             height=3,
         )
-    p.Admonition("Still to be implemented", kind="warning")

@@ -15,6 +15,7 @@ from .basic import use_basic
 from .code_blocks import use_code_blocks
 from .images import use_images
 from .quickstart import do_quickstart
+from .sidebar import use_sidebar
 from .tables import use_tables
 
 
@@ -55,11 +56,14 @@ def run_all(report: Report):
     use_tables(report)
     # documentation for code blocks
     use_code_blocks(report)
+    # sidebar
+    use_sidebar(report)
     # add the docstrings
     add_pkg_docs(
         Path(inspect.getfile(mkreports)).parent,
         parent_name="Reference",
         report=report,
+        omit_package_name=True,
     )
     add_code_pages(report, Path(__file__).parent)
 

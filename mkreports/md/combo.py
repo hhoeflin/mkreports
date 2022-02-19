@@ -33,3 +33,21 @@ class CollapsedCodeFile(MdObj):
         self._body = self.obj.body
         self._back = self.obj.back
         self._settings = self.obj.settings
+
+
+@register_md("HideToc")
+class HideToc(Raw):
+    def __init__(self):
+        super().__init__(page_settings=dict(hide=["toc"]))
+
+
+@register_md("HideNav")
+class HideNav(Raw):
+    def __init__(self):
+        super().__init__(page_settings=dict(hide=["navigation"]))
+
+
+@register_md("NavTabs")
+class NavTabs(Raw):
+    def __init__(self):
+        super().__init__(mkdocs_settings={"theme": {"features": ["navigation.tabs"]}})

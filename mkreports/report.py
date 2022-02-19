@@ -102,6 +102,8 @@ def write_page(path: Union[Path, str], metadata, content) -> None:
 
 
 class Report:
+    """Class representing a report."""
+
     def __init__(
         self,
         path: Optional[Union[str, Path]] = None,
@@ -248,7 +250,6 @@ class Report:
             add_bottom=add_bottom,
         )
 
-        # if truncate, we also get rid of the store path
         if truncate:
             if page.store_path.exists():
                 shutil.rmtree(page.store_path)

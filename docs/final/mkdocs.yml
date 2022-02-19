@@ -18,32 +18,31 @@ nav:
 - Images: images.md
 - Tables: tables.md
 - Code Blocks: code_blocks.md
+- Sidebar: sidebar.md
 - Reference:
-  - mkreports:
-    - _stack: Reference/mkreports/_stack.md
-    - code_context: Reference/mkreports/code_context.md
-    - docs: Reference/mkreports/docs.md
-    - exceptions: Reference/mkreports/exceptions.md
-    - ipython: Reference/mkreports/ipython.md
-    - md:
-      - base: Reference/mkreports/md/base.md
-      - combo: Reference/mkreports/md/combo.md
-      - containers: Reference/mkreports/md/containers.md
-      - docstring: Reference/mkreports/md/docstring.md
-      - file: Reference/mkreports/md/file.md
-      - header: Reference/mkreports/md/header.md
-      - idstore: Reference/mkreports/md/idstore.md
-      - image: Reference/mkreports/md/image.md
-      - list: Reference/mkreports/md/list.md
-      - md_proxy: Reference/mkreports/md/md_proxy.md
-      - settings: Reference/mkreports/md/settings.md
-      - table: Reference/mkreports/md/table.md
-      - text: Reference/mkreports/md/text.md
-    - parser: Reference/mkreports/parser.md
-    - report: Reference/mkreports/report.md
-    - settings: Reference/mkreports/settings.md
-    - tracker: Reference/mkreports/tracker.md
-    - utils: Reference/mkreports/utils.md
+  - code_context: Reference/code_context.md
+  - docs: Reference/docs.md
+  - exceptions: Reference/exceptions.md
+  - ipython: Reference/ipython.md
+  - md:
+    - base: Reference/md/base.md
+    - combo: Reference/md/combo.md
+    - containers: Reference/md/containers.md
+    - docstring: Reference/md/docstring.md
+    - file: Reference/md/file.md
+    - header: Reference/md/header.md
+    - idstore: Reference/md/idstore.md
+    - image: Reference/md/image.md
+    - list: Reference/md/list.md
+    - md_proxy: Reference/md/md_proxy.md
+    - settings: Reference/md/settings.md
+    - table: Reference/md/table.md
+    - text: Reference/md/text.md
+  - parser: Reference/parser.md
+  - report: Reference/report.md
+  - settings: Reference/settings.md
+  - tracker: Reference/tracker.md
+  - utils: Reference/utils.md
 - Site Code:
   - '  Init  ': site_code/__init__.md
   - Basic: site_code/basic.md
@@ -51,6 +50,7 @@ nav:
   - Images: site_code/images.md
   - Main: site_code/main.md
   - Quickstart: site_code/quickstart.md
+  - Sidebar: site_code/sidebar.md
   - Tables: site_code/tables.md
 plugins:
 - search

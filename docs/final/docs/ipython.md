@@ -49,6 +49,22 @@ same as `cons.md`, just added for convenience, and can be used to
 create `MdObj` instances. An `MdObj` instance that is the result of a code-block
 will also automatically be added to the *Console* page.
 
+### Layout
+
+By default, content and code will be presented as tabs. However, it also
+possible to choose other layouts. For the options, look to the section on
+code-blocks. In order to set a different layout, do
+
+```
+cons.code_layout = 'top-o'
+```
+in the IPython console. This, for example, will create visible code-blocks above
+the content.
+
+
+
+### Archiving
+
 Once the *Console* page gets too long and becomes slower on reload, run
 
 ```python
