@@ -36,7 +36,8 @@ class MdProxy:
 
             if len(partial_kwargs) > 0:
                 partial_obj = partial(obj, **partial_kwargs)
-                update_wrapper(partial_obj, obj.__init__)
+                update_wrapper(partial_obj, obj)
+                partial_obj.__doc__ = obj.__init__.__doc__
                 return partial_obj
             else:
                 return obj
