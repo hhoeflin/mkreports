@@ -1,5 +1,5 @@
 import inspect
-from functools import partial
+from functools import partial, update_wrapper
 from typing import Any, Dict
 
 from .settings import PageInfo
@@ -35,7 +35,9 @@ class MdProxy:
                 partial_kwargs["page_info"] = self.page_info
 
             if len(partial_kwargs) > 0:
-                return partial(obj, **partial_kwargs)
+                partial_obj = partial(obj, **partial_kwargs)
+                update_wrapper(partial_obj, obj.__init__)
+                return partial_obj
             else:
                 return obj
 

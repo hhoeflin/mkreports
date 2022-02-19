@@ -9,7 +9,6 @@ from mdutils.tools.Image import Image as UtilsImage
 
 from .base import comment_ids
 from .file import File, relpath_html
-from .idstore import IDStore
 from .md_proxy import register_md
 from .settings import PageInfo, Settings
 from .text import SpacedText
@@ -31,6 +30,17 @@ class ImageFile(File):
         allow_copy: bool = True,
         use_hash: bool = True,
     ) -> None:
+        """
+
+        Args:
+            path (Union[str, Path]): Path to the image file.
+            page_info (PageInfo): PageInfo object about the page. Added by page-wrapper
+            link_type (Literal["inline", "ref"]): Link-type to use.
+            text (str): Text shown if the image can't be displayed.
+            tooltip (str): The tooltip shown when hovering over the image.
+            allow_copy (bool): Should the image-file be copied to the store (Default: True)
+            use_hash (bool): Should the name of the copied image be updated with a hash (Default: True)
+        """
         super().__init__(
             path=path, page_info=page_info, allow_copy=allow_copy, use_hash=use_hash
         )
