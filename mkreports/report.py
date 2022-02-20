@@ -10,7 +10,8 @@ import os
 import shutil
 from contextlib import nullcontext
 from pathlib import Path
-from typing import Any, ContextManager, Dict, Mapping, Optional, Tuple, Union
+from typing import (Any, ContextManager, Dict, List, Mapping, Optional, Tuple,
+                    Union)
 
 import yaml
 from frontmatter.default_handlers import DEFAULT_POST_TEMPLATE, YAMLHandler
@@ -367,19 +368,26 @@ class Page:
 
         self._md = MdProxy(page_info=self.page_info)
 
-        self.code_context: Optional[CodeContext] = None
+        self.code_context_stack: List[CodeContext] = []
 
     def __enter__(self) -> "Page":
-        if self.code_context is not None and self.code_context.active:
-            raise ContextActiveError("The context manager is already active")
-        if self.code_context is None:
-            self.code_context = CodeContext(
-                layout=self.code_layout,
-                name_only=self.code_name_only,
-                add_bottom=self.add_bottom,
-                relative_to=self.report.project_root,
+        if len(self.code_context_stack) == 0 or (
+            len(self.code_context_stack) > 0 and self.code_context_stack[-1].active
+        ):
+            # need to enter a new context
+            self.code_context_stack.append(
+                CodeContext(
+                    layout=self.code_layout,
+                    name_only=self.code_name_only,
+                    add_bottom=self.add_bottom,
+                    relative_to=self.report.project_root,
+                )
             )
-        self.code_context.__enter__()
+        else:
+            # use the existing one that is not active yet
+            pass
+        # the last one on the stack is the one we activate
+        self.code_context_stack[-1].__enter__()
         return self
 
     def ctx(
@@ -402,22 +410,32 @@ class Page:
             Page: The page object, but with the new *CodeContext* object set.
 
         """
-        if self.code_context is not None and self.code_context.active:
-            raise ContextActiveError("The context manager is already active")
-        self.code_context = CodeContext(
+        new_code_context = CodeContext(
             layout=layout if layout is not None else self.code_layout,
             name_only=name_only if name_only is not None else self.code_name_only,
             add_bottom=add_bottom if add_bottom is not None else self.add_bottom,
             relative_to=self.report.project_root,
         )
+
+        if len(self.code_context_stack) == 0 or (
+            len(self.code_context_stack) > 0 and self.code_context_stack[-1].active
+        ):
+            # need to add new one
+            self.code_context_stack.append(new_code_context)
+        else:
+            # need to replace existing one
+            self.code_context_stack[-1] = new_code_context
+
         return self
 
     def __exit__(self, exc_type, exc_val, traceback) -> None:
-        if self.code_context is None:
+        if len(self.code_context_stack) == 0:
             raise Exception("__exit__ called before __enter__")
-        self.code_context.__exit__(exc_type, exc_val, traceback)
-        self._add_to_page(self.code_context.md_obj(page_info=self.page_info))
-        self.code_context = None
+        active_code_context = self.code_context_stack.pop()
+        active_code_context.__exit__(exc_type, exc_val, traceback)
+
+        # self.add accounts for remaining active code_context
+        self.add(active_code_context.md_obj(page_info=self.page_info))
 
     def __getattr__(self, name):
         md_class = self.md.__getattr__(name)
@@ -511,9 +529,16 @@ class Page:
         elif isinstance(item, SpacedText):
             item = Raw(item)
 
+        # search from the top for active code_context
+        active_code_context = None
+        for i in reversed(range(len(self.code_context_stack))):
+            if self.code_context_stack[i].active:
+                active_code_context = self.code_context_stack[i]
+                break
+
         # if a context-manager is active, pass along the object into there
-        if self.code_context is not None:
-            self.code_context.add(item)
+        if active_code_context is not None:
+            active_code_context.add(item)
         else:  # else pass it directly to the page
             self._add_to_page(item)
 
