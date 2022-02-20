@@ -1,6 +1,6 @@
 ---
 css:
-- ../javascript/code_admonition.css
+- ../../javascript/code_admonition.css
 ---
 
 
@@ -9,7 +9,7 @@ css:
 ??? code "Code"
 
     ```python title="docs/staging/basic.py"
-    --8<-- 'docs/basic_store/basic-6ab5e54a0281339c3a2d8354b9279f41.py'
+    --8<-- 'docs/usage/basic_store/basic-4b770ae69fae728b80517da7e1501b99.py'
     ```
 
 ## Headings[](){:name='my-headings'}
@@ -109,7 +109,7 @@ css:
 
     A link back to the [first heading](#my-headings)
 
-    A link to another page [Images](images.md)
+    A link to another page [Images](../images.md)
 
     Or just to any page [Google](https://google.com)
 

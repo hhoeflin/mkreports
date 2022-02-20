@@ -16,7 +16,7 @@ def use_images(report: Report) -> None:
     """
     Show all different ways on how we can include images.
     """
-    p = report.page("images.md", truncate=True)
+    p = report.page("usage/images.md", truncate=True)
 
     # we don't need an indentation for everything if we don't want
     p.H1("Images")

@@ -2,7 +2,7 @@ from mkreports import Report
 
 
 def use_sidebar(report: Report) -> None:
-    p = report.page("sidebar", truncate=True)
+    p = report.page("usage/sidebar", truncate=True)
 
     p.CollapsedCodeFile(__file__)
     p.H1("Sidebars")

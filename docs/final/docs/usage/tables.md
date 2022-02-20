@@ -1,6 +1,6 @@
 ---
 css:
-- ../javascript/code_admonition.css
+- ../../javascript/code_admonition.css
 - https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css
 - https://cdn.jsdelivr.net/gh/vedmack/yadcf@332407eeacbda299e6253530e24c15041b270227/dist/jquery.dataTables.yadcf.css
 - https://unpkg.com/tabulator-tables@5.1.0/dist/css/tabulator.min.css
@@ -9,7 +9,7 @@ javascript:
 - https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js
 - https://cdn.jsdelivr.net/gh/vedmack/yadcf@332407eeacbda299e6253530e24c15041b270227/dist/jquery.dataTables.yadcf.js
 - https://unpkg.com/tabulator-tables@5.1.0/dist/js/tabulator.min.js
-- ../javascript/min_max_filter.js
+- ../../javascript/min_max_filter.js
 ---
 
 
@@ -18,7 +18,7 @@ javascript:
 ??? code "Code"
 
     ```python title="docs/staging/tables.py"
-    --8<-- 'docs/tables_store/tables-aa8b1f31dd91c8601ff5f85c0ddbf3f8.py'
+    --8<-- 'docs/usage/tables_store/tables-63561573052eedeb03bbb82410650720.py'
     ```
 
 Conveying information with tables is very important for 

@@ -1,6 +1,6 @@
 ---
 css:
-- ../javascript/code_admonition.css
+- ../../javascript/code_admonition.css
 hide:
 - toc
 ---
@@ -9,7 +9,7 @@ hide:
 ??? code "Code"
 
     ```python title="docs/staging/sidebar.py"
-    --8<-- 'docs/sidebar_store/sidebar-c3de7d2a4f5e337b1c14f39615cf55b1.py'
+    --8<-- 'docs/usage/sidebar_store/sidebar-4eaf9eb2a6c09580ff86f321534aa255.py'
     ```
 
 # Sidebars

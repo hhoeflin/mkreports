@@ -1,6 +1,6 @@
 ---
 css:
-- ../javascript/code_admonition.css
+- ../../javascript/code_admonition.css
 ---
 
 
@@ -155,7 +155,7 @@ p.P(f"fib({x}) = {a}")
     ??? code "Code"
 
         ```python title="docs/staging/code_blocks.py"
-        --8<-- 'docs/code_blocks_store/code_blocks-7cb6ac68f48f685a15dec6fd973a1c3f.py'
+        --8<-- 'docs/usage/code_blocks_store/code_blocks-27cd1d3f31e177b714acffc91d530033.py'
         ```
 
 === "Code"

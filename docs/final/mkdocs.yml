@@ -12,13 +12,16 @@ markdown_extensions:
 nav:
 - Home: index.md
 - Quickstart: quickstart.md
-- Markdown: markdown.md
-- Ipython: ipython.md
-- Basic: basic.md
+- Usage:
+  - Markdown: usage/markdown.md
+  - Plugins: usage/plugins.md
+  - Ipython: usage/ipython.md
+  - Basic: usage/basic.md
+  - Images: usage/images.md
+  - Tables: usage/tables.md
+  - Code Blocks: usage/code_blocks.md
+  - Sidebar: usage/sidebar.md
 - Images: images.md
-- Tables: tables.md
-- Code Blocks: code_blocks.md
-- Sidebar: sidebar.md
 - Reference:
   - code_context: Reference/code_context.md
   - docs: Reference/docs.md

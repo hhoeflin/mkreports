@@ -7,7 +7,7 @@ from mkreports import Report, md
 
 
 def use_basic(report: Report) -> None:
-    p = report.page("basic.md", truncate=True)
+    p = report.page("usage/basic.md", truncate=True)
 
     p.H1("Basic formatting elements")
 

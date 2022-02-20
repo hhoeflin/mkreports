@@ -32,7 +32,7 @@ def md5_hash_file(path: Path) -> str:
     return m.hexdigest()
 
 
-def relpath_html(target: Path, page_path: Path):
+def relpath_html(target: Path, page_path: Path) -> str:
     """
     Relative path as to be used for html. This is a bit more complicated,
     as some markdown pages are encoded as a directory (with implicit index.html
@@ -46,6 +46,7 @@ def relpath_html(target: Path, page_path: Path):
         page_path (Path): Path of the current page.
 
     Returns:
+        str: Relative path as a string.
 
     """
     if page_path.stem == "index":

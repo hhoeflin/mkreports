@@ -19,7 +19,7 @@ def use_code_blocks(report: Report) -> None:
     """
     Show different ways on how code blacks can be included.
     """
-    p = report.page("code_blocks.md", truncate=True)
+    p = report.page("usage/code_blocks.md", truncate=True)
     p.H1("Code blocks")
 
     with p.H2("Tracking code (tabbed)"):

@@ -22,11 +22,14 @@ def add_md_pages(report: Report):
     index_page = report.page("index.md")
     shutil.copy(Path(__file__).parent / "index.md", index_page.path)
 
-    markdown_page = report.page("markdown.md")
+    markdown_page = report.page("usage/markdown.md")
     shutil.copy(Path(__file__).parent / "markdown.md", markdown_page.path)
 
-    markdown_page = report.page("ipython.md")
-    shutil.copy(Path(__file__).parent / "ipython.md", markdown_page.path)
+    plugins_page = report.page("usage/plugins.md")
+    shutil.copy(Path(__file__).parent / "plugins.md", plugins_page.path)
+
+    ipython_page = report.page("usage/ipython.md")
+    shutil.copy(Path(__file__).parent / "ipython.md", ipython_page.path)
 
 
 def add_code_pages(report: Report, code_dir: Path):
