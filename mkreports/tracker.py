@@ -13,6 +13,16 @@ from .md import Code
 
 @dataclass
 class CodeBlock:
+    """
+    Structure representing information about a block of code.
+
+    Args:
+        filename (str): The name of the file with the code.
+        co_name (str): Name of the code block
+        line_start (int): Number of the line where the code block starts.
+        line_end (int): Number of the line where the code block ends.
+    """
+
     filename: str
     co_name: str
     line_start: int
@@ -21,6 +31,17 @@ class CodeBlock:
     def md_code(
         self, relative_to: Optional[Path] = None, name_only: bool = False
     ) -> Code:
+        """
+        Return a MdObj representing the code in the block.
+
+        Args:
+            relative_to (Optional[Path]): The path relative to which the title should be.
+            name_only (bool): Should only the name of the code-file be used.
+
+        Returns:
+            Code: Code object with the code represented by the code block.
+
+        """
         code = dedent(
             read_file(
                 Path(self.filename),
@@ -54,6 +75,15 @@ def read_file(
 
     Reads a file from a line to a certain line. All line numbers are assumed to
     start with 0.
+
+    Args:
+        path (Path): Path to the code file.
+        from_line (Optional[int]): Starting line.
+        to_line (Optional[int]): Ending line.
+
+    Returns:
+        Str: String representing the code.
+
     """
     with path.open("r") as f:
         lines = f.readlines()
@@ -94,13 +124,19 @@ class SimpleTracker(BaseTracker):
     """
 
     def __init__(self):
+        """Initialize the tracker."""
         self._active = False
         self.line_start = None
         self.line_end = None
         self.co_name = None
 
     def start(self, frame_info: inspect.FrameInfo) -> None:
+        """
+        Start the tracker.
 
+        Args:
+            frame_info (inspect.FrameInfo): A FrameInfo object of where the tracking starts.
+        """
         if frame_info.filename == "<stdin>":
             raise CannotTrackError(f"Cannot track {frame_info.filename}")
 
@@ -115,6 +151,12 @@ class SimpleTracker(BaseTracker):
         self._active = True
 
     def stop(self, frame_info: inspect.FrameInfo) -> None:
+        """
+        Stop the tracker.
+
+        Args:
+            frame_info (inspect.FrameInfo): FraneInfo where the tracking ends.
+        """
         if not self.active:
             raise TrackerNotActiveError("SimpleTracker not active")
         else:
@@ -126,6 +168,13 @@ class SimpleTracker(BaseTracker):
         self._active = False
 
     def code(self) -> List[CodeBlock]:
+        """
+        Return the tracked code.
+
+        Returns:
+            List[CodeBlock]: List of code blocks. Here, the list is only of length 1.
+
+        """
         if (
             self.active
             or self.line_start is None
@@ -140,4 +189,10 @@ class SimpleTracker(BaseTracker):
 
     @property
     def active(self) -> bool:
+        """
+
+        Returns:
+            bool: Is the tracker currently active?
+
+        """
         return self._active

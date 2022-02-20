@@ -15,6 +15,15 @@ from .report import Page, Report
 
 @dataclass
 class Handler:
+    """
+    A handler for output.
+
+    Args:
+        name (str): Name of the handler.
+        class_type (Union[type, Tuple[type, ...]]): Classes covered by the handler.
+        func (Callable): the function to use to handle the output.
+    """
+
     name: str
     class_type: Union[type, Tuple[type, ...]]
     func: Callable
@@ -39,7 +48,7 @@ class ConsoleWriter(Magics):
                 report_name="Mkreports console",
                 exist_ok=True,
             )
-            self.open_console()
+            self._open_console()
         else:
             raise Exception("No 'MKREPORTS_DIR' in environment")
 
@@ -97,14 +106,14 @@ class ConsoleWriter(Magics):
             Handler(name="mdobj", class_type=md.MdObj, func=lambda x: x)
         )
 
-    def get_handler(self, obj: Any) -> Optional[Handler]:
+    def _get_handler(self, obj: Any) -> Optional[Handler]:
         for handler in self.handlers:
             if isinstance(obj, handler.class_type):
                 return handler
         else:
             return None
 
-    def open_console(self) -> None:
+    def _open_console(self) -> None:
         self.console = self.report.page(Path("console/active.md"), add_bottom=False)
         # make sure the table of contents does not get shown
         self.console.HideToc()
@@ -128,7 +137,7 @@ class ConsoleWriter(Magics):
             new_path,
         )
         self.report._add_nav_entry((new_entry, new_path))
-        self.open_console()
+        self._open_console()
 
     def post_run_cell(self, result):
         """
@@ -141,7 +150,7 @@ class ConsoleWriter(Magics):
         if result.success:
             # we store the cell content
             self.stored_code.append(result.info.raw_cell)
-            handler = self.get_handler(result.result)
+            handler = self._get_handler(result.result)
             if handler is not None:
                 content = handler.func(result.result)
                 code = md.Code("\n".join(self.stored_code), language="python")

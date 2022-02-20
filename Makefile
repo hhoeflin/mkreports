@@ -8,3 +8,6 @@ create_mkdocs_del:
 
 create_site:
 	cd ${MAKEFILE_DIR}/docs/final && mkdocs gh-deploy
+
+serve_mkdocs:
+	while true ; do cd ${MAKEFILE_DIR}/docs/final; mkdocs serve; done

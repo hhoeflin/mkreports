@@ -16,6 +16,13 @@ def get_stmt_ranges(pyfile: Path) -> IntervalTree:
     Here, we only return the range of the statements at the lowest level.
     This is to make it easier to find the 'previous' statement.
     The line numbers in the interval tree will be 1-based.
+
+    Args:
+        pyfile (Path): Path to the python file to analyze.
+
+    Returns:
+        IntervallTree: An object representing the hierarchical intervals of the
+            statements in the file.
     """
     # first we parse the python file into an AST
     with pyfile.open("r") as f:
@@ -38,6 +45,14 @@ def get_stmt_ranges(pyfile: Path) -> IntervalTree:
 def smallest_overlap(tree: IntervalTree, lineno: int) -> Optional[Interval]:
     """
     Find the closest match that overlaps and is shortests.
+
+    Args:
+        tree (IntervalTree): The intervals obtained from *get_stmt_ranges* function.
+        lineno (int): The lineno to use in the file.
+
+    Returns:
+        Optional[Interval]: An interval if there is a statement at the line.
+
     """
     overlap_set = tree.at(lineno)
     if len(overlap_set) > 0:
@@ -52,6 +67,15 @@ def smallest_overlap(tree: IntervalTree, lineno: int) -> Optional[Interval]:
 def closest_before(tree: IntervalTree, lineno: int) -> Optional[Interval]:
     """
     Return the closest item strictly before lineno.
+
+    Args:
+        tree (IntervalTree): The intervals obtained from *get_stmt_ranges* function.
+        lineno (int): The lineno to use in the file.
+
+    Returns:
+        Optional[Interval]: An interval representing closest statement before the line
+            if there is a statement before.
+
     """
     tree_list = list(tree.items())
     # sort by size of element; this will be retained in later sorts
@@ -69,6 +93,15 @@ def closest_before(tree: IntervalTree, lineno: int) -> Optional[Interval]:
 def closest_after(tree: IntervalTree, lineno: int) -> Optional[Interval]:
     """
     Return the closest item strictly before lineno.
+
+    Args:
+        tree (IntervalTree): The intervals obtained from *get_stmt_ranges* function.
+        lineno (int): The lineno to use in the file.
+
+    Returns:
+        Optional[Interval]: An interval representing closest statement after the line
+            if there is a statement after.
+
     """
     tree_list = list(tree.items())
     # sort by size of element; this will be retained in later sorts
@@ -85,6 +118,18 @@ def closest_after(tree: IntervalTree, lineno: int) -> Optional[Interval]:
 
 
 def envelope(tree: IntervalTree, pos: Interval) -> Optional[Interval]:
+    """
+    Interval that covers the given interval (i.e. is larger).
+
+    Args:
+        tree (IntervalTree): The intervals obtained from *get_stmt_ranges* function.
+        pos (Interval): Interval to cover.
+
+    Returns:
+        Optional[Interval]: The next largest interval covering the current one,
+            if there is one, otherwise None.
+
+    """
     tree_list = list(tree.envelop(pos.begin - 1, pos.end))
     if len(tree_list) == 0:
         return None
@@ -99,6 +144,15 @@ def get_neighbors(
     """
     For a given lineno, get the current statement (if there is one), as well
     as the previous and next statements in the tree.
+
+    Args:
+        tree (IntervalTree):
+        lineno (int):
+
+    Returns:
+        (Optional[Interval], Optional[Interval], Optional[Interval]):
+            Interval of statement before the line, covering the current
+            line and the next statement.
     """
     return (
         closest_before(tree, lineno),
