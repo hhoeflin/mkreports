@@ -9,19 +9,19 @@
       
       
       
-      <link rel="icon" href="../assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.9">
     
     
       
-        <title>Markdown - Mkreports documentations</title>
+        <title>Plugins - Mkreports documentations</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.2b4465f4.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.2b4465f4.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.e6a45f82.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.e6a45f82.min.css">
         
       
     
@@ -35,9 +35,9 @@
       
     
     
-      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
     
-    <script>__md_scope=new URL("..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -66,7 +66,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#adding-markdown-elements-to-a-page" class="md-skip">
+        <a href="#creating-custom-plugins" class="md-skip">
           Skip to content
         </a>
       
@@ -80,7 +80,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="Mkreports documentations" class="md-header__button md-logo" aria-label="Mkreports documentations" data-md-component="logo">
+    <a href="../.." title="Mkreports documentations" class="md-header__button md-logo" aria-label="Mkreports documentations" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
@@ -99,7 +99,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Markdown
+              Plugins
             
           </span>
         </div>
@@ -166,7 +166,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="Mkreports documentations" class="md-nav__button md-logo" aria-label="Mkreports documentations" data-md-component="logo">
+    <a href="../.." title="Mkreports documentations" class="md-nav__button md-logo" aria-label="Mkreports documentations" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
@@ -185,7 +185,7 @@
   
   
     <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         Home
       </a>
     </li>
@@ -200,7 +200,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../quickstart/" class="md-nav__link">
+      <a href="../../quickstart/" class="md-nav__link">
         Quickstart
       </a>
     </li>
@@ -216,6 +216,48 @@
     
   
   
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          Usage
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Usage" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Usage
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../markdown/" class="md-nav__link">
+        Markdown
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
     <li class="md-nav__item md-nav__item--active">
       
       <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
@@ -224,83 +266,17 @@
         
       
       
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          Markdown
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
       <a href="./" class="md-nav__link md-nav__link--active">
-        Markdown
+        Plugins
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#opening-pages" class="md-nav__link">
-    Opening pages
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#adding-markdown" class="md-nav__link">
-    Adding markdown
-  </a>
-  
-    <nav class="md-nav" aria-label="Adding markdown">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#markdown-attributes-of-a-page" class="md-nav__link">
-    Markdown attributes of a page
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#md-attribute-of-a-page" class="md-nav__link">
-    md attribute of a Page
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#md-module" class="md-nav__link">
-    md module
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
       
     </li>
   
 
-    
-      
-      
-      
-
+            
+          
+            
+              
   
   
   
@@ -311,11 +287,10 @@
     </li>
   
 
-    
-      
-      
-      
-
+            
+          
+            
+              
   
   
   
@@ -326,11 +301,10 @@
     </li>
   
 
-    
-      
-      
-      
-
+            
+          
+            
+              
   
   
   
@@ -341,11 +315,10 @@
     </li>
   
 
-    
-      
-      
-      
-
+            
+          
+            
+              
   
   
   
@@ -356,11 +329,10 @@
     </li>
   
 
-    
-      
-      
-      
-
+            
+          
+            
+              
   
   
   
@@ -368,6 +340,27 @@
       <a href="../code_blocks/" class="md-nav__link">
         Code Blocks
       </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sidebar/" class="md-nav__link">
+        Sidebar
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
     </li>
   
 
@@ -380,8 +373,8 @@
   
   
     <li class="md-nav__item">
-      <a href="../sidebar/" class="md-nav__link">
-        Sidebar
+      <a href="../../images/" class="md-nav__link">
+        Images
       </a>
     </li>
   
@@ -398,18 +391,18 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_10" type="checkbox" id="__nav_10" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
       
       
       
       
-        <label class="md-nav__link" for="__nav_10">
+        <label class="md-nav__link" for="__nav_5">
           Reference
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="Reference" data-md-level="1">
-        <label class="md-nav__title" for="__nav_10">
+        <label class="md-nav__title" for="__nav_5">
           <span class="md-nav__icon md-icon"></span>
           Reference
         </label>
@@ -421,7 +414,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Reference/code_context/" class="md-nav__link">
+      <a href="../../Reference/code_context/" class="md-nav__link">
         code_context
       </a>
     </li>
@@ -435,7 +428,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Reference/docs/" class="md-nav__link">
+      <a href="../../Reference/docs/" class="md-nav__link">
         docs
       </a>
     </li>
@@ -449,7 +442,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Reference/exceptions/" class="md-nav__link">
+      <a href="../../Reference/exceptions/" class="md-nav__link">
         exceptions
       </a>
     </li>
@@ -463,7 +456,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Reference/ipython/" class="md-nav__link">
+      <a href="../../Reference/ipython/" class="md-nav__link">
         ipython
       </a>
     </li>
@@ -480,18 +473,18 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_10_5" type="checkbox" id="__nav_10_5" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_5" type="checkbox" id="__nav_5_5" >
       
       
       
       
-        <label class="md-nav__link" for="__nav_10_5">
+        <label class="md-nav__link" for="__nav_5_5">
           md
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="md" data-md-level="2">
-        <label class="md-nav__title" for="__nav_10_5">
+        <label class="md-nav__title" for="__nav_5_5">
           <span class="md-nav__icon md-icon"></span>
           md
         </label>
@@ -503,7 +496,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Reference/md/base/" class="md-nav__link">
+      <a href="../../Reference/md/base/" class="md-nav__link">
         base
       </a>
     </li>
@@ -517,7 +510,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Reference/md/combo/" class="md-nav__link">
+      <a href="../../Reference/md/combo/" class="md-nav__link">
         combo
       </a>
     </li>
@@ -531,7 +524,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Reference/md/containers/" class="md-nav__link">
+      <a href="../../Reference/md/containers/" class="md-nav__link">
         containers
       </a>
     </li>
@@ -545,7 +538,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Reference/md/docstring/" class="md-nav__link">
+      <a href="../../Reference/md/docstring/" class="md-nav__link">
         docstring
       </a>
     </li>
@@ -559,7 +552,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Reference/md/file/" class="md-nav__link">
+      <a href="../../Reference/md/file/" class="md-nav__link">
         file
       </a>
     </li>
@@ -573,7 +566,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Reference/md/header/" class="md-nav__link">
+      <a href="../../Reference/md/header/" class="md-nav__link">
         header
       </a>
     </li>
@@ -587,7 +580,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Reference/md/idstore/" class="md-nav__link">
+      <a href="../../Reference/md/idstore/" class="md-nav__link">
         idstore
       </a>
     </li>
@@ -601,7 +594,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Reference/md/image/" class="md-nav__link">
+      <a href="../../Reference/md/image/" class="md-nav__link">
         image
       </a>
     </li>
@@ -615,7 +608,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Reference/md/list/" class="md-nav__link">
+      <a href="../../Reference/md/list/" class="md-nav__link">
         list
       </a>
     </li>
@@ -629,7 +622,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Reference/md/md_proxy/" class="md-nav__link">
+      <a href="../../Reference/md/md_proxy/" class="md-nav__link">
         md_proxy
       </a>
     </li>
@@ -643,7 +636,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Reference/md/settings/" class="md-nav__link">
+      <a href="../../Reference/md/settings/" class="md-nav__link">
         settings
       </a>
     </li>
@@ -657,7 +650,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Reference/md/table/" class="md-nav__link">
+      <a href="../../Reference/md/table/" class="md-nav__link">
         table
       </a>
     </li>
@@ -671,7 +664,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Reference/md/text/" class="md-nav__link">
+      <a href="../../Reference/md/text/" class="md-nav__link">
         text
       </a>
     </li>
@@ -692,7 +685,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Reference/parser/" class="md-nav__link">
+      <a href="../../Reference/parser/" class="md-nav__link">
         parser
       </a>
     </li>
@@ -706,7 +699,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Reference/report/" class="md-nav__link">
+      <a href="../../Reference/report/" class="md-nav__link">
         report
       </a>
     </li>
@@ -720,7 +713,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Reference/settings/" class="md-nav__link">
+      <a href="../../Reference/settings/" class="md-nav__link">
         settings
       </a>
     </li>
@@ -734,7 +727,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Reference/tracker/" class="md-nav__link">
+      <a href="../../Reference/tracker/" class="md-nav__link">
         tracker
       </a>
     </li>
@@ -748,7 +741,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Reference/utils/" class="md-nav__link">
+      <a href="../../Reference/utils/" class="md-nav__link">
         utils
       </a>
     </li>
@@ -773,18 +766,18 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_11" type="checkbox" id="__nav_11" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" >
       
       
       
       
-        <label class="md-nav__link" for="__nav_11">
+        <label class="md-nav__link" for="__nav_6">
           Site Code
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="Site Code" data-md-level="1">
-        <label class="md-nav__title" for="__nav_11">
+        <label class="md-nav__title" for="__nav_6">
           <span class="md-nav__icon md-icon"></span>
           Site Code
         </label>
@@ -796,7 +789,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../site_code/__init__/" class="md-nav__link">
+      <a href="../../site_code/__init__/" class="md-nav__link">
           Init  
       </a>
     </li>
@@ -810,7 +803,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../site_code/basic/" class="md-nav__link">
+      <a href="../../site_code/basic/" class="md-nav__link">
         Basic
       </a>
     </li>
@@ -824,7 +817,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../site_code/code_blocks/" class="md-nav__link">
+      <a href="../../site_code/code_blocks/" class="md-nav__link">
         Code Blocks
       </a>
     </li>
@@ -838,7 +831,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../site_code/images/" class="md-nav__link">
+      <a href="../../site_code/images/" class="md-nav__link">
         Images
       </a>
     </li>
@@ -852,7 +845,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../site_code/main/" class="md-nav__link">
+      <a href="../../site_code/main/" class="md-nav__link">
         Main
       </a>
     </li>
@@ -866,7 +859,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../site_code/quickstart/" class="md-nav__link">
+      <a href="../../site_code/quickstart/" class="md-nav__link">
         Quickstart
       </a>
     </li>
@@ -880,7 +873,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../site_code/sidebar/" class="md-nav__link">
+      <a href="../../site_code/sidebar/" class="md-nav__link">
         Sidebar
       </a>
     </li>
@@ -894,7 +887,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../site_code/tables/" class="md-nav__link">
+      <a href="../../site_code/tables/" class="md-nav__link">
         Tables
       </a>
     </li>
@@ -928,55 +921,6 @@
     
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#opening-pages" class="md-nav__link">
-    Opening pages
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#adding-markdown" class="md-nav__link">
-    Adding markdown
-  </a>
-  
-    <nav class="md-nav" aria-label="Adding markdown">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#markdown-attributes-of-a-page" class="md-nav__link">
-    Markdown attributes of a page
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#md-attribute-of-a-page" class="md-nav__link">
-    md attribute of a Page
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#md-module" class="md-nav__link">
-    md module
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -988,62 +932,28 @@
               
                 
 
-<h1 id="adding-markdown-elements-to-a-page">Adding markdown elements to a page</h1>
-<h2 id="opening-pages">Opening pages</h2>
-<p>The first step is to define a <em>report</em> directory and open a page in it.
-There is always at least the 'index.md' page included in any report,
-which is listed in the navigation under <em>Home</em>.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">mkreports</span> <span class="kn">import</span> <span class="n">Report</span>
-
-<span class="n">report</span> <span class="o">=</span> <span class="n">Report</span><span class="p">()</span>
-<span class="n">page</span> <span class="o">=</span> <span class="n">report</span><span class="o">.</span><span class="n">page</span><span class="p">(</span><span class="s1">&#39;index.md&#39;</span><span class="p">)</span>
-</code></pre></div>
-<h2 id="adding-markdown">Adding markdown</h2>
-<p>There are overall 3 ways to use and add markdown elements to a page.
-Each of these provides a different level of convenient. As a summary
-for the user:</p>
-<ul>
-<li>If you want to add an element immediately to a page, use the markdown
-  classes directly available as attributes in the page itself. These
-  preset certain parameters and add the markdown object directly to the
-  page after it is instantiated.</li>
-<li>If you need to build up more complicated markdown objects before adding
-  it to a page (e.g. in the case of nested objects), use the <code>Page.md</code> attribute
-  to get the markdown object that pre-populates certain parameters to
-  sensible defaults</li>
-<li>In some special circumstances it may be necessary to get the raw markdown
-  with full control. In this case the <code>mkreports.md</code> module can be used.</li>
-</ul>
-<h3 id="markdown-attributes-of-a-page">Markdown attributes of a page</h3>
-<p>All markdown objects are available under their name directory for a
-<code>Page</code> object (created from a <code>Report</code>). For these, all parameters related to
-a page and project are captured in a single parameter <code>page_info</code> that expects
-and object of type <code>PageInfo</code> with names:</p>
-<ul>
-<li><code>store_path</code></li>
-<li><code>page_path</code></li>
-<li><code>report_path</code></li>
-<li><code>project_root</code></li>
-<li><code>javascript_path</code></li>
-<li><code>idstore</code></li>
-</ul>
-<p>When requesting a markdown object from a page, this is automatically added.
-The object is immediately added to the page.</p>
-<p>A list of all available object can be obtained with</p>
-<div class="highlight"><pre><span></span><code><span class="n">page</span><span class="o">.</span><span class="n">md</span><span class="o">.</span><span class="n">proxied_classes</span>
-</code></pre></div>
-<p>where <code>page</code> is a <code>Page</code> and the returned object is a dict of all registered
-markdown objects. The key of the dict is the name under which it is available
-as an attribute from the page.</p>
-<h3 id="md-attribute-of-a-page"><code>md</code> attribute of a <code>Page</code></h3>
-<p>Each <code>Page</code> instance also has a <code>md</code> attribute. These expose the markdown
-object same as explained above, except that they will not be added to the page.
-This would have to be done manually. This is sometimes useful if more
-complex nested objects need to be created (e.g. for lists).</p>
-<h3 id="md-module">md module</h3>
-<p>Also available is the <code>mkreports.md</code> module. These are the base objects
-with no parameters pre-filled. This is only intended for experts that need
-special behavior that is not covered by the regular <code>Page</code> object.</p>
+<h1 id="creating-custom-plugins">Creating custom plugins</h1>
+<p>All objects in this package that are used to add markdown (or html) to
+a page are all created using a plugin system. This enables other people
+to easily create their own <code>MdObj</code> objects and register them with <code>mkreports</code>
+so that they behave exactly as all other objects shipped with this package.</p>
+<p>Essentially, only 2 steps are needed:</p>
+<ol>
+<li>
+<p>Create a new class that inherits from <code>MdObj</code>. There are many examples
+    available in this package on how to do that. Especially interesting
+    examples are the tables as well as images, but also <code>HideNav</code>, <code>HideToc</code>
+    and <code>NavTabs</code> as they show how to use settings.</p>
+</li>
+<li>
+<p>Register the new class. This is easily done using the <code>register_md</code> decorator,
+    which takes as its only argument the name under which the new class should
+    be registered.</p>
+</li>
+</ol>
+<p>After this is done, all classes are available as attributes on a <code>Page</code> as well
+as in <code>Page.md</code> with <code>page_info</code> parameters pre-set with the appropriate <code>PageInfo</code>
+object.</p>
 
               
             </article>
@@ -1057,7 +967,7 @@ special behavior that is not covered by the regular <code>Page</code> object.</p
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
         
-        <a href="../quickstart/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Quickstart" rel="prev">
+        <a href="../markdown/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Markdown" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
           </div>
@@ -1066,7 +976,7 @@ special behavior that is not covered by the regular <code>Page</code> object.</p
               <span class="md-footer__direction">
                 Previous
               </span>
-              Quickstart
+              Markdown
             </div>
           </div>
         </a>
@@ -1109,10 +1019,10 @@ special behavior that is not covered by the regular <code>Page</code> object.</p
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.22074ed6.min.js"}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.22074ed6.min.js"}</script>
     
     
-      <script src="../assets/javascripts/bundle.960e086b.min.js"></script>
+      <script src="../../assets/javascripts/bundle.960e086b.min.js"></script>
       
     
   </body>
