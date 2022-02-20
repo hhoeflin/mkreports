@@ -13,7 +13,7 @@ def use_basic(report: Report) -> None:
 
     p.CollapsedCodeFile(__file__)
 
-    with p.H2("Headings", anchor=(heading_anchor := md.Anchor("my-headings"))):
+    with p.H2("Headings", anchor=(heading_anchor := p.md.Anchor())):
         p.Code(
             """
             md.H1("Header type 1")
@@ -60,11 +60,13 @@ def use_basic(report: Report) -> None:
         )
         p2.P(
             "A link back to the "
-            + p.md.Link(anchor=heading_anchor, text="first heading")
+            + p.md.ReportLink(anchor=heading_anchor, text="first heading")
         )
         p2.P(
             "A link to another page "
-            + p.md.Link("Images", to_page_path=report.page("images.md").path)
+            + p.md.ReportLink(
+                "Images", to_page_path=report.page("usage/images.md").path
+            )
         )
         p2.P("Or just to any page " + p.md.Link("Google", url="https://google.com"))
         p2.P("Or of course also just straight markdown [Google](https://google.com)")

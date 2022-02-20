@@ -229,7 +229,6 @@ class Raw(MdObj):
 
 
 @register_md("Anchor")
-@dataclass()
 class Anchor(MdObj):
     """
     Create an anchor object.
@@ -238,11 +237,23 @@ class Anchor(MdObj):
         name (str): Name of the anchor.
     """
 
-    name: str
+    def __init__(
+        self,
+        name: Optional[str] = None,
+        prefix: str = "anchor",
+        page_info: Optional[PageInfo] = None,
+    ):
+        if name is None:
+            assert page_info is not None
+            assert page_info.idstore is not None
+            # need to create it using the IDStore
+            name = page_info.idstore.next_id(prefix)
+            self._back = SpacedText(comment_ids(name), (2, 2))
+        else:
+            self._back = None
 
-    def __post_init__(self):
-        self._body = SpacedText(f"[](){{:name='{self.name}'}}", (0, 0))
-        self._back = None
+        self.name = name
+        self._body = SpacedText(f"[](){{:name='{name}'}}", (0, 0))
         self._settings = None
 
 
@@ -254,52 +265,57 @@ class Link(MdObj):
 
     Args:
         text (str): The text of the link
-        page_info (Optional[PageInfo]): PageInfo object cotaining info of the page
-        to_page_path (Optional[Path]): internal page to link to
-        anchor (Optional[Union[str, Anchor]]): anchor to use
         url (Optional[str]): URL to link to.
     """
 
     text: str = ""
-    page_info: Optional[PageInfo] = None
-    to_page_path: Optional[Path] = None
-    anchor: Optional[Union[str, Anchor]] = None
-    url: Optional[str] = None
+    url: str = ""
 
     def __post_init__(self):
-        if self.url is not None:
-            link = self.url
-        else:
-            assert self.page_info is not None
-            page_path = self.page_info.page_path
-            if page_path is None or self.to_page_path is None:
-                if self.anchor is None:
-                    raise ValueError(
-                        "Either id or to_page_path and page_path have to be defined"
-                    )
-                else:
-                    # assume is on the same page
-                    anchor_id = (
-                        self.anchor
-                        if isinstance(self.anchor, str)
-                        else self.anchor.name
-                    )
-                    link = f"#{anchor_id}"
-            else:
-                # both are not none, do relative
-                if self.anchor is None:
-                    link = f"{relpath(self.to_page_path, start=page_path.parent)}"
-                else:
-                    anchor_id = (
-                        self.anchor
-                        if isinstance(self.anchor, str)
-                        else self.anchor.name
-                    )
-                    link = f"{relpath(self.to_page_path, start=page_path.parent)}#{anchor_id}"
+        link = self.url
 
         self._body = SpacedText(f"[{html.escape(self.text)}]({link})", (0, 0))
         self._back = None
         self._settings = None
+
+
+@register_md("ReportLink")
+class ReportLink(Link):
+    def __init__(
+        self,
+        text: str = "",
+        to_page_path: Optional[Path] = None,
+        anchor: Optional[Union[str, Anchor]] = None,
+        page_info: Optional[PageInfo] = None,
+    ):
+        """
+        Create a link to another page in this report.
+
+        Args:
+            text (str): The text of the link
+            page_info (Optional[PageInfo]): PageInfo object cotaining info of the page
+            to_page_path (Optional[Path]): internal page to link to
+            anchor (Optional[Union[str, Anchor]]): anchor to use
+        """
+        assert page_info is not None
+        assert (page_path := page_info.page_path) is not None
+        if to_page_path is None:
+            if anchor is None:
+                raise ValueError(
+                    "Either id or to_page_path and page_path have to be defined"
+                )
+            else:
+                # assume is on the same page
+                anchor_id = anchor if isinstance(anchor, str) else anchor.name
+                link = f"#{anchor_id}"
+        else:
+            # both are not none, do relative
+            if anchor is None:
+                link = f"{relpath(to_page_path, start=page_path.parent)}"
+            else:
+                anchor_id = anchor if isinstance(anchor, str) else anchor.name
+                link = f"{relpath(to_page_path, start=page_path.parent)}#{anchor_id}"
+        super().__init__(text=text, url=link)
 
 
 @register_md("P")
@@ -336,7 +352,7 @@ class Paragraph(MdObj):
         else:
             res_body = self.obj.body
         self._body = SpacedText(res_body, (2, 2))
-        self._back = None
+        self._back = None if not isinstance(self.anchor, Anchor) else self.anchor.back
         self._settings = None
 
 

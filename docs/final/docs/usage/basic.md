@@ -9,10 +9,12 @@ css:
 ??? code "Code"
 
     ```python title="docs/staging/basic.py"
-    --8<-- 'docs/usage/basic_store/basic-4b770ae69fae728b80517da7e1501b99.py'
+    --8<-- 'docs/usage/basic_store/basic-e2790dcbcc97bebbab0872249f1c0d78.py'
     ```
 
-## Headings[](){:name='my-headings'}
+## Headings[](){:name='anchor-0'}
+
+[comment]: # (id: anchor-0)
 
 === "Content"
 
@@ -107,9 +109,9 @@ css:
     A number of different types of links are possible. Those within
     a page to an anchor or to another page (with or without anchor)
 
-    A link back to the [first heading](#my-headings)
+    A link back to the [first heading](#anchor-0)
 
-    A link to another page [Images](../images.md)
+    A link to another page [Images](images.md)
 
     Or just to any page [Google](https://google.com)
 
@@ -126,11 +128,13 @@ css:
     )
     p2.P(
         "A link back to the "
-        + p.md.Link(anchor=heading_anchor, text="first heading")
+        + p.md.ReportLink(anchor=heading_anchor, text="first heading")
     )
     p2.P(
         "A link to another page "
-        + p.md.Link("Images", to_page_path=report.page("images.md").path)
+        + p.md.ReportLink(
+            "Images", to_page_path=report.page("usage/images.md").path
+        )
     )
     p2.P("Or just to any page " + p.md.Link("Google", url="https://google.com"))
     p2.P("Or of course also just straight markdown [Google](https://google.com)")

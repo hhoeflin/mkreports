@@ -30,6 +30,10 @@ class Heading(MdObj):
     anchor: Optional[Union[Anchor, str]] = None
 
     def __post_init__(self):
+        if isinstance(self.anchor, Anchor):
+            self._back = self.anchor.back
+        else:
+            self._back = None
         if isinstance(self.anchor, str):
             self.anchor = Anchor(self.anchor)
 
@@ -46,7 +50,6 @@ class Heading(MdObj):
             (2, 2),
         )
 
-        self._back = None
         self._settings = None
 
 
