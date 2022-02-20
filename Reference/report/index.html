@@ -1,0 +1,2937 @@
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.9">
+    
+    
+      
+        <title>report - Mkreports documentations</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.2b4465f4.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.e6a45f82.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+
+  
+
+  
+
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#mkreports.report" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Mkreports documentations" class="md-header__button md-logo" aria-label="Mkreports documentations" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Mkreports documentations
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              report
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Mkreports documentations" class="md-nav__button md-logo" aria-label="Mkreports documentations" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    Mkreports documentations
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quickstart/" class="md-nav__link">
+        Quickstart
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../markdown/" class="md-nav__link">
+        Markdown
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ipython/" class="md-nav__link">
+        Ipython
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../basic/" class="md-nav__link">
+        Basic
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../images/" class="md-nav__link">
+        Images
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tables/" class="md-nav__link">
+        Tables
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../code_blocks/" class="md-nav__link">
+        Code Blocks
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sidebar/" class="md-nav__link">
+        Sidebar
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_10" type="checkbox" id="__nav_10" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_10">
+          Reference
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Reference" data-md-level="1">
+        <label class="md-nav__title" for="__nav_10">
+          <span class="md-nav__icon md-icon"></span>
+          Reference
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../code_context/" class="md-nav__link">
+        code_context
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../docs/" class="md-nav__link">
+        docs
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../exceptions/" class="md-nav__link">
+        exceptions
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ipython/" class="md-nav__link">
+        ipython
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_10_5" type="checkbox" id="__nav_10_5" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_10_5">
+          md
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="md" data-md-level="2">
+        <label class="md-nav__title" for="__nav_10_5">
+          <span class="md-nav__icon md-icon"></span>
+          md
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../md/base/" class="md-nav__link">
+        base
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../md/combo/" class="md-nav__link">
+        combo
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../md/containers/" class="md-nav__link">
+        containers
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../md/docstring/" class="md-nav__link">
+        docstring
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../md/file/" class="md-nav__link">
+        file
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../md/header/" class="md-nav__link">
+        header
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../md/idstore/" class="md-nav__link">
+        idstore
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../md/image/" class="md-nav__link">
+        image
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../md/list/" class="md-nav__link">
+        list
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../md/md_proxy/" class="md-nav__link">
+        md_proxy
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../md/settings/" class="md-nav__link">
+        settings
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../md/table/" class="md-nav__link">
+        table
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../md/text/" class="md-nav__link">
+        text
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../parser/" class="md-nav__link">
+        parser
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          report
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        report
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#mkreports.report" class="md-nav__link">
+    mkreports.report
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mkreports.report.Page" class="md-nav__link">
+    Page
+  </a>
+  
+    <nav class="md-nav" aria-label="Page">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mkreports.report.Page.md" class="md-nav__link">
+    md
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mkreports.report.Page.notrack" class="md-nav__link">
+    notrack
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mkreports.report.Page.page_info" class="md-nav__link">
+    page_info
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mkreports.report.Page.path" class="md-nav__link">
+    path
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mkreports.report.Page.store_path" class="md-nav__link">
+    store_path
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mkreports.report.Page.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mkreports.report.Page.add" class="md-nav__link">
+    add()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mkreports.report.Page.clear" class="md-nav__link">
+    clear()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mkreports.report.Page.ctx" class="md-nav__link">
+    ctx()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mkreports.report.Report" class="md-nav__link">
+    Report
+  </a>
+  
+    <nav class="md-nav" aria-label="Report">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mkreports.report.Report.docs_dir" class="md-nav__link">
+    docs_dir
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mkreports.report.Report.index_file" class="md-nav__link">
+    index_file
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mkreports.report.Report.javascript_path" class="md-nav__link">
+    javascript_path
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mkreports.report.Report.mkdocs_file" class="md-nav__link">
+    mkdocs_file
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mkreports.report.Report.path" class="md-nav__link">
+    path
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mkreports.report.Report.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mkreports.report.Report.create" class="md-nav__link">
+    create()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mkreports.report.Report.page" class="md-nav__link">
+    page()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../settings/" class="md-nav__link">
+        settings
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tracker/" class="md-nav__link">
+        tracker
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../utils/" class="md-nav__link">
+        utils
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_11" type="checkbox" id="__nav_11" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_11">
+          Site Code
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Site Code" data-md-level="1">
+        <label class="md-nav__title" for="__nav_11">
+          <span class="md-nav__icon md-icon"></span>
+          Site Code
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../site_code/__init__/" class="md-nav__link">
+          Init  
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../site_code/basic/" class="md-nav__link">
+        Basic
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../site_code/code_blocks/" class="md-nav__link">
+        Code Blocks
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../site_code/images/" class="md-nav__link">
+        Images
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../site_code/main/" class="md-nav__link">
+        Main
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../site_code/quickstart/" class="md-nav__link">
+        Quickstart
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../site_code/sidebar/" class="md-nav__link">
+        Sidebar
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../site_code/tables/" class="md-nav__link">
+        Tables
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#mkreports.report" class="md-nav__link">
+    mkreports.report
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mkreports.report.Page" class="md-nav__link">
+    Page
+  </a>
+  
+    <nav class="md-nav" aria-label="Page">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mkreports.report.Page.md" class="md-nav__link">
+    md
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mkreports.report.Page.notrack" class="md-nav__link">
+    notrack
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mkreports.report.Page.page_info" class="md-nav__link">
+    page_info
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mkreports.report.Page.path" class="md-nav__link">
+    path
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mkreports.report.Page.store_path" class="md-nav__link">
+    store_path
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mkreports.report.Page.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mkreports.report.Page.add" class="md-nav__link">
+    add()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mkreports.report.Page.clear" class="md-nav__link">
+    clear()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mkreports.report.Page.ctx" class="md-nav__link">
+    ctx()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mkreports.report.Report" class="md-nav__link">
+    Report
+  </a>
+  
+    <nav class="md-nav" aria-label="Report">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mkreports.report.Report.docs_dir" class="md-nav__link">
+    docs_dir
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mkreports.report.Report.index_file" class="md-nav__link">
+    index_file
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mkreports.report.Report.javascript_path" class="md-nav__link">
+    javascript_path
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mkreports.report.Report.mkdocs_file" class="md-nav__link">
+    mkdocs_file
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mkreports.report.Report.path" class="md-nav__link">
+    path
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mkreports.report.Report.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mkreports.report.Report.create" class="md-nav__link">
+    create()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mkreports.report.Report.page" class="md-nav__link">
+    page()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+
+  <h1>report</h1>
+
+<div class="doc doc-object doc-module">
+
+<a id="mkreports.report"></a>
+    <div class="doc doc-contents first">
+
+      <p>Base class for the whole report.</p>
+<p>This corresponds to a mkdocs project. The class is mainly
+responsible for creating a mkdocs project if it doesn't exist
+already and ensuring that the neccessary settings are all 
+included. </p>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h2 id="mkreports.report.Page" class="doc doc-heading">
+        <code>
+Page        </code>
+
+
+
+</h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Represents a single page of report.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>mkreports/report.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Page</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Represents a single page of report.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">path</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
+        <span class="n">report</span><span class="p">:</span> <span class="n">Report</span><span class="p">,</span>
+        <span class="n">code_layout</span><span class="p">:</span> <span class="n">Layouts</span> <span class="o">=</span> <span class="s2">&quot;tabbed&quot;</span><span class="p">,</span>
+        <span class="n">code_name_only</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">add_bottom</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize a page. Usually this is not used and instead a page is created</span>
+<span class="sd">        using the *page* method on a report.</span>
+
+<span class="sd">        A page is also a context manager. If the context manager is active, code</span>
+<span class="sd">        that is run in it is being tracked and added to the output with the</span>
+<span class="sd">        specified layouts. The specified layout is used for all code tracking.</span>
+<span class="sd">        Only one context-manager for a page can be active at a time.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            path (Path): Path to the page (absolute or relative to cwd).</span>
+<span class="sd">            report (Report): The report object to which the page belongs.</span>
+<span class="sd">            code_layout (Layouts): Type of layout for code-tracking. One of</span>
+<span class="sd">                &#39;tabbed&#39;, &#39;top-o&#39;, &#39;top-c&#39;, &#39;bottom-o&#39;, &#39;bottom-c&#39; or &#39;nocode&#39;.</span>
+<span class="sd">            code_name_only (bool): For code files, should only the name be used</span>
+<span class="sd">                instead of the path.</span>
+<span class="sd">            add_bottom (bool): Should new entries be added at the bottom? At the</span>
+<span class="sd">                top used for IPython.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span>
+        <span class="c1"># check that the file exists and ends with .md</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;file </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="si">}</span><span class="s2"> does not exist.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s2">&quot;.md&quot;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">IncorrectSuffixError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;file </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="si">}</span><span class="s2"> does not have suffix &#39;.md&#39;&quot;</span><span class="p">)</span>
+
+        <span class="c1"># we need to parse the file for ids</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_idstore</span> <span class="o">=</span> <span class="n">IDStore</span><span class="p">(</span><span class="n">used_ids</span><span class="o">=</span><span class="n">find_comment_ids</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">read_text</span><span class="p">()))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report</span> <span class="o">=</span> <span class="n">report</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_bottom</span> <span class="o">=</span> <span class="n">add_bottom</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">code_layout</span><span class="p">:</span> <span class="n">Layouts</span> <span class="o">=</span> <span class="n">code_layout</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">code_name_only</span> <span class="o">=</span> <span class="n">code_name_only</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_md</span> <span class="o">=</span> <span class="n">MdProxy</span><span class="p">(</span><span class="n">page_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">page_info</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">code_context</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">CodeContext</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Page&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">code_context</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">code_context</span><span class="o">.</span><span class="n">active</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ContextActiveError</span><span class="p">(</span><span class="s2">&quot;The context manager is already active&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">code_context</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">code_context</span> <span class="o">=</span> <span class="n">CodeContext</span><span class="p">(</span>
+                <span class="n">layout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">code_layout</span><span class="p">,</span>
+                <span class="n">name_only</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">code_name_only</span><span class="p">,</span>
+                <span class="n">add_bottom</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">add_bottom</span><span class="p">,</span>
+                <span class="n">relative_to</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="o">.</span><span class="n">project_root</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">code_context</span><span class="o">.</span><span class="fm">__enter__</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">ctx</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">layout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Layouts</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">name_only</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">add_bottom</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Page&quot;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets the next context to be used. Only counts for the next tracking context.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            layout (Optional[Layouts]): The layout to use. One of</span>
+<span class="sd">                &#39;tabbed&#39;, &#39;top-o&#39;, &#39;top-c&#39;, &#39;bottom-o&#39;, &#39;bottom-c&#39; or &#39;nocode&#39;.</span>
+<span class="sd">            name_only (Optional[bool]): In the code block, should only the name of the</span>
+<span class="sd">                file be used.</span>
+<span class="sd">            add_bottom (Optional[bool]): Is new output added to the bottom or top.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Page: The page object, but with the new *CodeContext* object set.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">code_context</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">code_context</span><span class="o">.</span><span class="n">active</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ContextActiveError</span><span class="p">(</span><span class="s2">&quot;The context manager is already active&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">code_context</span> <span class="o">=</span> <span class="n">CodeContext</span><span class="p">(</span>
+            <span class="n">layout</span><span class="o">=</span><span class="n">layout</span> <span class="k">if</span> <span class="n">layout</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">code_layout</span><span class="p">,</span>
+            <span class="n">name_only</span><span class="o">=</span><span class="n">name_only</span> <span class="k">if</span> <span class="n">name_only</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">code_name_only</span><span class="p">,</span>
+            <span class="n">add_bottom</span><span class="o">=</span><span class="n">add_bottom</span> <span class="k">if</span> <span class="n">add_bottom</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_bottom</span><span class="p">,</span>
+            <span class="n">relative_to</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="o">.</span><span class="n">project_root</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">traceback</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">code_context</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;__exit__ called before __enter__&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">code_context</span><span class="o">.</span><span class="fm">__exit__</span><span class="p">(</span><span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">traceback</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_to_page</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">code_context</span><span class="o">.</span><span class="n">md_obj</span><span class="p">(</span><span class="n">page_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">page_info</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">code_context</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="n">md_class</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">md</span><span class="o">.</span><span class="fm">__getattr__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">md_and_add</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="n">kwargs_add</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">kwargs_md</span> <span class="o">=</span> <span class="n">kwargs</span>
+
+            <span class="c1"># now apply to md</span>
+            <span class="n">md_obj</span> <span class="o">=</span> <span class="n">md_class</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs_md</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">md_obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs_add</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">md_and_add</span>
+
+    <span class="k">def</span> <span class="nf">__copy__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">cls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span>
+        <span class="n">result</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">page_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            PageInfo: An object with info about the page used in markdown objects.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">PageInfo</span><span class="p">(</span>
+            <span class="n">store_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">store_path</span><span class="p">,</span>
+            <span class="n">report_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
+            <span class="n">javascript_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="o">.</span><span class="n">javascript_path</span><span class="p">,</span>
+            <span class="n">project_root</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="o">.</span><span class="n">project_root</span><span class="p">,</span>
+            <span class="n">idstore</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_idstore</span><span class="p">,</span>
+            <span class="n">page_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">notrack</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ContextManager</span><span class="p">[</span><span class="s2">&quot;Page&quot;</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Context-manager that does not do anything.</span>
+
+<span class="sd">        This can be useful if a context-manager is used for visual grouping of code</span>
+<span class="sd">        - e.g. when using the context manager on headings. This context manager</span>
+<span class="sd">        can be used even if another is already active.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ContextManager[&quot;Page&quot;]: Returns a null context manager that wraps the page.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">nullcontext</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">path</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Path: Absolute path to the page.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_path</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">store_path</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Path: Location of the path for object storage for the page.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="o">.</span><span class="n">stem</span> <span class="o">+</span> <span class="s2">&quot;_store&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Clear the page markdown file and the generated assets directory.&quot;&quot;&quot;</span>
+        <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">store_path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">item</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">MdObj</span><span class="p">,</span> <span class="n">Text</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Page&quot;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add a MdObj to the page.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            item (Union[MdObj, Text]): Object to add to the page</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Page: The page itself.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># first ensure that item is an MdObj</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">item</span> <span class="o">=</span> <span class="n">Raw</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">dedent</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">SpacedText</span><span class="p">):</span>
+            <span class="n">item</span> <span class="o">=</span> <span class="n">Raw</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+        <span class="c1"># if a context-manager is active, pass along the object into there</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">code_context</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">code_context</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># else pass it directly to the page</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_add_to_page</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+        <span class="c1"># we return a copy of the page, but with the code context not copied</span>
+        <span class="c1"># the copy is therefore a shallow copy</span>
+        <span class="c1"># page_copy = copy.copy(self)</span>
+        <span class="c1"># page_copy.code_context = None</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">_add_to_page</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">item</span><span class="p">:</span> <span class="n">MdObj</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Read the frontmatter and merge it with the additional settings.</span>
+
+<span class="sd">        The reason that we do this separately is a minor issue in the</span>
+<span class="sd">        frontmatter library, that filters the newlines at the end of the file.</span>
+<span class="sd">        https://github.com/eyeseast/python-frontmatter/issues/87</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># call the markdown and the backmatter</span>
+        <span class="n">md_text</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">body</span> <span class="o">+</span> <span class="n">item</span><span class="o">.</span><span class="n">back</span>
+
+        <span class="n">req</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">settings</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">req</span><span class="o">.</span><span class="n">mkdocs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># merge these things into mkdocs</span>
+            <span class="c1"># there is not allowed to be a nav here</span>
+            <span class="k">if</span> <span class="s2">&quot;nav&quot;</span> <span class="ow">in</span> <span class="n">req</span><span class="o">.</span><span class="n">mkdocs</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;nav not allowed to be in mkdocs&quot;</span><span class="p">)</span>
+
+            <span class="n">mkdocs_settings</span> <span class="o">=</span> <span class="n">load_yaml</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="o">.</span><span class="n">mkdocs_file</span><span class="p">)</span>
+            <span class="n">mkdocs_settings</span> <span class="o">=</span> <span class="n">merge_settings</span><span class="p">(</span><span class="n">mkdocs_settings</span><span class="p">,</span> <span class="n">req</span><span class="o">.</span><span class="n">mkdocs</span><span class="p">)</span>
+            <span class="n">save_yaml</span><span class="p">(</span><span class="n">mkdocs_settings</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="o">.</span><span class="n">mkdocs_file</span><span class="p">)</span>
+
+        <span class="n">metadata</span><span class="p">,</span> <span class="n">content</span> <span class="o">=</span> <span class="n">load_page</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+        <span class="c1"># we need to read the whole page anyway</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="n">merge_settings</span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span> <span class="n">req</span><span class="o">.</span><span class="n">page</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_bottom</span><span class="p">:</span>
+            <span class="n">content</span> <span class="o">=</span> <span class="n">content</span> <span class="o">+</span> <span class="n">md_text</span><span class="o">.</span><span class="n">format_text</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">content</span> <span class="o">=</span> <span class="n">md_text</span><span class="o">.</span><span class="n">format_text</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">content</span><span class="p">)</span> <span class="o">+</span> <span class="n">content</span>
+
+        <span class="n">write_page</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">content</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">md</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MdProxy</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A proxy for the &#39;md&#39; submodule.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_md</span>
+</code></pre></div>
+        </details>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="mkreports.report.Page.md" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">md</span><span class="p">:</span> <span class="n">MdProxy</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-property"><code>property</code></small>
+      <small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+  </span>
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>A proxy for the 'md' submodule.</p>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="mkreports.report.Page.notrack" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">notrack</span><span class="p">:</span> <span class="n">ContextManager</span><span class="p">[</span><span class="n">Page</span><span class="p">]</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-property"><code>property</code></small>
+      <small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+  </span>
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Context-manager that does not do anything.</p>
+<p>This can be useful if a context-manager is used for visual grouping of code
+- e.g. when using the context manager on headings. This context manager
+can be used even if another is already active.</p>
+
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>ContextManager[&#34;Page&#34;]</code></td>
+      <td><p>Returns a null context manager that wraps the page.</p></td>
+    </tr>
+  </tbody>
+</table>    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="mkreports.report.Page.page_info" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">page_info</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-property"><code>property</code></small>
+      <small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+  </span>
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>PageInfo</code></td>
+      <td><p>An object with info about the page used in markdown objects.</p></td>
+    </tr>
+  </tbody>
+</table>    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="mkreports.report.Page.path" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">path</span><span class="p">:</span> <span class="n">Path</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-property"><code>property</code></small>
+      <small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+  </span>
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Path</code></td>
+      <td><p>Absolute path to the page.</p></td>
+    </tr>
+  </tbody>
+</table>    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="mkreports.report.Page.store_path" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">store_path</span><span class="p">:</span> <span class="n">Path</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-property"><code>property</code></small>
+      <small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+  </span>
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Path</code></td>
+      <td><p>Location of the path for object storage for the page.</p></td>
+    </tr>
+  </tbody>
+</table>    </div>
+
+  </div>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="mkreports.report.Page.__init__" class="doc doc-heading">
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">report</span><span class="p">,</span> <span class="n">code_layout</span><span class="o">=</span><span class="s1">&#39;tabbed&#39;</span><span class="p">,</span> <span class="n">code_name_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">add_bottom</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-special"><code>special</code></small>
+  </span>
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Initialize a page. Usually this is not used and instead a page is created
+using the <em>page</em> method on a report.</p>
+<p>A page is also a context manager. If the context manager is active, code
+that is run in it is being tracked and added to the output with the
+specified layouts. The specified layout is used for all code tracking.
+Only one context-manager for a page can be active at a time.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>path</code></td>
+        <td><code>Path</code></td>
+        <td><p>Path to the page (absolute or relative to cwd).</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>report</code></td>
+        <td><code>Report</code></td>
+        <td><p>The report object to which the page belongs.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>code_layout</code></td>
+        <td><code>Layouts</code></td>
+        <td><p>Type of layout for code-tracking. One of
+'tabbed', 'top-o', 'top-c', 'bottom-o', 'bottom-c' or 'nocode'.</p></td>
+        <td><code>&#39;tabbed&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>code_name_only</code></td>
+        <td><code>bool</code></td>
+        <td><p>For code files, should only the name be used
+instead of the path.</p></td>
+        <td><code>False</code></td>
+      </tr>
+      <tr>
+        <td><code>add_bottom</code></td>
+        <td><code>bool</code></td>
+        <td><p>Should new entries be added at the bottom? At the
+top used for IPython.</p></td>
+        <td><code>True</code></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>mkreports/report.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">path</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
+    <span class="n">report</span><span class="p">:</span> <span class="n">Report</span><span class="p">,</span>
+    <span class="n">code_layout</span><span class="p">:</span> <span class="n">Layouts</span> <span class="o">=</span> <span class="s2">&quot;tabbed&quot;</span><span class="p">,</span>
+    <span class="n">code_name_only</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">add_bottom</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Initialize a page. Usually this is not used and instead a page is created</span>
+<span class="sd">    using the *page* method on a report.</span>
+
+<span class="sd">    A page is also a context manager. If the context manager is active, code</span>
+<span class="sd">    that is run in it is being tracked and added to the output with the</span>
+<span class="sd">    specified layouts. The specified layout is used for all code tracking.</span>
+<span class="sd">    Only one context-manager for a page can be active at a time.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        path (Path): Path to the page (absolute or relative to cwd).</span>
+<span class="sd">        report (Report): The report object to which the page belongs.</span>
+<span class="sd">        code_layout (Layouts): Type of layout for code-tracking. One of</span>
+<span class="sd">            &#39;tabbed&#39;, &#39;top-o&#39;, &#39;top-c&#39;, &#39;bottom-o&#39;, &#39;bottom-c&#39; or &#39;nocode&#39;.</span>
+<span class="sd">        code_name_only (bool): For code files, should only the name be used</span>
+<span class="sd">            instead of the path.</span>
+<span class="sd">        add_bottom (bool): Should new entries be added at the bottom? At the</span>
+<span class="sd">            top used for IPython.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span>
+    <span class="c1"># check that the file exists and ends with .md</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;file </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="si">}</span><span class="s2"> does not exist.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s2">&quot;.md&quot;</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">IncorrectSuffixError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;file </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="si">}</span><span class="s2"> does not have suffix &#39;.md&#39;&quot;</span><span class="p">)</span>
+
+    <span class="c1"># we need to parse the file for ids</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_idstore</span> <span class="o">=</span> <span class="n">IDStore</span><span class="p">(</span><span class="n">used_ids</span><span class="o">=</span><span class="n">find_comment_ids</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">read_text</span><span class="p">()))</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">report</span> <span class="o">=</span> <span class="n">report</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">add_bottom</span> <span class="o">=</span> <span class="n">add_bottom</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">code_layout</span><span class="p">:</span> <span class="n">Layouts</span> <span class="o">=</span> <span class="n">code_layout</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">code_name_only</span> <span class="o">=</span> <span class="n">code_name_only</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">_md</span> <span class="o">=</span> <span class="n">MdProxy</span><span class="p">(</span><span class="n">page_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">page_info</span><span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">code_context</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">CodeContext</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="mkreports.report.Page.add" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Add a MdObj to the page.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>item</code></td>
+        <td><code>Union[MdObj, Text]</code></td>
+        <td><p>Object to add to the page</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Page</code></td>
+      <td><p>The page itself.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>mkreports/report.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">add</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">item</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">MdObj</span><span class="p">,</span> <span class="n">Text</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Page&quot;</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Add a MdObj to the page.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        item (Union[MdObj, Text]): Object to add to the page</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Page: The page itself.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># first ensure that item is an MdObj</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="n">Raw</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">dedent</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">SpacedText</span><span class="p">):</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="n">Raw</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+    <span class="c1"># if a context-manager is active, pass along the object into there</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">code_context</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">code_context</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>  <span class="c1"># else pass it directly to the page</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_to_page</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+    <span class="c1"># we return a copy of the page, but with the code context not copied</span>
+    <span class="c1"># the copy is therefore a shallow copy</span>
+    <span class="c1"># page_copy = copy.copy(self)</span>
+    <span class="c1"># page_copy.code_context = None</span>
+    <span class="k">return</span> <span class="bp">self</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="mkreports.report.Page.clear" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Clear the page markdown file and the generated assets directory.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>mkreports/report.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Clear the page markdown file and the generated assets directory.&quot;&quot;&quot;</span>
+    <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">store_path</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="mkreports.report.Page.ctx" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">ctx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name_only</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">add_bottom</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Sets the next context to be used. Only counts for the next tracking context.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>layout</code></td>
+        <td><code>Optional[Layouts]</code></td>
+        <td><p>The layout to use. One of
+'tabbed', 'top-o', 'top-c', 'bottom-o', 'bottom-c' or 'nocode'.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>name_only</code></td>
+        <td><code>Optional[bool]</code></td>
+        <td><p>In the code block, should only the name of the
+file be used.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>add_bottom</code></td>
+        <td><code>Optional[bool]</code></td>
+        <td><p>Is new output added to the bottom or top.</p></td>
+        <td><code>None</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Page</code></td>
+      <td><p>The page object, but with the new <em>CodeContext</em> object set.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>mkreports/report.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">ctx</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">layout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Layouts</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">name_only</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">add_bottom</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Page&quot;</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Sets the next context to be used. Only counts for the next tracking context.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        layout (Optional[Layouts]): The layout to use. One of</span>
+<span class="sd">            &#39;tabbed&#39;, &#39;top-o&#39;, &#39;top-c&#39;, &#39;bottom-o&#39;, &#39;bottom-c&#39; or &#39;nocode&#39;.</span>
+<span class="sd">        name_only (Optional[bool]): In the code block, should only the name of the</span>
+<span class="sd">            file be used.</span>
+<span class="sd">        add_bottom (Optional[bool]): Is new output added to the bottom or top.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Page: The page object, but with the new *CodeContext* object set.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">code_context</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">code_context</span><span class="o">.</span><span class="n">active</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">ContextActiveError</span><span class="p">(</span><span class="s2">&quot;The context manager is already active&quot;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">code_context</span> <span class="o">=</span> <span class="n">CodeContext</span><span class="p">(</span>
+        <span class="n">layout</span><span class="o">=</span><span class="n">layout</span> <span class="k">if</span> <span class="n">layout</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">code_layout</span><span class="p">,</span>
+        <span class="n">name_only</span><span class="o">=</span><span class="n">name_only</span> <span class="k">if</span> <span class="n">name_only</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">code_name_only</span><span class="p">,</span>
+        <span class="n">add_bottom</span><span class="o">=</span><span class="n">add_bottom</span> <span class="k">if</span> <span class="n">add_bottom</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_bottom</span><span class="p">,</span>
+        <span class="n">relative_to</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="o">.</span><span class="n">project_root</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="bp">self</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h2 id="mkreports.report.Report" class="doc doc-heading">
+        <code>
+Report        </code>
+
+
+
+</h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Class representing a report.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>mkreports/report.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Report</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Class representing a report.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">project_root</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the report object. This relies on the report folder already</span>
+<span class="sd">        existing, including necessary files for mkdocs. If this is not the case,</span>
+<span class="sd">        use the **create** class-method.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            path (Optional[Union[str, Path]]): Path to the top-level directory of the report.</span>
+<span class="sd">            project_root (Optional[Union[str, Path]]):</span>
+<span class="sd">                Directory that is the root of the project. If None, tries to use</span>
+<span class="sd">                the root of the git-repository if there is one. Otherwise</span>
+<span class="sd">                uses the root of the file-system.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># need to ensure it is of type Path</span>
+        <span class="k">if</span> <span class="n">path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;MKREPORTS_DIR&quot;</span><span class="p">]</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">&quot;If no report path is given, the &#39;MKREPORTS_DIR&#39;  environment variable has to be set.&quot;</span>
+                <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span>
+        <span class="c1"># first check if the path exists and is not empty and return error if that is not ok</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="n">ReportNotExistsError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="si">}</span><span class="s2"> does not exist.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">mkdocs_file</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">mkdocs_file</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="n">ReportNotValidError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">mkdocs_file</span><span class="si">}</span><span class="s2"> does not exist&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">docs_dir</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">docs_dir</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="n">ReportNotValidError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">docs_dir</span><span class="si">}</span><span class="s2"> does not exist&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">index_file</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">index_file</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="n">ReportNotValidError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">index_file</span><span class="si">}</span><span class="s2"> does not exist&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">project_root</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">root</span> <span class="o">=</span> <span class="n">repo_root</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">root</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">project_root</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">project_root</span> <span class="o">=</span> <span class="n">root</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">project_root</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">project_root</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">path</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Path: Path object that is the top-level of the report.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_path</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">mkdocs_file</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Path: Location of the mkdocs file.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">/</span> <span class="s2">&quot;mkdocs.yml&quot;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">docs_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Path: Docs-folder in the report.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">/</span> <span class="s2">&quot;docs&quot;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">index_file</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Path: Location of the index file.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">docs_dir</span> <span class="o">/</span> <span class="s2">&quot;index.md&quot;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">javascript_path</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Path: Location of the javascript folder.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">docs_dir</span> <span class="o">/</span> <span class="s2">&quot;javascript&quot;</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">],</span>
+        <span class="n">report_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">settings</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">default_settings</span><span class="p">,</span>
+        <span class="n">exist_ok</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Report&quot;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a new report.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            path (Union[str, Path]): Top-level folder of the report.</span>
+<span class="sd">            report_name (str): Name of the report (mkdocs site-name)</span>
+<span class="sd">            settings (Optional[Mapping[str, str]]): Settings of the report.</span>
+<span class="sd">            exist_ok (bool): Is it ok if it already exists?</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Report: An instance of the class representing the project.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="c1"># create the directory</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="p">(</span><span class="n">path</span> <span class="o">/</span> <span class="s2">&quot;docs&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="n">exist_ok</span><span class="p">,</span> <span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">FileExistsError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ReportExistsError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">path</span> <span class="o">/</span> <span class="s1">&#39;docs&#39;</span><span class="si">}</span><span class="s2"> already exists.&quot;</span><span class="p">)</span>
+
+        <span class="c1"># index.md created, but done nothing if it exists</span>
+        <span class="c1"># if exist_ok=False, the previousalready failed otherwise</span>
+        <span class="p">(</span><span class="n">path</span> <span class="o">/</span> <span class="s2">&quot;docs&quot;</span> <span class="o">/</span> <span class="s2">&quot;index.md&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">touch</span><span class="p">()</span>
+
+        <span class="c1"># only do it if mkdocs_yml does not exist yet</span>
+        <span class="n">mkdocs_file</span> <span class="o">=</span> <span class="n">path</span> <span class="o">/</span> <span class="s2">&quot;mkdocs.yml&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">mkdocs_file</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="c1"># the settings are our serialized yaml</span>
+            <span class="c1"># ensure settings is regular dict</span>
+            <span class="n">settings</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">items</span><span class="p">())</span> <span class="k">if</span> <span class="n">settings</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">{}</span>
+            <span class="n">settings</span><span class="p">[</span><span class="s2">&quot;site_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">report_name</span>
+            <span class="k">with</span> <span class="p">(</span><span class="n">path</span> <span class="o">/</span> <span class="s2">&quot;mkdocs.yml&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">Dumper</span><span class="o">=</span><span class="n">yaml</span><span class="o">.</span><span class="n">Dumper</span><span class="p">,</span> <span class="n">default_flow_style</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="c1"># also create the overrides doc</span>
+        <span class="n">overrides_dir</span> <span class="o">=</span> <span class="n">path</span> <span class="o">/</span> <span class="s2">&quot;overrides&quot;</span>
+        <span class="n">overrides_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">with</span> <span class="p">(</span><span class="n">overrides_dir</span> <span class="o">/</span> <span class="s2">&quot;main.html&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">main_html_override</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_add_nav_entry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nav_entry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># check that the nav-entry is relative; if absolute,</span>
+        <span class="c1"># make it relative to the docs_dir</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">nav_entry</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">nav_entry</span> <span class="o">=</span> <span class="n">NavEntry</span><span class="p">(</span><span class="n">nav_entry</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">Path</span><span class="p">(</span><span class="n">nav_entry</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="k">if</span> <span class="n">nav_entry</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">is_absolute</span><span class="p">():</span>
+            <span class="n">nav_entry</span> <span class="o">=</span> <span class="n">NavEntry</span><span class="p">(</span><span class="n">nav_entry</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">nav_entry</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">relative_to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">docs_dir</span><span class="p">))</span>
+
+        <span class="n">mkdocs_settings</span> <span class="o">=</span> <span class="n">load_yaml</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mkdocs_file</span><span class="p">)</span>
+        <span class="n">mkdocs_settings</span> <span class="o">=</span> <span class="n">add_nav_entry</span><span class="p">(</span><span class="n">mkdocs_settings</span><span class="p">,</span> <span class="n">nav_entry</span><span class="p">)</span>
+        <span class="n">save_yaml</span><span class="p">(</span><span class="n">mkdocs_settings</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mkdocs_file</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">page</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">page_name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">NavEntry</span><span class="p">,</span> <span class="n">Path</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+        <span class="n">truncate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">add_bottom</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Page&quot;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a page in the report.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            page_name (Union[NavEntry, Path, str]): Name of the page and path. Using a</span>
+<span class="sd">                **NavEntry**, a custom nav-entry and path can be specified. The path</span>
+<span class="sd">                is always relative to the report-docs directory.</span>
+<span class="sd">            truncate (bool): Should the page be truncated if it exists? Also deletes</span>
+<span class="sd">                the *store_path*.</span>
+<span class="sd">            add_bottom (bool): Should new entries be added at the bottom or at the</span>
+<span class="sd">                top of the page. Top of the page is used for IPython.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Page: An object representing a new page.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># if the page_name is just a string, we turn it into a dictionary</span>
+        <span class="c1"># based on the hierarchical names</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">page_name</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">)):</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">page_name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+                <span class="n">path</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">with_suffix</span><span class="p">(</span><span class="s2">&quot;.md&quot;</span><span class="p">)</span>
+            <span class="n">nav_entry</span> <span class="o">=</span> <span class="n">path_to_nav_entry</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">nav_entry</span> <span class="o">=</span> <span class="n">page_name</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">nav_entry</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">with_suffix</span><span class="p">(</span><span class="s2">&quot;.md&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">suffix</span> <span class="o">!=</span> <span class="s2">&quot;.md&quot;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2"> needs to have extension &#39;.md&#39;&quot;</span><span class="p">)</span>
+
+        <span class="c1"># if the file already exists, just return a &#39;Page&#39;,</span>
+        <span class="c1"># else create a new nav-entry and the file and return a &#39;Page&#39;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">docs_dir</span> <span class="o">/</span> <span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">truncate</span><span class="p">:</span>
+                <span class="c1"># delete the existing site</span>
+                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">docs_dir</span> <span class="o">/</span> <span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>
+                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">docs_dir</span> <span class="o">/</span> <span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">touch</span><span class="p">()</span>
+                <span class="c1"># we do not need to add en entry into the nav</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># create the file by touching it and create a nav-entry</span>
+            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">docs_dir</span> <span class="o">/</span> <span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">docs_dir</span> <span class="o">/</span> <span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">touch</span><span class="p">()</span>
+
+            <span class="c1"># update the report settings</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_add_nav_entry</span><span class="p">(</span><span class="n">nav_entry</span><span class="p">)</span>
+
+        <span class="n">page</span> <span class="o">=</span> <span class="n">Page</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">docs_dir</span> <span class="o">/</span> <span class="n">path</span><span class="p">,</span>
+            <span class="n">report</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">add_bottom</span><span class="o">=</span><span class="n">add_bottom</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">truncate</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">page</span><span class="o">.</span><span class="n">store_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+                <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">page</span><span class="o">.</span><span class="n">store_path</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">page</span>
+</code></pre></div>
+        </details>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="mkreports.report.Report.docs_dir" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">docs_dir</span><span class="p">:</span> <span class="n">Path</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-property"><code>property</code></small>
+      <small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+  </span>
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Path</code></td>
+      <td><p>Docs-folder in the report.</p></td>
+    </tr>
+  </tbody>
+</table>    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="mkreports.report.Report.index_file" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">index_file</span><span class="p">:</span> <span class="n">Path</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-property"><code>property</code></small>
+      <small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+  </span>
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Path</code></td>
+      <td><p>Location of the index file.</p></td>
+    </tr>
+  </tbody>
+</table>    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="mkreports.report.Report.javascript_path" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">javascript_path</span><span class="p">:</span> <span class="n">Path</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-property"><code>property</code></small>
+      <small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+  </span>
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Path</code></td>
+      <td><p>Location of the javascript folder.</p></td>
+    </tr>
+  </tbody>
+</table>    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="mkreports.report.Report.mkdocs_file" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">mkdocs_file</span><span class="p">:</span> <span class="n">Path</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-property"><code>property</code></small>
+      <small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+  </span>
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Path</code></td>
+      <td><p>Location of the mkdocs file.</p></td>
+    </tr>
+  </tbody>
+</table>    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="mkreports.report.Report.path" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">path</span><span class="p">:</span> <span class="n">Path</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-property"><code>property</code></small>
+      <small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+  </span>
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Path</code></td>
+      <td><p>Path object that is the top-level of the report.</p></td>
+    </tr>
+  </tbody>
+</table>    </div>
+
+  </div>
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="mkreports.report.Report.__init__" class="doc doc-heading">
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">project_root</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-special"><code>special</code></small>
+  </span>
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Initialize the report object. This relies on the report folder already
+existing, including necessary files for mkdocs. If this is not the case,
+use the <strong>create</strong> class-method.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>path</code></td>
+        <td><code>Optional[Union[str, Path]]</code></td>
+        <td><p>Path to the top-level directory of the report.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>project_root</code></td>
+        <td><code>Optional[Union[str, Path]]</code></td>
+        <td><p>Directory that is the root of the project. If None, tries to use
+the root of the git-repository if there is one. Otherwise
+uses the root of the file-system.</p></td>
+        <td><code>None</code></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>mkreports/report.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">project_root</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Initialize the report object. This relies on the report folder already</span>
+<span class="sd">    existing, including necessary files for mkdocs. If this is not the case,</span>
+<span class="sd">    use the **create** class-method.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        path (Optional[Union[str, Path]]): Path to the top-level directory of the report.</span>
+<span class="sd">        project_root (Optional[Union[str, Path]]):</span>
+<span class="sd">            Directory that is the root of the project. If None, tries to use</span>
+<span class="sd">            the root of the git-repository if there is one. Otherwise</span>
+<span class="sd">            uses the root of the file-system.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># need to ensure it is of type Path</span>
+    <span class="k">if</span> <span class="n">path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;MKREPORTS_DIR&quot;</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;If no report path is given, the &#39;MKREPORTS_DIR&#39;  environment variable has to be set.&quot;</span>
+            <span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span>
+    <span class="c1"># first check if the path exists and is not empty and return error if that is not ok</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="n">ReportNotExistsError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="si">}</span><span class="s2"> does not exist.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">mkdocs_file</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">mkdocs_file</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="n">ReportNotValidError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">mkdocs_file</span><span class="si">}</span><span class="s2"> does not exist&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">docs_dir</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">docs_dir</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="n">ReportNotValidError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">docs_dir</span><span class="si">}</span><span class="s2"> does not exist&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">index_file</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">index_file</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="n">ReportNotValidError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">index_file</span><span class="si">}</span><span class="s2"> does not exist&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">project_root</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">root</span> <span class="o">=</span> <span class="n">repo_root</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">root</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">project_root</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">project_root</span> <span class="o">=</span> <span class="n">root</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">project_root</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">project_root</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="mkreports.report.Report.create" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">create</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">report_name</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="n">immutabledict</span><span class="p">({</span><span class="s1">&#39;theme&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;material&#39;</span><span class="p">,</span> <span class="s1">&#39;custom_dir&#39;</span><span class="p">:</span> <span class="s1">&#39;overrides&#39;</span><span class="p">},</span> <span class="s1">&#39;nav&#39;</span><span class="p">:</span> <span class="p">[{</span><span class="s1">&#39;Home&#39;</span><span class="p">:</span> <span class="s1">&#39;index.md&#39;</span><span class="p">}],</span> <span class="s1">&#39;markdown_extensions&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;meta&#39;</span><span class="p">,</span> <span class="s1">&#39;admonition&#39;</span><span class="p">,</span> <span class="s1">&#39;pymdownx.extra&#39;</span><span class="p">,</span> <span class="s1">&#39;pymdownx.details&#39;</span><span class="p">,</span> <span class="s1">&#39;pymdownx.superfences&#39;</span><span class="p">]}),</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
+  </span>
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Create a new report.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>path</code></td>
+        <td><code>Union[str, Path]</code></td>
+        <td><p>Top-level folder of the report.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>report_name</code></td>
+        <td><code>str</code></td>
+        <td><p>Name of the report (mkdocs site-name)</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>settings</code></td>
+        <td><code>Optional[Mapping[str, str]]</code></td>
+        <td><p>Settings of the report.</p></td>
+        <td><code>immutabledict({&#39;theme&#39;: {&#39;name&#39;: &#39;material&#39;, &#39;custom_dir&#39;: &#39;overrides&#39;}, &#39;nav&#39;: [{&#39;Home&#39;: &#39;index.md&#39;}], &#39;markdown_extensions&#39;: [&#39;meta&#39;, &#39;admonition&#39;, &#39;pymdownx.extra&#39;, &#39;pymdownx.details&#39;, &#39;pymdownx.superfences&#39;]})</code></td>
+      </tr>
+      <tr>
+        <td><code>exist_ok</code></td>
+        <td><code>bool</code></td>
+        <td><p>Is it ok if it already exists?</p></td>
+        <td><code>False</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Report</code></td>
+      <td><p>An instance of the class representing the project.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>mkreports/report.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="k">def</span> <span class="nf">create</span><span class="p">(</span>
+    <span class="bp">cls</span><span class="p">,</span>
+    <span class="n">path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">],</span>
+    <span class="n">report_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">settings</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">default_settings</span><span class="p">,</span>
+    <span class="n">exist_ok</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Report&quot;</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a new report.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        path (Union[str, Path]): Top-level folder of the report.</span>
+<span class="sd">        report_name (str): Name of the report (mkdocs site-name)</span>
+<span class="sd">        settings (Optional[Mapping[str, str]]): Settings of the report.</span>
+<span class="sd">        exist_ok (bool): Is it ok if it already exists?</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Report: An instance of the class representing the project.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="c1"># create the directory</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="p">(</span><span class="n">path</span> <span class="o">/</span> <span class="s2">&quot;docs&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="n">exist_ok</span><span class="p">,</span> <span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">FileExistsError</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">ReportExistsError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">path</span> <span class="o">/</span> <span class="s1">&#39;docs&#39;</span><span class="si">}</span><span class="s2"> already exists.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># index.md created, but done nothing if it exists</span>
+    <span class="c1"># if exist_ok=False, the previousalready failed otherwise</span>
+    <span class="p">(</span><span class="n">path</span> <span class="o">/</span> <span class="s2">&quot;docs&quot;</span> <span class="o">/</span> <span class="s2">&quot;index.md&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">touch</span><span class="p">()</span>
+
+    <span class="c1"># only do it if mkdocs_yml does not exist yet</span>
+    <span class="n">mkdocs_file</span> <span class="o">=</span> <span class="n">path</span> <span class="o">/</span> <span class="s2">&quot;mkdocs.yml&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">mkdocs_file</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="c1"># the settings are our serialized yaml</span>
+        <span class="c1"># ensure settings is regular dict</span>
+        <span class="n">settings</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">items</span><span class="p">())</span> <span class="k">if</span> <span class="n">settings</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">{}</span>
+        <span class="n">settings</span><span class="p">[</span><span class="s2">&quot;site_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">report_name</span>
+        <span class="k">with</span> <span class="p">(</span><span class="n">path</span> <span class="o">/</span> <span class="s2">&quot;mkdocs.yml&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">Dumper</span><span class="o">=</span><span class="n">yaml</span><span class="o">.</span><span class="n">Dumper</span><span class="p">,</span> <span class="n">default_flow_style</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="c1"># also create the overrides doc</span>
+    <span class="n">overrides_dir</span> <span class="o">=</span> <span class="n">path</span> <span class="o">/</span> <span class="s2">&quot;overrides&quot;</span>
+    <span class="n">overrides_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">with</span> <span class="p">(</span><span class="n">overrides_dir</span> <span class="o">/</span> <span class="s2">&quot;main.html&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">main_html_override</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="mkreports.report.Report.page" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_name</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">add_bottom</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Create a page in the report.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>page_name</code></td>
+        <td><code>Union[NavEntry, Path, str]</code></td>
+        <td><p>Name of the page and path. Using a
+<strong>NavEntry</strong>, a custom nav-entry and path can be specified. The path
+is always relative to the report-docs directory.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>truncate</code></td>
+        <td><code>bool</code></td>
+        <td><p>Should the page be truncated if it exists? Also deletes
+the <em>store_path</em>.</p></td>
+        <td><code>False</code></td>
+      </tr>
+      <tr>
+        <td><code>add_bottom</code></td>
+        <td><code>bool</code></td>
+        <td><p>Should new entries be added at the bottom or at the
+top of the page. Top of the page is used for IPython.</p></td>
+        <td><code>True</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Page</code></td>
+      <td><p>An object representing a new page.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>mkreports/report.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">page</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">page_name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">NavEntry</span><span class="p">,</span> <span class="n">Path</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+    <span class="n">truncate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">add_bottom</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Page&quot;</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a page in the report.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        page_name (Union[NavEntry, Path, str]): Name of the page and path. Using a</span>
+<span class="sd">            **NavEntry**, a custom nav-entry and path can be specified. The path</span>
+<span class="sd">            is always relative to the report-docs directory.</span>
+<span class="sd">        truncate (bool): Should the page be truncated if it exists? Also deletes</span>
+<span class="sd">            the *store_path*.</span>
+<span class="sd">        add_bottom (bool): Should new entries be added at the bottom or at the</span>
+<span class="sd">            top of the page. Top of the page is used for IPython.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Page: An object representing a new page.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># if the page_name is just a string, we turn it into a dictionary</span>
+    <span class="c1"># based on the hierarchical names</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">page_name</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">)):</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">page_name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">with_suffix</span><span class="p">(</span><span class="s2">&quot;.md&quot;</span><span class="p">)</span>
+        <span class="n">nav_entry</span> <span class="o">=</span> <span class="n">path_to_nav_entry</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">nav_entry</span> <span class="o">=</span> <span class="n">page_name</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">nav_entry</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">with_suffix</span><span class="p">(</span><span class="s2">&quot;.md&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">suffix</span> <span class="o">!=</span> <span class="s2">&quot;.md&quot;</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2"> needs to have extension &#39;.md&#39;&quot;</span><span class="p">)</span>
+
+    <span class="c1"># if the file already exists, just return a &#39;Page&#39;,</span>
+    <span class="c1"># else create a new nav-entry and the file and return a &#39;Page&#39;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">docs_dir</span> <span class="o">/</span> <span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">truncate</span><span class="p">:</span>
+            <span class="c1"># delete the existing site</span>
+            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">docs_dir</span> <span class="o">/</span> <span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>
+            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">docs_dir</span> <span class="o">/</span> <span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">touch</span><span class="p">()</span>
+            <span class="c1"># we do not need to add en entry into the nav</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># create the file by touching it and create a nav-entry</span>
+        <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">docs_dir</span> <span class="o">/</span> <span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">docs_dir</span> <span class="o">/</span> <span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">touch</span><span class="p">()</span>
+
+        <span class="c1"># update the report settings</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_nav_entry</span><span class="p">(</span><span class="n">nav_entry</span><span class="p">)</span>
+
+    <span class="n">page</span> <span class="o">=</span> <span class="n">Page</span><span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">docs_dir</span> <span class="o">/</span> <span class="n">path</span><span class="p">,</span>
+        <span class="n">report</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+        <span class="n">add_bottom</span><span class="o">=</span><span class="n">add_bottom</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">truncate</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">page</span><span class="o">.</span><span class="n">store_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">page</span><span class="o">.</span><span class="n">store_path</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">page</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../parser/" class="md-footer__link md-footer__link--prev" aria-label="Previous: parser" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              parser
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../settings/" class="md-footer__link md-footer__link--next" aria-label="Next: settings" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              settings
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.22074ed6.min.js"}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.960e086b.min.js"></script>
+      
+    
+  </body>
+</html>

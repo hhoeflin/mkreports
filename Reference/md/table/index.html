@@ -1,0 +1,2048 @@
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.9">
+    
+    
+      
+        <title>table - Mkreports documentations</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.2b4465f4.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.e6a45f82.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+
+  
+
+  
+
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#mkreports.md.table" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Mkreports documentations" class="md-header__button md-logo" aria-label="Mkreports documentations" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Mkreports documentations
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              table
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Mkreports documentations" class="md-nav__button md-logo" aria-label="Mkreports documentations" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    Mkreports documentations
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../quickstart/" class="md-nav__link">
+        Quickstart
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../markdown/" class="md-nav__link">
+        Markdown
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ipython/" class="md-nav__link">
+        Ipython
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../basic/" class="md-nav__link">
+        Basic
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../images/" class="md-nav__link">
+        Images
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../tables/" class="md-nav__link">
+        Tables
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../code_blocks/" class="md-nav__link">
+        Code Blocks
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sidebar/" class="md-nav__link">
+        Sidebar
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_10" type="checkbox" id="__nav_10" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_10">
+          Reference
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Reference" data-md-level="1">
+        <label class="md-nav__title" for="__nav_10">
+          <span class="md-nav__icon md-icon"></span>
+          Reference
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../code_context/" class="md-nav__link">
+        code_context
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../docs/" class="md-nav__link">
+        docs
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../exceptions/" class="md-nav__link">
+        exceptions
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ipython/" class="md-nav__link">
+        ipython
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_10_5" type="checkbox" id="__nav_10_5" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_10_5">
+          md
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="md" data-md-level="2">
+        <label class="md-nav__title" for="__nav_10_5">
+          <span class="md-nav__icon md-icon"></span>
+          md
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../base/" class="md-nav__link">
+        base
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../combo/" class="md-nav__link">
+        combo
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../containers/" class="md-nav__link">
+        containers
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../docstring/" class="md-nav__link">
+        docstring
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../file/" class="md-nav__link">
+        file
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../header/" class="md-nav__link">
+        header
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../idstore/" class="md-nav__link">
+        idstore
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../image/" class="md-nav__link">
+        image
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../list/" class="md-nav__link">
+        list
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../md_proxy/" class="md-nav__link">
+        md_proxy
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../settings/" class="md-nav__link">
+        settings
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          table
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        table
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#mkreports.md.table" class="md-nav__link">
+    mkreports.md.table
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mkreports.md.table.DataTable" class="md-nav__link">
+    DataTable
+  </a>
+  
+    <nav class="md-nav" aria-label="DataTable">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mkreports.md.table.DataTable.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mkreports.md.table.Table" class="md-nav__link">
+    Table
+  </a>
+  
+    <nav class="md-nav" aria-label="Table">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mkreports.md.table.Table.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mkreports.md.table.Tabulator" class="md-nav__link">
+    Tabulator
+  </a>
+  
+    <nav class="md-nav" aria-label="Tabulator">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mkreports.md.table.Tabulator.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../text/" class="md-nav__link">
+        text
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../parser/" class="md-nav__link">
+        parser
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../report/" class="md-nav__link">
+        report
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../settings/" class="md-nav__link">
+        settings
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tracker/" class="md-nav__link">
+        tracker
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../utils/" class="md-nav__link">
+        utils
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_11" type="checkbox" id="__nav_11" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_11">
+          Site Code
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Site Code" data-md-level="1">
+        <label class="md-nav__title" for="__nav_11">
+          <span class="md-nav__icon md-icon"></span>
+          Site Code
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../site_code/__init__/" class="md-nav__link">
+          Init  
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../site_code/basic/" class="md-nav__link">
+        Basic
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../site_code/code_blocks/" class="md-nav__link">
+        Code Blocks
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../site_code/images/" class="md-nav__link">
+        Images
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../site_code/main/" class="md-nav__link">
+        Main
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../site_code/quickstart/" class="md-nav__link">
+        Quickstart
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../site_code/sidebar/" class="md-nav__link">
+        Sidebar
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../site_code/tables/" class="md-nav__link">
+        Tables
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#mkreports.md.table" class="md-nav__link">
+    mkreports.md.table
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mkreports.md.table.DataTable" class="md-nav__link">
+    DataTable
+  </a>
+  
+    <nav class="md-nav" aria-label="DataTable">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mkreports.md.table.DataTable.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mkreports.md.table.Table" class="md-nav__link">
+    Table
+  </a>
+  
+    <nav class="md-nav" aria-label="Table">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mkreports.md.table.Table.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mkreports.md.table.Tabulator" class="md-nav__link">
+    Tabulator
+  </a>
+  
+    <nav class="md-nav" aria-label="Tabulator">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mkreports.md.table.Tabulator.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+
+  <h1>table</h1>
+
+<div class="doc doc-object doc-module">
+
+<a id="mkreports.md.table"></a>
+    <div class="doc doc-contents first">
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h2 id="mkreports.md.table.DataTable" class="doc doc-heading">
+        <code>
+DataTable            (<a title="mkreports.md.file.File" href="../file/#mkreports.md.file.File">File</a>)
+        </code>
+
+
+
+</h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Table using DataTable javascript library.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>mkreports/md/table.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@register_md</span><span class="p">(</span><span class="s2">&quot;DataTable&quot;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">DataTable</span><span class="p">(</span><span class="n">File</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Table using DataTable javascript library.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">table</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+        <span class="n">page_info</span><span class="p">:</span> <span class="n">PageInfo</span><span class="p">,</span>
+        <span class="n">max_rows</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
+        <span class="n">column_settings</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">prettify_colnames</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">add_header_filters</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">yadcf_settings</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the table using the DataTable javascript library.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            table (pd.DataFrame): The table in pandas.DataFrame format.</span>
+<span class="sd">            page_info (PageInfo): PageInfo object for the page where the</span>
+<span class="sd">                table should be located.</span>
+<span class="sd">            max_rows (Optional[int]): Maximum number of rows. If None, all will</span>
+<span class="sd">                be included. If longer, a warning will be logged and the first `max_rows`</span>
+<span class="sd">                will be included.</span>
+<span class="sd">            column_settings (Optional[dict]): Dict of settings for the columns. Will be</span>
+<span class="sd">                passed as json to the DataTable library. Overrides any automatic settings.</span>
+<span class="sd">            prettify_colnames (bool): Run colnames through &#39;snake_to_text&#39; function.</span>
+<span class="sd">            add_header_filters (bool): Should header filters be added.</span>
+<span class="sd">            yadcf_settings (Optional[dict]): Settings for the *yadcf* header filter plugin.</span>
+<span class="sd">                Overrides any automatic settings.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="n">page_info</span><span class="o">.</span><span class="n">idstore</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="k">assert</span> <span class="n">page_info</span><span class="o">.</span><span class="n">page_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+
+        <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="nb">dir</span><span class="p">:</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="nb">dir</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="s2">&quot;datatable.json&quot;</span><span class="p">)</span>
+            <span class="c1"># here we use the split method; the index and columns</span>
+            <span class="k">if</span> <span class="n">max_rows</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">table</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">max_rows</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Table has </span><span class="si">{</span><span class="n">table</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> rows, but only </span><span class="si">{</span><span class="n">max_rows</span><span class="si">}</span><span class="s2"> allowed. Truncating.&quot;</span>
+                <span class="p">)</span>
+                <span class="n">table</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">max_rows</span><span class="p">]</span>
+            <span class="c1"># are not useful, but the rest gets set as &#39;data&#39;, which we need</span>
+            <span class="n">table</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s2">&quot;split&quot;</span><span class="p">,</span> <span class="n">default_handler</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+            <span class="c1"># Make sure the file is moved to the right place</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+                <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">page_info</span><span class="o">=</span><span class="n">page_info</span><span class="p">,</span> <span class="n">allow_copy</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">use_hash</span><span class="o">=</span><span class="kc">True</span>
+            <span class="p">)</span>
+
+        <span class="c1"># prepare the table settings</span>
+        <span class="k">if</span> <span class="n">prettify_colnames</span><span class="p">:</span>
+            <span class="n">col_set</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="n">col</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="n">snake_to_text</span><span class="p">(</span><span class="n">col</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">col</span><span class="p">}</span>
+                <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">table</span><span class="o">.</span><span class="n">columns</span>
+            <span class="p">}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">col_set</span> <span class="o">=</span> <span class="p">{</span><span class="n">col</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="n">col</span><span class="p">}</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="p">}</span>
+        <span class="k">if</span> <span class="n">column_settings</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># only pick out settings for columns that occur in the table</span>
+            <span class="n">col_set</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">col</span><span class="p">:</span> <span class="n">column_settings</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="p">})</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_header_filters</span> <span class="o">=</span> <span class="n">add_header_filters</span>
+        <span class="k">if</span> <span class="n">add_header_filters</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">yadcf_settings</span> <span class="o">=</span> <span class="n">_create_yadcf_settings_datatable</span><span class="p">(</span>
+                <span class="n">table</span><span class="p">,</span> <span class="n">yadcf_settings</span> <span class="k">if</span> <span class="n">yadcf_settings</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">{}</span>
+            <span class="p">)</span>
+
+        <span class="c1"># put together the settings for the table</span>
+        <span class="c1"># there, the columns are a list in the correct order</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">table_settings</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;scrollX&quot;</span><span class="p">:</span> <span class="s2">&quot;true&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;columns&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">col_set</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="p">],</span>
+        <span class="p">}</span>
+
+        <span class="n">datatable_id</span> <span class="o">=</span> <span class="n">page_info</span><span class="o">.</span><span class="n">idstore</span><span class="o">.</span><span class="n">next_id</span><span class="p">(</span><span class="s2">&quot;datatable_id&quot;</span><span class="p">)</span>
+        <span class="n">body_html</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">cleandoc</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            &lt;table id=&#39;</span><span class="si">{</span><span class="n">datatable_id</span><span class="si">}</span><span class="s2">&#39; class=&#39;display&#39; style=&#39;width:100%&#39;&gt; &lt;/table&gt;</span>
+<span class="s2">            &quot;&quot;&quot;</span>
+        <span class="p">)</span>
+
+        <span class="n">rel_table_path</span> <span class="o">=</span> <span class="n">relpath_html</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">page_info</span><span class="o">.</span><span class="n">page_path</span><span class="p">)</span>
+        <span class="n">table_settings</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">table_settings</span><span class="p">)</span>
+        <span class="n">table_settings</span><span class="p">[</span><span class="s2">&quot;ajax&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">rel_table_path</span><span class="p">)</span>
+        <span class="n">settings_str</span> <span class="o">=</span> <span class="n">serialize_json</span><span class="p">(</span><span class="n">table_settings</span><span class="p">)</span>
+
+        <span class="c1"># prepare the header script if necessary</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_header_filters</span><span class="p">:</span>
+            <span class="n">yadcf_settings_str</span> <span class="o">=</span> <span class="n">serialize_json</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">yadcf_settings</span><span class="p">)</span>
+            <span class="n">yadcf_script</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">cleandoc</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">                yadcf.init(myTable, </span><span class="si">{</span><span class="n">yadcf_settings_str</span><span class="si">}</span><span class="s2">);</span>
+<span class="s2">                &quot;&quot;&quot;</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">yadcf_script</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+        <span class="n">back_html</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">cleandoc</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            &lt;script&gt;</span>
+<span class="s2">            $(document).ready( function () </span><span class="se">{{</span><span class="s2"></span>
+<span class="s2">            var myTable = $(&#39;#</span><span class="si">{</span><span class="n">datatable_id</span><span class="si">}</span><span class="s2">&#39;).DataTable(</span><span class="si">{</span><span class="n">settings_str</span><span class="si">}</span><span class="s2">);</span>
+<span class="s2">            </span><span class="si">{</span><span class="n">yadcf_script</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">            </span><span class="se">}}</span><span class="s2"> );</span>
+<span class="s2">            &lt;/script&gt;</span>
+<span class="s2">            &quot;&quot;&quot;</span>
+        <span class="p">)</span>
+
+        <span class="n">settings</span> <span class="o">=</span> <span class="n">Settings</span><span class="p">(</span>
+            <span class="n">page</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+                <span class="c1"># the following needs to be loaded in the header of the page, not the footer</span>
+                <span class="c1"># this enables activating the tables in the body</span>
+                <span class="n">javascript</span><span class="o">=</span><span class="p">[</span>
+                    <span class="s2">&quot;https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;https://cdn.jsdelivr.net/gh/vedmack/yadcf@332407eeacbda299e6253530e24c15041b270227/dist/jquery.dataTables.yadcf.js&quot;</span><span class="p">,</span>
+                <span class="p">],</span>
+                <span class="n">css</span><span class="o">=</span><span class="p">[</span>
+                    <span class="s2">&quot;https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;https://cdn.jsdelivr.net/gh/vedmack/yadcf@332407eeacbda299e6253530e24c15041b270227/dist/jquery.dataTables.yadcf.css&quot;</span><span class="p">,</span>
+                <span class="p">],</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_body</span> <span class="o">=</span> <span class="n">SpacedText</span><span class="p">(</span><span class="n">body_html</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_back</span> <span class="o">=</span> <span class="n">SpacedText</span><span class="p">(</span><span class="n">back_html</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> <span class="o">+</span> <span class="n">comment_ids</span><span class="p">(</span><span class="n">datatable_id</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_settings</span> <span class="o">=</span> <span class="n">settings</span>
+</code></pre></div>
+        </details>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="mkreports.md.table.DataTable.__init__" class="doc doc-heading">
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">page_info</span><span class="p">,</span> <span class="n">max_rows</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">column_settings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">prettify_colnames</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">add_header_filters</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">yadcf_settings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-special"><code>special</code></small>
+  </span>
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Initialize the table using the DataTable javascript library.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>table</code></td>
+        <td><code>pd.DataFrame</code></td>
+        <td><p>The table in pandas.DataFrame format.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>page_info</code></td>
+        <td><code>PageInfo</code></td>
+        <td><p>PageInfo object for the page where the
+table should be located.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>max_rows</code></td>
+        <td><code>Optional[int]</code></td>
+        <td><p>Maximum number of rows. If None, all will
+be included. If longer, a warning will be logged and the first <code>max_rows</code>
+will be included.</p></td>
+        <td><code>1000</code></td>
+      </tr>
+      <tr>
+        <td><code>column_settings</code></td>
+        <td><code>Optional[dict]</code></td>
+        <td><p>Dict of settings for the columns. Will be
+passed as json to the DataTable library. Overrides any automatic settings.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>prettify_colnames</code></td>
+        <td><code>bool</code></td>
+        <td><p>Run colnames through 'snake_to_text' function.</p></td>
+        <td><code>True</code></td>
+      </tr>
+      <tr>
+        <td><code>add_header_filters</code></td>
+        <td><code>bool</code></td>
+        <td><p>Should header filters be added.</p></td>
+        <td><code>False</code></td>
+      </tr>
+      <tr>
+        <td><code>yadcf_settings</code></td>
+        <td><code>Optional[dict]</code></td>
+        <td><p>Settings for the <em>yadcf</em> header filter plugin.
+Overrides any automatic settings.</p></td>
+        <td><code>None</code></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>mkreports/md/table.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">table</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+    <span class="n">page_info</span><span class="p">:</span> <span class="n">PageInfo</span><span class="p">,</span>
+    <span class="n">max_rows</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
+    <span class="n">column_settings</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">prettify_colnames</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">add_header_filters</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">yadcf_settings</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Initialize the table using the DataTable javascript library.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        table (pd.DataFrame): The table in pandas.DataFrame format.</span>
+<span class="sd">        page_info (PageInfo): PageInfo object for the page where the</span>
+<span class="sd">            table should be located.</span>
+<span class="sd">        max_rows (Optional[int]): Maximum number of rows. If None, all will</span>
+<span class="sd">            be included. If longer, a warning will be logged and the first `max_rows`</span>
+<span class="sd">            will be included.</span>
+<span class="sd">        column_settings (Optional[dict]): Dict of settings for the columns. Will be</span>
+<span class="sd">            passed as json to the DataTable library. Overrides any automatic settings.</span>
+<span class="sd">        prettify_colnames (bool): Run colnames through &#39;snake_to_text&#39; function.</span>
+<span class="sd">        add_header_filters (bool): Should header filters be added.</span>
+<span class="sd">        yadcf_settings (Optional[dict]): Settings for the *yadcf* header filter plugin.</span>
+<span class="sd">            Overrides any automatic settings.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="n">page_info</span><span class="o">.</span><span class="n">idstore</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+    <span class="k">assert</span> <span class="n">page_info</span><span class="o">.</span><span class="n">page_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+
+    <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="nb">dir</span><span class="p">:</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="nb">dir</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="s2">&quot;datatable.json&quot;</span><span class="p">)</span>
+        <span class="c1"># here we use the split method; the index and columns</span>
+        <span class="k">if</span> <span class="n">max_rows</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">table</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">max_rows</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Table has </span><span class="si">{</span><span class="n">table</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> rows, but only </span><span class="si">{</span><span class="n">max_rows</span><span class="si">}</span><span class="s2"> allowed. Truncating.&quot;</span>
+            <span class="p">)</span>
+            <span class="n">table</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">max_rows</span><span class="p">]</span>
+        <span class="c1"># are not useful, but the rest gets set as &#39;data&#39;, which we need</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s2">&quot;split&quot;</span><span class="p">,</span> <span class="n">default_handler</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="c1"># Make sure the file is moved to the right place</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">page_info</span><span class="o">=</span><span class="n">page_info</span><span class="p">,</span> <span class="n">allow_copy</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">use_hash</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+
+    <span class="c1"># prepare the table settings</span>
+    <span class="k">if</span> <span class="n">prettify_colnames</span><span class="p">:</span>
+        <span class="n">col_set</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">col</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="n">snake_to_text</span><span class="p">(</span><span class="n">col</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">col</span><span class="p">}</span>
+            <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">table</span><span class="o">.</span><span class="n">columns</span>
+        <span class="p">}</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">col_set</span> <span class="o">=</span> <span class="p">{</span><span class="n">col</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="n">col</span><span class="p">}</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="p">}</span>
+    <span class="k">if</span> <span class="n">column_settings</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># only pick out settings for columns that occur in the table</span>
+        <span class="n">col_set</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">col</span><span class="p">:</span> <span class="n">column_settings</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="p">})</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">add_header_filters</span> <span class="o">=</span> <span class="n">add_header_filters</span>
+    <span class="k">if</span> <span class="n">add_header_filters</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">yadcf_settings</span> <span class="o">=</span> <span class="n">_create_yadcf_settings_datatable</span><span class="p">(</span>
+            <span class="n">table</span><span class="p">,</span> <span class="n">yadcf_settings</span> <span class="k">if</span> <span class="n">yadcf_settings</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">{}</span>
+        <span class="p">)</span>
+
+    <span class="c1"># put together the settings for the table</span>
+    <span class="c1"># there, the columns are a list in the correct order</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">table_settings</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;scrollX&quot;</span><span class="p">:</span> <span class="s2">&quot;true&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;columns&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">col_set</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="p">],</span>
+    <span class="p">}</span>
+
+    <span class="n">datatable_id</span> <span class="o">=</span> <span class="n">page_info</span><span class="o">.</span><span class="n">idstore</span><span class="o">.</span><span class="n">next_id</span><span class="p">(</span><span class="s2">&quot;datatable_id&quot;</span><span class="p">)</span>
+    <span class="n">body_html</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">cleandoc</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        &lt;table id=&#39;</span><span class="si">{</span><span class="n">datatable_id</span><span class="si">}</span><span class="s2">&#39; class=&#39;display&#39; style=&#39;width:100%&#39;&gt; &lt;/table&gt;</span>
+<span class="s2">        &quot;&quot;&quot;</span>
+    <span class="p">)</span>
+
+    <span class="n">rel_table_path</span> <span class="o">=</span> <span class="n">relpath_html</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">page_info</span><span class="o">.</span><span class="n">page_path</span><span class="p">)</span>
+    <span class="n">table_settings</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">table_settings</span><span class="p">)</span>
+    <span class="n">table_settings</span><span class="p">[</span><span class="s2">&quot;ajax&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">rel_table_path</span><span class="p">)</span>
+    <span class="n">settings_str</span> <span class="o">=</span> <span class="n">serialize_json</span><span class="p">(</span><span class="n">table_settings</span><span class="p">)</span>
+
+    <span class="c1"># prepare the header script if necessary</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_header_filters</span><span class="p">:</span>
+        <span class="n">yadcf_settings_str</span> <span class="o">=</span> <span class="n">serialize_json</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">yadcf_settings</span><span class="p">)</span>
+        <span class="n">yadcf_script</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">cleandoc</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            yadcf.init(myTable, </span><span class="si">{</span><span class="n">yadcf_settings_str</span><span class="si">}</span><span class="s2">);</span>
+<span class="s2">            &quot;&quot;&quot;</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">yadcf_script</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="n">back_html</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">cleandoc</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        &lt;script&gt;</span>
+<span class="s2">        $(document).ready( function () </span><span class="se">{{</span><span class="s2"></span>
+<span class="s2">        var myTable = $(&#39;#</span><span class="si">{</span><span class="n">datatable_id</span><span class="si">}</span><span class="s2">&#39;).DataTable(</span><span class="si">{</span><span class="n">settings_str</span><span class="si">}</span><span class="s2">);</span>
+<span class="s2">        </span><span class="si">{</span><span class="n">yadcf_script</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">        </span><span class="se">}}</span><span class="s2"> );</span>
+<span class="s2">        &lt;/script&gt;</span>
+<span class="s2">        &quot;&quot;&quot;</span>
+    <span class="p">)</span>
+
+    <span class="n">settings</span> <span class="o">=</span> <span class="n">Settings</span><span class="p">(</span>
+        <span class="n">page</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="c1"># the following needs to be loaded in the header of the page, not the footer</span>
+            <span class="c1"># this enables activating the tables in the body</span>
+            <span class="n">javascript</span><span class="o">=</span><span class="p">[</span>
+                <span class="s2">&quot;https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;https://cdn.jsdelivr.net/gh/vedmack/yadcf@332407eeacbda299e6253530e24c15041b270227/dist/jquery.dataTables.yadcf.js&quot;</span><span class="p">,</span>
+            <span class="p">],</span>
+            <span class="n">css</span><span class="o">=</span><span class="p">[</span>
+                <span class="s2">&quot;https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;https://cdn.jsdelivr.net/gh/vedmack/yadcf@332407eeacbda299e6253530e24c15041b270227/dist/jquery.dataTables.yadcf.css&quot;</span><span class="p">,</span>
+            <span class="p">],</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">_body</span> <span class="o">=</span> <span class="n">SpacedText</span><span class="p">(</span><span class="n">body_html</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_back</span> <span class="o">=</span> <span class="n">SpacedText</span><span class="p">(</span><span class="n">back_html</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> <span class="o">+</span> <span class="n">comment_ids</span><span class="p">(</span><span class="n">datatable_id</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_settings</span> <span class="o">=</span> <span class="n">settings</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h2 id="mkreports.md.table.Table" class="doc doc-heading">
+        <code>
+Table            (<a title="mkreports.md.base.MdObj" href="../base/#mkreports.md.base.MdObj">MdObj</a>)
+        </code>
+
+
+
+</h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Standard markdown table.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>mkreports/md/table.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@register_md</span><span class="p">(</span><span class="s2">&quot;Table&quot;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">Table</span><span class="p">(</span><span class="n">MdObj</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Standard markdown table.&quot;&quot;&quot;</span>
+
+    <span class="n">table</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span>
+    <span class="n">kwargs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">max_rows</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the table object.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            table (pd.DataFrame): The table to include in pandas format.</span>
+<span class="sd">            max_rows (Optional[int]): Maximum number of rows. If None, all will</span>
+<span class="sd">                be included. If longer, a warning will be logged and the first `max_rows`</span>
+<span class="sd">                will be included.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span> <span class="o">=</span> <span class="n">kwargs</span>
+        <span class="c1"># think about making this a static-frame</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">table</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+
+        <span class="c1"># check if the table has too many rows</span>
+        <span class="k">if</span> <span class="n">max_rows</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">table</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">max_rows</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Table has </span><span class="si">{</span><span class="n">table</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> rows, but only </span><span class="si">{</span><span class="n">max_rows</span><span class="si">}</span><span class="s2"> allowed. Truncating.&quot;</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">max_rows</span><span class="p">]</span>
+
+        <span class="n">table_md</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">to_markdown</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">table_md</span> <span class="o">=</span> <span class="n">table_md</span> <span class="k">if</span> <span class="n">table_md</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_body</span> <span class="o">=</span> <span class="n">SpacedText</span><span class="p">(</span><span class="n">table_md</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_back</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_settings</span> <span class="o">=</span> <span class="kc">None</span>
+</code></pre></div>
+        </details>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="mkreports.md.table.Table.__init__" class="doc doc-heading">
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">max_rows</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-special"><code>special</code></small>
+  </span>
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Initialize the table object.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>table</code></td>
+        <td><code>pd.DataFrame</code></td>
+        <td><p>The table to include in pandas format.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>max_rows</code></td>
+        <td><code>Optional[int]</code></td>
+        <td><p>Maximum number of rows. If None, all will
+be included. If longer, a warning will be logged and the first <code>max_rows</code>
+will be included.</p></td>
+        <td><code>100</code></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>mkreports/md/table.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">max_rows</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Initialize the table object.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        table (pd.DataFrame): The table to include in pandas format.</span>
+<span class="sd">        max_rows (Optional[int]): Maximum number of rows. If None, all will</span>
+<span class="sd">            be included. If longer, a warning will be logged and the first `max_rows`</span>
+<span class="sd">            will be included.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span> <span class="o">=</span> <span class="n">kwargs</span>
+    <span class="c1"># think about making this a static-frame</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">table</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+
+    <span class="c1"># check if the table has too many rows</span>
+    <span class="k">if</span> <span class="n">max_rows</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">table</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">max_rows</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Table has </span><span class="si">{</span><span class="n">table</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> rows, but only </span><span class="si">{</span><span class="n">max_rows</span><span class="si">}</span><span class="s2"> allowed. Truncating.&quot;</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">max_rows</span><span class="p">]</span>
+
+    <span class="n">table_md</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">to_markdown</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">table_md</span> <span class="o">=</span> <span class="n">table_md</span> <span class="k">if</span> <span class="n">table_md</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">_body</span> <span class="o">=</span> <span class="n">SpacedText</span><span class="p">(</span><span class="n">table_md</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_back</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_settings</span> <span class="o">=</span> <span class="kc">None</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h2 id="mkreports.md.table.Tabulator" class="doc doc-heading">
+        <code>
+Tabulator            (<a title="mkreports.md.file.File" href="../file/#mkreports.md.file.File">File</a>)
+        </code>
+
+
+
+</h2>
+
+    <div class="doc doc-contents ">
+
+      <p>A table using the Tabulator javascript library.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>mkreports/md/table.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@register_md</span><span class="p">(</span><span class="s2">&quot;Tabulator&quot;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">Tabulator</span><span class="p">(</span><span class="n">File</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A table using the Tabulator javascript library.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">table</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+        <span class="n">page_info</span><span class="p">:</span> <span class="n">PageInfo</span><span class="p">,</span>
+        <span class="n">max_rows</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
+        <span class="n">table_settings</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">add_header_filters</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">prettify_colnames</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">col_settings</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            table (pd.DataFrame): The table to be added.</span>
+<span class="sd">            page_info (PageInfo): PageInfo for the page where the table should be added.</span>
+<span class="sd">            max_rows (Optional[int]): Maximum number of rows. If None, all will</span>
+<span class="sd">                be included. If longer, a warning will be logged and the first `max_rows`</span>
+<span class="sd">                will be included.</span>
+<span class="sd">            table_settings (Optional[dict]): Settings passed to Tabulator as json. Overrides</span>
+<span class="sd">                any internal settings created by this function.</span>
+<span class="sd">            add_header_filters (bool): Should header-filters be added.</span>
+<span class="sd">            prettify_colnames (bool): Run column names through *snake_to_text*.</span>
+<span class="sd">            col_settings (Optional[dict]): Column settings for tabulator, passed</span>
+<span class="sd">                as json to the Tabulator library. Overrides any internal settings created.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="n">page_info</span><span class="o">.</span><span class="n">idstore</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="k">assert</span> <span class="n">page_info</span><span class="o">.</span><span class="n">page_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="k">assert</span> <span class="n">page_info</span><span class="o">.</span><span class="n">javascript_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+
+        <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="nb">dir</span><span class="p">:</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="nb">dir</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="s2">&quot;tabulator.json&quot;</span><span class="p">)</span>
+            <span class="c1"># here we use the split method; the index and columns</span>
+            <span class="c1"># are not useful, but the rest gets set as &#39;data&#39;, which we need</span>
+            <span class="k">if</span> <span class="n">max_rows</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">table</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">max_rows</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Table has </span><span class="si">{</span><span class="n">table</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> rows, but only </span><span class="si">{</span><span class="n">max_rows</span><span class="si">}</span><span class="s2"> allowed. Truncating.&quot;</span>
+                <span class="p">)</span>
+                <span class="n">table</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">max_rows</span><span class="p">]</span>
+            <span class="n">table</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s2">&quot;records&quot;</span><span class="p">,</span> <span class="n">default_handler</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+            <span class="c1"># Make sure the file is moved to the right place</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+                <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">page_info</span><span class="o">=</span><span class="n">page_info</span><span class="p">,</span> <span class="n">allow_copy</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">use_hash</span><span class="o">=</span><span class="kc">True</span>
+            <span class="p">)</span>
+
+        <span class="c1"># create the javascript file</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">min_max_filter_path</span> <span class="o">=</span> <span class="n">page_info</span><span class="o">.</span><span class="n">javascript_path</span> <span class="o">/</span> <span class="s2">&quot;min_max_filter.js&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">min_max_filter_path</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span>
+            <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;tabulator_js&quot;</span> <span class="o">/</span> <span class="s2">&quot;min_max_filter.js&quot;</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">min_max_filter_path</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># produce the column settings</span>
+        <span class="n">col_list</span> <span class="o">=</span> <span class="n">_create_col_settings_tabulator</span><span class="p">(</span>
+            <span class="n">table</span><span class="p">,</span>
+            <span class="n">add_header_filters</span><span class="o">=</span><span class="n">add_header_filters</span><span class="p">,</span>
+            <span class="n">prettify_colnames</span><span class="o">=</span><span class="n">prettify_colnames</span><span class="p">,</span>
+            <span class="n">col_settings</span><span class="o">=</span><span class="n">col_settings</span> <span class="k">if</span> <span class="n">col_settings</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">{},</span>
+        <span class="p">)</span>
+
+        <span class="c1"># put the other settings together</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">table_settings</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">merge_settings</span><span class="p">(</span>
+            <span class="nb">dict</span><span class="p">(</span>
+                <span class="n">layout</span><span class="o">=</span><span class="s2">&quot;fitDataTable&quot;</span><span class="p">,</span>
+                <span class="n">pagination</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">paginationSize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                <span class="n">paginationSizeSelector</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="p">),</span>
+            <span class="n">table_settings</span> <span class="k">if</span> <span class="n">table_settings</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">{},</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">table_settings</span><span class="p">[</span><span class="s2">&quot;columns&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">col_list</span>
+
+        <span class="n">tabulator_id</span> <span class="o">=</span> <span class="n">page_info</span><span class="o">.</span><span class="n">idstore</span><span class="o">.</span><span class="n">next_id</span><span class="p">(</span><span class="s2">&quot;tabulator_id&quot;</span><span class="p">)</span>
+        <span class="n">body_html</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">cleandoc</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            &lt;div id=&#39;</span><span class="si">{</span><span class="n">tabulator_id</span><span class="si">}</span><span class="s2">&#39; class=&#39;display&#39;&gt; &lt;/div&gt;</span>
+<span class="s2">            &quot;&quot;&quot;</span>
+        <span class="p">)</span>
+
+        <span class="n">rel_filter_path</span> <span class="o">=</span> <span class="n">relpath_html</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">min_max_filter_path</span><span class="p">,</span> <span class="n">page_info</span><span class="o">.</span><span class="n">page_path</span><span class="p">)</span>
+        <span class="n">rel_table_path</span> <span class="o">=</span> <span class="n">relpath_html</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">page_info</span><span class="o">.</span><span class="n">page_path</span><span class="p">)</span>
+        <span class="n">table_settings</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">table_settings</span><span class="p">)</span>
+        <span class="n">table_settings</span><span class="p">[</span><span class="s2">&quot;ajaxURL&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">rel_table_path</span><span class="p">)</span>
+
+        <span class="c1"># here we have to be careful to remove the &#39;&#39; around</span>
+        <span class="c1"># the minMaxFilter function reference</span>
+        <span class="n">settings_str</span> <span class="o">=</span> <span class="n">serialize_json</span><span class="p">(</span><span class="n">table_settings</span><span class="p">)</span>
+
+        <span class="n">back_html</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">cleandoc</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            &lt;script&gt;</span>
+<span class="s2">            var table = new Tabulator(&#39;#</span><span class="si">{</span><span class="n">tabulator_id</span><span class="si">}</span><span class="s2">&#39;, </span><span class="si">{</span><span class="n">settings_str</span><span class="si">}</span><span class="s2">);</span>
+<span class="s2">            &lt;/script&gt;</span>
+<span class="s2">            &quot;&quot;&quot;</span>
+        <span class="p">)</span>
+        <span class="n">settings</span> <span class="o">=</span> <span class="n">Settings</span><span class="p">(</span>
+            <span class="n">page</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+                <span class="c1"># the following needs to be loaded in the header of the page, not the footer</span>
+                <span class="c1"># this enables activating the tables in the body</span>
+                <span class="n">javascript</span><span class="o">=</span><span class="p">[</span>
+                    <span class="s2">&quot;https://unpkg.com/tabulator-tables@5.1.0/dist/js/tabulator.min.js&quot;</span><span class="p">,</span>
+                    <span class="n">rel_filter_path</span><span class="p">,</span>
+                <span class="p">],</span>
+                <span class="n">css</span><span class="o">=</span><span class="p">[</span>
+                    <span class="s2">&quot;https://unpkg.com/tabulator-tables@5.1.0/dist/css/tabulator.min.css&quot;</span>
+                <span class="p">],</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_body</span> <span class="o">=</span> <span class="n">SpacedText</span><span class="p">(</span><span class="n">body_html</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_back</span> <span class="o">=</span> <span class="n">SpacedText</span><span class="p">(</span><span class="n">back_html</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> <span class="o">+</span> <span class="n">comment_ids</span><span class="p">(</span><span class="n">tabulator_id</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_settings</span> <span class="o">=</span> <span class="n">settings</span>
+</code></pre></div>
+        </details>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="mkreports.md.table.Tabulator.__init__" class="doc doc-heading">
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">page_info</span><span class="p">,</span> <span class="n">max_rows</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">table_settings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">add_header_filters</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">prettify_colnames</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">col_settings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-special"><code>special</code></small>
+  </span>
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>table</code></td>
+        <td><code>pd.DataFrame</code></td>
+        <td><p>The table to be added.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>page_info</code></td>
+        <td><code>PageInfo</code></td>
+        <td><p>PageInfo for the page where the table should be added.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>max_rows</code></td>
+        <td><code>Optional[int]</code></td>
+        <td><p>Maximum number of rows. If None, all will
+be included. If longer, a warning will be logged and the first <code>max_rows</code>
+will be included.</p></td>
+        <td><code>1000</code></td>
+      </tr>
+      <tr>
+        <td><code>table_settings</code></td>
+        <td><code>Optional[dict]</code></td>
+        <td><p>Settings passed to Tabulator as json. Overrides
+any internal settings created by this function.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>add_header_filters</code></td>
+        <td><code>bool</code></td>
+        <td><p>Should header-filters be added.</p></td>
+        <td><code>True</code></td>
+      </tr>
+      <tr>
+        <td><code>prettify_colnames</code></td>
+        <td><code>bool</code></td>
+        <td><p>Run column names through <em>snake_to_text</em>.</p></td>
+        <td><code>True</code></td>
+      </tr>
+      <tr>
+        <td><code>col_settings</code></td>
+        <td><code>Optional[dict]</code></td>
+        <td><p>Column settings for tabulator, passed
+as json to the Tabulator library. Overrides any internal settings created.</p></td>
+        <td><code>None</code></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>mkreports/md/table.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">table</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+    <span class="n">page_info</span><span class="p">:</span> <span class="n">PageInfo</span><span class="p">,</span>
+    <span class="n">max_rows</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
+    <span class="n">table_settings</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">add_header_filters</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">prettify_colnames</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">col_settings</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        table (pd.DataFrame): The table to be added.</span>
+<span class="sd">        page_info (PageInfo): PageInfo for the page where the table should be added.</span>
+<span class="sd">        max_rows (Optional[int]): Maximum number of rows. If None, all will</span>
+<span class="sd">            be included. If longer, a warning will be logged and the first `max_rows`</span>
+<span class="sd">            will be included.</span>
+<span class="sd">        table_settings (Optional[dict]): Settings passed to Tabulator as json. Overrides</span>
+<span class="sd">            any internal settings created by this function.</span>
+<span class="sd">        add_header_filters (bool): Should header-filters be added.</span>
+<span class="sd">        prettify_colnames (bool): Run column names through *snake_to_text*.</span>
+<span class="sd">        col_settings (Optional[dict]): Column settings for tabulator, passed</span>
+<span class="sd">            as json to the Tabulator library. Overrides any internal settings created.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="n">page_info</span><span class="o">.</span><span class="n">idstore</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+    <span class="k">assert</span> <span class="n">page_info</span><span class="o">.</span><span class="n">page_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+    <span class="k">assert</span> <span class="n">page_info</span><span class="o">.</span><span class="n">javascript_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+
+    <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="nb">dir</span><span class="p">:</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="nb">dir</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="s2">&quot;tabulator.json&quot;</span><span class="p">)</span>
+        <span class="c1"># here we use the split method; the index and columns</span>
+        <span class="c1"># are not useful, but the rest gets set as &#39;data&#39;, which we need</span>
+        <span class="k">if</span> <span class="n">max_rows</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">table</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">max_rows</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Table has </span><span class="si">{</span><span class="n">table</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> rows, but only </span><span class="si">{</span><span class="n">max_rows</span><span class="si">}</span><span class="s2"> allowed. Truncating.&quot;</span>
+            <span class="p">)</span>
+            <span class="n">table</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">max_rows</span><span class="p">]</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s2">&quot;records&quot;</span><span class="p">,</span> <span class="n">default_handler</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="c1"># Make sure the file is moved to the right place</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">page_info</span><span class="o">=</span><span class="n">page_info</span><span class="p">,</span> <span class="n">allow_copy</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">use_hash</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+
+    <span class="c1"># create the javascript file</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">min_max_filter_path</span> <span class="o">=</span> <span class="n">page_info</span><span class="o">.</span><span class="n">javascript_path</span> <span class="o">/</span> <span class="s2">&quot;min_max_filter.js&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">min_max_filter_path</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span>
+        <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;tabulator_js&quot;</span> <span class="o">/</span> <span class="s2">&quot;min_max_filter.js&quot;</span><span class="p">,</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">min_max_filter_path</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># produce the column settings</span>
+    <span class="n">col_list</span> <span class="o">=</span> <span class="n">_create_col_settings_tabulator</span><span class="p">(</span>
+        <span class="n">table</span><span class="p">,</span>
+        <span class="n">add_header_filters</span><span class="o">=</span><span class="n">add_header_filters</span><span class="p">,</span>
+        <span class="n">prettify_colnames</span><span class="o">=</span><span class="n">prettify_colnames</span><span class="p">,</span>
+        <span class="n">col_settings</span><span class="o">=</span><span class="n">col_settings</span> <span class="k">if</span> <span class="n">col_settings</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">{},</span>
+    <span class="p">)</span>
+
+    <span class="c1"># put the other settings together</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">table_settings</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">merge_settings</span><span class="p">(</span>
+        <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">layout</span><span class="o">=</span><span class="s2">&quot;fitDataTable&quot;</span><span class="p">,</span>
+            <span class="n">pagination</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">paginationSize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="n">paginationSizeSelector</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">table_settings</span> <span class="k">if</span> <span class="n">table_settings</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">{},</span>
+    <span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">table_settings</span><span class="p">[</span><span class="s2">&quot;columns&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">col_list</span>
+
+    <span class="n">tabulator_id</span> <span class="o">=</span> <span class="n">page_info</span><span class="o">.</span><span class="n">idstore</span><span class="o">.</span><span class="n">next_id</span><span class="p">(</span><span class="s2">&quot;tabulator_id&quot;</span><span class="p">)</span>
+    <span class="n">body_html</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">cleandoc</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        &lt;div id=&#39;</span><span class="si">{</span><span class="n">tabulator_id</span><span class="si">}</span><span class="s2">&#39; class=&#39;display&#39;&gt; &lt;/div&gt;</span>
+<span class="s2">        &quot;&quot;&quot;</span>
+    <span class="p">)</span>
+
+    <span class="n">rel_filter_path</span> <span class="o">=</span> <span class="n">relpath_html</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">min_max_filter_path</span><span class="p">,</span> <span class="n">page_info</span><span class="o">.</span><span class="n">page_path</span><span class="p">)</span>
+    <span class="n">rel_table_path</span> <span class="o">=</span> <span class="n">relpath_html</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">page_info</span><span class="o">.</span><span class="n">page_path</span><span class="p">)</span>
+    <span class="n">table_settings</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">table_settings</span><span class="p">)</span>
+    <span class="n">table_settings</span><span class="p">[</span><span class="s2">&quot;ajaxURL&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">rel_table_path</span><span class="p">)</span>
+
+    <span class="c1"># here we have to be careful to remove the &#39;&#39; around</span>
+    <span class="c1"># the minMaxFilter function reference</span>
+    <span class="n">settings_str</span> <span class="o">=</span> <span class="n">serialize_json</span><span class="p">(</span><span class="n">table_settings</span><span class="p">)</span>
+
+    <span class="n">back_html</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">cleandoc</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        &lt;script&gt;</span>
+<span class="s2">        var table = new Tabulator(&#39;#</span><span class="si">{</span><span class="n">tabulator_id</span><span class="si">}</span><span class="s2">&#39;, </span><span class="si">{</span><span class="n">settings_str</span><span class="si">}</span><span class="s2">);</span>
+<span class="s2">        &lt;/script&gt;</span>
+<span class="s2">        &quot;&quot;&quot;</span>
+    <span class="p">)</span>
+    <span class="n">settings</span> <span class="o">=</span> <span class="n">Settings</span><span class="p">(</span>
+        <span class="n">page</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="c1"># the following needs to be loaded in the header of the page, not the footer</span>
+            <span class="c1"># this enables activating the tables in the body</span>
+            <span class="n">javascript</span><span class="o">=</span><span class="p">[</span>
+                <span class="s2">&quot;https://unpkg.com/tabulator-tables@5.1.0/dist/js/tabulator.min.js&quot;</span><span class="p">,</span>
+                <span class="n">rel_filter_path</span><span class="p">,</span>
+            <span class="p">],</span>
+            <span class="n">css</span><span class="o">=</span><span class="p">[</span>
+                <span class="s2">&quot;https://unpkg.com/tabulator-tables@5.1.0/dist/css/tabulator.min.css&quot;</span>
+            <span class="p">],</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">_body</span> <span class="o">=</span> <span class="n">SpacedText</span><span class="p">(</span><span class="n">body_html</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_back</span> <span class="o">=</span> <span class="n">SpacedText</span><span class="p">(</span><span class="n">back_html</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> <span class="o">+</span> <span class="n">comment_ids</span><span class="p">(</span><span class="n">tabulator_id</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_settings</span> <span class="o">=</span> <span class="n">settings</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../settings/" class="md-footer__link md-footer__link--prev" aria-label="Previous: settings" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              settings
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../text/" class="md-footer__link md-footer__link--next" aria-label="Next: text" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              text
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../../..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../../assets/javascripts/workers/search.22074ed6.min.js"}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.960e086b.min.js"></script>
+      
+    
+  </body>
+</html>
