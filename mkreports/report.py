@@ -19,8 +19,7 @@ from immutabledict import immutabledict
 from .code_context import CodeContext, Layouts
 from .exceptions import (ContextActiveError, IncorrectSuffixError,
                          ReportExistsError, ReportNotExistsError,
-                         ReportNotValidError, TrackerEmptyError,
-                         TrackerIncompleteError)
+                         ReportNotValidError)
 from .md import (IDStore, MdObj, MdProxy, PageInfo, Raw, SpacedText, Text,
                  merge_settings)
 from .settings import (NavEntry, add_nav_entry, load_yaml, path_to_nav_entry,

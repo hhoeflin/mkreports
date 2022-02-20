@@ -11,7 +11,7 @@ def test_code_context(page_info):
     items = con_md.items
     assert isinstance(items[0], Tab)
     assert isinstance(items[1], Tab)
-    assert isinstance(items[0].text, MdSeq)
-    assert len(items[0].text) == 1
-    assert isinstance(items[0].text[0], Raw)
-    assert isinstance(items[1].text, Code)
+    assert isinstance(items[0].obj, MdSeq)
+    assert len(items[0].obj) == 1
+    assert isinstance(items[0].obj[0], Raw)
+    assert isinstance(items[1].obj, Code)
