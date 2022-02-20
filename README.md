@@ -1,12 +1,22 @@
 ![Pytest](https://github.com/hhoeflin/mkreports/actions/workflows/pytest.yml/badge.svg)
 
-*This project is in early status; all APIs can change at any point in time.*
+# Mkreports package
+
+## Introduction
+
+The mkreports package makes it easy for you to write complex reports in mkdocs
+including tables, graphics and programmatically defined output
+using only python scripts. No Jupyter notebooks or workarounds such
+as jupytext are needed.
+
+This methods works seamlessly with complex codebases, encourages
+modularity and re-useability of code.
 
 Below is an example of a simple page. However, the documentation for this
 package is also created with `mkreports`. The code can be found in the
 [documentation](https://hhoeflin.github.io/mkreports/site_code/main/).
 
-# Quickstart
+## Quickstart
 
 It is very easy to create new reports and pages. Below an example that
 creates a report in the `example_report` directory and creates one page
@@ -70,7 +80,7 @@ server of mkdocs supports automatic reload, as you run code, it will update auto
 This is particularly convenient when running the IPython extension for interactive
 analyses.
 
-# Mkdocs based data analysis reports
+## Why write this package?
 
 In this reports we want to provide an easier way to create static
 reports for data analysis. The main tool of choice in this space
