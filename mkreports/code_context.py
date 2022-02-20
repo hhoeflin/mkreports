@@ -115,21 +115,24 @@ class CodeContext:
         self.relative_to = relative_to
         self.add_bottom = add_bottom
         self.name_only = name_only
+        self._active = False
 
     def __enter__(self) -> "CodeContext":
         if self.do_tracking:
             self.tracker.start(inspect.stack()[self.stack_level])
+        self._active = True
         return self
 
     def __exit__(self, exc_type, exc_val, traceback) -> None:
         del exc_type, exc_val, traceback
+        self._active = False
         if self.do_tracking:
             self.tracker.stop(inspect.stack()[self.stack_level])
 
     @property
     def active(self):
-        """Indicates if the tracker is active."""
-        return self.tracker.active
+        """Indicates if the context-manager is active."""
+        return self._active
 
     def add(self, md_obj: MdObj) -> None:
         """
