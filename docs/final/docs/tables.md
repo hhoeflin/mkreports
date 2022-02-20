@@ -17,8 +17,8 @@ javascript:
 
 ??? code "Code"
 
-    ```python
-    --8<-- 'docs/tables_store/tables-44029c7348ddd388a7e7e8e5a57f5ecc.py'
+    ```python title="docs/staging/tables.py"
+    --8<-- 'docs/tables_store/tables-aa8b1f31dd91c8601ff5f85c0ddbf3f8.py'
     ```
 
 Conveying information with tables is very important for 
@@ -122,7 +122,7 @@ larger tables more sophisticated libraries are needed.
 
 <script>
 $(document).ready( function () {
-var myTable = $('#datatable_id-0').DataTable({"scrollX": "true", "columns": [{"title": "name"}, {"title": "mpg"}, {"title": "cyl"}, {"title": "disp"}, {"title": "hp"}, {"title": "drat"}, {"title": "wt"}, {"title": "qsec"}, {"title": "vs"}, {"title": "am"}, {"title": "gear"}, {"title": "carb"}], "ajax": "../tables_store/datatable-ca9b6f052f673e1d46f468ebb1ccc5d1.json"});
+var myTable = $('#datatable_id-0').DataTable({"scrollX": "true", "columns": [{"title": "Name"}, {"title": "Mpg"}, {"title": "Cyl"}, {"title": "Disp"}, {"title": "Hp"}, {"title": "Drat"}, {"title": "Wt"}, {"title": "Qsec"}, {"title": "Vs"}, {"title": "Am"}, {"title": "Gear"}, {"title": "Carb"}], "ajax": "../tables_store/datatable-ca9b6f052f673e1d46f468ebb1ccc5d1.json"});
 
 } );
 </script>
@@ -131,7 +131,7 @@ var myTable = $('#datatable_id-0').DataTable({"scrollX": "true", "columns": [{"t
 
 <script>
 $(document).ready( function () {
-var myTable = $('#datatable_id-1').DataTable({"scrollX": "true", "columns": [{"title": "name"}, {"title": "age"}, {"title": "hair"}, {"title": "married"}], "ajax": "../tables_store/datatable-580c4149445c9b58b5740c532e20a5a0.json"});
+var myTable = $('#datatable_id-1').DataTable({"scrollX": "true", "columns": [{"title": "Name"}, {"title": "Age"}, {"title": "Hair"}, {"title": "Married"}], "ajax": "../tables_store/datatable-580c4149445c9b58b5740c532e20a5a0.json"});
 yadcf.init(myTable, [{"column_number": 0, "filter_type": "text"}, {"column_number": 1, "filter_type": "range_number"}, {"column_number": 2, "filter_type": "select"}, {"column_number": 3, "filter_type": "select"}]);
 } );
 </script>
@@ -144,7 +144,7 @@ yadcf.init(myTable, [{"column_number": 0, "filter_type": "text"}, {"column_numbe
 
     This time, we use the [Tabulator](http://tabulator.info)
     library. A library with a lot of interesting 
-    functionality. Currently limited support.
+    functionality.
 
     <div id='tabulator_id-0' class='display'> </div>
 
@@ -177,7 +177,7 @@ yadcf.init(myTable, [{"column_number": 0, "filter_type": "text"}, {"column_numbe
         """
         This time, we use the [Tabulator](http://tabulator.info)
         library. A library with a lot of interesting 
-        functionality. Currently limited support.
+        functionality.
         """
     )
     p.Tabulator(

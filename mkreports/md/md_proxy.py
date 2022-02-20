@@ -14,9 +14,21 @@ def register_md(name):
 
 
 class MdProxy:
+    """
+    Proxies the MdObj objects
+
+    Makes the MdObj available with PageInfo prefilled.
+    """
+
     _proxied_classes: Dict[str, Any] = dict()
 
     def __init__(self, page_info: PageInfo):
+        """
+        Initialize the proxy.
+
+        Args:
+            page_info (PageInfo): The info of the page for which the proxy works.
+        """
         self.page_info = page_info
 
     def __getattr__(self, name):
@@ -46,5 +58,9 @@ class MdProxy:
             return obj
 
     @property
-    def proxied_clases(self):
+    def proxied_classes(self) -> Dict[str, Any]:
+        """
+        Returns:
+            Dict[str, Any]: A dict with the registered items under their name.
+        """
         return self._proxied_classes

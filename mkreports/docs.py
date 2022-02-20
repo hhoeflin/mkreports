@@ -13,6 +13,13 @@ def add_pkg_docs(
 ):
     """
     Add docstrings of the object to the report
+
+    Args:
+        pkg_path (Path): Path of the package for which to add the docs.
+        parent_name (Union[NavEntry, Path, str]): Name under which it should be
+            added in the Navigation.
+        report (Report): the report to which it should be added.
+        omit_package_name (bool): Should the package-name be omitted in the nav?
     """
     # we need the parent name as a nav_entry
     if isinstance(parent_name, str):

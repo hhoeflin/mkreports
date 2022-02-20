@@ -9,6 +9,12 @@ class Docstring(MdObj):
     """Add a docstring to the page."""
 
     def __init__(self, obj_name: str) -> None:
+        """
+        Docstring for the page.
+
+        Args:
+            obj_name (str): Name of the object for which a docstring should be added.
+        """
         super().__init__()
         self.obj_name = obj_name
 

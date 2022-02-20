@@ -22,10 +22,21 @@ logger = logging.getLogger(__name__)
 
 @register_md("Table")
 class Table(MdObj):
+    """Standard markdown table."""
+
     table: pd.DataFrame
     kwargs: Dict[str, Any]
 
     def __init__(self, table: pd.DataFrame, max_rows: Optional[int] = 100, **kwargs):
+        """
+        Initialize the table object.
+
+        Args:
+            table (pd.DataFrame): The table to include in pandas format.
+            max_rows (Optional[int]): Maximum number of rows. If None, all will
+                be included. If longer, a warning will be logged and the first `max_rows`
+                will be included.
+        """
         super().__init__()
         self.kwargs = kwargs
         # think about making this a static-frame
@@ -46,7 +57,7 @@ class Table(MdObj):
         self._settings = None
 
 
-def create_yadcf_settings_datatable(
+def _create_yadcf_settings_datatable(
     df: pd.DataFrame,
     yadcf_settings: Dict[str, Dict[str, Any]],
 ) -> List[Dict[str, Any]]:
@@ -57,7 +68,7 @@ def create_yadcf_settings_datatable(
         # set the name of the column
         inner_dict: Dict[str, Any] = {"column_number": index}
         # only add header filters if requested
-        filter_dict = series_to_filter_yadcf(df[colname])
+        filter_dict = _series_to_filter_yadcf(df[colname])
         inner_dict.update(filter_dict)
         col_set_dict[colname] = inner_dict
     col_set_dict = merge_settings(
@@ -68,7 +79,7 @@ def create_yadcf_settings_datatable(
     return col_list
 
 
-def series_to_filter_yadcf(series: pd.Series) -> Dict[str, Any]:
+def _series_to_filter_yadcf(series: pd.Series) -> Dict[str, Any]:
     if types.is_bool_dtype(series.dtype):
         return dict(
             filter_type="select",
@@ -86,16 +97,36 @@ def series_to_filter_yadcf(series: pd.Series) -> Dict[str, Any]:
 
 @register_md("DataTable")
 class DataTable(File):
+    """Table using DataTable javascript library."""
+
     def __init__(
         self,
         table: pd.DataFrame,
         page_info: PageInfo,
         max_rows: Optional[int] = 1000,
         column_settings: Optional[dict] = None,
+        prettify_colnames: bool = True,
         add_header_filters: bool = False,
         yadcf_settings: Optional[dict] = None,
         **kwargs,
     ):
+        """
+        Initialize the table using the DataTable javascript library.
+
+        Args:
+            table (pd.DataFrame): The table in pandas.DataFrame format.
+            page_info (PageInfo): PageInfo object for the page where the
+                table should be located.
+            max_rows (Optional[int]): Maximum number of rows. If None, all will
+                be included. If longer, a warning will be logged and the first `max_rows`
+                will be included.
+            column_settings (Optional[dict]): Dict of settings for the columns. Will be
+                passed as json to the DataTable library. Overrides any automatic settings.
+            prettify_colnames (bool): Run colnames through 'snake_to_text' function.
+            add_header_filters (bool): Should header filters be added.
+            yadcf_settings (Optional[dict]): Settings for the *yadcf* header filter plugin.
+                Overrides any automatic settings.
+        """
         assert page_info.idstore is not None
         assert page_info.page_path is not None
 
@@ -116,14 +147,20 @@ class DataTable(File):
             )
 
         # prepare the table settings
-        col_set = {col: {"title": col} for col in table.columns}
+        if prettify_colnames:
+            col_set = {
+                col: {"title": snake_to_text(col) if isinstance(col, str) else col}
+                for col in table.columns
+            }
+        else:
+            col_set = {col: {"title": col} for col in table.columns}
         if column_settings is not None:
             # only pick out settings for columns that occur in the table
             col_set.update({col: column_settings[col] for col in table.columns})
 
         self.add_header_filters = add_header_filters
         if add_header_filters:
-            self.yadcf_settings = create_yadcf_settings_datatable(
+            self.yadcf_settings = _create_yadcf_settings_datatable(
                 table, yadcf_settings if yadcf_settings is not None else {}
             )
 
@@ -189,7 +226,7 @@ class DataTable(File):
         self._settings = settings
 
 
-def create_col_settings_tabulator(
+def _create_col_settings_tabulator(
     df: pd.DataFrame,
     add_header_filters: bool,
     prettify_colnames: bool,
@@ -202,7 +239,7 @@ def create_col_settings_tabulator(
         inner_dict: Dict[str, Any] = {"field": colname}
         if add_header_filters:
             # depending on the type of the column, choose a different filter
-            filter_dict = series_to_filter_tabulator(df[colname])
+            filter_dict = _series_to_filter_tabulator(df[colname])
             inner_dict.update(filter_dict)
         if prettify_colnames:
             inner_dict["title"] = snake_to_text(colname)
@@ -217,7 +254,7 @@ def create_col_settings_tabulator(
     return col_list
 
 
-def series_to_filter_tabulator(series: pd.Series) -> Dict[str, Any]:
+def _series_to_filter_tabulator(series: pd.Series) -> Dict[str, Any]:
     if types.is_bool_dtype(series.dtype):
         return dict(
             headerFilter="tickCross",
@@ -243,6 +280,8 @@ def series_to_filter_tabulator(series: pd.Series) -> Dict[str, Any]:
 
 @register_md("Tabulator")
 class Tabulator(File):
+    """A table using the Tabulator javascript library."""
+
     def __init__(
         self,
         table: pd.DataFrame,
@@ -254,6 +293,21 @@ class Tabulator(File):
         col_settings: Optional[dict] = None,
         **kwargs,
     ):
+        """
+
+        Args:
+            table (pd.DataFrame): The table to be added.
+            page_info (PageInfo): PageInfo for the page where the table should be added.
+            max_rows (Optional[int]): Maximum number of rows. If None, all will
+                be included. If longer, a warning will be logged and the first `max_rows`
+                will be included.
+            table_settings (Optional[dict]): Settings passed to Tabulator as json. Overrides
+                any internal settings created by this function.
+            add_header_filters (bool): Should header-filters be added.
+            prettify_colnames (bool): Run column names through *snake_to_text*.
+            col_settings (Optional[dict]): Column settings for tabulator, passed
+                as json to the Tabulator library. Overrides any internal settings created.
+        """
         assert page_info.idstore is not None
         assert page_info.page_path is not None
         assert page_info.javascript_path is not None
@@ -283,7 +337,7 @@ class Tabulator(File):
         )
 
         # produce the column settings
-        col_list = create_col_settings_tabulator(
+        col_list = _create_col_settings_tabulator(
             table,
             add_header_filters=add_header_filters,
             prettify_colnames=prettify_colnames,

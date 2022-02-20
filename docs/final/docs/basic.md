@@ -8,7 +8,7 @@ css:
 
 ??? code "Code"
 
-    ```python
+    ```python title="docs/staging/basic.py"
     --8<-- 'docs/basic_store/basic-6ab5e54a0281339c3a2d8354b9279f41.py'
     ```
 

@@ -18,7 +18,23 @@ from .text import SpacedText, Text
 @register_md("Admonition")
 @dataclass
 class Admonition(MdObj):
-    text: Union[Text, MdObj]
+    """
+    An admonition to be added to a page. Can also be collapsed. For more
+    details see also the Materials-theme for mkdocs.
+
+    Args:
+        obj (Union[MdObj, Text]): object in the admonition. Markdown object, string
+            or SpacedText.
+        title (Optional[str]): title shown in the admonition. If missing, defaults
+            to 'kind'.
+        kind (Literal[ 'note', 'abstract', 'info', 'tip', 'success', 'question', 'warning', 'failure', 'danger', 'bug', 'example', 'quote', 'code']): The type of
+            admonition to be shown. See also the Materials-theme for mkdocs for
+            more details.
+        collapse (bool): Should the admonition be collapsed?
+        page_info (Optional[PageInfo]): Only needed when 'kind=="code"'.
+    """
+
+    obj: Union[Text, MdObj]
     title: Optional[str] = None
     kind: Literal[
         "note",
@@ -69,13 +85,13 @@ class Admonition(MdObj):
             },
             page=page_settings,
         )
-        if isinstance(self.text, MdObj):
-            admon_text = self.text.body
-            back = self.text.back
-            settings = self.text.settings
+        if isinstance(self.obj, MdObj):
+            admon_text = self.obj.body
+            back = self.obj.back
+            settings = self.obj.settings
             settings = cont_settings + settings
         else:
-            admon_text, back, settings = str(self.text), SpacedText(), cont_settings
+            admon_text, back, settings = str(self.obj), SpacedText(), cont_settings
 
         if self.title is None:
             title_md = ""
@@ -92,7 +108,16 @@ class Admonition(MdObj):
 @register_md("Tab")
 @dataclass
 class Tab(MdObj):
-    text: Union[Text, MdObj]
+    """
+    Tab interface
+
+    Args:
+        obj (Union[Text, MdObj]): The object to be shown in the tab. An MdObj,
+            string or SpacedText.
+        title (Optional[str]): Optional title for the tab.
+    """
+
+    obj: Union[Text, MdObj]
     title: Optional[str] = None
 
     def __post_init__(self):
@@ -104,13 +129,13 @@ class Tab(MdObj):
                 ]
             }
         )
-        if isinstance(self.text, MdObj):
-            tab_text = self.text.body
-            back = self.text.back
-            settings = self.text.settings
+        if isinstance(self.obj, MdObj):
+            tab_text = self.obj.body
+            back = self.obj.back
+            settings = self.obj.settings
             settings = tab_settings + settings
         else:
-            tab_text, back, settings = str(self.text), SpacedText(), tab_settings
+            tab_text, back, settings = str(self.obj), SpacedText(), tab_settings
 
         if self.title is not None:
             title_text = html.escape(self.title)
@@ -127,7 +152,19 @@ class Tab(MdObj):
 @register_md("Code")
 @dataclass
 class Code(MdObj):
-    """Wrapper class for code."""
+    """
+    Shows a code-block.
+
+    Args:
+        code (str): The code to be shown as a string.
+        title (Optional[str]): Optional title for the code block.
+        first_line (Optional[int]): Number at the first line.
+        hl_lines (Optional[Tuple[int, int]]): Line-range for highlighting.
+            Is counted relative to 'first_line'.
+        language (Optional[str]): Language for syntax highlighting.
+        dedent (bool): Should the string be de-dented?
+
+    """
 
     code: str
     title: Optional[str] = None
@@ -178,18 +215,36 @@ class CodeFile(File):
 
     def __init__(
         self,
-        path: Path,
+        path: Union[Path, str],
         page_info: PageInfo,
         title: Optional[str] = None,
         hl_lines: Optional[Tuple[int, int]] = None,
         language: Optional[str] = "python",
     ):
         """
-        Move a code-file into the store-dir and reference it in code block.
+        Set up the code-block with file content.
+
+        Args:
+            path (Union[Path, str]): Abolute path or relative to current working dir for the
+                code-file to be included.
+            page_info (PageInfo): PageInfo on the page where the code is to be added.
+            title (Optional[str]): Title of the code-block. If 'None', the path of the
+                code file relative to the project root will be added. If it should be
+                empty, set to empty string.
+            hl_lines (Optional[Tuple[int, int]]): Optional range of lines for highlighting.
+            language (Optional[str]): Language for syntax highlighting.
         """
+        assert page_info.project_root is not None
         assert page_info.report_path is not None
+
+        path = Path(path)
+
         super().__init__(path=path, page_info=page_info, allow_copy=True, use_hash=True)
-        self.title = title
+        self.title = (
+            title
+            if title is not None
+            else str(path.relative_to(page_info.project_root))
+        )
         self.hl_lines = hl_lines
         self.language = language
 

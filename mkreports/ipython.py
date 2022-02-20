@@ -31,10 +31,15 @@ class Handler:
 
 @magics_class
 class ConsoleWriter(Magics):
+    """
+    Class that connects IPython with mkreports using magics.
+    """
+
     handlers: List[Handler]
     console: Page
 
     def __init__(self, ip):
+        """Initialization. Not for end-users."""
         super().__init__(ip)
         self.shell = ip
         self.handlers = []
@@ -123,6 +128,9 @@ class ConsoleWriter(Magics):
         """
         Function to archive the console. This is also a line magic, however
         the line itself will be ignored.
+
+        Args:
+            line (str): ignored.
         """
         del line
         # we also need to add a navigation entry

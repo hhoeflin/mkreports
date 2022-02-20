@@ -16,6 +16,8 @@ from .text import SpacedText
 
 @register_md("ImageFile")
 class ImageFile(File):
+    """An image file."""
+
     text: str
     tooltip: str
     link_type: str
@@ -82,6 +84,22 @@ class Image(ImageFile):
         tooltip: str = "",
         img_type: Literal["jpg", "png"] = "png",
     ) -> None:
+        """
+        An image object for inclusion on a page.
+
+        Args:
+            image: The image to be included. Has to be supported by one of the handlers, which
+                are Matplotlib, plotnine and seaborn.
+            page_info (PageInfo): PageInfo for the page where the image should be included.
+            width (Optional[float]): width of the image
+            height (Optional[float]): height of the image
+            units (Literal["in", "cm", "mm"]): units of the width and height
+            dpi (Optional[float]): dpi of the image output.
+            link_type (Literal["inline", "ref"]): Link-type to be used.
+            text (str): The alternative text if the image is not available.
+            tooltip (str): The tooltip to use when hovering over the image.
+            img_type (Literal["jpg", "png"]): Type of the image to create during saving.
+        """
         if type(image) in image_save_funcs:
             # ok, we know how to save this: put it in temp dir first
             with tempfile.TemporaryDirectory() as dir:
@@ -111,6 +129,8 @@ class Image(ImageFile):
 
 @register_md("PIL")
 class PIL(ImageFile):
+    """A PIL image for inclusion."""
+
     def __init__(
         self,
         image,
@@ -120,6 +140,17 @@ class PIL(ImageFile):
         tooltip: str = "",
         img_type: Literal["jpg", "png"] = "png",
     ) -> None:
+        """
+        Create MdObj for PIL image.
+
+        Args:
+            image (PIL.Image.Image): an Image object from PIL
+            page_info (PageInfo): PageInfo for the page where the image is to be included.
+            link_type (Literal["inline", "ref"]): Link-type to use.
+            text (str): Alternative text for the image.
+            tooltip (str): Tooltip when hovering over the image.
+            img_type (Literal["jpg", "png"]): File-type to use when saving the image.
+        """
         with tempfile.TemporaryDirectory() as dir:
             path = Path(dir) / ("pil_image." + img_type)
             image.save(path)
@@ -138,12 +169,23 @@ class PIL(ImageFile):
 
 @register_md("Altair")
 class Altair(File):
+    """
+    Include an Altair image.
+    """
+
     def __init__(
         self,
         altair,
         page_info: PageInfo,
         **kwargs,
     ):
+        """
+        Create object to include an Altair image.
+
+        Args:
+            altair: An altair image.
+            page_info (PageInfo): PageInfo to the page where it is to be included.
+        """
         assert page_info.page_path is not None
         assert page_info.idstore is not None
 
@@ -204,12 +246,23 @@ class Altair(File):
 
 @register_md("Plotly")
 class Plotly(File):
+    """
+    Plotly image as MdObj.
+    """
+
     def __init__(
         self,
         plotly,
         page_info: PageInfo,
         **kwargs,
     ):
+        """
+        Initialize the Plotly MdObj.
+
+        Args:
+            plotly (): The plotly graph to plot.
+            page_info (PageInfo): PageInfo to the page where it is to be included.
+        """
         assert page_info.page_path is not None
         assert page_info.idstore is not None
 

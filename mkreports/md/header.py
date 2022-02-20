@@ -12,6 +12,18 @@ from .text import SpacedText
 @register_md("Heading")
 @dataclass
 class Heading(MdObj):
+    """
+    Create a heading.
+
+    Pre-defined heading levels exists as exported objects 'H1' to 'H7'.
+
+    Args:
+        title (str): The heading title.
+        level (int): Level of the heading.
+        style (Literal["atx", "setext"]): Style of the heading in markdown.
+        anchor (Optional[Union[Anchor, str]]): Anchor to be added to heading.
+    """
+
     title: str
     level: int
     style: Literal["atx", "setext"] = "atx"

@@ -27,6 +27,21 @@ Layouts = Literal["top-c", "top-o", "bottom-c", "bottom-o", "tabbed", "nocode"]
 def do_layout(
     code: Optional[MdObj], content: MdObj, layout: Layouts, page_info: PageInfo
 ) -> MdObj:
+    """
+    Do the layouting for a content and code block.
+
+    Args:
+        code (Optional[MdObj]): The MdObj for the code. If layout is 'nocode', can be None.
+        content (MdObj): The content to add. Can't be missing.
+        layout (Layouts): Type of layout for code-tracking. One of
+                'tabbed', 'top-o', 'top-c', 'bottom-o', 'bottom-c' or 'nocode'.
+        page_info (PageInfo): PageInfo object corresponding to the page to which it
+            should be added.
+
+    Returns:
+        A MdObj with the requested layout.
+
+    """
     if layout == "nocode":
         return content
     else:
@@ -66,6 +81,10 @@ def do_layout(
 
 
 class CodeContext:
+    """
+    Context manager for the code tracking and content accumulation.
+    """
+
     tracker: BaseTracker
 
     def __init__(
@@ -76,6 +95,18 @@ class CodeContext:
         add_bottom: bool = True,
         stack_level: int = 2,
     ):
+        """
+        Initialize the context manager. This should usually not be needed by
+        end users.
+
+        Args:
+            layout (Layouts): The layout to use. One of
+                'tabbed', 'top-o', 'top-c', 'bottom-o', 'bottom-c' or 'nocode'.
+            relative_to (Optional[Path]): Path relative to where the code file will be named.
+            name_only (bool): For the code file, use name instead of path?
+            add_bottom (bool): Should content be added to bottom or top of page?
+            stack_level (int): Levels lower in the stack where the code is to be tracked.
+        """
         self.layout: Layouts = layout
         self.do_tracking = layout != "nocode"
         self.tracker = SimpleTracker()
@@ -97,9 +128,16 @@ class CodeContext:
 
     @property
     def active(self):
+        """Indicates if the tracker is active."""
         return self.tracker.active
 
     def add(self, md_obj: MdObj) -> None:
+        """
+        Add a new content object.
+
+        Args:
+            md_obj (MdObj): The content to be added.
+        """
         if self.add_bottom:
             self.obj_list.append(md_obj)
         else:
@@ -110,7 +148,8 @@ class CodeContext:
         Return the markdown object that represents output and code.
 
         Args:
-            javascript_path (Path): Path to where the javascript files will be written.
+            page_info (PageInfo): PageInfo object about the page where the
+                content is to be added.
 
         Returns:
             MdObj: Markdown object representing the formatted output in the

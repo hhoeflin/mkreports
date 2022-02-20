@@ -81,7 +81,7 @@ def use_tables(report: Report) -> None:
             """
             This time, we use the [Tabulator](http://tabulator.info)
             library. A library with a lot of interesting 
-            functionality. Currently limited support.
+            functionality.
             """
         )
         p.Tabulator(

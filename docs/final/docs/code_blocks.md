@@ -154,7 +154,7 @@ p.P(f"fib({x}) = {a}")
 
     ??? code "Code"
 
-        ```python
+        ```python title="docs/staging/code_blocks.py"
         --8<-- 'docs/code_blocks_store/code_blocks-7cb6ac68f48f685a15dec6fd973a1c3f.py'
         ```
 

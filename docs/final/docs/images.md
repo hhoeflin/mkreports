@@ -13,7 +13,7 @@ javascript:
 
 ??? code "Code"
 
-    ```python
+    ```python title="docs/staging/images.py"
     --8<-- 'docs/images_store/images-b15a9beb14db06eb4b8e10cd108bfddf.py'
     ```
 

@@ -15,7 +15,7 @@ class NavEntry(NamedTuple):
 
     Args:
         hierarchy (Sequence[str]): List of navigation entries.
-        file: Path to the page, relative to report docs folder.
+        file (Path): Path to the page, relative to report docs folder.
     """
 
     hierarchy: Sequence[str]

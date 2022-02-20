@@ -26,12 +26,19 @@ def count_newlines(x: str, before=True) -> int:
 
 
 class SpacedText:
-    """Representation of text with spaces before or after."""
+    """Representation of text with newlines before or after."""
 
     text: str
     req_nl: Tuple[int, int]
 
     def __init__(self, text: Text = "", req_nl: Tuple[int, int] = (0, 0)) -> None:
+        """
+        Initialize the object.
+
+        Args:
+            text (Text): The text to print.
+            req_nl (Tuple[int, int]): Number of newlines before and after to ensure.
+        """
         if isinstance(text, str):
             my_text = text
             my_req_nl = req_nl
