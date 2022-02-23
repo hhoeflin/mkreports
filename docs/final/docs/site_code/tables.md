@@ -62,7 +62,7 @@ def use_tables(report: Report) -> None:
         # and as a DataTable
         p.DataTable(pd.DataFrame(mtcars))
 
-        with p.H3("Header filters").notrack:
+        with p.H3("Header filters").ctx("nocode"):
             p.Raw(
                 """
                 Below a DataTable example with column filters in the header.
@@ -88,7 +88,7 @@ def use_tables(report: Report) -> None:
             pd.DataFrame(mtcars), add_header_filters=False, prettify_colnames=False
         )
 
-        with p.H3("Header filters").notrack:
+        with p.H3("Header filters").ctx("nocode"):
             p.Raw(
                 """
                 We also can enable header filtering. For the datatypes

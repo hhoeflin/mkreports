@@ -18,7 +18,7 @@ javascript:
 ??? code "Code"
 
     ```python title="docs/staging/tables.py"
-    --8<-- 'docs/usage/tables_store/tables-63561573052eedeb03bbb82410650720.py'
+    --8<-- 'docs/usage/tables_store/tables-f4ed87f33f4b7277745fadd62d83ee9a.py'
     ```
 
 Conveying information with tables is very important for 
@@ -101,7 +101,7 @@ larger tables more sophisticated libraries are needed.
     # and as a DataTable
     p.DataTable(pd.DataFrame(mtcars))
 
-    with p.H3("Header filters").notrack:
+    with p.H3("Header filters").ctx("nocode"):
         p.Raw(
             """
             Below a DataTable example with column filters in the header.
@@ -184,7 +184,7 @@ yadcf.init(myTable, [{"column_number": 0, "filter_type": "text"}, {"column_numbe
         pd.DataFrame(mtcars), add_header_filters=False, prettify_colnames=False
     )
 
-    with p.H3("Header filters").notrack:
+    with p.H3("Header filters").ctx("nocode"):
         p.Raw(
             """
             We also can enable header filtering. For the datatypes

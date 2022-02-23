@@ -18,9 +18,8 @@ from frontmatter.default_handlers import DEFAULT_POST_TEMPLATE, YAMLHandler
 from immutabledict import immutabledict
 
 from .code_context import CodeContext, Layouts
-from .exceptions import (ContextActiveError, IncorrectSuffixError,
-                         ReportExistsError, ReportNotExistsError,
-                         ReportNotValidError)
+from .exceptions import (IncorrectSuffixError, ReportExistsError,
+                         ReportNotExistsError, ReportNotValidError)
 from .md import (IDStore, MdObj, MdProxy, PageInfo, Raw, SpacedText, Text,
                  merge_settings)
 from .settings import (NavEntry, add_nav_entry, load_yaml, path_to_nav_entry,
@@ -108,6 +107,7 @@ class Report:
         self,
         path: Optional[Union[str, Path]] = None,
         project_root: Optional[Union[str, Path]] = None,
+        md_defaults: Optional[Dict[str, Dict[str, Any]]] = None,
     ) -> None:
         """
         Initialize the report object. This relies on the report folder already
@@ -120,6 +120,9 @@ class Report:
                 Directory that is the root of the project. If None, tries to use
                 the root of the git-repository if there is one. Otherwise
                 uses the root of the file-system.
+            md_defaults (Optional[Dict[str, Dict[str, Any]]): A dictionary mapping the names
+                md objects (accessed from the proxy) to default keywords included when
+                they are being called.
         """
         # need to ensure it is of type Path
         if path is None:
@@ -148,6 +151,8 @@ class Report:
                 self.project_root = root
         else:
             self.project_root = Path(project_root)
+
+        self.md_defaults = md_defaults
 
     @property
     def path(self) -> Path:
@@ -198,6 +203,8 @@ class Report:
         cls,
         path: Union[str, Path],
         report_name: str,
+        project_root: Optional[Union[str, Path]] = None,
+        md_defaults: Optional[Dict[str, Dict[str, Any]]] = None,
         settings: Optional[Mapping[str, str]] = default_settings,
         exist_ok: bool = False,
     ) -> "Report":
@@ -207,6 +214,13 @@ class Report:
         Args:
             path (Union[str, Path]): Top-level folder of the report.
             report_name (str): Name of the report (mkdocs site-name)
+            project_root (Optional[Union[str, Path]]):
+                Directory that is the root of the project. If None, tries to use
+                the root of the git-repository if there is one. Otherwise
+                uses the root of the file-system.
+            md_defaults (Optional[Dict[str, Dict[str, Any]]): A dictionary mapping the names
+                md objects (accessed from the proxy) to default keywords included when
+                they are being called.
             settings (Optional[Mapping[str, str]]): Settings of the report.
             exist_ok (bool): Is it ok if it already exists?
 
@@ -241,7 +255,11 @@ class Report:
         with (overrides_dir / "main.html").open("w") as f:
             f.write(main_html_override)
 
-        return cls(path)
+        return cls(
+            path,
+            project_root=project_root,
+            md_defaults=md_defaults,
+        )
 
     def _add_nav_entry(self, nav_entry) -> None:
         # check that the nav-entry is relative; if absolute,
@@ -260,6 +278,7 @@ class Report:
         page_name: Union[NavEntry, Path, str],
         truncate: bool = False,
         add_bottom: bool = True,
+        md_defaults: Optional[Dict[str, Dict[str, Any]]] = None,
     ) -> "Page":
         """
         Create a page in the report.
@@ -272,6 +291,9 @@ class Report:
                 the *store_path*.
             add_bottom (bool): Should new entries be added at the bottom or at the
                 top of the page. Top of the page is used for IPython.
+            md_defaults (Optional[Dict[str, Dict[str, Any]]): A dictionary mapping the names
+                md objects (accessed from the proxy) to default keywords included when
+                they are being called.
 
         Returns:
             Page: An object representing a new page.
@@ -313,6 +335,7 @@ class Report:
             self.docs_dir / path,
             report=self,
             add_bottom=add_bottom,
+            md_defaults=md_defaults,
         )
 
         if truncate:
@@ -332,6 +355,7 @@ class Page:
         code_layout: Layouts = "tabbed",
         code_name_only: bool = False,
         add_bottom: bool = True,
+        md_defaults: Optional[Dict[str, Dict[str, Any]]] = None,
     ) -> None:
         """
         Initialize a page. Usually this is not used and instead a page is created
@@ -351,6 +375,9 @@ class Page:
                 instead of the path.
             add_bottom (bool): Should new entries be added at the bottom? At the
                 top used for IPython.
+            md_defaults (Optional[Dict[str, Dict[str, Any]]): A dictionary mapping the names
+                md objects (accessed from the proxy) to default keywords included when
+                they are being called.
         """
         self._path = path.absolute()
         # check that the file exists and ends with .md
@@ -366,7 +393,7 @@ class Page:
         self.code_layout: Layouts = code_layout
         self.code_name_only = code_name_only
 
-        self._md = MdProxy(page_info=self.page_info)
+        self._md = MdProxy(page_info=self.page_info, md_defaults=md_defaults)
 
         self.code_context_stack: List[CodeContext] = []
 
@@ -470,21 +497,6 @@ class Page:
             idstore=self._idstore,
             page_path=self.path,
         )
-
-    @property
-    def notrack(self) -> ContextManager["Page"]:
-        """
-        Context-manager that does not do anything.
-
-        This can be useful if a context-manager is used for visual grouping of code
-        - e.g. when using the context manager on headings. This context manager
-        can be used even if another is already active.
-
-        Returns:
-            ContextManager["Page"]: Returns a null context manager that wraps the page.
-
-        """
-        return nullcontext(self)
 
     @property
     def path(self) -> Path:

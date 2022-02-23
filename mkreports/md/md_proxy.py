@@ -1,6 +1,6 @@
 import inspect
 from functools import partial, update_wrapper
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 
 from .settings import PageInfo
 
@@ -22,14 +22,22 @@ class MdProxy:
 
     _proxied_classes: Dict[str, Any] = dict()
 
-    def __init__(self, page_info: PageInfo):
+    def __init__(
+        self,
+        page_info: PageInfo,
+        md_defaults: Optional[Dict[str, Dict[str, Any]]] = None,
+    ):
         """
         Initialize the proxy.
 
         Args:
             page_info (PageInfo): The info of the page for which the proxy works.
+            md_defaults (Optional[Dict[str, Dict[str, Any]]): A dictionary mapping the names
+                md objects (accessed from the proxy) to default keywords included when
+                they are being called.
         """
         self.page_info = page_info
+        self.md_defaults = md_defaults if md_defaults is not None else {}
 
     def __getattr__(self, name):
         # we are not checking if it is included; if not, should raise error
@@ -45,6 +53,10 @@ class MdProxy:
             obj_sig = inspect.signature(obj)
             if "page_info" in obj_sig.parameters:
                 partial_kwargs["page_info"] = self.page_info
+
+            # check if there are defaults for the md-object
+            if name in self.md_defaults:
+                partial_kwargs.update(self.md_defaults[name])
 
             if len(partial_kwargs) > 0:
                 partial_obj = partial(obj, **partial_kwargs)
