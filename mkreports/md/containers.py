@@ -1,5 +1,4 @@
 import html
-import shutil
 import textwrap
 from dataclasses import dataclass
 from pathlib import Path
@@ -9,7 +8,7 @@ from typing import Literal, Optional, Tuple, Union
 from mdutils.tools.TextUtils import TextUtils
 
 from .base import MdObj
-from .file import File, relpath_html
+from .file import File, store_asset_relpath
 from .md_proxy import register_md
 from .settings import PageInfo, Settings
 from .text import SpacedText, Text
@@ -55,23 +54,12 @@ class Admonition(MdObj):
     page_info: Optional[PageInfo] = None
 
     def __post_init__(self):
-        if self.kind == "code":
-            assert self.page_info is not None
-            assert self.page_info.javascript_path is not None
-            javascript_path = self.page_info.javascript_path
-            # create a css file that creates a 'code' admonition
-            self.css_path = javascript_path / "code_admonition.css"
-            javascript_path.mkdir(parents=True, exist_ok=True)
-            shutil.copy(
-                Path(__file__).parent / "code_admonition.css",
-                self.css_path,
-            )
-
+        assert self.page_info is not None
         # if code-admonition, we need to load additional css
         if self.kind == "code":
-            assert self.page_info is not None
-            assert self.page_info.page_path is not None
-            rel_css_path = relpath_html(self.css_path, self.page_info.page_path)
+            rel_css_path = store_asset_relpath(
+                Path("code_admonition.css"), self.page_info
+            )
             page_settings = dict(css=[rel_css_path])
         else:
             page_settings = {}

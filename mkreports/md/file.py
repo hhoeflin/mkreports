@@ -4,6 +4,8 @@ from os.path import relpath
 from pathlib import Path
 from typing import Optional, Union
 
+import importlib_resources as imp_res
+
 from .base import MdObj
 from .md_proxy import register_md
 from .settings import PageInfo
@@ -55,6 +57,30 @@ def relpath_html(target: Path, page_path: Path) -> str:
     else:
         # for translating to html, will be converted to path.parent / path.stem / index.html
         return relpath(target, page_path)
+
+
+def store_asset_relpath(asset_path_mkreports: Path, page_info: PageInfo) -> str:
+    """
+    Store an asset and return relative path to it.
+
+    Args:
+        asset_path (Path): Relative asset path inside 'mkreports'
+        page_info (PageInfo): PageInfo for the page in use
+
+    Returns:
+        str: Path to the asset as it should be used from html
+    """
+    assert page_info.javascript_path is not None
+    assert page_info.page_path is not None
+    asset_path_report_abs = (
+        page_info.javascript_path / "assets" / asset_path_mkreports.name
+    )
+    asset_path_report_abs.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy(
+        imp_res.files("mkreports") / "assets" / asset_path_mkreports,
+        asset_path_report_abs,
+    )
+    return relpath_html(asset_path_report_abs, page_info.page_path)
 
 
 @register_md("File")

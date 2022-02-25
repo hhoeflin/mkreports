@@ -3,7 +3,7 @@ css:
 - https://unpkg.com/tabulator-tables@5.1.0/dist/css/tabulator.min.css
 javascript:
 - https://unpkg.com/tabulator-tables@5.1.0/dist/js/tabulator.min.js
-- ../javascript/min_max_filter.js
+- ../javascript/assets/min_max_filter.js
 ---
 
 

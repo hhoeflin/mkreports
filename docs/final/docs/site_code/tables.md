@@ -76,6 +76,15 @@ def use_tables(report: Report) -> None:
             )
             p.DataTable(ex_table, add_header_filters=True)
 
+        with p.H3("Download buttons").ctx("nocode"):
+            p.Raw(
+                """
+                An example with buttons for downloading and printing
+                of the table.
+                """
+            )
+            p.DataTable(ex_table, downloads=True)
+
     with p.H2("Tabulator javascript library"):
         p.Raw(
             """
@@ -111,6 +120,19 @@ def use_tables(report: Report) -> None:
                 """
             )
             p.Tabulator(ex_table, add_header_filters=True, prettify_colnames=True)
+
+        with p.H3("Download buttons").ctx("nocode"):
+            p.P(
+                """
+                An example showing download buttons for export to csv, json or excel.
+                """
+            )
+            p.Tabulator(
+                ex_table,
+                add_header_filters=True,
+                prettify_colnames=True,
+                downloads=True,
+            )
 
     with p.H2("Notes"):
         p.Raw(

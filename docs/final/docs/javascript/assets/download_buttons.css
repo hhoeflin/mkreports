@@ -1,0 +1,42 @@
+.md-button-download {
+    display: inline-block;
+    padding: 0.2em 1em;
+    color: var(--md-primary-fg-color);
+    font-weight: 400;
+    border: 0.1em solid currentcolor;
+    border-radius: 0.1em;
+    cursor: pointer;
+    margin-bottom: 0.2em;
+    font-size: 0.75em;
+    transition:
+      color            125ms,
+      background-color 125ms,
+      border-color     125ms;
+}
+.md-button-download:hover {
+  color: var(--md-accent-bg-color);
+  background-color: var(--md-accent-fg-color);
+  border-color: var(--md-accent-fg-color);
+}
+
+.tabulator-btn-dwn {
+    display: inline-block;
+    padding: 0.2em 1em;
+    color: #555;
+    background-color: #e6e6e6; 
+    font-weight: bold;
+    font-size: 14px;
+    border: 0.1em solid #999;
+    border-radius: 0.1em;
+    cursor: pointer;
+    margin-bottom: 0.2em;
+    transition:
+      color            125ms,
+      background-color 125ms,
+      border-color     125ms;
+}
+.tabulator-btn-dwn:hover {
+  color: #555;
+  background-color: #bbb;
+  border-color: #999;
+}
