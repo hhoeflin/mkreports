@@ -607,6 +607,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#mkreports.md.file.store_asset_relpath" class="md-nav__link">
+    store_asset_relpath()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#mkreports.md.file.true_stem" class="md-nav__link">
     true_stem()
   </a>
@@ -1031,6 +1038,13 @@
         <li class="md-nav__item">
   <a href="#mkreports.md.file.relpath_html" class="md-nav__link">
     relpath_html()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mkreports.md.file.store_asset_relpath" class="md-nav__link">
+    store_asset_relpath()
   </a>
   
 </li>
@@ -1506,6 +1520,92 @@ same directory.</p>
     <span class="k">else</span><span class="p">:</span>
         <span class="c1"># for translating to html, will be converted to path.parent / path.stem / index.html</span>
         <span class="k">return</span> <span class="n">relpath</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">page_path</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="mkreports.md.file.store_asset_relpath" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">store_asset_relpath</span><span class="p">(</span><span class="n">asset_path_mkreports</span><span class="p">,</span> <span class="n">page_info</span><span class="p">)</span></code>
+
+
+</h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Store an asset and return relative path to it.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>asset_path</code></td>
+        <td><code>Path</code></td>
+        <td><p>Relative asset path inside 'mkreports'</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>page_info</code></td>
+        <td><code>PageInfo</code></td>
+        <td><p>PageInfo for the page in use</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>str</code></td>
+      <td><p>Path to the asset as it should be used from html</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>mkreports/md/file.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">store_asset_relpath</span><span class="p">(</span><span class="n">asset_path_mkreports</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">page_info</span><span class="p">:</span> <span class="n">PageInfo</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Store an asset and return relative path to it.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        asset_path (Path): Relative asset path inside &#39;mkreports&#39;</span>
+<span class="sd">        page_info (PageInfo): PageInfo for the page in use</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: Path to the asset as it should be used from html</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="n">page_info</span><span class="o">.</span><span class="n">javascript_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+    <span class="k">assert</span> <span class="n">page_info</span><span class="o">.</span><span class="n">page_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+    <span class="n">asset_path_report_abs</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">page_info</span><span class="o">.</span><span class="n">javascript_path</span> <span class="o">/</span> <span class="s2">&quot;assets&quot;</span> <span class="o">/</span> <span class="n">asset_path_mkreports</span><span class="o">.</span><span class="n">name</span>
+    <span class="p">)</span>
+    <span class="n">asset_path_report_abs</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span>
+        <span class="n">imp_res</span><span class="o">.</span><span class="n">files</span><span class="p">(</span><span class="s2">&quot;mkreports&quot;</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;assets&quot;</span> <span class="o">/</span> <span class="n">asset_path_mkreports</span><span class="p">,</span>
+        <span class="n">asset_path_report_abs</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">relpath_html</span><span class="p">(</span><span class="n">asset_path_report_abs</span><span class="p">,</span> <span class="n">page_info</span><span class="o">.</span><span class="n">page_path</span><span class="p">)</span>
 </code></pre></div>
         </details>
     </div>

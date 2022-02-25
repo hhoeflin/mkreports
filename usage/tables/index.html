@@ -46,13 +46,17 @@
 
   
     
-        <link rel="stylesheet" href="../../javascript/code_admonition.css">
+        <link rel="stylesheet" href="../../javascript/assets/code_admonition.css">
     
         <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
     
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/vedmack/yadcf@332407eeacbda299e6253530e24c15041b270227/dist/jquery.dataTables.yadcf.css">
     
+        <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
+    
         <link rel="stylesheet" href="https://unpkg.com/tabulator-tables@5.1.0/dist/css/tabulator.min.css">
+    
+        <link rel="stylesheet" href="../../javascript/assets/download_buttons.css">
     
 
   
@@ -66,9 +70,23 @@
     
         <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/vedmack/yadcf@332407eeacbda299e6253530e24c15041b270227/dist/jquery.dataTables.yadcf.js"></script>
     
+        <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+    
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    
+        <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
+    
+        <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
+    
         <script type="text/javascript" src="https://unpkg.com/tabulator-tables@5.1.0/dist/js/tabulator.min.js"></script>
     
-        <script type="text/javascript" src="../../javascript/min_max_filter.js"></script>
+        <script type="text/javascript" src="../../javascript/assets/min_max_filter.js"></script>
+    
+        <script type="text/javascript" src="https://oss.sheetjs.com/sheetjs/xlsx.full.min.js"></script>
     
 
   
@@ -393,6 +411,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#download-buttons" class="md-nav__link">
+    Download buttons
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -409,6 +434,13 @@
           <li class="md-nav__item">
   <a href="#header-filters_1" class="md-nav__link">
     Header filters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#download-buttons_1" class="md-nav__link">
+    Download buttons
   </a>
   
 </li>
@@ -1037,6 +1069,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#download-buttons" class="md-nav__link">
+    Download buttons
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1053,6 +1092,13 @@
           <li class="md-nav__item">
   <a href="#header-filters_1" class="md-nav__link">
     Header filters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#download-buttons_1" class="md-nav__link">
+    Download buttons
   </a>
   
 </li>
@@ -1144,7 +1190,7 @@
         <span class="c1"># and as a DataTable</span>
         <span class="n">p</span><span class="o">.</span><span class="n">DataTable</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">mtcars</span><span class="p">))</span>
 
-        <span class="k">with</span> <span class="n">p</span><span class="o">.</span><span class="n">H3</span><span class="p">(</span><span class="s2">&quot;Header filters&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">notrack</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">p</span><span class="o">.</span><span class="n">H3</span><span class="p">(</span><span class="s2">&quot;Header filters&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">ctx</span><span class="p">(</span><span class="s2">&quot;nocode&quot;</span><span class="p">):</span>
             <span class="n">p</span><span class="o">.</span><span class="n">Raw</span><span class="p">(</span>
                 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">                Below a DataTable example with column filters in the header.</span>
@@ -1158,6 +1204,15 @@
             <span class="p">)</span>
             <span class="n">p</span><span class="o">.</span><span class="n">DataTable</span><span class="p">(</span><span class="n">ex_table</span><span class="p">,</span> <span class="n">add_header_filters</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
+        <span class="k">with</span> <span class="n">p</span><span class="o">.</span><span class="n">H3</span><span class="p">(</span><span class="s2">&quot;Download buttons&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">ctx</span><span class="p">(</span><span class="s2">&quot;nocode&quot;</span><span class="p">):</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">Raw</span><span class="p">(</span>
+                <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">                An example with buttons for downloading and printing</span>
+<span class="sd">                of the table.</span>
+<span class="sd">                &quot;&quot;&quot;</span>
+            <span class="p">)</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">DataTable</span><span class="p">(</span><span class="n">ex_table</span><span class="p">,</span> <span class="n">downloads</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
     <span class="k">with</span> <span class="n">p</span><span class="o">.</span><span class="n">H2</span><span class="p">(</span><span class="s2">&quot;Tabulator javascript library&quot;</span><span class="p">):</span>
         <span class="n">p</span><span class="o">.</span><span class="n">Raw</span><span class="p">(</span>
             <span class="sd">&quot;&quot;&quot;</span>
@@ -1170,7 +1225,7 @@
             <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">mtcars</span><span class="p">),</span> <span class="n">add_header_filters</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">prettify_colnames</span><span class="o">=</span><span class="kc">False</span>
         <span class="p">)</span>
 
-        <span class="k">with</span> <span class="n">p</span><span class="o">.</span><span class="n">H3</span><span class="p">(</span><span class="s2">&quot;Header filters&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">notrack</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">p</span><span class="o">.</span><span class="n">H3</span><span class="p">(</span><span class="s2">&quot;Header filters&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">ctx</span><span class="p">(</span><span class="s2">&quot;nocode&quot;</span><span class="p">):</span>
             <span class="n">p</span><span class="o">.</span><span class="n">Raw</span><span class="p">(</span>
                 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">                We also can enable header filtering. For the datatypes</span>
@@ -1193,6 +1248,19 @@
 <span class="sd">                &quot;&quot;&quot;</span>
             <span class="p">)</span>
             <span class="n">p</span><span class="o">.</span><span class="n">Tabulator</span><span class="p">(</span><span class="n">ex_table</span><span class="p">,</span> <span class="n">add_header_filters</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">prettify_colnames</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="n">p</span><span class="o">.</span><span class="n">H3</span><span class="p">(</span><span class="s2">&quot;Download buttons&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">ctx</span><span class="p">(</span><span class="s2">&quot;nocode&quot;</span><span class="p">):</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">P</span><span class="p">(</span>
+                <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">                An example showing download buttons for export to csv, json or excel.</span>
+<span class="sd">                &quot;&quot;&quot;</span>
+            <span class="p">)</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">Tabulator</span><span class="p">(</span>
+                <span class="n">ex_table</span><span class="p">,</span>
+                <span class="n">add_header_filters</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">prettify_colnames</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">downloads</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="p">)</span>
 
     <span class="k">with</span> <span class="n">p</span><span class="o">.</span><span class="n">H2</span><span class="p">(</span><span class="s2">&quot;Notes&quot;</span><span class="p">):</span>
         <span class="n">p</span><span class="o">.</span><span class="n">Raw</span><span class="p">(</span>
@@ -1419,6 +1487,10 @@ table used for display. </p>
 <li>Any other column a text-field.</li>
 </ul>
 <p><table id='datatable_id-1' class='display' style='width:100%'> </table></p>
+<h3 id="download-buttons">Download buttons</h3>
+<p>An example with buttons for downloading and printing
+of the table.</p>
+<p><table id='datatable_id-2' class='display' style='width:100%'> </table></p>
 </div>
 <div class="tabbed-block">
 <table class="highlighttable"><tr><th colspan="2" class="filename"><div class="highlight"><span class="filename">docs/staging/tables.py</span></div></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">49</span>
@@ -1444,7 +1516,16 @@ table used for display. </p>
 <span class="normal">69</span>
 <span class="normal">70</span>
 <span class="normal">71</span>
-<span class="normal">72</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="n">p</span><span class="o">.</span><span class="n">Raw</span><span class="p">(</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="n">p</span><span class="o">.</span><span class="n">Raw</span><span class="p">(</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Here the same table, but displayed using the </span>
 <span class="sd">    [DataTables](https://datatables.net/)  </span>
@@ -1455,7 +1536,7 @@ table used for display. </p>
 <span class="c1"># and as a DataTable</span>
 <span class="n">p</span><span class="o">.</span><span class="n">DataTable</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">mtcars</span><span class="p">))</span>
 
-<span class="k">with</span> <span class="n">p</span><span class="o">.</span><span class="n">H3</span><span class="p">(</span><span class="s2">&quot;Header filters&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">notrack</span><span class="p">:</span>
+<span class="k">with</span> <span class="n">p</span><span class="o">.</span><span class="n">H3</span><span class="p">(</span><span class="s2">&quot;Header filters&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">ctx</span><span class="p">(</span><span class="s2">&quot;nocode&quot;</span><span class="p">):</span>
     <span class="n">p</span><span class="o">.</span><span class="n">Raw</span><span class="p">(</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Below a DataTable example with column filters in the header.</span>
@@ -1468,6 +1549,15 @@ table used for display. </p>
 <span class="sd">        &quot;&quot;&quot;</span>
     <span class="p">)</span>
     <span class="n">p</span><span class="o">.</span><span class="n">DataTable</span><span class="p">(</span><span class="n">ex_table</span><span class="p">,</span> <span class="n">add_header_filters</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">p</span><span class="o">.</span><span class="n">H3</span><span class="p">(</span><span class="s2">&quot;Download buttons&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">ctx</span><span class="p">(</span><span class="s2">&quot;nocode&quot;</span><span class="p">):</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">Raw</span><span class="p">(</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        An example with buttons for downloading and printing</span>
+<span class="sd">        of the table.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+    <span class="p">)</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">DataTable</span><span class="p">(</span><span class="n">ex_table</span><span class="p">,</span> <span class="n">downloads</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </code></pre></div>
 </td></tr></table>
 </div>
@@ -1485,6 +1575,13 @@ var myTable = $('#datatable_id-0').DataTable({"scrollX": "true", "columns": [{"t
 $(document).ready( function () {
 var myTable = $('#datatable_id-1').DataTable({"scrollX": "true", "columns": [{"title": "Name"}, {"title": "Age"}, {"title": "Hair"}, {"title": "Married"}], "ajax": "../tables_store/datatable-580c4149445c9b58b5740c532e20a5a0.json"});
 yadcf.init(myTable, [{"column_number": 0, "filter_type": "text"}, {"column_number": 1, "filter_type": "range_number"}, {"column_number": 2, "filter_type": "select"}, {"column_number": 3, "filter_type": "select"}]);
+} );
+</script>
+
+<script>
+$(document).ready( function () {
+var myTable = $('#datatable_id-2').DataTable({"scrollX": "true", "columns": [{"title": "Name"}, {"title": "Age"}, {"title": "Hair"}, {"title": "Married"}], "buttons": ["copy", "csv", "excel", "pdf", "print"], "dom": "<lfr>t<Bp>", "ajax": "../tables_store/datatable-580c4149445c9b58b5740c532e20a5a0.json"});
+
 } );
 </script>
 
@@ -1515,18 +1612,16 @@ to show these functions.</p>
 <li>and checkbox for marital status</li>
 </ul>
 <p><div id='tabulator_id-1' class='display'> </div></p>
+<h3 id="download-buttons_1">Download buttons</h3>
+<p>An example showing download buttons for export to csv, json or excel.</p>
+<p><div id='tabulator_id-2' class='display'> </div><div>
+  <button class="tabulator-btn-dwn", id="csv_down_id-0">to CSV</button>
+  <button class="tabulator-btn-dwn", id="json_down_id-0">to JSON</button>
+  <button class="tabulator-btn-dwn", id="xslx_down_id-0">to XLSX</button>
+</div></p>
 </div>
 <div class="tabbed-block">
-<table class="highlighttable"><tr><th colspan="2" class="filename"><div class="highlight"><span class="filename">docs/staging/tables.py</span></div></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 75</span>
-<span class="normal"> 76</span>
-<span class="normal"> 77</span>
-<span class="normal"> 78</span>
-<span class="normal"> 79</span>
-<span class="normal"> 80</span>
-<span class="normal"> 81</span>
-<span class="normal"> 82</span>
-<span class="normal"> 83</span>
-<span class="normal"> 84</span>
+<table class="highlighttable"><tr><th colspan="2" class="filename"><div class="highlight"><span class="filename">docs/staging/tables.py</span></div></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 84</span>
 <span class="normal"> 85</span>
 <span class="normal"> 86</span>
 <span class="normal"> 87</span>
@@ -1550,7 +1645,29 @@ to show these functions.</p>
 <span class="normal">105</span>
 <span class="normal">106</span>
 <span class="normal">107</span>
-<span class="normal">108</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="n">p</span><span class="o">.</span><span class="n">Raw</span><span class="p">(</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="n">p</span><span class="o">.</span><span class="n">Raw</span><span class="p">(</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This time, we use the [Tabulator](http://tabulator.info)</span>
 <span class="sd">    library. A library with a lot of interesting </span>
@@ -1561,7 +1678,7 @@ to show these functions.</p>
     <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">mtcars</span><span class="p">),</span> <span class="n">add_header_filters</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">prettify_colnames</span><span class="o">=</span><span class="kc">False</span>
 <span class="p">)</span>
 
-<span class="k">with</span> <span class="n">p</span><span class="o">.</span><span class="n">H3</span><span class="p">(</span><span class="s2">&quot;Header filters&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">notrack</span><span class="p">:</span>
+<span class="k">with</span> <span class="n">p</span><span class="o">.</span><span class="n">H3</span><span class="p">(</span><span class="s2">&quot;Header filters&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">ctx</span><span class="p">(</span><span class="s2">&quot;nocode&quot;</span><span class="p">):</span>
     <span class="n">p</span><span class="o">.</span><span class="n">Raw</span><span class="p">(</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        We also can enable header filtering. For the datatypes</span>
@@ -1584,6 +1701,19 @@ to show these functions.</p>
 <span class="sd">        &quot;&quot;&quot;</span>
     <span class="p">)</span>
     <span class="n">p</span><span class="o">.</span><span class="n">Tabulator</span><span class="p">(</span><span class="n">ex_table</span><span class="p">,</span> <span class="n">add_header_filters</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">prettify_colnames</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">p</span><span class="o">.</span><span class="n">H3</span><span class="p">(</span><span class="s2">&quot;Download buttons&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">ctx</span><span class="p">(</span><span class="s2">&quot;nocode&quot;</span><span class="p">):</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">P</span><span class="p">(</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        An example showing download buttons for export to csv, json or excel.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+    <span class="p">)</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">Tabulator</span><span class="p">(</span>
+        <span class="n">ex_table</span><span class="p">,</span>
+        <span class="n">add_header_filters</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">prettify_colnames</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">downloads</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
 </code></pre></div>
 </td></tr></table>
 </div>
@@ -1598,6 +1728,24 @@ var table = new Tabulator('#tabulator_id-0', {"layout": "fitDataTable", "paginat
 var table = new Tabulator('#tabulator_id-1', {"layout": "fitDataTable", "pagination": true, "paginationSize": 10, "paginationSizeSelector": true, "columns": [{"field": "name", "headerFilter": "input", "title": "Name"}, {"field": "age", "width": 80, "headerFilter": minMaxFilterEditor, "headerFilterFunc": minMaxFilterFunction, "headerFilterLiveFilter": false, "title": "Age"}, {"field": "hair", "headerFilter": "select", "headerFilterParams": {"values": ["", "brown", "green", "red"]}, "title": "Hair"}, {"field": "married", "headerFilter": "tickCross", "formatter": "tickCross", "headerFilterParams": {"tristate": true}, "title": "Married"}], "ajaxURL": "../tables_store/tabulator-75b468c8a8bcf5fff9d211e88d0e6972.json"});
 </script>
 
+<script>
+var table = new Tabulator('#tabulator_id-2', {"layout": "fitDataTable", "pagination": true, "paginationSize": 10, "paginationSizeSelector": true, "columns": [{"field": "name", "headerFilter": "input", "title": "Name"}, {"field": "age", "width": 80, "headerFilter": minMaxFilterEditor, "headerFilterFunc": minMaxFilterFunction, "headerFilterLiveFilter": false, "title": "Age"}, {"field": "hair", "headerFilter": "select", "headerFilterParams": {"values": ["", "brown", "green", "red"]}, "title": "Hair"}, {"field": "married", "headerFilter": "tickCross", "formatter": "tickCross", "headerFilterParams": {"tristate": true}, "title": "Married"}], "ajaxURL": "../tables_store/tabulator-75b468c8a8bcf5fff9d211e88d0e6972.json"});
+//trigger download of data.csv file
+$("#csv_down_id-0").click(function(){
+    table.download("csv", "data.csv");
+});
+
+//trigger download of data.json file
+$("#json_down_id-0").click(function(){
+    table.download("json", "data.json");
+});
+
+//trigger download of data.xlsx file
+$("#xslx_down_id-0").click(function(){
+    table.download("xlsx", "data.xlsx", {sheetName:"data"});
+});
+</script>
+
 <h2 id="notes">Notes</h2>
 <div class="tabbed-set tabbed-alternate" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><input id="__tabbed_4_2" name="__tabbed_4" type="radio" /><div class="tabbed-labels"><label for="__tabbed_4_1">Content</label><label for="__tabbed_4_2">Code</label></div>
 <div class="tabbed-content">
@@ -1609,15 +1757,15 @@ default handler the <code>str</code> funtion is called. If this
 is not ok, please transform the table columns accordingly.</p>
 </div>
 <div class="tabbed-block">
-<table class="highlighttable"><tr><th colspan="2" class="filename"><div class="highlight"><span class="filename">docs/staging/tables.py</span></div></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">111</span>
-<span class="normal">112</span>
-<span class="normal">113</span>
-<span class="normal">114</span>
-<span class="normal">115</span>
-<span class="normal">116</span>
-<span class="normal">117</span>
-<span class="normal">118</span>
-<span class="normal">119</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="n">p</span><span class="o">.</span><span class="n">Raw</span><span class="p">(</span>
+<table class="highlighttable"><tr><th colspan="2" class="filename"><div class="highlight"><span class="filename">docs/staging/tables.py</span></div></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="n">p</span><span class="o">.</span><span class="n">Raw</span><span class="p">(</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Internally, the tables are serialized to json so that </span>
 <span class="sd">    they can be displayed in the web-browser. For any types </span>

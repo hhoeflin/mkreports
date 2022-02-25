@@ -1130,7 +1130,9 @@ DataTable            (<a title="mkreports.md.file.File" href="../file/#mkreports
         <span class="n">prettify_colnames</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">add_header_filters</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">yadcf_settings</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="n">table_kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">downloads</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">table_settings</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialize the table using the DataTable javascript library.</span>
@@ -1148,6 +1150,11 @@ DataTable            (<a title="mkreports.md.file.File" href="../file/#mkreports
 <span class="sd">            add_header_filters (bool): Should header filters be added.</span>
 <span class="sd">            yadcf_settings (Optional[dict]): Settings for the *yadcf* header filter plugin.</span>
 <span class="sd">                Overrides any automatic settings.</span>
+<span class="sd">            table_kwargs (Optional[dict]): Keyword args for the table</span>
+<span class="sd">                when serializing to json.</span>
+<span class="sd">            downloads (bool): Should download buttons be shown?</span>
+<span class="sd">            table_settings (Optional[dict]): Dictionary with the DataTable settings.</span>
+<span class="sd">                Anything set here will overwrite existing ones.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">assert</span> <span class="n">page_info</span><span class="o">.</span><span class="n">idstore</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
         <span class="k">assert</span> <span class="n">page_info</span><span class="o">.</span><span class="n">page_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
@@ -1161,12 +1168,27 @@ DataTable            (<a title="mkreports.md.file.File" href="../file/#mkreports
                 <span class="p">)</span>
                 <span class="n">table</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">max_rows</span><span class="p">]</span>
             <span class="c1"># are not useful, but the rest gets set as &#39;data&#39;, which we need</span>
-            <span class="n">table</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s2">&quot;split&quot;</span><span class="p">,</span> <span class="n">default_handler</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="n">table</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span>
+                <span class="n">path</span><span class="p">,</span>
+                <span class="n">orient</span><span class="o">=</span><span class="s2">&quot;split&quot;</span><span class="p">,</span>
+                <span class="n">default_handler</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
+                <span class="o">**</span><span class="p">(</span><span class="n">table_kwargs</span> <span class="k">if</span> <span class="n">table_kwargs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">{}),</span>
+            <span class="p">)</span>
 
             <span class="c1"># Make sure the file is moved to the right place</span>
             <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
                 <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">page_info</span><span class="o">=</span><span class="n">page_info</span><span class="p">,</span> <span class="n">allow_copy</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">use_hash</span><span class="o">=</span><span class="kc">True</span>
             <span class="p">)</span>
+
+        <span class="n">javascript_settings</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;https://cdn.jsdelivr.net/gh/vedmack/yadcf@332407eeacbda299e6253530e24c15041b270227/dist/jquery.dataTables.yadcf.js&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="n">css_settings</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;https://cdn.jsdelivr.net/gh/vedmack/yadcf@332407eeacbda299e6253530e24c15041b270227/dist/jquery.dataTables.yadcf.css&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
 
         <span class="c1"># prepare the table settings</span>
         <span class="k">if</span> <span class="n">prettify_colnames</span><span class="p">:</span>
@@ -1193,6 +1215,24 @@ DataTable            (<a title="mkreports.md.file.File" href="../file/#mkreports
             <span class="s2">&quot;columns&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">col_set</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="p">],</span>
         <span class="p">}</span>
 
+        <span class="k">if</span> <span class="n">downloads</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">table_settings</span><span class="p">[</span><span class="s2">&quot;buttons&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;copy&quot;</span><span class="p">,</span> <span class="s2">&quot;csv&quot;</span><span class="p">,</span> <span class="s2">&quot;excel&quot;</span><span class="p">,</span> <span class="s2">&quot;pdf&quot;</span><span class="p">,</span> <span class="s2">&quot;print&quot;</span><span class="p">]</span>
+            <span class="c1"># self.table_settings[&quot;dom&quot;] = &quot;Bfrtlp&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">table_settings</span><span class="p">[</span><span class="s2">&quot;dom&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&lt;lfr&gt;t&lt;Bp&gt;&quot;</span>
+            <span class="n">css_settings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="s2">&quot;https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css&quot;</span>
+            <span class="p">)</span>
+            <span class="n">javascript_settings</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
+                <span class="p">[</span>
+                    <span class="s2">&quot;https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js&quot;</span><span class="p">,</span>
+                <span class="p">]</span>
+            <span class="p">)</span>
+
         <span class="n">datatable_id</span> <span class="o">=</span> <span class="n">page_info</span><span class="o">.</span><span class="n">idstore</span><span class="o">.</span><span class="n">next_id</span><span class="p">(</span><span class="s2">&quot;datatable_id&quot;</span><span class="p">)</span>
         <span class="n">body_html</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">cleandoc</span><span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
@@ -1201,9 +1241,10 @@ DataTable            (<a title="mkreports.md.file.File" href="../file/#mkreports
         <span class="p">)</span>
 
         <span class="n">rel_table_path</span> <span class="o">=</span> <span class="n">relpath_html</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">page_info</span><span class="o">.</span><span class="n">page_path</span><span class="p">)</span>
-        <span class="n">table_settings</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">table_settings</span><span class="p">)</span>
-        <span class="n">table_settings</span><span class="p">[</span><span class="s2">&quot;ajax&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">rel_table_path</span><span class="p">)</span>
-        <span class="n">settings_str</span> <span class="o">=</span> <span class="n">serialize_json</span><span class="p">(</span><span class="n">table_settings</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">table_settings</span><span class="p">[</span><span class="s2">&quot;ajax&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">rel_table_path</span><span class="p">)</span>
+        <span class="c1"># overwrite with given settigns if necessary</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">table_settings</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">table_settings</span> <span class="k">if</span> <span class="n">table_settings</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">{})</span>
+        <span class="n">settings_str</span> <span class="o">=</span> <span class="n">serialize_json</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">table_settings</span><span class="p">)</span>
 
         <span class="c1"># prepare the header script if necessary</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_header_filters</span><span class="p">:</span>
@@ -1231,15 +1272,8 @@ DataTable            (<a title="mkreports.md.file.File" href="../file/#mkreports
             <span class="n">page</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
                 <span class="c1"># the following needs to be loaded in the header of the page, not the footer</span>
                 <span class="c1"># this enables activating the tables in the body</span>
-                <span class="n">javascript</span><span class="o">=</span><span class="p">[</span>
-                    <span class="s2">&quot;https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;https://cdn.jsdelivr.net/gh/vedmack/yadcf@332407eeacbda299e6253530e24c15041b270227/dist/jquery.dataTables.yadcf.js&quot;</span><span class="p">,</span>
-                <span class="p">],</span>
-                <span class="n">css</span><span class="o">=</span><span class="p">[</span>
-                    <span class="s2">&quot;https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;https://cdn.jsdelivr.net/gh/vedmack/yadcf@332407eeacbda299e6253530e24c15041b270227/dist/jquery.dataTables.yadcf.css&quot;</span><span class="p">,</span>
-                <span class="p">],</span>
+                <span class="n">javascript</span><span class="o">=</span><span class="n">javascript_settings</span><span class="p">,</span>
+                <span class="n">css</span><span class="o">=</span><span class="n">css_settings</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="p">)</span>
 
@@ -1266,7 +1300,7 @@ DataTable            (<a title="mkreports.md.file.File" href="../file/#mkreports
 
 
 <h3 id="mkreports.md.table.DataTable.__init__" class="doc doc-heading">
-<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">page_info</span><span class="p">,</span> <span class="n">max_rows</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">column_settings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">prettify_colnames</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">add_header_filters</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">yadcf_settings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">page_info</span><span class="p">,</span> <span class="n">max_rows</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">column_settings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">prettify_colnames</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">add_header_filters</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">yadcf_settings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">table_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">downloads</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">table_settings</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-special"><code>special</code></small>
@@ -1336,6 +1370,26 @@ passed as json to the DataTable library. Overrides any automatic settings.</p></
 Overrides any automatic settings.</p></td>
         <td><code>None</code></td>
       </tr>
+      <tr>
+        <td><code>table_kwargs</code></td>
+        <td><code>Optional[dict]</code></td>
+        <td><p>Keyword args for the table
+when serializing to json.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>downloads</code></td>
+        <td><code>bool</code></td>
+        <td><p>Should download buttons be shown?</p></td>
+        <td><code>False</code></td>
+      </tr>
+      <tr>
+        <td><code>table_settings</code></td>
+        <td><code>Optional[dict]</code></td>
+        <td><p>Dictionary with the DataTable settings.
+Anything set here will overwrite existing ones.</p></td>
+        <td><code>None</code></td>
+      </tr>
   </tbody>
 </table>
         <details class="quote">
@@ -1349,7 +1403,9 @@ Overrides any automatic settings.</p></td>
     <span class="n">prettify_colnames</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">add_header_filters</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">yadcf_settings</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="n">table_kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">downloads</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">table_settings</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Initialize the table using the DataTable javascript library.</span>
@@ -1367,6 +1423,11 @@ Overrides any automatic settings.</p></td>
 <span class="sd">        add_header_filters (bool): Should header filters be added.</span>
 <span class="sd">        yadcf_settings (Optional[dict]): Settings for the *yadcf* header filter plugin.</span>
 <span class="sd">            Overrides any automatic settings.</span>
+<span class="sd">        table_kwargs (Optional[dict]): Keyword args for the table</span>
+<span class="sd">            when serializing to json.</span>
+<span class="sd">        downloads (bool): Should download buttons be shown?</span>
+<span class="sd">        table_settings (Optional[dict]): Dictionary with the DataTable settings.</span>
+<span class="sd">            Anything set here will overwrite existing ones.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">assert</span> <span class="n">page_info</span><span class="o">.</span><span class="n">idstore</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
     <span class="k">assert</span> <span class="n">page_info</span><span class="o">.</span><span class="n">page_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
@@ -1380,12 +1441,27 @@ Overrides any automatic settings.</p></td>
             <span class="p">)</span>
             <span class="n">table</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">max_rows</span><span class="p">]</span>
         <span class="c1"># are not useful, but the rest gets set as &#39;data&#39;, which we need</span>
-        <span class="n">table</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s2">&quot;split&quot;</span><span class="p">,</span> <span class="n">default_handler</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span>
+            <span class="n">path</span><span class="p">,</span>
+            <span class="n">orient</span><span class="o">=</span><span class="s2">&quot;split&quot;</span><span class="p">,</span>
+            <span class="n">default_handler</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
+            <span class="o">**</span><span class="p">(</span><span class="n">table_kwargs</span> <span class="k">if</span> <span class="n">table_kwargs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">{}),</span>
+        <span class="p">)</span>
 
         <span class="c1"># Make sure the file is moved to the right place</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">page_info</span><span class="o">=</span><span class="n">page_info</span><span class="p">,</span> <span class="n">allow_copy</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">use_hash</span><span class="o">=</span><span class="kc">True</span>
         <span class="p">)</span>
+
+    <span class="n">javascript_settings</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;https://cdn.jsdelivr.net/gh/vedmack/yadcf@332407eeacbda299e6253530e24c15041b270227/dist/jquery.dataTables.yadcf.js&quot;</span><span class="p">,</span>
+    <span class="p">]</span>
+    <span class="n">css_settings</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;https://cdn.jsdelivr.net/gh/vedmack/yadcf@332407eeacbda299e6253530e24c15041b270227/dist/jquery.dataTables.yadcf.css&quot;</span><span class="p">,</span>
+    <span class="p">]</span>
 
     <span class="c1"># prepare the table settings</span>
     <span class="k">if</span> <span class="n">prettify_colnames</span><span class="p">:</span>
@@ -1412,6 +1488,24 @@ Overrides any automatic settings.</p></td>
         <span class="s2">&quot;columns&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">col_set</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="p">],</span>
     <span class="p">}</span>
 
+    <span class="k">if</span> <span class="n">downloads</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">table_settings</span><span class="p">[</span><span class="s2">&quot;buttons&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;copy&quot;</span><span class="p">,</span> <span class="s2">&quot;csv&quot;</span><span class="p">,</span> <span class="s2">&quot;excel&quot;</span><span class="p">,</span> <span class="s2">&quot;pdf&quot;</span><span class="p">,</span> <span class="s2">&quot;print&quot;</span><span class="p">]</span>
+        <span class="c1"># self.table_settings[&quot;dom&quot;] = &quot;Bfrtlp&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">table_settings</span><span class="p">[</span><span class="s2">&quot;dom&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&lt;lfr&gt;t&lt;Bp&gt;&quot;</span>
+        <span class="n">css_settings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="s2">&quot;https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css&quot;</span>
+        <span class="p">)</span>
+        <span class="n">javascript_settings</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="s2">&quot;https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js&quot;</span><span class="p">,</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+
     <span class="n">datatable_id</span> <span class="o">=</span> <span class="n">page_info</span><span class="o">.</span><span class="n">idstore</span><span class="o">.</span><span class="n">next_id</span><span class="p">(</span><span class="s2">&quot;datatable_id&quot;</span><span class="p">)</span>
     <span class="n">body_html</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">cleandoc</span><span class="p">(</span>
         <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
@@ -1420,9 +1514,10 @@ Overrides any automatic settings.</p></td>
     <span class="p">)</span>
 
     <span class="n">rel_table_path</span> <span class="o">=</span> <span class="n">relpath_html</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">page_info</span><span class="o">.</span><span class="n">page_path</span><span class="p">)</span>
-    <span class="n">table_settings</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">table_settings</span><span class="p">)</span>
-    <span class="n">table_settings</span><span class="p">[</span><span class="s2">&quot;ajax&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">rel_table_path</span><span class="p">)</span>
-    <span class="n">settings_str</span> <span class="o">=</span> <span class="n">serialize_json</span><span class="p">(</span><span class="n">table_settings</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">table_settings</span><span class="p">[</span><span class="s2">&quot;ajax&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">rel_table_path</span><span class="p">)</span>
+    <span class="c1"># overwrite with given settigns if necessary</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">table_settings</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">table_settings</span> <span class="k">if</span> <span class="n">table_settings</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">{})</span>
+    <span class="n">settings_str</span> <span class="o">=</span> <span class="n">serialize_json</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">table_settings</span><span class="p">)</span>
 
     <span class="c1"># prepare the header script if necessary</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_header_filters</span><span class="p">:</span>
@@ -1450,15 +1545,8 @@ Overrides any automatic settings.</p></td>
         <span class="n">page</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
             <span class="c1"># the following needs to be loaded in the header of the page, not the footer</span>
             <span class="c1"># this enables activating the tables in the body</span>
-            <span class="n">javascript</span><span class="o">=</span><span class="p">[</span>
-                <span class="s2">&quot;https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;https://cdn.jsdelivr.net/gh/vedmack/yadcf@332407eeacbda299e6253530e24c15041b270227/dist/jquery.dataTables.yadcf.js&quot;</span><span class="p">,</span>
-            <span class="p">],</span>
-            <span class="n">css</span><span class="o">=</span><span class="p">[</span>
-                <span class="s2">&quot;https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;https://cdn.jsdelivr.net/gh/vedmack/yadcf@332407eeacbda299e6253530e24c15041b270227/dist/jquery.dataTables.yadcf.css&quot;</span><span class="p">,</span>
-            <span class="p">],</span>
+            <span class="n">javascript</span><span class="o">=</span><span class="n">javascript_settings</span><span class="p">,</span>
+            <span class="n">css</span><span class="o">=</span><span class="n">css_settings</span><span class="p">,</span>
         <span class="p">)</span>
     <span class="p">)</span>
 
@@ -1676,7 +1764,8 @@ Tabulator            (<a title="mkreports.md.file.File" href="../file/#mkreports
         <span class="n">add_header_filters</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">prettify_colnames</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">col_settings</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="n">downloads</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">table_kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1692,6 +1781,9 @@ Tabulator            (<a title="mkreports.md.file.File" href="../file/#mkreports
 <span class="sd">            prettify_colnames (bool): Run column names through *snake_to_text*.</span>
 <span class="sd">            col_settings (Optional[dict]): Column settings for tabulator, passed</span>
 <span class="sd">                as json to the Tabulator library. Overrides any internal settings created.</span>
+<span class="sd">            downloads (bool): Add download options.</span>
+<span class="sd">            table_kwargs (Optional[dict]): Keyword args for the table</span>
+<span class="sd">                when serializing to json.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">assert</span> <span class="n">page_info</span><span class="o">.</span><span class="n">idstore</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
         <span class="k">assert</span> <span class="n">page_info</span><span class="o">.</span><span class="n">page_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
@@ -1706,20 +1798,17 @@ Tabulator            (<a title="mkreports.md.file.File" href="../file/#mkreports
                     <span class="sa">f</span><span class="s2">&quot;Table has </span><span class="si">{</span><span class="n">table</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> rows, but only </span><span class="si">{</span><span class="n">max_rows</span><span class="si">}</span><span class="s2"> allowed. Truncating.&quot;</span>
                 <span class="p">)</span>
                 <span class="n">table</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">max_rows</span><span class="p">]</span>
-            <span class="n">table</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s2">&quot;records&quot;</span><span class="p">,</span> <span class="n">default_handler</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="n">table</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span>
+                <span class="n">path</span><span class="p">,</span>
+                <span class="n">orient</span><span class="o">=</span><span class="s2">&quot;records&quot;</span><span class="p">,</span>
+                <span class="n">default_handler</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
+                <span class="o">**</span><span class="p">(</span><span class="n">table_kwargs</span> <span class="k">if</span> <span class="n">table_kwargs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">{}),</span>
+            <span class="p">)</span>
 
             <span class="c1"># Make sure the file is moved to the right place</span>
             <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
                 <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">page_info</span><span class="o">=</span><span class="n">page_info</span><span class="p">,</span> <span class="n">allow_copy</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">use_hash</span><span class="o">=</span><span class="kc">True</span>
             <span class="p">)</span>
-
-        <span class="c1"># create the javascript file</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">min_max_filter_path</span> <span class="o">=</span> <span class="n">page_info</span><span class="o">.</span><span class="n">javascript_path</span> <span class="o">/</span> <span class="s2">&quot;min_max_filter.js&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">min_max_filter_path</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span>
-            <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;tabulator_js&quot;</span> <span class="o">/</span> <span class="s2">&quot;min_max_filter.js&quot;</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">min_max_filter_path</span><span class="p">,</span>
-        <span class="p">)</span>
 
         <span class="c1"># produce the column settings</span>
         <span class="n">col_list</span> <span class="o">=</span> <span class="n">_create_col_settings_tabulator</span><span class="p">(</span>
@@ -1741,14 +1830,14 @@ Tabulator            (<a title="mkreports.md.file.File" href="../file/#mkreports
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">table_settings</span><span class="p">[</span><span class="s2">&quot;columns&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">col_list</span>
 
-        <span class="n">tabulator_id</span> <span class="o">=</span> <span class="n">page_info</span><span class="o">.</span><span class="n">idstore</span><span class="o">.</span><span class="n">next_id</span><span class="p">(</span><span class="s2">&quot;tabulator_id&quot;</span><span class="p">)</span>
+        <span class="n">used_ids</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">used_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tabulator_id</span> <span class="o">:=</span> <span class="n">page_info</span><span class="o">.</span><span class="n">idstore</span><span class="o">.</span><span class="n">next_id</span><span class="p">(</span><span class="s2">&quot;tabulator_id&quot;</span><span class="p">))</span>
         <span class="n">body_html</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">cleandoc</span><span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">            &lt;div id=&#39;</span><span class="si">{</span><span class="n">tabulator_id</span><span class="si">}</span><span class="s2">&#39; class=&#39;display&#39;&gt; &lt;/div&gt;</span>
 <span class="s2">            &quot;&quot;&quot;</span>
         <span class="p">)</span>
 
-        <span class="n">rel_filter_path</span> <span class="o">=</span> <span class="n">relpath_html</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">min_max_filter_path</span><span class="p">,</span> <span class="n">page_info</span><span class="o">.</span><span class="n">page_path</span><span class="p">)</span>
         <span class="n">rel_table_path</span> <span class="o">=</span> <span class="n">relpath_html</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">page_info</span><span class="o">.</span><span class="n">page_path</span><span class="p">)</span>
         <span class="n">table_settings</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">table_settings</span><span class="p">)</span>
         <span class="n">table_settings</span><span class="p">[</span><span class="s2">&quot;ajaxURL&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">rel_table_path</span><span class="p">)</span>
@@ -1764,22 +1853,79 @@ Tabulator            (<a title="mkreports.md.file.File" href="../file/#mkreports
 <span class="s2">            &lt;/script&gt;</span>
 <span class="s2">            &quot;&quot;&quot;</span>
         <span class="p">)</span>
+
+        <span class="n">javascript_settings</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;https://unpkg.com/tabulator-tables@5.1.0/dist/js/tabulator.min.js&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="n">css_settings</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;https://unpkg.com/tabulator-tables@5.1.0/dist/css/tabulator.min.css&quot;</span>
+        <span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">add_header_filters</span><span class="p">:</span>
+            <span class="n">javascript_settings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">store_asset_relpath</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;min_max_filter.js&quot;</span><span class="p">),</span> <span class="n">page_info</span><span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">downloads</span><span class="p">:</span>
+            <span class="c1"># add the necessary things to enable downloads</span>
+            <span class="c1"># to the body</span>
+            <span class="n">used_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">csv_down_id</span> <span class="o">:=</span> <span class="n">page_info</span><span class="o">.</span><span class="n">idstore</span><span class="o">.</span><span class="n">next_id</span><span class="p">(</span><span class="s2">&quot;csv_down_id&quot;</span><span class="p">))</span>
+            <span class="n">used_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">json_down_id</span> <span class="o">:=</span> <span class="n">page_info</span><span class="o">.</span><span class="n">idstore</span><span class="o">.</span><span class="n">next_id</span><span class="p">(</span><span class="s2">&quot;json_down_id&quot;</span><span class="p">))</span>
+            <span class="n">used_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">xlsx_down_id</span> <span class="o">:=</span> <span class="n">page_info</span><span class="o">.</span><span class="n">idstore</span><span class="o">.</span><span class="n">next_id</span><span class="p">(</span><span class="s2">&quot;xslx_down_id&quot;</span><span class="p">))</span>
+            <span class="n">body_html</span> <span class="o">=</span> <span class="n">body_html</span> <span class="o">+</span> <span class="n">inspect</span><span class="o">.</span><span class="n">cleandoc</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">                    &lt;div&gt;</span>
+<span class="s2">                      &lt;button class=&quot;tabulator-btn-dwn&quot;, id=&quot;</span><span class="si">{</span><span class="n">csv_down_id</span><span class="si">}</span><span class="s2">&quot;&gt;to CSV&lt;/button&gt;</span>
+<span class="s2">                      &lt;button class=&quot;tabulator-btn-dwn&quot;, id=&quot;</span><span class="si">{</span><span class="n">json_down_id</span><span class="si">}</span><span class="s2">&quot;&gt;to JSON&lt;/button&gt;</span>
+<span class="s2">                      &lt;button class=&quot;tabulator-btn-dwn&quot;, id=&quot;</span><span class="si">{</span><span class="n">xlsx_down_id</span><span class="si">}</span><span class="s2">&quot;&gt;to XLSX&lt;/button&gt;</span>
+<span class="s2">                    &lt;/div&gt;</span>
+<span class="s2">                    &quot;&quot;&quot;</span>
+            <span class="p">)</span>
+            <span class="c1"># to the back_html</span>
+            <span class="n">split_back_html</span> <span class="o">=</span> <span class="n">back_html</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">split_back_html</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span>
+                <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+                <span class="n">inspect</span><span class="o">.</span><span class="n">cleandoc</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">                    //trigger download of data.csv file</span>
+<span class="s2">                    $(&quot;#</span><span class="si">{</span><span class="n">csv_down_id</span><span class="si">}</span><span class="s2">&quot;).click(function()</span><span class="se">{{</span><span class="s2"></span>
+<span class="s2">                        table.download(&quot;csv&quot;, &quot;data.csv&quot;);</span>
+<span class="s2">                    </span><span class="se">}}</span><span class="s2">);</span>
+
+<span class="s2">                    //trigger download of data.json file</span>
+<span class="s2">                    $(&quot;#</span><span class="si">{</span><span class="n">json_down_id</span><span class="si">}</span><span class="s2">&quot;).click(function()</span><span class="se">{{</span><span class="s2"></span>
+<span class="s2">                        table.download(&quot;json&quot;, &quot;data.json&quot;);</span>
+<span class="s2">                    </span><span class="se">}}</span><span class="s2">);</span>
+
+<span class="s2">                    //trigger download of data.xlsx file</span>
+<span class="s2">                    $(&quot;#</span><span class="si">{</span><span class="n">xlsx_down_id</span><span class="si">}</span><span class="s2">&quot;).click(function()</span><span class="se">{{</span><span class="s2"></span>
+<span class="s2">                        table.download(&quot;xlsx&quot;, &quot;data.xlsx&quot;, </span><span class="se">{{</span><span class="s2">sheetName:&quot;data&quot;</span><span class="se">}}</span><span class="s2">);</span>
+<span class="s2">                    </span><span class="se">}}</span><span class="s2">);</span>
+<span class="s2">                    &quot;&quot;&quot;</span>
+                <span class="p">),</span>
+            <span class="p">)</span>
+            <span class="n">back_html</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">split_back_html</span><span class="p">)</span>
+            <span class="c1"># to the settings</span>
+            <span class="n">javascript_settings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="s2">&quot;https://oss.sheetjs.com/sheetjs/xlsx.full.min.js&quot;</span>
+            <span class="p">)</span>
+            <span class="n">css_settings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">store_asset_relpath</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;download_buttons.css&quot;</span><span class="p">),</span> <span class="n">page_info</span><span class="p">)</span>
+            <span class="p">)</span>
+
         <span class="n">settings</span> <span class="o">=</span> <span class="n">Settings</span><span class="p">(</span>
             <span class="n">page</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
                 <span class="c1"># the following needs to be loaded in the header of the page, not the footer</span>
                 <span class="c1"># this enables activating the tables in the body</span>
-                <span class="n">javascript</span><span class="o">=</span><span class="p">[</span>
-                    <span class="s2">&quot;https://unpkg.com/tabulator-tables@5.1.0/dist/js/tabulator.min.js&quot;</span><span class="p">,</span>
-                    <span class="n">rel_filter_path</span><span class="p">,</span>
-                <span class="p">],</span>
-                <span class="n">css</span><span class="o">=</span><span class="p">[</span>
-                    <span class="s2">&quot;https://unpkg.com/tabulator-tables@5.1.0/dist/css/tabulator.min.css&quot;</span>
-                <span class="p">],</span>
+                <span class="n">javascript</span><span class="o">=</span><span class="n">javascript_settings</span><span class="p">,</span>
+                <span class="n">css</span><span class="o">=</span><span class="n">css_settings</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_body</span> <span class="o">=</span> <span class="n">SpacedText</span><span class="p">(</span><span class="n">body_html</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_back</span> <span class="o">=</span> <span class="n">SpacedText</span><span class="p">(</span><span class="n">back_html</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> <span class="o">+</span> <span class="n">comment_ids</span><span class="p">(</span><span class="n">tabulator_id</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_back</span> <span class="o">=</span> <span class="n">SpacedText</span><span class="p">(</span><span class="n">back_html</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">comment_ids</span><span class="p">(</span><span class="n">this_id</span><span class="p">))</span> <span class="k">for</span> <span class="n">this_id</span> <span class="ow">in</span> <span class="n">used_ids</span><span class="p">]</span>
+        <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_settings</span> <span class="o">=</span> <span class="n">settings</span>
 </code></pre></div>
         </details>
@@ -1801,7 +1947,7 @@ Tabulator            (<a title="mkreports.md.file.File" href="../file/#mkreports
 
 
 <h3 id="mkreports.md.table.Tabulator.__init__" class="doc doc-heading">
-<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">page_info</span><span class="p">,</span> <span class="n">max_rows</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">table_settings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">add_header_filters</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">prettify_colnames</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">col_settings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">page_info</span><span class="p">,</span> <span class="n">max_rows</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">table_settings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">add_header_filters</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">prettify_colnames</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">col_settings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">downloads</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">table_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-special"><code>special</code></small>
@@ -1869,6 +2015,19 @@ any internal settings created by this function.</p></td>
 as json to the Tabulator library. Overrides any internal settings created.</p></td>
         <td><code>None</code></td>
       </tr>
+      <tr>
+        <td><code>downloads</code></td>
+        <td><code>bool</code></td>
+        <td><p>Add download options.</p></td>
+        <td><code>False</code></td>
+      </tr>
+      <tr>
+        <td><code>table_kwargs</code></td>
+        <td><code>Optional[dict]</code></td>
+        <td><p>Keyword args for the table
+when serializing to json.</p></td>
+        <td><code>None</code></td>
+      </tr>
   </tbody>
 </table>
         <details class="quote">
@@ -1882,7 +2041,8 @@ as json to the Tabulator library. Overrides any internal settings created.</p></
     <span class="n">add_header_filters</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">prettify_colnames</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">col_settings</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="n">downloads</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">table_kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1898,6 +2058,9 @@ as json to the Tabulator library. Overrides any internal settings created.</p></
 <span class="sd">        prettify_colnames (bool): Run column names through *snake_to_text*.</span>
 <span class="sd">        col_settings (Optional[dict]): Column settings for tabulator, passed</span>
 <span class="sd">            as json to the Tabulator library. Overrides any internal settings created.</span>
+<span class="sd">        downloads (bool): Add download options.</span>
+<span class="sd">        table_kwargs (Optional[dict]): Keyword args for the table</span>
+<span class="sd">            when serializing to json.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">assert</span> <span class="n">page_info</span><span class="o">.</span><span class="n">idstore</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
     <span class="k">assert</span> <span class="n">page_info</span><span class="o">.</span><span class="n">page_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
@@ -1912,20 +2075,17 @@ as json to the Tabulator library. Overrides any internal settings created.</p></
                 <span class="sa">f</span><span class="s2">&quot;Table has </span><span class="si">{</span><span class="n">table</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> rows, but only </span><span class="si">{</span><span class="n">max_rows</span><span class="si">}</span><span class="s2"> allowed. Truncating.&quot;</span>
             <span class="p">)</span>
             <span class="n">table</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">max_rows</span><span class="p">]</span>
-        <span class="n">table</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s2">&quot;records&quot;</span><span class="p">,</span> <span class="n">default_handler</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span>
+            <span class="n">path</span><span class="p">,</span>
+            <span class="n">orient</span><span class="o">=</span><span class="s2">&quot;records&quot;</span><span class="p">,</span>
+            <span class="n">default_handler</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
+            <span class="o">**</span><span class="p">(</span><span class="n">table_kwargs</span> <span class="k">if</span> <span class="n">table_kwargs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">{}),</span>
+        <span class="p">)</span>
 
         <span class="c1"># Make sure the file is moved to the right place</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">page_info</span><span class="o">=</span><span class="n">page_info</span><span class="p">,</span> <span class="n">allow_copy</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">use_hash</span><span class="o">=</span><span class="kc">True</span>
         <span class="p">)</span>
-
-    <span class="c1"># create the javascript file</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">min_max_filter_path</span> <span class="o">=</span> <span class="n">page_info</span><span class="o">.</span><span class="n">javascript_path</span> <span class="o">/</span> <span class="s2">&quot;min_max_filter.js&quot;</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">min_max_filter_path</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span>
-        <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;tabulator_js&quot;</span> <span class="o">/</span> <span class="s2">&quot;min_max_filter.js&quot;</span><span class="p">,</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">min_max_filter_path</span><span class="p">,</span>
-    <span class="p">)</span>
 
     <span class="c1"># produce the column settings</span>
     <span class="n">col_list</span> <span class="o">=</span> <span class="n">_create_col_settings_tabulator</span><span class="p">(</span>
@@ -1947,14 +2107,14 @@ as json to the Tabulator library. Overrides any internal settings created.</p></
     <span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">table_settings</span><span class="p">[</span><span class="s2">&quot;columns&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">col_list</span>
 
-    <span class="n">tabulator_id</span> <span class="o">=</span> <span class="n">page_info</span><span class="o">.</span><span class="n">idstore</span><span class="o">.</span><span class="n">next_id</span><span class="p">(</span><span class="s2">&quot;tabulator_id&quot;</span><span class="p">)</span>
+    <span class="n">used_ids</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">used_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tabulator_id</span> <span class="o">:=</span> <span class="n">page_info</span><span class="o">.</span><span class="n">idstore</span><span class="o">.</span><span class="n">next_id</span><span class="p">(</span><span class="s2">&quot;tabulator_id&quot;</span><span class="p">))</span>
     <span class="n">body_html</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">cleandoc</span><span class="p">(</span>
         <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">        &lt;div id=&#39;</span><span class="si">{</span><span class="n">tabulator_id</span><span class="si">}</span><span class="s2">&#39; class=&#39;display&#39;&gt; &lt;/div&gt;</span>
 <span class="s2">        &quot;&quot;&quot;</span>
     <span class="p">)</span>
 
-    <span class="n">rel_filter_path</span> <span class="o">=</span> <span class="n">relpath_html</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">min_max_filter_path</span><span class="p">,</span> <span class="n">page_info</span><span class="o">.</span><span class="n">page_path</span><span class="p">)</span>
     <span class="n">rel_table_path</span> <span class="o">=</span> <span class="n">relpath_html</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">page_info</span><span class="o">.</span><span class="n">page_path</span><span class="p">)</span>
     <span class="n">table_settings</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">table_settings</span><span class="p">)</span>
     <span class="n">table_settings</span><span class="p">[</span><span class="s2">&quot;ajaxURL&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">rel_table_path</span><span class="p">)</span>
@@ -1970,22 +2130,79 @@ as json to the Tabulator library. Overrides any internal settings created.</p></
 <span class="s2">        &lt;/script&gt;</span>
 <span class="s2">        &quot;&quot;&quot;</span>
     <span class="p">)</span>
+
+    <span class="n">javascript_settings</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;https://unpkg.com/tabulator-tables@5.1.0/dist/js/tabulator.min.js&quot;</span><span class="p">,</span>
+    <span class="p">]</span>
+    <span class="n">css_settings</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;https://unpkg.com/tabulator-tables@5.1.0/dist/css/tabulator.min.css&quot;</span>
+    <span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">add_header_filters</span><span class="p">:</span>
+        <span class="n">javascript_settings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="n">store_asset_relpath</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;min_max_filter.js&quot;</span><span class="p">),</span> <span class="n">page_info</span><span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">downloads</span><span class="p">:</span>
+        <span class="c1"># add the necessary things to enable downloads</span>
+        <span class="c1"># to the body</span>
+        <span class="n">used_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">csv_down_id</span> <span class="o">:=</span> <span class="n">page_info</span><span class="o">.</span><span class="n">idstore</span><span class="o">.</span><span class="n">next_id</span><span class="p">(</span><span class="s2">&quot;csv_down_id&quot;</span><span class="p">))</span>
+        <span class="n">used_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">json_down_id</span> <span class="o">:=</span> <span class="n">page_info</span><span class="o">.</span><span class="n">idstore</span><span class="o">.</span><span class="n">next_id</span><span class="p">(</span><span class="s2">&quot;json_down_id&quot;</span><span class="p">))</span>
+        <span class="n">used_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">xlsx_down_id</span> <span class="o">:=</span> <span class="n">page_info</span><span class="o">.</span><span class="n">idstore</span><span class="o">.</span><span class="n">next_id</span><span class="p">(</span><span class="s2">&quot;xslx_down_id&quot;</span><span class="p">))</span>
+        <span class="n">body_html</span> <span class="o">=</span> <span class="n">body_html</span> <span class="o">+</span> <span class="n">inspect</span><span class="o">.</span><span class="n">cleandoc</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">                &lt;div&gt;</span>
+<span class="s2">                  &lt;button class=&quot;tabulator-btn-dwn&quot;, id=&quot;</span><span class="si">{</span><span class="n">csv_down_id</span><span class="si">}</span><span class="s2">&quot;&gt;to CSV&lt;/button&gt;</span>
+<span class="s2">                  &lt;button class=&quot;tabulator-btn-dwn&quot;, id=&quot;</span><span class="si">{</span><span class="n">json_down_id</span><span class="si">}</span><span class="s2">&quot;&gt;to JSON&lt;/button&gt;</span>
+<span class="s2">                  &lt;button class=&quot;tabulator-btn-dwn&quot;, id=&quot;</span><span class="si">{</span><span class="n">xlsx_down_id</span><span class="si">}</span><span class="s2">&quot;&gt;to XLSX&lt;/button&gt;</span>
+<span class="s2">                &lt;/div&gt;</span>
+<span class="s2">                &quot;&quot;&quot;</span>
+        <span class="p">)</span>
+        <span class="c1"># to the back_html</span>
+        <span class="n">split_back_html</span> <span class="o">=</span> <span class="n">back_html</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">split_back_html</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span>
+            <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">inspect</span><span class="o">.</span><span class="n">cleandoc</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">                //trigger download of data.csv file</span>
+<span class="s2">                $(&quot;#</span><span class="si">{</span><span class="n">csv_down_id</span><span class="si">}</span><span class="s2">&quot;).click(function()</span><span class="se">{{</span><span class="s2"></span>
+<span class="s2">                    table.download(&quot;csv&quot;, &quot;data.csv&quot;);</span>
+<span class="s2">                </span><span class="se">}}</span><span class="s2">);</span>
+
+<span class="s2">                //trigger download of data.json file</span>
+<span class="s2">                $(&quot;#</span><span class="si">{</span><span class="n">json_down_id</span><span class="si">}</span><span class="s2">&quot;).click(function()</span><span class="se">{{</span><span class="s2"></span>
+<span class="s2">                    table.download(&quot;json&quot;, &quot;data.json&quot;);</span>
+<span class="s2">                </span><span class="se">}}</span><span class="s2">);</span>
+
+<span class="s2">                //trigger download of data.xlsx file</span>
+<span class="s2">                $(&quot;#</span><span class="si">{</span><span class="n">xlsx_down_id</span><span class="si">}</span><span class="s2">&quot;).click(function()</span><span class="se">{{</span><span class="s2"></span>
+<span class="s2">                    table.download(&quot;xlsx&quot;, &quot;data.xlsx&quot;, </span><span class="se">{{</span><span class="s2">sheetName:&quot;data&quot;</span><span class="se">}}</span><span class="s2">);</span>
+<span class="s2">                </span><span class="se">}}</span><span class="s2">);</span>
+<span class="s2">                &quot;&quot;&quot;</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+        <span class="n">back_html</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">split_back_html</span><span class="p">)</span>
+        <span class="c1"># to the settings</span>
+        <span class="n">javascript_settings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="s2">&quot;https://oss.sheetjs.com/sheetjs/xlsx.full.min.js&quot;</span>
+        <span class="p">)</span>
+        <span class="n">css_settings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="n">store_asset_relpath</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;download_buttons.css&quot;</span><span class="p">),</span> <span class="n">page_info</span><span class="p">)</span>
+        <span class="p">)</span>
+
     <span class="n">settings</span> <span class="o">=</span> <span class="n">Settings</span><span class="p">(</span>
         <span class="n">page</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
             <span class="c1"># the following needs to be loaded in the header of the page, not the footer</span>
             <span class="c1"># this enables activating the tables in the body</span>
-            <span class="n">javascript</span><span class="o">=</span><span class="p">[</span>
-                <span class="s2">&quot;https://unpkg.com/tabulator-tables@5.1.0/dist/js/tabulator.min.js&quot;</span><span class="p">,</span>
-                <span class="n">rel_filter_path</span><span class="p">,</span>
-            <span class="p">],</span>
-            <span class="n">css</span><span class="o">=</span><span class="p">[</span>
-                <span class="s2">&quot;https://unpkg.com/tabulator-tables@5.1.0/dist/css/tabulator.min.css&quot;</span>
-            <span class="p">],</span>
+            <span class="n">javascript</span><span class="o">=</span><span class="n">javascript_settings</span><span class="p">,</span>
+            <span class="n">css</span><span class="o">=</span><span class="n">css_settings</span><span class="p">,</span>
         <span class="p">)</span>
     <span class="p">)</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">_body</span> <span class="o">=</span> <span class="n">SpacedText</span><span class="p">(</span><span class="n">body_html</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">_back</span> <span class="o">=</span> <span class="n">SpacedText</span><span class="p">(</span><span class="n">back_html</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> <span class="o">+</span> <span class="n">comment_ids</span><span class="p">(</span><span class="n">tabulator_id</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_back</span> <span class="o">=</span> <span class="n">SpacedText</span><span class="p">(</span><span class="n">back_html</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+        <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">comment_ids</span><span class="p">(</span><span class="n">this_id</span><span class="p">))</span> <span class="k">for</span> <span class="n">this_id</span> <span class="ow">in</span> <span class="n">used_ids</span><span class="p">]</span>
+    <span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_settings</span> <span class="o">=</span> <span class="n">settings</span>
 </code></pre></div>
         </details>

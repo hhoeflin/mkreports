@@ -1059,14 +1059,22 @@ MdProxy        </code>
 
     <span class="n">_proxied_classes</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_info</span><span class="p">:</span> <span class="n">PageInfo</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">page_info</span><span class="p">:</span> <span class="n">PageInfo</span><span class="p">,</span>
+        <span class="n">md_defaults</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialize the proxy.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            page_info (PageInfo): The info of the page for which the proxy works.</span>
+<span class="sd">            md_defaults (Optional[Dict[str, Dict[str, Any]]): A dictionary mapping the names</span>
+<span class="sd">                md objects (accessed from the proxy) to default keywords included when</span>
+<span class="sd">                they are being called.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">page_info</span> <span class="o">=</span> <span class="n">page_info</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">md_defaults</span> <span class="o">=</span> <span class="n">md_defaults</span> <span class="k">if</span> <span class="n">md_defaults</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">{}</span>
 
     <span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="c1"># we are not checking if it is included; if not, should raise error</span>
@@ -1082,6 +1090,10 @@ MdProxy        </code>
             <span class="n">obj_sig</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
             <span class="k">if</span> <span class="s2">&quot;page_info&quot;</span> <span class="ow">in</span> <span class="n">obj_sig</span><span class="o">.</span><span class="n">parameters</span><span class="p">:</span>
                 <span class="n">partial_kwargs</span><span class="p">[</span><span class="s2">&quot;page_info&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">page_info</span>
+
+            <span class="c1"># check if there are defaults for the md-object</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">md_defaults</span><span class="p">:</span>
+                <span class="n">partial_kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">md_defaults</span><span class="p">[</span><span class="n">name</span><span class="p">])</span>
 
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">partial_kwargs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="n">partial_obj</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">partial_kwargs</span><span class="p">)</span>
@@ -1159,7 +1171,7 @@ MdProxy        </code>
 
 
 <h3 id="mkreports.md.md_proxy.MdProxy.__init__" class="doc doc-heading">
-<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_info</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_info</span><span class="p">,</span> <span class="n">md_defaults</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-special"><code>special</code></small>
@@ -1188,18 +1200,34 @@ MdProxy        </code>
         <td><p>The info of the page for which the proxy works.</p></td>
         <td><em>required</em></td>
       </tr>
+      <tr>
+        <td><code>md_defaults</code></td>
+        <td><code>Optional[Dict[str, Dict[str, Any]]</code></td>
+        <td><p>A dictionary mapping the names
+md objects (accessed from the proxy) to default keywords included when
+they are being called.</p></td>
+        <td><code>None</code></td>
+      </tr>
   </tbody>
 </table>
         <details class="quote">
           <summary>Source code in <code>mkreports/md/md_proxy.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_info</span><span class="p">:</span> <span class="n">PageInfo</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">page_info</span><span class="p">:</span> <span class="n">PageInfo</span><span class="p">,</span>
+    <span class="n">md_defaults</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Initialize the proxy.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        page_info (PageInfo): The info of the page for which the proxy works.</span>
+<span class="sd">        md_defaults (Optional[Dict[str, Dict[str, Any]]): A dictionary mapping the names</span>
+<span class="sd">            md objects (accessed from the proxy) to default keywords included when</span>
+<span class="sd">            they are being called.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">page_info</span> <span class="o">=</span> <span class="n">page_info</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">md_defaults</span> <span class="o">=</span> <span class="n">md_defaults</span> <span class="k">if</span> <span class="n">md_defaults</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">{}</span>
 </code></pre></div>
         </details>
     </div>

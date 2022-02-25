@@ -726,13 +726,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#mkreports.report.Page.notrack" class="md-nav__link">
-    notrack
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#mkreports.report.Page.page_info" class="md-nav__link">
     page_info
   </a>
@@ -1105,13 +1098,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#mkreports.report.Page.notrack" class="md-nav__link">
-    notrack
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#mkreports.report.Page.page_info" class="md-nav__link">
     page_info
   </a>
@@ -1300,6 +1286,7 @@ Page        </code>
         <span class="n">code_layout</span><span class="p">:</span> <span class="n">Layouts</span> <span class="o">=</span> <span class="s2">&quot;tabbed&quot;</span><span class="p">,</span>
         <span class="n">code_name_only</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">add_bottom</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">md_defaults</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialize a page. Usually this is not used and instead a page is created</span>
@@ -1319,6 +1306,9 @@ Page        </code>
 <span class="sd">                instead of the path.</span>
 <span class="sd">            add_bottom (bool): Should new entries be added at the bottom? At the</span>
 <span class="sd">                top used for IPython.</span>
+<span class="sd">            md_defaults (Optional[Dict[str, Dict[str, Any]]): A dictionary mapping the names</span>
+<span class="sd">                md objects (accessed from the proxy) to default keywords included when</span>
+<span class="sd">                they are being called.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span>
         <span class="c1"># check that the file exists and ends with .md</span>
@@ -1334,7 +1324,7 @@ Page        </code>
         <span class="bp">self</span><span class="o">.</span><span class="n">code_layout</span><span class="p">:</span> <span class="n">Layouts</span> <span class="o">=</span> <span class="n">code_layout</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">code_name_only</span> <span class="o">=</span> <span class="n">code_name_only</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_md</span> <span class="o">=</span> <span class="n">MdProxy</span><span class="p">(</span><span class="n">page_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">page_info</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_md</span> <span class="o">=</span> <span class="n">MdProxy</span><span class="p">(</span><span class="n">page_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">page_info</span><span class="p">,</span> <span class="n">md_defaults</span><span class="o">=</span><span class="n">md_defaults</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">code_context_stack</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">CodeContext</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
 
@@ -1438,21 +1428,6 @@ Page        </code>
             <span class="n">idstore</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_idstore</span><span class="p">,</span>
             <span class="n">page_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
         <span class="p">)</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">notrack</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ContextManager</span><span class="p">[</span><span class="s2">&quot;Page&quot;</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Context-manager that does not do anything.</span>
-
-<span class="sd">        This can be useful if a context-manager is used for visual grouping of code</span>
-<span class="sd">        - e.g. when using the context manager on headings. This context manager</span>
-<span class="sd">        can be used even if another is already active.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            ContextManager[&quot;Page&quot;]: Returns a null context manager that wraps the page.</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">nullcontext</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">path</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
@@ -1597,47 +1572,6 @@ Page        </code>
 
 
 
-<h3 id="mkreports.report.Page.notrack" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">notrack</span><span class="p">:</span> <span class="n">ContextManager</span><span class="p">[</span><span class="n">Page</span><span class="p">]</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-property"><code>property</code></small>
-      <small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
-  </span>
-
-</h3>
-
-    <div class="doc doc-contents ">
-
-      <p>Context-manager that does not do anything.</p>
-<p>This can be useful if a context-manager is used for visual grouping of code
-- e.g. when using the context manager on headings. This context manager
-can be used even if another is already active.</p>
-
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>ContextManager[&#34;Page&#34;]</code></td>
-      <td><p>Returns a null context manager that wraps the page.</p></td>
-    </tr>
-  </tbody>
-</table>    </div>
-
-  </div>
-
-
-
-  <div class="doc doc-object doc-attribute">
-
-
-
 <h3 id="mkreports.report.Page.page_info" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">page_info</span></code>
 
@@ -1757,7 +1691,7 @@ can be used even if another is already active.</p>
 
 
 <h3 id="mkreports.report.Page.__init__" class="doc doc-heading">
-<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">report</span><span class="p">,</span> <span class="n">code_layout</span><span class="o">=</span><span class="s1">&#39;tabbed&#39;</span><span class="p">,</span> <span class="n">code_name_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">add_bottom</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">report</span><span class="p">,</span> <span class="n">code_layout</span><span class="o">=</span><span class="s1">&#39;tabbed&#39;</span><span class="p">,</span> <span class="n">code_name_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">add_bottom</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">md_defaults</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-special"><code>special</code></small>
@@ -1818,6 +1752,14 @@ instead of the path.</p></td>
 top used for IPython.</p></td>
         <td><code>True</code></td>
       </tr>
+      <tr>
+        <td><code>md_defaults</code></td>
+        <td><code>Optional[Dict[str, Dict[str, Any]]</code></td>
+        <td><p>A dictionary mapping the names
+md objects (accessed from the proxy) to default keywords included when
+they are being called.</p></td>
+        <td><code>None</code></td>
+      </tr>
   </tbody>
 </table>
         <details class="quote">
@@ -1829,6 +1771,7 @@ top used for IPython.</p></td>
     <span class="n">code_layout</span><span class="p">:</span> <span class="n">Layouts</span> <span class="o">=</span> <span class="s2">&quot;tabbed&quot;</span><span class="p">,</span>
     <span class="n">code_name_only</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">add_bottom</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">md_defaults</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Initialize a page. Usually this is not used and instead a page is created</span>
@@ -1848,6 +1791,9 @@ top used for IPython.</p></td>
 <span class="sd">            instead of the path.</span>
 <span class="sd">        add_bottom (bool): Should new entries be added at the bottom? At the</span>
 <span class="sd">            top used for IPython.</span>
+<span class="sd">        md_defaults (Optional[Dict[str, Dict[str, Any]]): A dictionary mapping the names</span>
+<span class="sd">            md objects (accessed from the proxy) to default keywords included when</span>
+<span class="sd">            they are being called.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span>
     <span class="c1"># check that the file exists and ends with .md</span>
@@ -1863,7 +1809,7 @@ top used for IPython.</p></td>
     <span class="bp">self</span><span class="o">.</span><span class="n">code_layout</span><span class="p">:</span> <span class="n">Layouts</span> <span class="o">=</span> <span class="n">code_layout</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">code_name_only</span> <span class="o">=</span> <span class="n">code_name_only</span>
 
-    <span class="bp">self</span><span class="o">.</span><span class="n">_md</span> <span class="o">=</span> <span class="n">MdProxy</span><span class="p">(</span><span class="n">page_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">page_info</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_md</span> <span class="o">=</span> <span class="n">MdProxy</span><span class="p">(</span><span class="n">page_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">page_info</span><span class="p">,</span> <span class="n">md_defaults</span><span class="o">=</span><span class="n">md_defaults</span><span class="p">)</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">code_context_stack</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">CodeContext</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
 </code></pre></div>
@@ -2142,6 +2088,7 @@ Report        </code>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">project_root</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">md_defaults</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialize the report object. This relies on the report folder already</span>
@@ -2154,6 +2101,9 @@ Report        </code>
 <span class="sd">                Directory that is the root of the project. If None, tries to use</span>
 <span class="sd">                the root of the git-repository if there is one. Otherwise</span>
 <span class="sd">                uses the root of the file-system.</span>
+<span class="sd">            md_defaults (Optional[Dict[str, Dict[str, Any]]): A dictionary mapping the names</span>
+<span class="sd">                md objects (accessed from the proxy) to default keywords included when</span>
+<span class="sd">                they are being called.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># need to ensure it is of type Path</span>
         <span class="k">if</span> <span class="n">path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -2182,6 +2132,8 @@ Report        </code>
                 <span class="bp">self</span><span class="o">.</span><span class="n">project_root</span> <span class="o">=</span> <span class="n">root</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">project_root</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">project_root</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">md_defaults</span> <span class="o">=</span> <span class="n">md_defaults</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">path</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
@@ -2232,6 +2184,8 @@ Report        </code>
         <span class="bp">cls</span><span class="p">,</span>
         <span class="n">path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">],</span>
         <span class="n">report_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">project_root</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">md_defaults</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">settings</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">default_settings</span><span class="p">,</span>
         <span class="n">exist_ok</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Report&quot;</span><span class="p">:</span>
@@ -2241,6 +2195,13 @@ Report        </code>
 <span class="sd">        Args:</span>
 <span class="sd">            path (Union[str, Path]): Top-level folder of the report.</span>
 <span class="sd">            report_name (str): Name of the report (mkdocs site-name)</span>
+<span class="sd">            project_root (Optional[Union[str, Path]]):</span>
+<span class="sd">                Directory that is the root of the project. If None, tries to use</span>
+<span class="sd">                the root of the git-repository if there is one. Otherwise</span>
+<span class="sd">                uses the root of the file-system.</span>
+<span class="sd">            md_defaults (Optional[Dict[str, Dict[str, Any]]): A dictionary mapping the names</span>
+<span class="sd">                md objects (accessed from the proxy) to default keywords included when</span>
+<span class="sd">                they are being called.</span>
 <span class="sd">            settings (Optional[Mapping[str, str]]): Settings of the report.</span>
 <span class="sd">            exist_ok (bool): Is it ok if it already exists?</span>
 
@@ -2275,7 +2236,11 @@ Report        </code>
         <span class="k">with</span> <span class="p">(</span><span class="n">overrides_dir</span> <span class="o">/</span> <span class="s2">&quot;main.html&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">main_html_override</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">path</span><span class="p">,</span>
+            <span class="n">project_root</span><span class="o">=</span><span class="n">project_root</span><span class="p">,</span>
+            <span class="n">md_defaults</span><span class="o">=</span><span class="n">md_defaults</span><span class="p">,</span>
+        <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_add_nav_entry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nav_entry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="c1"># check that the nav-entry is relative; if absolute,</span>
@@ -2294,6 +2259,7 @@ Report        </code>
         <span class="n">page_name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">NavEntry</span><span class="p">,</span> <span class="n">Path</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
         <span class="n">truncate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">add_bottom</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">md_defaults</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Page&quot;</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Create a page in the report.</span>
@@ -2306,6 +2272,9 @@ Report        </code>
 <span class="sd">                the *store_path*.</span>
 <span class="sd">            add_bottom (bool): Should new entries be added at the bottom or at the</span>
 <span class="sd">                top of the page. Top of the page is used for IPython.</span>
+<span class="sd">            md_defaults (Optional[Dict[str, Dict[str, Any]]): A dictionary mapping the names</span>
+<span class="sd">                md objects (accessed from the proxy) to default keywords included when</span>
+<span class="sd">                they are being called.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Page: An object representing a new page.</span>
@@ -2347,6 +2316,7 @@ Report        </code>
             <span class="bp">self</span><span class="o">.</span><span class="n">docs_dir</span> <span class="o">/</span> <span class="n">path</span><span class="p">,</span>
             <span class="n">report</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
             <span class="n">add_bottom</span><span class="o">=</span><span class="n">add_bottom</span><span class="p">,</span>
+            <span class="n">md_defaults</span><span class="o">=</span><span class="n">md_defaults</span><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">truncate</span><span class="p">:</span>
@@ -2559,7 +2529,7 @@ Report        </code>
 
 
 <h3 id="mkreports.report.Report.__init__" class="doc doc-heading">
-<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">project_root</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">project_root</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">md_defaults</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-special"><code>special</code></small>
@@ -2598,6 +2568,14 @@ the root of the git-repository if there is one. Otherwise
 uses the root of the file-system.</p></td>
         <td><code>None</code></td>
       </tr>
+      <tr>
+        <td><code>md_defaults</code></td>
+        <td><code>Optional[Dict[str, Dict[str, Any]]</code></td>
+        <td><p>A dictionary mapping the names
+md objects (accessed from the proxy) to default keywords included when
+they are being called.</p></td>
+        <td><code>None</code></td>
+      </tr>
   </tbody>
 </table>
         <details class="quote">
@@ -2606,6 +2584,7 @@ uses the root of the file-system.</p></td>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">project_root</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">md_defaults</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Initialize the report object. This relies on the report folder already</span>
@@ -2618,6 +2597,9 @@ uses the root of the file-system.</p></td>
 <span class="sd">            Directory that is the root of the project. If None, tries to use</span>
 <span class="sd">            the root of the git-repository if there is one. Otherwise</span>
 <span class="sd">            uses the root of the file-system.</span>
+<span class="sd">        md_defaults (Optional[Dict[str, Dict[str, Any]]): A dictionary mapping the names</span>
+<span class="sd">            md objects (accessed from the proxy) to default keywords included when</span>
+<span class="sd">            they are being called.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># need to ensure it is of type Path</span>
     <span class="k">if</span> <span class="n">path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -2646,6 +2628,8 @@ uses the root of the file-system.</p></td>
             <span class="bp">self</span><span class="o">.</span><span class="n">project_root</span> <span class="o">=</span> <span class="n">root</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">project_root</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">project_root</span><span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">md_defaults</span> <span class="o">=</span> <span class="n">md_defaults</span>
 </code></pre></div>
         </details>
     </div>
@@ -2659,7 +2643,7 @@ uses the root of the file-system.</p></td>
 
 
 <h3 id="mkreports.report.Report.create" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">create</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">report_name</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="n">immutabledict</span><span class="p">({</span><span class="s1">&#39;theme&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;material&#39;</span><span class="p">,</span> <span class="s1">&#39;custom_dir&#39;</span><span class="p">:</span> <span class="s1">&#39;overrides&#39;</span><span class="p">},</span> <span class="s1">&#39;nav&#39;</span><span class="p">:</span> <span class="p">[{</span><span class="s1">&#39;Home&#39;</span><span class="p">:</span> <span class="s1">&#39;index.md&#39;</span><span class="p">}],</span> <span class="s1">&#39;markdown_extensions&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;meta&#39;</span><span class="p">,</span> <span class="s1">&#39;admonition&#39;</span><span class="p">,</span> <span class="s1">&#39;pymdownx.extra&#39;</span><span class="p">,</span> <span class="s1">&#39;pymdownx.details&#39;</span><span class="p">,</span> <span class="s1">&#39;pymdownx.superfences&#39;</span><span class="p">]}),</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">create</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">report_name</span><span class="p">,</span> <span class="n">project_root</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">md_defaults</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="n">immutabledict</span><span class="p">({</span><span class="s1">&#39;theme&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;material&#39;</span><span class="p">,</span> <span class="s1">&#39;custom_dir&#39;</span><span class="p">:</span> <span class="s1">&#39;overrides&#39;</span><span class="p">},</span> <span class="s1">&#39;nav&#39;</span><span class="p">:</span> <span class="p">[{</span><span class="s1">&#39;Home&#39;</span><span class="p">:</span> <span class="s1">&#39;index.md&#39;</span><span class="p">}],</span> <span class="s1">&#39;markdown_extensions&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;meta&#39;</span><span class="p">,</span> <span class="s1">&#39;admonition&#39;</span><span class="p">,</span> <span class="s1">&#39;pymdownx.extra&#39;</span><span class="p">,</span> <span class="s1">&#39;pymdownx.details&#39;</span><span class="p">,</span> <span class="s1">&#39;pymdownx.superfences&#39;</span><span class="p">]}),</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
@@ -2693,6 +2677,22 @@ uses the root of the file-system.</p></td>
         <td><code>str</code></td>
         <td><p>Name of the report (mkdocs site-name)</p></td>
         <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>project_root</code></td>
+        <td><code>Optional[Union[str, Path]]</code></td>
+        <td><p>Directory that is the root of the project. If None, tries to use
+the root of the git-repository if there is one. Otherwise
+uses the root of the file-system.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>md_defaults</code></td>
+        <td><code>Optional[Dict[str, Dict[str, Any]]</code></td>
+        <td><p>A dictionary mapping the names
+md objects (accessed from the proxy) to default keywords included when
+they are being called.</p></td>
+        <td><code>None</code></td>
       </tr>
       <tr>
         <td><code>settings</code></td>
@@ -2730,6 +2730,8 @@ uses the root of the file-system.</p></td>
     <span class="bp">cls</span><span class="p">,</span>
     <span class="n">path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">],</span>
     <span class="n">report_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">project_root</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">md_defaults</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">settings</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">default_settings</span><span class="p">,</span>
     <span class="n">exist_ok</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Report&quot;</span><span class="p">:</span>
@@ -2739,6 +2741,13 @@ uses the root of the file-system.</p></td>
 <span class="sd">    Args:</span>
 <span class="sd">        path (Union[str, Path]): Top-level folder of the report.</span>
 <span class="sd">        report_name (str): Name of the report (mkdocs site-name)</span>
+<span class="sd">        project_root (Optional[Union[str, Path]]):</span>
+<span class="sd">            Directory that is the root of the project. If None, tries to use</span>
+<span class="sd">            the root of the git-repository if there is one. Otherwise</span>
+<span class="sd">            uses the root of the file-system.</span>
+<span class="sd">        md_defaults (Optional[Dict[str, Dict[str, Any]]): A dictionary mapping the names</span>
+<span class="sd">            md objects (accessed from the proxy) to default keywords included when</span>
+<span class="sd">            they are being called.</span>
 <span class="sd">        settings (Optional[Mapping[str, str]]): Settings of the report.</span>
 <span class="sd">        exist_ok (bool): Is it ok if it already exists?</span>
 
@@ -2773,7 +2782,11 @@ uses the root of the file-system.</p></td>
     <span class="k">with</span> <span class="p">(</span><span class="n">overrides_dir</span> <span class="o">/</span> <span class="s2">&quot;main.html&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">main_html_override</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+        <span class="n">path</span><span class="p">,</span>
+        <span class="n">project_root</span><span class="o">=</span><span class="n">project_root</span><span class="p">,</span>
+        <span class="n">md_defaults</span><span class="o">=</span><span class="n">md_defaults</span><span class="p">,</span>
+    <span class="p">)</span>
 </code></pre></div>
         </details>
     </div>
@@ -2787,7 +2800,7 @@ uses the root of the file-system.</p></td>
 
 
 <h3 id="mkreports.report.Report.page" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_name</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">add_bottom</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_name</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">add_bottom</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">md_defaults</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 
 </h3>
@@ -2829,6 +2842,14 @@ the <em>store_path</em>.</p></td>
 top of the page. Top of the page is used for IPython.</p></td>
         <td><code>True</code></td>
       </tr>
+      <tr>
+        <td><code>md_defaults</code></td>
+        <td><code>Optional[Dict[str, Dict[str, Any]]</code></td>
+        <td><p>A dictionary mapping the names
+md objects (accessed from the proxy) to default keywords included when
+they are being called.</p></td>
+        <td><code>None</code></td>
+      </tr>
   </tbody>
 </table>
 <p><strong>Returns:</strong></p>
@@ -2853,6 +2874,7 @@ top of the page. Top of the page is used for IPython.</p></td>
     <span class="n">page_name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">NavEntry</span><span class="p">,</span> <span class="n">Path</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
     <span class="n">truncate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">add_bottom</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">md_defaults</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Page&quot;</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Create a page in the report.</span>
@@ -2865,6 +2887,9 @@ top of the page. Top of the page is used for IPython.</p></td>
 <span class="sd">            the *store_path*.</span>
 <span class="sd">        add_bottom (bool): Should new entries be added at the bottom or at the</span>
 <span class="sd">            top of the page. Top of the page is used for IPython.</span>
+<span class="sd">        md_defaults (Optional[Dict[str, Dict[str, Any]]): A dictionary mapping the names</span>
+<span class="sd">            md objects (accessed from the proxy) to default keywords included when</span>
+<span class="sd">            they are being called.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        Page: An object representing a new page.</span>
@@ -2906,6 +2931,7 @@ top of the page. Top of the page is used for IPython.</p></td>
         <span class="bp">self</span><span class="o">.</span><span class="n">docs_dir</span> <span class="o">/</span> <span class="n">path</span><span class="p">,</span>
         <span class="n">report</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
         <span class="n">add_bottom</span><span class="o">=</span><span class="n">add_bottom</span><span class="p">,</span>
+        <span class="n">md_defaults</span><span class="o">=</span><span class="n">md_defaults</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="k">if</span> <span class="n">truncate</span><span class="p">:</span>
