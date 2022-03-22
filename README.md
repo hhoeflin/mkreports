@@ -96,8 +96,8 @@ for the seamless conversion between notebooks and python files.
 The end results are ok but not quite satisfactory as
 - One python file corresponds to one output document
   (which can get very long)
-- Incremental execution is not possible
-- Regular debuggers such as pudb are not supported well supported
+- Incremental execution is not possible (or at least hard to achieve)
+- Regular debuggers such as pudb are not well supported
 - It does not solve the issue that in remote ssh development
   shells the viewing of graphics can be complicated
 - The display options for code and complex tables are limited.
