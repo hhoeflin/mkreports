@@ -4,7 +4,7 @@ from plotnine.data import mtcars
 
 
 def do_quickstart(report: Report) -> None:
-    p = report.page("quickstart")
+    p = report.page("quickstart", truncate=True)
 
     p.H1("Quickstart")
 

@@ -14,7 +14,7 @@ It is a very brief example of an page with a table and an image
 as well as some text, like here.
 
 ```python title="docs/staging/quickstart.py"
---8<-- 'docs/quickstart_store/quickstart-af9d815edefb91666aeb23523ce87630.py'
+--8<-- 'docs/quickstart_store/quickstart-817e461cd1179ff81359a66b669105df.py'
 ```
 
 We are quickly analyzing the mtcars dataset 

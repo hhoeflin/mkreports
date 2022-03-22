@@ -1,6 +1,6 @@
 from collections import defaultdict
 from copy import copy
-from typing import Dict
+from typing import Dict, Set
 
 
 class IDStore:
@@ -9,9 +9,9 @@ class IDStore:
     """
 
     _counts: Dict[str, int]
-    _used: set[str]
+    _used: Set[str]
 
-    def __init__(self, start_with: int = 0, used_ids: set[str] = set()) -> None:
+    def __init__(self, start_with: int = 0, used_ids: Set[str] = set()) -> None:
         """
         Initialize the IDStore.
 
