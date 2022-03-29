@@ -1,6 +1,11 @@
 from collections import defaultdict
 from copy import copy
+from functools import partial
 from typing import Dict, Set
+
+
+def identity(x):
+    return x
 
 
 class IDStore:
@@ -8,8 +13,9 @@ class IDStore:
     Store for ids. Used to create unique IDs on a page.
     """
 
-    _counts: Dict[str, int]
+    _count: Dict[str, int]
     _used: Set[str]
+    _start_with: int
 
     def __init__(self, start_with: int = 0, used_ids: Set[str] = set()) -> None:
         """
@@ -20,7 +26,7 @@ class IDStore:
             used_ids (set[str]): Set of IDs that have to be avoided as they are
                 otherwise used.
         """
-        self._count = defaultdict(lambda: start_with - 1)
+        self._count = defaultdict(partial(identity, start_with - 1))
         self._used = copy(used_ids)
         self._start_with = start_with
 
@@ -46,3 +52,16 @@ class IDStore:
             pass
         self._used.add(next_id)
         return next_id
+
+    def __eq__(self, other):
+        if type(self) != type(other):
+            return False
+        return self.__dict__ == other.__dict__
+
+    # def __eq__(self, other):
+    #    return (
+    #        type(self) == type(other)
+    #        and self._count == other._count
+    #        and self._used == other._used
+    #        and self._start_with == other._start_with
+    #    )

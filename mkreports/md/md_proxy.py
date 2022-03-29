@@ -76,3 +76,8 @@ class MdProxy:
             Dict[str, Any]: A dict with the registered items under their name.
         """
         return self._proxied_classes
+
+    def __eq__(self, other):
+        if type(self) != type(other):
+            return False
+        return self.__dict__ == other.__dict__

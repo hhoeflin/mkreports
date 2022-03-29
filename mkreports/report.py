@@ -344,6 +344,12 @@ class Report:
 
         return page
 
+    def __eq__(self, other):
+        if type(self) != type(other):
+            return False
+
+        return self.__dict__ == other.__dict__
+
 
 class Page:
     """Represents a single page of report."""
@@ -602,3 +608,15 @@ class Page:
         A proxy for the 'md' submodule.
         """
         return self._md
+
+    def __getstate__(self):
+        return self.__dict__
+
+    def __setstate__(self, d):
+        self.__dict__.update(d)
+
+    def __eq__(self, other):
+        if type(self) != type(other):
+            return False
+
+        return self.__dict__ == other.__dict__
