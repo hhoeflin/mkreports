@@ -8,10 +8,8 @@ included.
 """
 import os
 import shutil
-from contextlib import nullcontext
 from pathlib import Path
-from typing import (Any, ContextManager, Dict, List, Mapping, Optional, Tuple,
-                    Union)
+from typing import Any, Dict, List, Mapping, Optional, Tuple, Union
 
 import yaml
 from frontmatter.default_handlers import DEFAULT_POST_TEMPLATE, YAMLHandler
@@ -22,8 +20,8 @@ from .exceptions import (IncorrectSuffixError, ReportExistsError,
                          ReportNotExistsError, ReportNotValidError)
 from .md import (IDStore, MdObj, MdProxy, PageInfo, Raw, SpacedText, Text,
                  merge_settings)
-from .settings import (NavEntry, add_nav_entry, load_yaml, path_to_nav_entry,
-                       save_yaml)
+from .settings import (NavEntry, add_nav_entry, load_yaml, mkdocs_to_nav,
+                       path_to_nav_entry, save_yaml)
 from .utils import find_comment_ids, repo_root
 
 default_settings = immutabledict(
@@ -273,6 +271,34 @@ class Report:
         mkdocs_settings = add_nav_entry(mkdocs_settings, nav_entry)
         save_yaml(mkdocs_settings, self.mkdocs_file)
 
+    def get_nav_entry(self, path: Path) -> Optional[NavEntry]:
+        """
+        Get the NavEntry for a specific page.
+
+        Args:
+            path (Path): Path to the page, absolute or relative to docs_dir.
+
+        Returns:
+            The NavEntry if it exists or None.
+
+        """
+        if path.is_absolute():
+            rel_path = path.relative_to(self.docs_dir)
+        else:
+            rel_path = path
+
+        mkdocs_settings = load_yaml(self.mkdocs_file)
+        nav_list = mkdocs_to_nav(mkdocs_settings["nav"])
+
+        match_entries = [
+            nav_entry for nav_entry in nav_list if nav_entry.rel_path == rel_path
+        ]
+
+        if len(match_entries) > 0:
+            return match_entries[0]
+        else:
+            return None
+
     def page(
         self,
         page_name: Union[NavEntry, Path, str],
@@ -512,6 +538,28 @@ class Page:
 
         """
         return self._path
+
+    @property
+    def rel_path(self) -> Path:
+        """
+        Returns:
+            Path: Relative to the docs_dir of the report.
+
+        """
+        return self._path.relative_to(self.report.docs_dir)
+
+    @property
+    def nav_entry(self) -> NavEntry:
+        """
+        Returns:
+            NavEntry for this page.
+
+        """
+        nav_entry = self.report.get_nav_entry(self.rel_path)
+
+        # the entry cannot be none, or the page would not exist
+        assert nav_entry is not None
+        return nav_entry
 
     @property
     def store_path(self) -> Path:

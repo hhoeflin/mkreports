@@ -19,7 +19,7 @@ class NavEntry(NamedTuple):
     """
 
     hierarchy: Sequence[str]
-    file: Path
+    rel_path: Path
 
 
 Nav = List[NavEntry]
@@ -60,7 +60,7 @@ def _check_length_one(
 
 def mkdocs_to_nav(mkdocs_nav: MkdocsNav) -> Nav:
     """
-    Convert an mkdovs nav to a list of NavEntry.
+    Convert an mkdocs nav to a list of NavEntry.
 
     Args:
         mkdocs_nav: A python representation of the nav-entry
@@ -69,13 +69,15 @@ def mkdocs_to_nav(mkdocs_nav: MkdocsNav) -> Nav:
     res = []
     for entry in mkdocs_nav:
         if isinstance(entry, str):
-            res.append(([], Path(entry)))
+            res.append(NavEntry([], Path(entry)))
         elif isinstance(entry, Mapping):
             key, val = _check_length_one(entry)
             if isinstance(val, str):
-                res.append(([key], Path(val)))
+                res.append(NavEntry([key], Path(val)))
             elif isinstance(val, List):
-                res = res + [((key,) + tuple(h), p) for (h, p) in mkdocs_to_nav(val)]
+                res = res + [
+                    NavEntry((key,) + tuple(h), p) for (h, p) in mkdocs_to_nav(val)
+                ]
             else:
                 raise Exception("Not expected type")
         else:
