@@ -10,23 +10,8 @@ from IPython.core.magic import Magics, line_magic, magics_class
 
 from . import md
 from .code_context import do_layout
+from .md.handler import Handler, create_default_handlers, get_handler
 from .report import Page, Report
-
-
-@dataclass
-class Handler:
-    """
-    A handler for output.
-
-    Args:
-        name (str): Name of the handler.
-        class_type (Union[type, Tuple[type, ...]]): Classes covered by the handler.
-        func (Callable): the function to use to handle the output.
-    """
-
-    name: str
-    class_type: Union[type, Tuple[type, ...]]
-    func: Callable
 
 
 @magics_class
@@ -44,7 +29,6 @@ class ConsoleWriter(Magics):
         self.shell = ip
         self.handlers = []
         self.stored_code = []
-        self._set_default_handlers()
 
         # identify an mkreport
         if "MKREPORTS_DIR" in os.environ:
@@ -56,67 +40,13 @@ class ConsoleWriter(Magics):
             self._open_console()
         else:
             raise Exception("No 'MKREPORTS_DIR' in environment")
+        self._set_default_handlers()
 
     def _set_default_handlers(self):
-        self.handlers = []
-        # handler for tables
-        with suppress(ImportError):
-            import pandas as pd
-
-            self.handlers.append(
-                Handler(
-                    name="datatable",
-                    class_type=pd.DataFrame,
-                    func=lambda x: self.console.md.DataTable(x),
-                )
-            )
-
-        # handler for matplotlib
-        with suppress(ImportError):
-            from matplotlib.figure import Figure as MplFigure
-
-            self.handlers.append(
-                Handler(
-                    name="matplotlib",
-                    class_type=MplFigure,
-                    func=lambda x: self.console.md.Image(x),
-                )
-            )
-
-        with suppress(ImportError):
-            from plotnine.ggplot import ggplot
-
-            self.handlers.append(
-                Handler(
-                    name="plotnine",
-                    class_type=ggplot,
-                    func=lambda x: self.console.md.Image(x),
-                )
-            )
-
-        with suppress(ImportError):
-            from seaborn import FacetGrid as SnsFacetGrid
-            from seaborn import JointGrid as SnsJointGrid
-            from seaborn import PairGrid as SnsPairGrid
-
-            self.handlers.append(
-                Handler(
-                    name="seaborn",
-                    class_type=(SnsFacetGrid, SnsJointGrid, SnsPairGrid),
-                    func=lambda x: self.console.md.Image(x),
-                )
-            )
-
-        self.handlers.append(
-            Handler(name="mdobj", class_type=md.MdObj, func=lambda x: x)
-        )
+        self.handlers = create_default_handlers(self.console.md)
 
     def _get_handler(self, obj: Any) -> Optional[Handler]:
-        for handler in self.handlers:
-            if isinstance(obj, handler.class_type):
-                return handler
-        else:
-            return None
+        return get_handler(obj, self.handlers)
 
     def _open_console(self) -> None:
         self.console = self.report.page(Path("console/active.md"), add_bottom=False)
@@ -141,7 +71,7 @@ class ConsoleWriter(Magics):
 
         # we move the page out of the way
         shutil.move(
-            self.console.path,
+            str(self.console.path),
             new_path,
         )
         self.report._add_nav_entry((new_entry, new_path))

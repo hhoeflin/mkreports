@@ -60,7 +60,7 @@ def use_images(report: Report) -> None:
 
         fig, ax = plt.subplots()
         ax.plot([1, 2, 3, 4], [1, 4, 2, 3])
-        p.Image(fig)
+        p.Matplotlib(fig)
 
     with p.H3("Plotnine"):
         p.Raw(
@@ -70,7 +70,7 @@ def use_images(report: Report) -> None:
             """
         )
 
-        p.Image(
+        p.Plotnine(
             ggplot(mtcars, aes("wt", "mpg", color="factor(gear)"))
             + geom_point()
             + stat_smooth(method="lm")
@@ -92,7 +92,7 @@ def use_images(report: Report) -> None:
         df = sns.load_dataset("anscombe")
 
         # Show the results of a linear regression within each dataset
-        p.Image(
+        p.Seaborn(
             sns.lmplot(
                 x="x",
                 y="y",
@@ -142,7 +142,7 @@ def use_images(report: Report) -> None:
 
     with p.H3("Plotnine"):
         p.H4("Larger")
-        p.Image(
+        p.Plotnine(
             ggplot(mtcars, aes("wt", "mpg", color="factor(gear)"))
             + geom_point()
             + stat_smooth(method="lm")
@@ -151,7 +151,7 @@ def use_images(report: Report) -> None:
             height=6,
         )
         p.H4("Smaller")
-        p.Image(
+        p.Plotnine(
             ggplot(mtcars, aes("wt", "mpg", color="factor(gear)"))
             + geom_point()
             + stat_smooth(method="lm")
@@ -159,5 +159,32 @@ def use_images(report: Report) -> None:
             width=5,
             height=3,
         )
+
+    p.H2("Images next to each other")
+
+    p.P(
+        """
+        Images can also be placed next to each other, if there is enough
+        space. Just specify them directly one after the other and if there
+        is enough space, they will be placed next to each other.
+        """
+    )
+    p.Plotnine(
+        ggplot(mtcars, aes("wt", "mpg", color="factor(gear)"))
+        + geom_point()
+        + stat_smooth(method="lm")
+        + facet_wrap("~gear"),
+        width=2,
+        height=1.5,
+    )
+
+    p.Plotnine(
+        ggplot(mtcars, aes("wt", "mpg", color="factor(gear)"))
+        + geom_point()
+        + stat_smooth(method="lm")
+        + facet_wrap("~gear"),
+        width=2,
+        height=1.5,
+    )
 
 ```

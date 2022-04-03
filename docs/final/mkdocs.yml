@@ -32,6 +32,7 @@ nav:
     - containers: Reference/md/containers.md
     - docstring: Reference/md/docstring.md
     - file: Reference/md/file.md
+    - handler: Reference/md/handler.md
     - header: Reference/md/header.md
     - idstore: Reference/md/idstore.md
     - image: Reference/md/image.md

@@ -3,12 +3,13 @@ import tempfile
 from contextlib import suppress
 from copy import deepcopy
 from pathlib import Path
-from typing import Literal, Optional, Union
+from typing import List, Literal, Optional, Union
 
 from mdutils.tools.Image import Image as UtilsImage
 
 from .base import comment_ids
 from .file import File, relpath_html
+from .handler import Handler, get_handler
 from .md_proxy import register_md
 from .settings import PageInfo, Settings
 from .text import SpacedText
@@ -69,8 +70,8 @@ class ImageFile(File):
             raise ValueError(f"Unknown type {self.link_type}")
 
 
-@register_md("Image")
-class Image(ImageFile):
+@register_md("Matplotlib")
+class Matplotlib(ImageFile):
     def __init__(
         self,
         image,
@@ -100,31 +101,150 @@ class Image(ImageFile):
             tooltip (str): The tooltip to use when hovering over the image.
             img_type (Literal["jpg", "png"]): Type of the image to create during saving.
         """
-        if type(image) in image_save_funcs:
-            # ok, we know how to save this: put it in temp dir first
-            with tempfile.TemporaryDirectory() as dir:
-                path = Path(dir) / ("image." + img_type)
-                image_save_funcs[type(image)](
-                    image=image,
-                    path=path,
-                    width=width,
-                    height=height,
-                    dpi=dpi,
-                    units=units,
-                )
-                # now we create the ImageFile object
-                # which will also move it into the store
-                super().__init__(
-                    path=path,
-                    page_info=page_info,
-                    link_type=link_type,
-                    text=text,
-                    tooltip=tooltip,
-                    allow_copy=True,
-                    use_hash=True,
-                )
-        else:
-            raise ValueError("Unsupported image type")
+        with tempfile.TemporaryDirectory() as dir:
+            path = Path(dir) / ("image." + img_type)
+            # for matplotlib
+            # first we need to convert the units if given
+            if width is not None or height is not None:
+                if units != "in":
+                    if units == "cm":
+                        factor = 1 / 2.54
+                    elif units == "mm":
+                        factor = 1 / (10 * 2.54)
+                    else:
+                        raise ValueError(
+                            f"unit {units} not supported. Must be one of 'in', 'cm' or 'mm'."
+                        )
+                    width = width * factor if width is not None else None
+                    height = height * factor if height is not None else None
+
+                # if only one of the two is set, we infer the other
+                if width is None and height is not None:
+                    old_width = image.get_figwidth()
+                    old_height = image.get_figheight()
+                    width = old_width * (height / old_height)
+                elif width is not None and height is None:
+                    old_width = image.get_figwidth()
+                    old_height = image.get_figheight()
+                    height = old_height * (width / old_width)
+
+                # now we set the new figure height, but on a copy of the figure
+                image = deepcopy(image)
+                image.set_size_inches(w=width, h=height)
+
+            # save it
+            image.savefig(path, dpi="figure" if dpi is None else dpi)
+
+            super().__init__(
+                path=path,
+                page_info=page_info,
+                link_type=link_type,
+                text=text,
+                tooltip=tooltip,
+                allow_copy=True,
+                use_hash=True,
+            )
+
+
+@register_md("Seaborn")
+class Seaborn(Matplotlib):
+    def __init__(
+        self,
+        image,
+        page_info: PageInfo,
+        width: Optional[float] = None,
+        height: Optional[float] = None,
+        units: Literal["in", "cm", "mm"] = "in",
+        dpi: Optional[float] = None,
+        link_type: Literal["inline", "ref"] = "inline",
+        text: str = "",
+        tooltip: str = "",
+        img_type: Literal["jpg", "png"] = "png",
+    ) -> None:
+        """
+        An image object for inclusion on a page.
+
+        Args:
+            image: The image to be included. Has to be supported by one of the handlers, which
+                are Matplotlib, plotnine and seaborn.
+            page_info (PageInfo): PageInfo for the page where the image should be included.
+            width (Optional[float]): width of the image
+            height (Optional[float]): height of the image
+            units (Literal["in", "cm", "mm"]): units of the width and height
+            dpi (Optional[float]): dpi of the image output.
+            link_type (Literal["inline", "ref"]): Link-type to be used.
+            text (str): The alternative text if the image is not available.
+            tooltip (str): The tooltip to use when hovering over the image.
+            img_type (Literal["jpg", "png"]): Type of the image to create during saving.
+        """
+
+        super().__init__(
+            image.figure,
+            page_info=page_info,
+            width=width,
+            height=height,
+            units=units,
+            dpi=dpi,
+            link_type=link_type,
+            text=text,
+            tooltip=tooltip,
+            img_type=img_type,
+        )
+
+
+@register_md("Plotnine")
+class Plotnine(ImageFile):
+    def __init__(
+        self,
+        image,
+        page_info: PageInfo,
+        width: Optional[float] = None,
+        height: Optional[float] = None,
+        units: Literal["in", "cm", "mm"] = "in",
+        dpi: Optional[float] = None,
+        link_type: Literal["inline", "ref"] = "inline",
+        text: str = "",
+        tooltip: str = "",
+        img_type: Literal["jpg", "png"] = "png",
+    ) -> None:
+        """
+        An image object for inclusion on a page.
+
+        Args:
+            image: The image to be included. Has to be supported by one of the handlers, which
+                are Matplotlib, plotnine and seaborn.
+            page_info (PageInfo): PageInfo for the page where the image should be included.
+            width (Optional[float]): width of the image
+            height (Optional[float]): height of the image
+            units (Literal["in", "cm", "mm"]): units of the width and height
+            dpi (Optional[float]): dpi of the image output.
+            link_type (Literal["inline", "ref"]): Link-type to be used.
+            text (str): The alternative text if the image is not available.
+            tooltip (str): The tooltip to use when hovering over the image.
+            img_type (Literal["jpg", "png"]): Type of the image to create during saving.
+        """
+
+        with tempfile.TemporaryDirectory() as dir:
+            path = Path(dir) / ("image." + img_type)
+            image.save(
+                path,
+                width=width,
+                height=height,
+                dpi=dpi,
+                units=units,
+                verbose=False,
+            )
+            # now we create the ImageFile object
+            # which will also move it into the store
+            super().__init__(
+                path=path,
+                page_info=page_info,
+                link_type=link_type,
+                text=text,
+                tooltip=tooltip,
+                allow_copy=True,
+                use_hash=True,
+            )
 
 
 @register_md("PIL")
@@ -327,108 +447,3 @@ class Plotly(File):
         self._body = SpacedText(body_html, (2, 2))
         self._back = SpacedText(back_html, (2, 2)) + comment_ids(plotly_id)
         self._settings = settings
-
-
-image_save_funcs = dict()
-
-
-# for plotnine
-with suppress(ImportError):
-    from plotnine.ggplot import ggplot
-
-    def ggplot_save(
-        image: ggplot,
-        path: Path,
-        width: Optional[float] = None,
-        height: Optional[float] = None,
-        dpi: Optional[float] = None,
-        units: Literal["in", "cm", "mm"] = "in",
-        **kwargs,
-    ):
-        image.save(
-            path,
-            width=width,
-            height=height,
-            dpi=dpi,
-            units=units,
-            verbose=False,
-            **kwargs,
-        )
-
-    image_save_funcs[ggplot] = ggplot_save
-
-# for matplotlib
-with suppress(ImportError):
-    from matplotlib.figure import Figure as MplFigure
-
-    def matplotlib_save(
-        image: MplFigure,
-        path: Path,
-        width: Optional[float] = None,
-        height: Optional[float] = None,
-        dpi: Optional[float] = None,
-        units: Literal["in", "cm", "mm"] = "in",
-        **kwargs,
-    ):
-        # first we need to convert the units if given
-        if width is not None or height is not None:
-            if units != "in":
-                if units == "cm":
-                    factor = 1 / 2.54
-                elif units == "mm":
-                    factor = 1 / (10 * 2.54)
-                else:
-                    raise ValueError(
-                        f"unit {units} not supported. Must be one of 'in', 'cm' or 'mm'."
-                    )
-                width = width * factor if width is not None else None
-                height = height * factor if height is not None else None
-
-            # if only one of the two is set, we infer the other
-            if width is None and height is not None:
-                old_width = image.get_figwidth()
-                old_height = image.get_figheight()
-                width = old_width * (height / old_height)
-            elif width is not None and height is None:
-                old_width = image.get_figwidth()
-                old_height = image.get_figheight()
-                height = old_height * (width / old_width)
-
-            # now we set the new figure height, but on a copy of the figure
-            image = deepcopy(image)
-            image.set_size_inches(w=width, h=height)
-
-        # save it
-        image.savefig(path, dpi="figure" if dpi is None else dpi, **kwargs)
-
-    image_save_funcs[MplFigure] = matplotlib_save
-
-
-# seaborn; if seaborn loads we can assume so does matplotlib
-with suppress(ImportError):
-    from seaborn import FacetGrid as SnsFacetGrid
-    from seaborn import JointGrid as SnsJointGrid
-    from seaborn import PairGrid as SnsPairGrid
-
-    def seaborn_save(
-        image: Union[SnsFacetGrid, SnsJointGrid, SnsPairGrid],
-        path: Path,
-        width: Optional[float] = None,
-        height: Optional[float] = None,
-        dpi: Optional[float] = None,
-        units: Literal["in", "cm", "mm"] = "in",
-        **kwargs,
-    ):
-        matplotlib_save(
-            image=image.figure,
-            path=path,
-            width=width,
-            height=height,
-            dpi=dpi,
-            units=units,
-            **kwargs,
-        )
-
-    image_save_funcs[SnsFacetGrid] = seaborn_save
-    image_save_funcs[SnsJointGrid] = seaborn_save
-    image_save_funcs[SnsPairGrid] = seaborn_save

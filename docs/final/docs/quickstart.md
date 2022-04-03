@@ -14,7 +14,7 @@ It is a very brief example of an page with a table and an image
 as well as some text, like here.
 
 ```python title="docs/staging/quickstart.py"
---8<-- 'docs/quickstart_store/quickstart-817e461cd1179ff81359a66b669105df.py'
+--8<-- 'docs/quickstart_store/quickstart-9203a497d0a71ee9295c90b5ba8bc076.py'
 ```
 
 We are quickly analyzing the mtcars dataset 
@@ -51,7 +51,7 @@ var table = new Tabulator('#tabulator_id-0', {"layout": "fitDataTable", "paginat
 === "Code"
 
     ```python title="docs/staging/quickstart.py" linenums="34"
-    p.Image(
+    p.Plotnine(
         (
             p9.ggplot(mtcars, p9.aes("wt", "mpg", color="factor(gear)"))
             + p9.geom_point()

@@ -31,7 +31,7 @@ def do_quickstart(report: Report) -> None:
 
     with p.H2("Some simple plots"):
 
-        p.Image(
+        p.Plotnine(
             (
                 p9.ggplot(mtcars, p9.aes("wt", "mpg", color="factor(gear)"))
                 + p9.geom_point()

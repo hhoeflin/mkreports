@@ -14,7 +14,7 @@ javascript:
 ??? code "Code"
 
     ```python title="docs/staging/images.py"
-    --8<-- 'docs/usage/images_store/images-b5099502122bf9022abb7cb12ba6bfad.py'
+    --8<-- 'docs/usage/images_store/images-904b9e74011d8731fcc104997285400a.py'
     ```
 
 ## Supported formats
@@ -78,7 +78,7 @@ image manually and then include it as an `ImageFile` object.
 
     fig, ax = plt.subplots()
     ax.plot([1, 2, 3, 4], [1, 4, 2, 3])
-    p.Image(fig)
+    p.Matplotlib(fig)
 
 
     ```
@@ -103,7 +103,7 @@ image manually and then include it as an `ImageFile` object.
         """
     )
 
-    p.Image(
+    p.Plotnine(
         ggplot(mtcars, aes("wt", "mpg", color="factor(gear)"))
         + geom_point()
         + stat_smooth(method="lm")
@@ -141,7 +141,7 @@ image manually and then include it as an `ImageFile` object.
     df = sns.load_dataset("anscombe")
 
     # Show the results of a linear regression within each dataset
-    p.Image(
+    p.Seaborn(
         sns.lmplot(
             x="x",
             y="y",
@@ -262,7 +262,7 @@ internally how it is rendered may change.
 
     ```python title="docs/staging/images.py" linenums="139"
     p.H4("Larger")
-    p.Image(
+    p.Plotnine(
         ggplot(mtcars, aes("wt", "mpg", color="factor(gear)"))
         + geom_point()
         + stat_smooth(method="lm")
@@ -271,7 +271,7 @@ internally how it is rendered may change.
         height=6,
     )
     p.H4("Smaller")
-    p.Image(
+    p.Plotnine(
         ggplot(mtcars, aes("wt", "mpg", color="factor(gear)"))
         + geom_point()
         + stat_smooth(method="lm")
@@ -280,6 +280,16 @@ internally how it is rendered may change.
         height=3,
     )
 
+
     ```
 
 ---
+
+## Images next to each other
+
+Images can also be placed next to each other, if there is enough
+space. Just specify them directly one after the other and if there
+is enough space, they will be placed next to each other.
+
+![](images_store/image-a35a8295fcfec10230f14551e39d8969.png)
+![](images_store/image-a35a8295fcfec10230f14551e39d8969.png)
