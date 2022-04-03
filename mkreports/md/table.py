@@ -110,6 +110,8 @@ class DataTable(File):
         table_kwargs: Optional[dict] = None,
         downloads: bool = False,
         table_settings: Optional[dict] = None,
+        json_name: str = "datatable",
+        use_hash: bool = True,
     ):
         """
         Initialize the table using the DataTable javascript library.
@@ -132,12 +134,14 @@ class DataTable(File):
             downloads (bool): Should download buttons be shown?
             table_settings (Optional[dict]): Dictionary with the DataTable settings.
                 Anything set here will overwrite existing ones.
+            json_name (str): Name of the saved file (before hash if hash=True)
+            use_hash (bool): Should the name of the copied image be updated with a hash (Default: True)
         """
         assert page_info.idstore is not None
         assert page_info.page_path is not None
 
         with tempfile.TemporaryDirectory() as dir:
-            path = Path(dir) / ("datatable.json")
+            path = Path(dir) / (f"{json_name}.json")
             # here we use the split method; the index and columns
             if max_rows is not None and table.shape[0] > max_rows:
                 logger.warning(
@@ -154,7 +158,7 @@ class DataTable(File):
 
             # Make sure the file is moved to the right place
             super().__init__(
-                path=path, page_info=page_info, allow_copy=True, use_hash=True
+                path=path, page_info=page_info, allow_copy=True, use_hash=use_hash
             )
 
         javascript_settings = [
@@ -326,6 +330,8 @@ class Tabulator(File):
         col_settings: Optional[dict] = None,
         downloads: bool = False,
         table_kwargs: Optional[dict] = None,
+        json_name: str = "tabulator",
+        use_hash: bool = True,
     ):
         """
 
@@ -344,13 +350,15 @@ class Tabulator(File):
             downloads (bool): Add download options.
             table_kwargs (Optional[dict]): Keyword args for the table
                 when serializing to json.
+            json_name (str): Name of the saved file (before hash if hash=True)
+            use_hash (bool): Should the name of the copied image be updated with a hash (Default: True)
         """
         assert page_info.idstore is not None
         assert page_info.page_path is not None
         assert page_info.javascript_path is not None
 
         with tempfile.TemporaryDirectory() as dir:
-            path = Path(dir) / ("tabulator.json")
+            path = Path(dir) / (f"{json_name}.json")
             # here we use the split method; the index and columns
             # are not useful, but the rest gets set as 'data', which we need
             if max_rows is not None and table.shape[0] > max_rows:
@@ -367,7 +375,7 @@ class Tabulator(File):
 
             # Make sure the file is moved to the right place
             super().__init__(
-                path=path, page_info=page_info, allow_copy=True, use_hash=True
+                path=path, page_info=page_info, allow_copy=True, use_hash=use_hash
             )
 
         # produce the column settings
