@@ -48,4 +48,4 @@ build-backend = "poetry.core.masonry.api"
 line-length = 88
 
 [tool.pyright]
-include = ["mkreports", "tests"]
+include = ["mkreports"]

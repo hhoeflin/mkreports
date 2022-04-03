@@ -1,10 +1,8 @@
 import os
 import shutil
-from contextlib import suppress
-from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Callable, List, Optional, Tuple, Union
+from typing import Any, List, Optional
 
 from IPython.core.magic import Magics, line_magic, magics_class
 

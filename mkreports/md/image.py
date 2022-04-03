@@ -1,15 +1,13 @@
 import inspect
 import tempfile
-from contextlib import suppress
 from copy import deepcopy
 from pathlib import Path
-from typing import List, Literal, Optional, Union
+from typing import Literal, Optional, Union
 
 from mdutils.tools.Image import Image as UtilsImage
 
 from .base import comment_ids
 from .file import File, relpath_html
-from .handler import Handler, get_handler
 from .md_proxy import register_md
 from .settings import PageInfo, Settings
 from .text import SpacedText
@@ -84,6 +82,8 @@ class Matplotlib(ImageFile):
         text: str = "",
         tooltip: str = "",
         img_type: Literal["jpg", "png"] = "png",
+        img_name: str = "matplotlib_image",
+        use_hash=True,
     ) -> None:
         """
         An image object for inclusion on a page.
@@ -100,9 +100,11 @@ class Matplotlib(ImageFile):
             text (str): The alternative text if the image is not available.
             tooltip (str): The tooltip to use when hovering over the image.
             img_type (Literal["jpg", "png"]): Type of the image to create during saving.
+            img_name (str): Name of the saved file (before hash if hash=True)
+            use_hash (bool): Should the name of the copied image be updated with a hash (Default: True)
         """
         with tempfile.TemporaryDirectory() as dir:
-            path = Path(dir) / ("image." + img_type)
+            path = Path(dir) / (f"{img_name}.{img_type}")
             # for matplotlib
             # first we need to convert the units if given
             if width is not None or height is not None:
@@ -142,7 +144,7 @@ class Matplotlib(ImageFile):
                 text=text,
                 tooltip=tooltip,
                 allow_copy=True,
-                use_hash=True,
+                use_hash=use_hash,
             )
 
 
@@ -160,6 +162,8 @@ class Seaborn(Matplotlib):
         text: str = "",
         tooltip: str = "",
         img_type: Literal["jpg", "png"] = "png",
+        img_name: str = "seaborn_image",
+        use_hash: bool = True,
     ) -> None:
         """
         An image object for inclusion on a page.
@@ -176,6 +180,8 @@ class Seaborn(Matplotlib):
             text (str): The alternative text if the image is not available.
             tooltip (str): The tooltip to use when hovering over the image.
             img_type (Literal["jpg", "png"]): Type of the image to create during saving.
+            img_name (str): Name of the saved file (before hash if hash=True)
+            use_hash (bool): Should the name of the copied image be updated with a hash (Default: True)
         """
 
         super().__init__(
@@ -189,6 +195,8 @@ class Seaborn(Matplotlib):
             text=text,
             tooltip=tooltip,
             img_type=img_type,
+            img_name=img_name,
+            use_hash=use_hash,
         )
 
 
@@ -206,6 +214,8 @@ class Plotnine(ImageFile):
         text: str = "",
         tooltip: str = "",
         img_type: Literal["jpg", "png"] = "png",
+        img_name: str = "plotnine_image",
+        use_hash: bool = True,
     ) -> None:
         """
         An image object for inclusion on a page.
@@ -222,10 +232,12 @@ class Plotnine(ImageFile):
             text (str): The alternative text if the image is not available.
             tooltip (str): The tooltip to use when hovering over the image.
             img_type (Literal["jpg", "png"]): Type of the image to create during saving.
+            img_name (str): Name of the saved file (before hash if hash=True)
+            use_hash (bool): Should the name of the copied image be updated with a hash (Default: True)
         """
 
         with tempfile.TemporaryDirectory() as dir:
-            path = Path(dir) / ("image." + img_type)
+            path = Path(dir) / (f"{img_name}.{img_type}")
             image.save(
                 path,
                 width=width,
@@ -243,7 +255,7 @@ class Plotnine(ImageFile):
                 text=text,
                 tooltip=tooltip,
                 allow_copy=True,
-                use_hash=True,
+                use_hash=use_hash,
             )
 
 
@@ -259,6 +271,8 @@ class PIL(ImageFile):
         text: str = "",
         tooltip: str = "",
         img_type: Literal["jpg", "png"] = "png",
+        img_name: str = "pil_image",
+        use_hash: bool = True,
     ) -> None:
         """
         Create MdObj for PIL image.
@@ -270,9 +284,11 @@ class PIL(ImageFile):
             text (str): Alternative text for the image.
             tooltip (str): Tooltip when hovering over the image.
             img_type (Literal["jpg", "png"]): File-type to use when saving the image.
+            img_name (str): Name of the saved file (before hash if hash=True)
+            use_hash (bool): Should the name of the copied image be updated with a hash (Default: True)
         """
         with tempfile.TemporaryDirectory() as dir:
-            path = Path(dir) / ("pil_image." + img_type)
+            path = Path(dir) / (f"{img_name}.{img_type}")
             image.save(path)
             # now we create the ImageFile object
             # which will also move it into the store
@@ -283,7 +299,7 @@ class PIL(ImageFile):
                 text=text,
                 tooltip=tooltip,
                 allow_copy=True,
-                use_hash=True,
+                use_hash=use_hash,
             )
 
 
@@ -297,6 +313,8 @@ class Altair(File):
         self,
         altair,
         page_info: PageInfo,
+        csv_name: str = "altair",
+        use_hash: bool = True,
         **kwargs,
     ):
         """
@@ -305,12 +323,14 @@ class Altair(File):
         Args:
             altair: An altair image.
             page_info (PageInfo): PageInfo to the page where it is to be included.
+            csv_name (str): Name of the saved file (before hash if hash=True)
+            use_hash (bool): Should the name of the copied image be updated with a hash (Default: True)
         """
         assert page_info.page_path is not None
         assert page_info.idstore is not None
 
         with tempfile.TemporaryDirectory() as dir:
-            path = Path(dir) / ("altair.csv")
+            path = Path(dir) / (f"{csv_name}.csv")
             # here we use the split method; the index and columns
             # are not useful, but the rest gets set as 'data', which we need
             with path.open("w") as f:
@@ -321,7 +341,7 @@ class Altair(File):
                 path=path,
                 page_info=page_info,
                 allow_copy=True,
-                use_hash=True,
+                use_hash=use_hash,
             )
 
         # note; in the body we just insert the div.
@@ -374,6 +394,8 @@ class Plotly(File):
         self,
         plotly,
         page_info: PageInfo,
+        json_name: str = "plotly",
+        use_hash: bool = True,
         **kwargs,
     ):
         """
@@ -382,12 +404,14 @@ class Plotly(File):
         Args:
             plotly (): The plotly graph to plot.
             page_info (PageInfo): PageInfo to the page where it is to be included.
+            json_name (str): Name of the saved file (before hash if hash=True)
+            use_hash (bool): Should the name of the copied image be updated with a hash (Default: True)
         """
         assert page_info.page_path is not None
         assert page_info.idstore is not None
 
         with tempfile.TemporaryDirectory() as dir:
-            path = Path(dir) / ("plotly.json")
+            path = Path(dir) / (f"{json_name}.json")
             # here we use the split method; the index and columns
             # are not useful, but the rest gets set as 'data', which we need
             with path.open("w") as f:
@@ -395,7 +419,7 @@ class Plotly(File):
 
             # Make sure the file is moved to the rigth place
             super().__init__(
-                path=path, page_info=page_info, allow_copy=True, use_hash=True
+                path=path, page_info=page_info, allow_copy=True, use_hash=use_hash
             )
 
         # note; in the body we just insert the div.

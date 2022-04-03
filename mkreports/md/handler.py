@@ -34,9 +34,7 @@ def create_default_handlers(md_ns) -> List[Handler]:
             )
         )
 
-    handlers.append(
-        Handler(name="mdobj", class_type=MdObj, func=lambda x, *args, **kwargs: x)
-    )
+    handlers.append(Handler(name="mdobj", class_type=MdObj, func=lambda x: x))
 
     handlers.extend(create_image_handlers(md_ns))
 

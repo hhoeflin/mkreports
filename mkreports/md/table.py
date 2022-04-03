@@ -1,13 +1,11 @@
 import copy
 import inspect
 import logging
-import shutil
 import tempfile
 from copy import deepcopy
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-import importlib_resources as imp_res
 import pandas as pd
 from mkreports.utils import func_ref, serialize_json, snake_to_text
 from pandas.api import types

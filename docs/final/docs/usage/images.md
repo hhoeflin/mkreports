@@ -64,7 +64,7 @@ image manually and then include it as an `ImageFile` object.
 
     For many scientific graphing purposes, `matplotlib` is either the direct
     choice or the backend being used for plotting. 
-    ![](images_store/image-9eacde53d07030438d059ea6a19b8285.png)
+    ![](images_store/matplotlib_image-9eacde53d07030438d059ea6a19b8285.png)
 
 === "Code"
 
@@ -91,7 +91,7 @@ image manually and then include it as an `ImageFile` object.
 
     Any plots created by `plotnine` can be included directly. The code below
     is from the beginner example of the library.
-    ![](images_store/image-41a828f4fba906604a976d3f9ad1138a.png)
+    ![](images_store/plotnine_image-41a828f4fba906604a976d3f9ad1138a.png)
 
 === "Code"
 
@@ -122,7 +122,7 @@ image manually and then include it as an `ImageFile` object.
     Another well known option is Seaborn. The interface is similar to the 
     ones before. Under the hood, the `figure` attribute of the seaborn plot is 
     accessed and saved in the same fashion as for matplotlib.
-    ![](images_store/image-c3fb8cb2918f73795ffbae41eb5404ae.png)
+    ![](images_store/seaborn_image-c3fb8cb2918f73795ffbae41eb5404ae.png)
 
 === "Code"
 
@@ -252,11 +252,11 @@ internally how it is rendered may change.
 
     #### Larger
 
-    ![](images_store/image-3ec0200f5d28f661895e19b17605e80f.png)
+    ![](images_store/plotnine_image-3ec0200f5d28f661895e19b17605e80f.png)
 
     #### Smaller
 
-    ![](images_store/image-938d1d3f8e637526be808c610415dfb9.png)
+    ![](images_store/plotnine_image-938d1d3f8e637526be808c610415dfb9.png)
 
 === "Code"
 
@@ -291,5 +291,5 @@ Images can also be placed next to each other, if there is enough
 space. Just specify them directly one after the other and if there
 is enough space, they will be placed next to each other.
 
-![](images_store/image-a35a8295fcfec10230f14551e39d8969.png)
-![](images_store/image-a35a8295fcfec10230f14551e39d8969.png)
+![](images_store/plotnine_image-a35a8295fcfec10230f14551e39d8969.png)
+![](images_store/plotnine_image-a35a8295fcfec10230f14551e39d8969.png)

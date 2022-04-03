@@ -46,7 +46,7 @@ var table = new Tabulator('#tabulator_id-0', {"layout": "fitDataTable", "paginat
 
 === "Content"
 
-    ![](quickstart_store/image-41a828f4fba906604a976d3f9ad1138a.png)
+    ![](quickstart_store/plotnine_image-41a828f4fba906604a976d3f9ad1138a.png)
 
 === "Code"
 
