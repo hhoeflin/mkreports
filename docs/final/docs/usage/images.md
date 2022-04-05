@@ -91,7 +91,7 @@ image manually and then include it as an `ImageFile` object.
 
     Any plots created by `plotnine` can be included directly. The code below
     is from the beginner example of the library.
-    ![](images_store/plotnine_image-41a828f4fba906604a976d3f9ad1138a.png)
+    ![](images_store/plotnine_image-9446dc7872bbfae6dd221f72376fc7bb.png)
 
 === "Code"
 
@@ -218,7 +218,7 @@ image manually and then include it as an `ImageFile` object.
 ---
 
 <script>
-    fetch('../images_store/plotly-2c4e085bcb294e03c4c01a147570a8c5.json')
+    fetch('../images_store/plotly-920e2f4c0fce23ec31200a1619f50e95.json')
         .then(function (response) {
             return response.json();
         })
@@ -252,11 +252,11 @@ internally how it is rendered may change.
 
     #### Larger
 
-    ![](images_store/plotnine_image-3ec0200f5d28f661895e19b17605e80f.png)
+    ![](images_store/plotnine_image-8538e0eb406bf0315a35ac3270cf7c7f.png)
 
     #### Smaller
 
-    ![](images_store/plotnine_image-938d1d3f8e637526be808c610415dfb9.png)
+    ![](images_store/plotnine_image-4efe8b0294d554ffefcdb815b8010041.png)
 
 === "Code"
 
@@ -291,5 +291,5 @@ Images can also be placed next to each other, if there is enough
 space. Just specify them directly one after the other and if there
 is enough space, they will be placed next to each other.
 
-![](images_store/plotnine_image-a35a8295fcfec10230f14551e39d8969.png)
-![](images_store/plotnine_image-a35a8295fcfec10230f14551e39d8969.png)
+![](images_store/plotnine_image-a4ca255d40ff37342ccbc426ca56cc54.png)
+![](images_store/plotnine_image-a4ca255d40ff37342ccbc426ca56cc54.png)
