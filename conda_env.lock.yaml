@@ -47,6 +47,7 @@ dependencies:
     - gitdb==4.0.9
     - gitpython==3.1.27
     - greenlet==1.1.2
+    - griffe==0.16.0
     - idna==3.3
     - immutabledict==2.2.1
     - importlib-metadata==4.11.3
@@ -70,6 +71,7 @@ dependencies:
     - mkdocs-material==8.2.8
     - mkdocs-material-extensions==1.0.3
     - mkdocstrings==0.18.1
+    - mkdocstrings-python==0.6.6
     - mkdocstrings-python-legacy==0.2.2
     - more-itertools==8.12.0
     - numpy==1.22.3

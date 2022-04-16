@@ -17,19 +17,18 @@ dependencies = [
     "mdutils >=1.3.1",
     "PyYAML >=6.0",
     "immutabledict >=2.2.1",
-    "pytest >=6.2.5",
     "tabulate >=0.8.9",
     "deepmerge >=0.3.0",
     "python-frontmatter >=1.0.0",
     "anytree >=2.8.0",
     "intervaltree >=3.1.0",
     "more-itertools >=8.12.0",
-    "plotly >=5.5.0",
     "typer >=0.4.0",
-    "mkdocstrings >=0.17.0",
+    "mkdocstrings[python] >=0.17.0",
     "GitPython >=3.1.26",
     "parse >=1.19.0",
     "importlib-resources >=5.4.0",
+    "sh",
 ]
 
 [project.optional-dependencies]
@@ -40,11 +39,26 @@ dev = [
     "pytest-pudb >=0.7.0",
     "plotnine >=0.8.0",
     "matplotlib >=3.4.3",
+    "plotly >=5.5.0",
     "seaborn >=0.11.2",
     "altair >=4.1.0",
     "ipython >=7.30.1",
+    "black",
+    "flakehell"
 ]
 
 [project.urls]
 Home = "https://hhoeflin.github.io/mkreports/"
 Repository = "https://github.com/hhoeflin/mkreports"
+
+[project.scripts]
+mkreports = "mkreports.cli:app"
+
+[tool.pyright]
+include=['mkreports']
+
+[tool.black]
+line-length = 88
+
+[tool.flakehell]
+max-line-length = 88

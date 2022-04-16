@@ -8,6 +8,7 @@ from IPython.core.magic import Magics, line_magic, magics_class
 
 from . import md
 from .code_context import do_layout
+from .config import get_mkreports_dir
 from .md.handler import Handler, create_default_handlers, get_handler
 from .report import Page, Report
 
@@ -29,15 +30,12 @@ class ConsoleWriter(Magics):
         self.stored_code = []
 
         # identify an mkreport
-        if "MKREPORTS_DIR" in os.environ:
-            self.report = Report.create(
-                os.environ["MKREPORTS_DIR"],
-                report_name="Mkreports console",
-                exist_ok=True,
-            )
-            self._open_console()
-        else:
-            raise Exception("No 'MKREPORTS_DIR' in environment")
+        self.report = Report.create(
+            get_mkreports_dir(),
+            report_name="Mkreports console",
+            exist_ok=True,
+        )
+        self._open_console()
         self._set_default_handlers()
 
     def _set_default_handlers(self):

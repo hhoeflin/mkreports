@@ -16,6 +16,7 @@ from frontmatter.default_handlers import DEFAULT_POST_TEMPLATE, YAMLHandler
 from immutabledict import immutabledict
 
 from .code_context import CodeContext, Layouts
+from .config import get_mkreports_dir
 from .exceptions import (IncorrectSuffixError, ReportExistsError,
                          ReportNotExistsError, ReportNotValidError)
 from .md import (IDStore, MdObj, MdProxy, PageInfo, Raw, SpacedText, Text,
@@ -124,12 +125,8 @@ class Report:
         """
         # need to ensure it is of type Path
         if path is None:
-            try:
-                path = os.environ["MKREPORTS_DIR"]
-            except Exception:
-                raise ValueError(
-                    "If no report path is given, the 'MKREPORTS_DIR'  environment variable has to be set."
-                )
+            path = get_mkreports_dir()
+
         self._path = Path(path).absolute()
         # first check if the path exists and is not empty and return error if that is not ok
         if not self.path.exists():
