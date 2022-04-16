@@ -6,6 +6,7 @@ import sh
 import typer
 
 from .config import get_mkreports_dir
+from .report import Report
 
 app = typer.Typer()
 
@@ -26,7 +27,7 @@ def _process_err(line: str):
 
 @app.command()
 def serve(
-    mkreports_dir: Optional[Path] = typer.Option(
+    mkreports_dir: Optional[Path] = typer.Argument(
         None,
         help="mkreports directory to use to serve out of. If not given, then default directory as shown by `dir` subcommand used.",
     ),
@@ -84,8 +85,26 @@ def serve(
 
 
 @app.command()
-def new():
-    pass
+def new(
+    mkreports_dir: Optional[Path] = typer.Argument(
+        None,
+        help="mkreports directory to use to serve out of. If not given, then default directory as shown by `dir` subcommand used.",
+    ),
+    name: str = typer.Option("Mkreports report", help="Name of the report"),
+):
+    """Create a new mkreports report."""
+    if mkreports_dir is None:
+        mkreports_dir = get_mkreports_dir()
+    try:
+        Report.create(mkreports_dir, report_name=name)
+        typer.echo(f"Create report in {mkreports_dir}")
+    except:
+        if mkreports_dir.is_dir():
+            typer.echo(
+                f"Directory already exists and could not create report in {mkreports_dir}"
+            )
+        else:
+            typer.echo(f"Could not create report in {mkreports_dir}")
 
 
 if __name__ == "__main__":
