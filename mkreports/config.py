@@ -31,10 +31,11 @@ def repo_root(path: Path = Path(".")) -> Optional[Path]:
 
 
 def set_mkreports_dir(
-    mkreports_dir: Path = Path(
-        os.environ.get("MKREPORTS_DIR", Path(tempfile.gettempdir()) / "mkreports")
-    ),
+    mkreports_dir: Optional[Path] = None,
     repo_root_dir: Optional[Path] = repo_root(Path(os.getcwd())),
+    mkreports_root_dir: Path = Path(
+        os.environ.get("MKREPORTS_ROOT_DIR", Path(tempfile.gettempdir()) / "mkreports")
+    ),
 ):
     """
     Function to derive the ckpt directory.
@@ -43,11 +44,12 @@ def set_mkreports_dir(
     if the working directory is changed and this would be undesirable
     behavior.
     """
-    if repo_root_dir is None:
-        mkreports_dir = mkreports_dir / "default"
-    else:
-        hash_str = hashlib.md5(str(repo_root_dir.resolve()).encode()).hexdigest()
-        mkreports_dir = mkreports_dir / hash_str
+    if mkreports_dir is None:
+        if repo_root_dir is None:
+            mkreports_dir = mkreports_root_dir / "default"
+        else:
+            hash_str = hashlib.md5(str(repo_root_dir.resolve()).encode()).hexdigest()
+            mkreports_dir = mkreports_root_dir / hash_str
 
     state["mkreports_dir"] = mkreports_dir
 

@@ -16,12 +16,14 @@ class InitIpShell(NamedTuple):
 def ip_shell_init():
     # due to scope we need our own temporary directory
     with tempfile.TemporaryDirectory() as tmp_path:
+        # set the paths that are used
         tmp_path = Path(tmp_path)
+        report_dir = tmp_path / "test_report"
+        set_mkreports_dir(report_dir)
+
         ip = get_ipython()
         assert ip is not None
 
-        report_dir = tmp_path / "test_report"
-        set_mkreports_dir(report_dir)
         report = Report.create(report_dir, "Test report")
 
         ip.run_cell("%load_ext mkreports")
