@@ -193,6 +193,28 @@ def save_yaml(obj: Any, file: Path) -> None:
         yaml.dump(obj, f, default_flow_style=False)
 
 
+def _merge_nav_lists(
+    nav_list_source: List[NavEntry],
+    nav_list_target: List[NavEntry],
+    nav_pref: Literal["S", "T"] = "T",
+) -> List[NavEntry]:
+
+    nav_list_source_dict = {item.loc: item for item in nav_list_source}
+    nav_list_target_dict = {item.loc: item for item in nav_list_target}
+
+    # should files in Self or Other have preference
+    if nav_pref == "T":
+        for key, value in nav_list_source_dict.items():
+            if key not in nav_list_target_dict:
+                nav_list_target_dict[key] = value
+    elif nav_pref == "S":
+        nav_list_target_dict.update(nav_list_source_dict)
+    else:
+        raise ValueError(f"Unknown preference {nav_pref}. Has to be 'S' or 'O'")
+
+    return list(nav_list_target_dict.values())
+
+
 class ReportSettings(MutableMapping):
     def __init__(self, file: Path):
         self._file = file
@@ -223,13 +245,15 @@ class ReportSettings(MutableMapping):
     def nav_list(self, nav_list: List[NavEntry]):
         self["nav"] = navlist_to_mkdocs(nav_list)
 
-    def append_nav_entry(self, entry: Union[Path, NavEntry]) -> None:
-        if isinstance(entry, Path):
-            entry = path_to_nav_entry(entry)
+    def append_nav_entry(
+        self,
+        nav_entry: Union[Path, NavEntry],
+        nav_pref: Literal["S", "T"] = "T",
+    ) -> None:
+        if isinstance(nav_entry, Path):
+            nav_entry = path_to_nav_entry(nav_entry)
 
-        nav_list = self.nav_list
-        nav_list.append(entry)
-        self.nav_list = nav_list
+        self.nav_list = _merge_nav_lists([nav_entry], self.nav_list, nav_pref=nav_pref)
 
     @property
     def dict(self):
@@ -242,41 +266,32 @@ class ReportSettings(MutableMapping):
 
     def merge(
         self,
-        other: Union[Dict[str, Any], "ReportSettings"],
-        nav_pref: Literal["S", "O"] = "S",
+        source: Union[Dict[str, Any], "ReportSettings"],
+        nav_pref: Literal["S", "T"] = "T",
     ):
-        if isinstance(other, self.__class__):
-            other = other._dict
+        if isinstance(source, self.__class__):
+            source = source._dict
 
         # make a copy so we can manipulate it
-        other = deepcopy(other)
-        other_nav = other.get("nav", None)
-        if "nav" in other:
-            del other["nav"]
+        source = deepcopy(source)
+        source_nav = source.get("nav", None)
+        if "nav" in source:
+            del source["nav"]
 
         # now we want to merge the content; but nav items have to be
         # treated differently
-        merged_dict = merge_settings(self._dict, other)
+        merged_dict = merge_settings(self._dict, source)
 
-        if other_nav is not None:
+        if source_nav is not None:
             # now we merge the navs; for this we access them as lists
-            self_nav_list = self.nav_list
-            other_nav_list = mkdocs_to_navlist(other_nav)
+            nav_list_target = self.nav_list
+            nav_list_source = mkdocs_to_navlist(source_nav)
 
-            self_nav_list_dict = {item.loc: item for item in self_nav_list}
-            other_nav_list_dict = {item.loc: item for item in other_nav_list}
-
-            # should files in Self or Other have preference
-            if nav_pref == "S":
-                for key, value in other_nav_list_dict.items():
-                    if key not in self_nav_list_dict:
-                        self_nav_list_dict[key] = value
-            elif nav_pref == "O":
-                self_nav_list_dict.update(other_nav_list_dict)
-            else:
-                raise ValueError(f"Unknown preference {nav_pref}. Has to be 'S' or 'O'")
-
-            combined_nav = navlist_to_mkdocs(list(self_nav_list_dict.values()))
+            combined_nav = _merge_nav_lists(
+                nav_list_source=nav_list_source,
+                nav_list_target=nav_list_target,
+                nav_pref=nav_pref,
+            )
 
             merged_dict["nav"] = combined_nav
 
