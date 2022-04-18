@@ -22,7 +22,9 @@ nav:
   - Code Blocks: usage/code_blocks.md
   - Sidebar: usage/sidebar.md
 - Reference:
+  - cli: Reference/cli.md
   - code_context: Reference/code_context.md
+  - config: Reference/config.md
   - docs: Reference/docs.md
   - exceptions: Reference/exceptions.md
   - ipython: Reference/ipython.md

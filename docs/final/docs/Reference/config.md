@@ -1,0 +1,5 @@
+---
+{}
+---
+
+::: mkreports.config
