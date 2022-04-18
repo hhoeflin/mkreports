@@ -51,10 +51,10 @@ settings_merger = Merger(
     [(list, [strategy_append_new]), (dict, ["merge"]), (set, ["union"])],
     # next, choose the fallback strategies,
     # applied to all other types:
-    ["override"],
+    ["use_existing"],
     # finally, choose the strategies in
     # the case where the types conflict:
-    ["override"],
+    ["use_existing"],
 )
 
 
