@@ -1,11 +1,10 @@
-import os
 import tempfile
 from pathlib import Path
 from typing import Any, List, NamedTuple
 
 import pytest
 from IPython.testing.globalipapp import get_ipython
-from mkreports import Report
+from mkreports import Report, set_mkreports_dir
 
 
 class InitIpShell(NamedTuple):
@@ -22,8 +21,8 @@ def ip_shell_init():
         assert ip is not None
 
         report_dir = tmp_path / "test_report"
+        set_mkreports_dir(report_dir)
         report = Report.create(report_dir, "Test report")
-        os.environ["MKREPORTS_DIR"] = str(report_dir)
 
         ip.run_cell("%load_ext mkreports")
         ip.run_cell("%matplotlib inline")
