@@ -8,7 +8,7 @@ included.
 """
 import shutil
 from pathlib import Path
-from typing import Any, Dict, Mapping, Optional, Union
+from typing import Any, Dict, Literal, Mapping, Optional, Union
 
 import yaml
 from immutabledict import immutabledict
@@ -16,7 +16,7 @@ from immutabledict import immutabledict
 from .config import get_mkreports_dir
 from .exceptions import (ReportExistsError, ReportNotExistsError,
                          ReportNotValidError)
-from .page import Page
+from .page import Page, merge_pages
 from .settings import NavEntry, ReportSettings, path_to_nav_entry
 from .utils import repo_root
 
@@ -59,6 +59,33 @@ main_html_override = """
   {% endif %}
 {% endblock %}
 """
+
+
+def normalize_nav_entry(nav_entry: Union[str, Path, NavEntry]) -> NavEntry:
+    """
+    Normalize a nav entry
+
+    Ensures that if a string or Path is given, is turned into a NavEntry.
+
+    Args:
+        nav_entry (Union[str, Path, NavEntry]): The str, path or nav_entry to use.
+
+    Returns:
+
+    """
+    if isinstance(nav_entry, (str, Path)):
+        path = Path(nav_entry)
+        if path.suffix == "":
+            path = path.with_suffix(".md")
+        nav_entry = path_to_nav_entry(path)
+    else:
+        path = nav_entry.loc
+        assert isinstance(path, Path)
+
+    if path.suffix != ".md":
+        raise ValueError(f"{path} needs to have extension '.md'")
+
+    return nav_entry
 
 
 class Report:
@@ -286,22 +313,10 @@ class Report:
             Page: An object representing a new page.
 
         """
-        # if the page_name is just a string, we turn it into a dictionary
-        # based on the hierarchical names
-        if isinstance(page_name, (str, Path)):
-            path = Path(page_name)
-            if path.suffix == "":
-                path = path.with_suffix(".md")
-            nav_entry = path_to_nav_entry(path)
-        else:
-            nav_entry = page_name
-            path = nav_entry[1]
-            assert isinstance(path, Path)
 
-        if path.suffix == "":
-            path = path.with_suffix(".md")
-        if path.suffix != ".md":
-            raise ValueError(f"{path} needs to have extension '.md'")
+        nav_entry = normalize_nav_entry(page_name)
+        path = nav_entry.loc
+        assert isinstance(path, Path)
 
         # if the file already exists, just return a 'Page',
         # else create a new nav-entry and the file and return a 'Page'
@@ -331,6 +346,38 @@ class Report:
                 shutil.rmtree(page.store_path)
 
         return page
+
+    def insert_page(
+        self,
+        path_target: Union[str, Path, NavEntry],
+        path_source: Path,
+        mode: Literal["S", "T", "ST", "TS"] = "TS",
+    ):
+        """
+        Insert a page into the report.
+
+        This function can take an existing page (can also just be a markdown
+            file) and inserts it into the page.
+
+        Args:
+            path_source (Path): The file to insert. Expected to be a markdown file.
+            path_target (Union[Path, NavEntry]): Path or NavEntry where the page should be
+                inserted.
+            mode (Literal["S", "T", "ST", "TS"]): Insertion mode. If 'S', then only
+                the target is overwritten with the source. If 'T', then the
+                target is left as is, if it exists. For 'ST', the source is prepended,
+                for 'TS', the source is appended to the target.
+        """
+        nav_entry = normalize_nav_entry(path_target)
+        assert isinstance(nav_entry.loc, Path)
+
+        if mode == "T" and not nav_entry.loc.exists():
+            # force source being used
+            mode = "S"
+
+        target_page = self.page(path_target)  # initiating entries into the nav
+
+        merge_pages(path_source=path_source, path_target=target_page.path, mode=mode)
 
     def __eq__(self, other):
         if type(self) != type(other):

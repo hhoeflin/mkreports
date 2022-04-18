@@ -19,17 +19,19 @@ def add_md_pages(report: Report):
     Add pages written in pure markdown format.
     """
     # open the page, and copy the other one over it
-    index_page = report.page("index.md")
-    shutil.copy(Path(__file__).parent / "index.md", index_page.path)
+    report.insert_page("index.md", Path(__file__).parent / "index.md", mode="S")
 
-    markdown_page = report.page("usage/markdown.md")
-    shutil.copy(Path(__file__).parent / "markdown.md", markdown_page.path)
+    report.insert_page(
+        "usage/markdown.md", Path(__file__).parent / "markdown.md", mode="S"
+    )
 
-    plugins_page = report.page("usage/plugins.md")
-    shutil.copy(Path(__file__).parent / "plugins.md", plugins_page.path)
+    report.insert_page(
+        "usage/plugins.md", Path(__file__).parent / "plugins.md", mode="S"
+    )
 
-    ipython_page = report.page("usage/ipython.md")
-    shutil.copy(Path(__file__).parent / "ipython.md", ipython_page.path)
+    report.insert_page(
+        "usage/ipython.md", Path(__file__).parent / "ipython.md", mode="S"
+    )
 
 
 def add_code_pages(report: Report, code_dir: Path):

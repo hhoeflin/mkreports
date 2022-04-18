@@ -1,13 +1,13 @@
 import shutil
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any, Dict, List, Literal, Optional, Tuple, Union
 
 from frontmatter.default_handlers import DEFAULT_POST_TEMPLATE, YAMLHandler
 
 from .code_context import CodeContext, Layouts
 from .exceptions import IncorrectSuffixError
 from .md import (IDStore, MdObj, MdProxy, PageInfo, Raw, SpacedText, Text,
-                 merge_settings)
+                 comment, merge_settings)
 from .settings import NavEntry
 from .utils import find_comment_ids
 
@@ -43,6 +43,31 @@ def write_page(path: Union[Path, str], metadata, content) -> None:
             end_delimiter=end_delimiter,
         )
         f.write(text)
+
+
+def merge_pages(
+    path_source: Path, path_target: Path, mode: Literal["S", "T", "ST", "TS"] = "TS"
+) -> None:
+
+    if mode == "S":
+        shutil.copy(path_source, path_target)
+        return
+    elif mode == "T":
+        # nothing to do
+        return
+
+    metadata_source, content_source = load_page(path_source)
+    metadata_target, content_target = load_page(path_target)
+    if mode == "ST":
+        metadata_res = merge_settings(metadata_source, metadata_target)
+        content_res = content_source + comment("Merged file boundary") + content_target
+    elif mode == "TS":
+        metadata_res = merge_settings(metadata_target, metadata_source)
+        content_res = content_target + comment("Merged file boundary") + content_source
+    else:
+        raise ValueError("Unknown mode {mode}")
+
+    write_page(path=path_target, metadata=metadata_res, content=content_res)
 
 
 class Page:
