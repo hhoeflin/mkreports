@@ -43,6 +43,7 @@ nav:
     - settings: Reference/md/settings.md
     - table: Reference/md/table.md
     - text: Reference/md/text.md
+  - page: Reference/page.md
   - parser: Reference/parser.md
   - report: Reference/report.md
   - settings: Reference/settings.md
