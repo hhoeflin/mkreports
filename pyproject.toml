@@ -29,6 +29,7 @@ dependencies = [
     "parse >=1.19.0",
     "importlib-resources >=5.4.0",
     "sh",
+    "ipython >=7.30.1",
 ]
 
 [project.optional-dependencies]
@@ -42,7 +43,6 @@ dev = [
     "plotly >=5.5.0",
     "seaborn >=0.11.2",
     "altair >=4.1.0",
-    "ipython >=7.30.1",
     "black",
     "flakehell"
 ]

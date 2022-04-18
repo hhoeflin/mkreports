@@ -1,11 +1,14 @@
 from collections import defaultdict
+from collections.abc import MutableMapping
 from copy import deepcopy
 from pathlib import Path
-from typing import Any, Dict, List, Mapping, NamedTuple, Sequence, Tuple, Union
+from typing import (Any, Dict, List, Literal, Mapping, NamedTuple, Sequence,
+                    Tuple, Union)
 
 import yaml
 from more_itertools import unique_everseen
 
+from .md import merge_settings
 from .utils import snake_to_text
 
 
@@ -19,10 +22,10 @@ class NavEntry(NamedTuple):
     """
 
     hierarchy: Sequence[str]
-    rel_path: Path
+    loc: Union[Path, str]
 
 
-Nav = List[NavEntry]
+NavList = List[NavEntry]
 MkdocsNav = List[Union[str, Mapping[str, Union[str, "MkdocsNav"]]]]
 
 
@@ -58,7 +61,7 @@ def _check_length_one(
     return list(x.items())[0]
 
 
-def mkdocs_to_nav(mkdocs_nav: MkdocsNav) -> Nav:
+def mkdocs_to_navlist(mkdocs_nav: MkdocsNav) -> NavList:
     """
     Convert an mkdocs nav to a list of NavEntry.
 
@@ -76,7 +79,7 @@ def mkdocs_to_nav(mkdocs_nav: MkdocsNav) -> Nav:
                 res.append(NavEntry([key], Path(val)))
             elif isinstance(val, List):
                 res = res + [
-                    NavEntry((key,) + tuple(h), p) for (h, p) in mkdocs_to_nav(val)
+                    NavEntry((key,) + tuple(h), p) for (h, p) in mkdocs_to_navlist(val)
                 ]
             else:
                 raise Exception("Not expected type")
@@ -85,7 +88,7 @@ def mkdocs_to_nav(mkdocs_nav: MkdocsNav) -> Nav:
     return res
 
 
-def split_nav(x: Nav) -> Tuple[List[str], Dict[str, Nav]]:
+def split_nav(x: NavList) -> Tuple[List[str], Dict[str, NavList]]:
     """
     Split the navigation entry into top level list of items and dict of Navs.
 
@@ -112,7 +115,7 @@ def split_nav(x: Nav) -> Tuple[List[str], Dict[str, Nav]]:
     return (res_list, res_nav)
 
 
-def nav_to_mkdocs(nav: Nav) -> MkdocsNav:
+def navlist_to_mkdocs(nav_list: NavList) -> MkdocsNav:
     """
     Convert a list of nav-entries into mkdocs format.
 
@@ -123,11 +126,11 @@ def nav_to_mkdocs(nav: Nav) -> MkdocsNav:
         Python object of the mkdocs.yml nav entry.
 
     """
-    split_nokey, split_keys = split_nav(nav)
+    split_nokey, split_keys = split_nav(nav_list)
     res: MkdocsNav = [str(p) for p in split_nokey]
 
     for key, val in split_keys.items():
-        mkdocs_for_key = nav_to_mkdocs(val)
+        mkdocs_for_key = navlist_to_mkdocs(val)
         # if it is a list of length 1 with a string, treat it special
         if len(mkdocs_for_key) == 1 and isinstance(mkdocs_for_key[0], str):
             res.append({key: mkdocs_for_key[0]})
@@ -149,10 +152,10 @@ def add_nav_entry(mkdocs_settings, nav_entry: NavEntry) -> Any:
         The updated mkdocs_settings
     """
     mkdocs_settings = deepcopy(mkdocs_settings)
-    nav = mkdocs_to_nav(mkdocs_settings["nav"]) + [nav_entry]
+    nav = mkdocs_to_navlist(mkdocs_settings["nav"]) + [nav_entry]
     # we need to deduplicate
     nav = list(unique_everseen(nav))
-    mkdocs_nav = nav_to_mkdocs(nav)
+    mkdocs_nav = navlist_to_mkdocs(nav)
     mkdocs_settings["nav"] = mkdocs_nav
 
     return mkdocs_settings
@@ -188,3 +191,93 @@ def save_yaml(obj: Any, file: Path) -> None:
     """
     with file.open("w") as f:
         yaml.dump(obj, f, default_flow_style=False)
+
+
+class ReportSettings(MutableMapping):
+    def __init__(self, file: Path):
+        self._file = file
+        self._dict = load_yaml(file)
+
+    def __getitem__(self, key: Any) -> Any:
+        return self._dict[key]
+
+    def __setitem__(self, key: Any, value: Any):
+        """Assign key to value, but also save to yaml-file."""
+        self._dict[key] = value
+        save_yaml(self._dict, self._file)
+
+    def __delitem__(self, key: Any):
+        del self._dict[key]
+
+    def __iter__(self):
+        return self._dict.__iter__()
+
+    def __len__(self):
+        return len(self._dict)
+
+    @property
+    def nav_list(self) -> List[NavEntry]:
+        return mkdocs_to_navlist(self._dict["nav"])
+
+    @nav_list.setter
+    def nav_list(self, nav_list: List[NavEntry]):
+        self["nav"] = navlist_to_mkdocs(nav_list)
+
+    def append_nav_entry(self, entry: Union[Path, NavEntry]) -> None:
+        if isinstance(entry, Path):
+            entry = path_to_nav_entry(entry)
+
+        nav_list = self.nav_list
+        nav_list.append(entry)
+        self.nav_list = nav_list
+
+    @property
+    def dict(self):
+        return self._dict
+
+    @dict.setter
+    def dict(self, value):
+        self._dict = value
+        save_yaml(self._dict, self._file)
+
+    def merge(
+        self,
+        other: Union[Dict[str, Any], "ReportSettings"],
+        nav_pref: Literal["S", "O"] = "S",
+    ):
+        if isinstance(other, self.__class__):
+            other = other._dict
+
+        # make a copy so we can manipulate it
+        other = deepcopy(other)
+        other_nav = other.get("nav", None)
+        if "nav" in other:
+            del other["nav"]
+
+        # now we want to merge the content; but nav items have to be
+        # treated differently
+        merged_dict = merge_settings(self._dict, other)
+
+        if other_nav is not None:
+            # now we merge the navs; for this we access them as lists
+            self_nav_list = self.nav_list
+            other_nav_list = mkdocs_to_navlist(other_nav)
+
+            self_nav_list_dict = {item.loc: item for item in self_nav_list}
+            other_nav_list_dict = {item.loc: item for item in other_nav_list}
+
+            # should files in Self or Other have preference
+            if nav_pref == "S":
+                for key, value in other_nav_list_dict.items():
+                    if key not in self_nav_list_dict:
+                        self_nav_list_dict[key] = value
+            elif nav_pref == "O":
+                self_nav_list_dict.update(other_nav_list_dict)
+            else:
+                raise ValueError(f"Unknown preference {nav_pref}. Has to be 'S' or 'O'")
+
+            combined_nav = navlist_to_mkdocs(list(self_nav_list_dict.values()))
+
+            merged_dict["nav"] = combined_nav
+
+        self.dict = merged_dict

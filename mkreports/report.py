@@ -6,7 +6,6 @@ responsible for creating a mkdocs project if it doesn't exist
 already and ensuring that the neccessary settings are all 
 included. 
 """
-import os
 import shutil
 from pathlib import Path
 from typing import Any, Dict, List, Mapping, Optional, Tuple, Union
@@ -21,8 +20,7 @@ from .exceptions import (IncorrectSuffixError, ReportExistsError,
                          ReportNotExistsError, ReportNotValidError)
 from .md import (IDStore, MdObj, MdProxy, PageInfo, Raw, SpacedText, Text,
                  merge_settings)
-from .settings import (NavEntry, add_nav_entry, load_yaml, mkdocs_to_nav,
-                       path_to_nav_entry, save_yaml)
+from .settings import NavEntry, ReportSettings, path_to_nav_entry
 from .utils import find_comment_ids, repo_root
 
 default_settings = immutabledict(
@@ -193,6 +191,10 @@ class Report:
         """
         return self.docs_dir / "javascript"
 
+    @property
+    def settings(self):
+        return ReportSettings(self.mkdocs_file)
+
     @classmethod
     def create(
         cls,
@@ -259,14 +261,13 @@ class Report:
     def _add_nav_entry(self, nav_entry) -> None:
         # check that the nav-entry is relative; if absolute,
         # make it relative to the docs_dir
-        if isinstance(nav_entry[1], str):
-            nav_entry = NavEntry(nav_entry[0], Path(nav_entry[1]))
-        if nav_entry[1].is_absolute():
-            nav_entry = NavEntry(nav_entry[0], nav_entry[1].relative_to(self.docs_dir))
+        loc = nav_entry.loc
+        if isinstance(loc, str):
+            loc = Path(loc)
+        if loc.is_absolute():  # type: ignore
+            loc = loc.relative_to(self.docs_dir)
 
-        mkdocs_settings = load_yaml(self.mkdocs_file)
-        mkdocs_settings = add_nav_entry(mkdocs_settings, nav_entry)
-        save_yaml(mkdocs_settings, self.mkdocs_file)
+        self.settings.append_nav_entry(NavEntry(nav_entry.hierarchy, loc))
 
     def get_nav_entry(self, path: Path) -> Optional[NavEntry]:
         """
@@ -284,11 +285,10 @@ class Report:
         else:
             rel_path = path
 
-        mkdocs_settings = load_yaml(self.mkdocs_file)
-        nav_list = mkdocs_to_nav(mkdocs_settings["nav"])
+        nav_list = self.settings.nav_list
 
         match_entries = [
-            nav_entry for nav_entry in nav_list if nav_entry.rel_path == rel_path
+            nav_entry for nav_entry in nav_list if nav_entry.loc == rel_path
         ]
 
         if len(match_entries) > 0:
@@ -332,6 +332,7 @@ class Report:
         else:
             nav_entry = page_name
             path = nav_entry[1]
+            assert isinstance(path, Path)
 
         if path.suffix == "":
             path = path.with_suffix(".md")
@@ -630,11 +631,9 @@ class Page:
             # merge these things into mkdocs
             # there is not allowed to be a nav here
             if "nav" in req.mkdocs:
-                raise ValueError("nav not allowed to be in mkdocs")
+                raise ValueError("nav not allowed to be in settings of markdown item")
 
-            mkdocs_settings = load_yaml(self.report.mkdocs_file)
-            mkdocs_settings = merge_settings(mkdocs_settings, req.mkdocs)
-            save_yaml(mkdocs_settings, self.report.mkdocs_file)
+            self.report.settings.merge(req.mkdocs)
 
         metadata, content = load_page(self.path)
         # we need to read the whole page anyway

@@ -1,24 +1,24 @@
 from pathlib import Path
 
 import pytest
-from mkreports.md import Settings
-from mkreports.settings import (NavEntry, mkdocs_to_nav, nav_to_mkdocs,
+from mkreports.md import Settings as MdSettings
+from mkreports.settings import (NavEntry, mkdocs_to_navlist, navlist_to_mkdocs,
                                 path_to_nav_entry)
 
 
 def test_settings():
     # merge two requirements
-    req1 = Settings(mkdocs=dict(top=["test"]))
-    req2 = Settings(mkdocs=dict(top=["test2"]))
-    req_nav = Settings(mkdocs=dict(nav=["test2"]))
+    req1 = MdSettings(mkdocs=dict(top=["test"]))
+    req2 = MdSettings(mkdocs=dict(top=["test2"]))
+    req_nav = MdSettings(mkdocs=dict(nav=["test2"]))
 
-    assert req1 + req2 == Settings(mkdocs=dict(top=["test", "test2"]))
+    assert req1 + req2 == MdSettings(mkdocs=dict(top=["test", "test2"]))
     assert req1 + req2 != req1
     assert req1 + req1 == req1
 
     # make sure an error occurs if nav is merged
     # but nav in one of both is allowed
-    assert req1 + req_nav == Settings(mkdocs=dict(nav=["test2"], top=["test"]))
+    assert req1 + req_nav == MdSettings(mkdocs=dict(nav=["test2"], top=["test"]))
     with pytest.raises(ValueError):
         req_nav + req_nav
 
@@ -46,6 +46,6 @@ def test_path_nav_entry():
     ]
 
     # make a round trip
-    nav_list = mkdocs_to_nav(mkdocs_nav)
+    nav_list = mkdocs_to_navlist(mkdocs_nav)
     assert nav_list == [base_nav, test_nav, test_nav2]
-    assert mkdocs_nav == nav_to_mkdocs(nav_list)
+    assert mkdocs_nav == navlist_to_mkdocs(nav_list)
