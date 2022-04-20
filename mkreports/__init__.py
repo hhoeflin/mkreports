@@ -1,6 +1,6 @@
 """A package to programmatically create mkdocs sites."""
 
-__version__ = "0.7.1"
+__version__ = "0.7.2"
 
 from .config import get_mkreports_dir, set_mkreports_dir
 from .docs import add_pkg_docs
