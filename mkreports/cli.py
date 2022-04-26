@@ -53,7 +53,7 @@ def serve(
         typer.echo(
             f"Directory {mkreports_dir} does not exist or is not a directory.", err=True
         )
-        typer.Exit(1)
+        raise typer.Exit(1)
 
     # we do the initial run; this needs to last for at least 5 seconds;
     # if an error occurs in this time, we do not restart
@@ -69,8 +69,8 @@ def serve(
 
                 elapsed_time = time_error - time_first_start
                 if elapsed_time.total_seconds() <= 5:
-                    typer.echo("Error occured before 5 seconds. Exitting.")
-                    typer.Exit(2)
+                    typer.echo("Error occured before 5 seconds. Exiting.")
+                    raise typer.Exit(2)
                 else:
                     typer.echo("Restarting!")
 
