@@ -10,7 +10,7 @@
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.9">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.2.8">
     
     
       
@@ -18,7 +18,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.2b4465f4.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.644de097.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.e6a45f82.min.css">
@@ -29,8 +29,9 @@
     
       
         
+        
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
@@ -389,8 +390,36 @@
   
   
     <li class="md-nav__item">
+      <a href="../../cli/" class="md-nav__link">
+        cli
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../code_context/" class="md-nav__link">
         code_context
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../config/" class="md-nav__link">
+        config
       </a>
     </li>
   
@@ -450,18 +479,18 @@
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_5" type="checkbox" id="__nav_4_5" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_7" type="checkbox" id="__nav_4_7" checked>
       
       
       
       
-        <label class="md-nav__link" for="__nav_4_5">
+        <label class="md-nav__link" for="__nav_4_7">
           md
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="md" data-md-level="2">
-        <label class="md-nav__title" for="__nav_4_5">
+        <label class="md-nav__title" for="__nav_4_7">
           <span class="md-nav__icon md-icon"></span>
           md
         </label>
@@ -531,6 +560,20 @@
     <li class="md-nav__item">
       <a href="../file/" class="md-nav__link">
         file
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../handler/" class="md-nav__link">
+        handler
       </a>
     </li>
   
@@ -630,13 +673,6 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#mkreports.md.list.List.num_items" class="md-nav__link">
-    num_items
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#mkreports.md.list.List.__init__" class="md-nav__link">
     __init__()
   </a>
@@ -653,6 +689,13 @@
           <li class="md-nav__item">
   <a href="#mkreports.md.list.List.extend" class="md-nav__link">
     extend()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mkreports.md.list.List.num_items" class="md-nav__link">
+    num_items()
   </a>
   
 </li>
@@ -729,6 +772,20 @@
           
         </ul>
       </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../page/" class="md-nav__link">
+        page
+      </a>
     </li>
   
 
@@ -996,13 +1053,6 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#mkreports.md.list.List.num_items" class="md-nav__link">
-    num_items
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#mkreports.md.list.List.__init__" class="md-nav__link">
     __init__()
   </a>
@@ -1019,6 +1069,13 @@
           <li class="md-nav__item">
   <a href="#mkreports.md.list.List.extend" class="md-nav__link">
     extend()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mkreports.md.list.List.num_items" class="md-nav__link">
+    num_items()
   </a>
   
 </li>
@@ -1040,6 +1097,7 @@
             <article class="md-content__inner md-typeset">
               
                 
+
 
   <h1>list</h1>
 
@@ -1064,21 +1122,111 @@
 
 
 <h2 id="mkreports.md.list.List" class="doc doc-heading">
-        <code>
-List            (<a title="mkreports.md.base.MdObj" href="../base/#mkreports.md.base.MdObj">MdObj</a>)
-        </code>
+          <code>List</code>
 
 
 
 </h2>
 
+
     <div class="doc doc-contents ">
+        <p class="doc doc-class-bases">
+          Bases: <code><a class="autorefs autorefs-internal" title="mkreports.md.base.MdObj" href="../base/#mkreports.md.base.MdObj">MdObj</a></code></p>
+
 
       <p>Markdown list.</p>
 
-        <details class="quote">
-          <summary>Source code in <code>mkreports/md/list.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="nd">@register_md</span><span class="p">(</span><span class="s2">&quot;List&quot;</span><span class="p">)</span>
+
+          <details class="quote">
+            <summary>Source code in <code>mkreports/md/list.py</code></summary>
+            <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 19</span>
+<span class="normal"> 20</span>
+<span class="normal"> 21</span>
+<span class="normal"> 22</span>
+<span class="normal"> 23</span>
+<span class="normal"> 24</span>
+<span class="normal"> 25</span>
+<span class="normal"> 26</span>
+<span class="normal"> 27</span>
+<span class="normal"> 28</span>
+<span class="normal"> 29</span>
+<span class="normal"> 30</span>
+<span class="normal"> 31</span>
+<span class="normal"> 32</span>
+<span class="normal"> 33</span>
+<span class="normal"> 34</span>
+<span class="normal"> 35</span>
+<span class="normal"> 36</span>
+<span class="normal"> 37</span>
+<span class="normal"> 38</span>
+<span class="normal"> 39</span>
+<span class="normal"> 40</span>
+<span class="normal"> 41</span>
+<span class="normal"> 42</span>
+<span class="normal"> 43</span>
+<span class="normal"> 44</span>
+<span class="normal"> 45</span>
+<span class="normal"> 46</span>
+<span class="normal"> 47</span>
+<span class="normal"> 48</span>
+<span class="normal"> 49</span>
+<span class="normal"> 50</span>
+<span class="normal"> 51</span>
+<span class="normal"> 52</span>
+<span class="normal"> 53</span>
+<span class="normal"> 54</span>
+<span class="normal"> 55</span>
+<span class="normal"> 56</span>
+<span class="normal"> 57</span>
+<span class="normal"> 58</span>
+<span class="normal"> 59</span>
+<span class="normal"> 60</span>
+<span class="normal"> 61</span>
+<span class="normal"> 62</span>
+<span class="normal"> 63</span>
+<span class="normal"> 64</span>
+<span class="normal"> 65</span>
+<span class="normal"> 66</span>
+<span class="normal"> 67</span>
+<span class="normal"> 68</span>
+<span class="normal"> 69</span>
+<span class="normal"> 70</span>
+<span class="normal"> 71</span>
+<span class="normal"> 72</span>
+<span class="normal"> 73</span>
+<span class="normal"> 74</span>
+<span class="normal"> 75</span>
+<span class="normal"> 76</span>
+<span class="normal"> 77</span>
+<span class="normal"> 78</span>
+<span class="normal"> 79</span>
+<span class="normal"> 80</span>
+<span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="nd">@register_md</span><span class="p">(</span><span class="s2">&quot;List&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">List</span><span class="p">(</span><span class="n">MdObj</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Markdown list.</span>
@@ -1167,7 +1315,8 @@ List            (<a title="mkreports.md.base.MdObj" href="../base/#mkreports.md.
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">list</span><span class="p">)</span>
 </code></pre></div>
-        </details>
+</td></tr></table>
+          </details>
 
 
 
@@ -1178,92 +1327,98 @@ List            (<a title="mkreports.md.base.MdObj" href="../base/#mkreports.md.
 
 
 
-  <div class="doc doc-object doc-attribute">
-
-
-
-<h3 id="mkreports.md.list.List.num_items" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">num_items</span><span class="p">:</span> <span class="nb">int</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-property"><code>property</code></small>
-      <small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
-  </span>
-
-</h3>
-
-    <div class="doc doc-contents ">
-
-      <p>Number of items in the list.</p>
-
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>int</code></td>
-      <td><p>Number of items in the list.</p></td>
-    </tr>
-  </tbody>
-</table>    </div>
-
-  </div>
 
 
 
 
 
 
-  <div class="doc doc-object doc-method">
+
+  <div class="doc doc-object doc-function">
 
 
 
 <h3 id="mkreports.md.list.List.__init__" class="doc doc-heading">
-<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">items</span><span class="o">=</span><span class="p">(),</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">items</span><span class="o">=</span><span class="p">(),</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">)</span></code>
 
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-special"><code>special</code></small>
-  </span>
 
 </h3>
+
 
     <div class="doc doc-contents ">
 
       <p>Initialize the list as a markdown object.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>items</code></td>
-        <td><code>Union[str, Iterable[Union[MdObj, str]]]</code></td>
-        <td><p>List of items in the list.</p></td>
-        <td><code>()</code></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
-      <tr>
-        <td><code>marker</code></td>
-        <td><code>Literal[&#34;-&#34;, &#34;*&#34;, &#34;+&#34;, &#34;1&#34;]</code></td>
-        <td><p>Marker to use for the list.</p></td>
-        <td><code>&#39;-&#39;</code></td>
-      </tr>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>items</code></td>
+          <td>
+                <code><span title="typing.Union">Union</span>[str, <span title="typing.Iterable">Iterable</span>[<span title="typing.Union">Union</span>[<a class="autorefs autorefs-internal" title="mkreports.md.base.MdObj" href="../base/#mkreports.md.base.MdObj">MdObj</a>, str]]]</code>
+          </td>
+          <td><p>List of items in the list.</p></td>
+          <td>
+                <code>()</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>marker</code></td>
+          <td>
+                <code><span title="typing.Literal">Literal</span>[&#39;-&#39;, &#39;*&#39;, &#39;+&#39;, &#39;1&#39;]</code>
+          </td>
+          <td><p>Marker to use for the list.</p></td>
+          <td>
+                <code>&#39;-&#39;</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
         <details class="quote">
           <summary>Source code in <code>mkreports/md/list.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">items</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">MdObj</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">(),</span>
     <span class="n">marker</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;*&quot;</span><span class="p">,</span> <span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;-&quot;</span><span class="p">,</span>
@@ -1298,6 +1453,7 @@ List            (<a title="mkreports.md.base.MdObj" href="../base/#mkreports.md.
     <span class="bp">self</span><span class="o">.</span><span class="n">_back</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">list</span><span class="o">.</span><span class="n">back</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_settings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">list</span><span class="o">.</span><span class="n">settings</span>
 </code></pre></div>
+</td></tr></table>
         </details>
     </div>
 
@@ -1305,57 +1461,78 @@ List            (<a title="mkreports.md.base.MdObj" href="../base/#mkreports.md.
 
 
 
-  <div class="doc doc-object doc-method">
+  <div class="doc doc-object doc-function">
 
 
 
 <h3 id="mkreports.md.list.List.append" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span></code>
 
 
 </h3>
+
 
     <div class="doc doc-contents ">
 
       <p>Append an item. This returns a new list, does not append to the old.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>item</code></td>
-        <td><code>Union[Text, MdObj]</code></td>
-        <td><p>The item to append to the list.</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>List</code></td>
-      <td><p>A list object with the new item appended.</p></td>
-    </tr>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>item</code></td>
+          <td>
+                <code><span title="typing.Union">Union</span>[<span title="mkreports.md.text.Text">Text</span>, <a class="autorefs autorefs-internal" title="mkreports.md.base.MdObj" href="../base/#mkreports.md.base.MdObj">MdObj</a>]</code>
+          </td>
+          <td><p>The item to append to the list.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+<th>Name</th>        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+<td><code>List</code></td>          <td>
+                <code>&#39;List&#39;</code>
+          </td>
+          <td><p>A list object with the new item appended.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
         <details class="quote">
           <summary>Source code in <code>mkreports/md/list.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Text</span><span class="p">,</span> <span class="n">MdObj</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="s2">&quot;List&quot;</span><span class="p">:</span>
+          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Text</span><span class="p">,</span> <span class="n">MdObj</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="s2">&quot;List&quot;</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Append an item. This returns a new list, does not append to the old.</span>
 
@@ -1369,6 +1546,7 @@ List            (<a title="mkreports.md.base.MdObj" href="../base/#mkreports.md.
         <span class="n">item</span> <span class="o">=</span> <span class="n">Raw</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">List</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">list</span><span class="o">.</span><span class="n">items</span> <span class="o">+</span> <span class="p">(</span><span class="n">item</span><span class="p">,),</span> <span class="n">marker</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">marker</span><span class="p">)</span>
 </code></pre></div>
+</td></tr></table>
         </details>
     </div>
 
@@ -1376,58 +1554,86 @@ List            (<a title="mkreports.md.base.MdObj" href="../base/#mkreports.md.
 
 
 
-  <div class="doc doc-object doc-method">
+  <div class="doc doc-object doc-function">
 
 
 
 <h3 id="mkreports.md.list.List.extend" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">items</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">extend</span><span class="p">(</span><span class="n">items</span><span class="p">)</span></code>
 
 
 </h3>
+
 
     <div class="doc doc-contents ">
 
       <p>Extend the list by additional items.</p>
 <p>The old list will not be updated. A new one will be created.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>items</code></td>
-        <td><code>Sequence[Union[Text, MdObj]]</code></td>
-        <td><p>The items with which to extend the list.</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>List</code></td>
-      <td><p>A new list object</p></td>
-    </tr>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>items</code></td>
+          <td>
+                <code><span title="typing.Sequence">Sequence</span>[<span title="typing.Union">Union</span>[<span title="mkreports.md.text.Text">Text</span>, <a class="autorefs autorefs-internal" title="mkreports.md.base.MdObj" href="../base/#mkreports.md.base.MdObj">MdObj</a>]]</code>
+          </td>
+          <td><p>The items with which to extend the list.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+<th>Name</th>        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+<td><code>List</code></td>          <td>
+                <code>&#39;List&#39;</code>
+          </td>
+          <td><p>A new list object</p></td>
+        </tr>
+    </tbody>
+  </table>
+
         <details class="quote">
           <summary>Source code in <code>mkreports/md/list.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">extend</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">items</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Text</span><span class="p">,</span> <span class="n">MdObj</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="s2">&quot;List&quot;</span><span class="p">:</span>
+          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span>
+<span class="normal">83</span>
+<span class="normal">84</span>
+<span class="normal">85</span>
+<span class="normal">86</span>
+<span class="normal">87</span>
+<span class="normal">88</span>
+<span class="normal">89</span>
+<span class="normal">90</span>
+<span class="normal">91</span>
+<span class="normal">92</span>
+<span class="normal">93</span>
+<span class="normal">94</span>
+<span class="normal">95</span>
+<span class="normal">96</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">extend</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">items</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Text</span><span class="p">,</span> <span class="n">MdObj</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="s2">&quot;List&quot;</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Extend the list by additional items.</span>
 
@@ -1448,6 +1654,68 @@ List            (<a title="mkreports.md.base.MdObj" href="../base/#mkreports.md.
     <span class="p">)</span>
     <span class="k">return</span> <span class="n">List</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">list</span><span class="o">.</span><span class="n">items</span> <span class="o">+</span> <span class="n">items</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">marker</span><span class="p">)</span>
 </code></pre></div>
+</td></tr></table>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="mkreports.md.list.List.num_items" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">num_items</span><span class="p">()</span></code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+      <p>Number of items in the list.</p>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+<th>Name</th>        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+<td><code>int</code></td>          <td>
+                <code>int</code>
+          </td>
+          <td><p>Number of items in the list.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+        <details class="quote">
+          <summary>Source code in <code>mkreports/md/list.py</code></summary>
+          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="nd">@property</span>
+<span class="k">def</span> <span class="nf">num_items</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Number of items in the list.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        int: Number of items in the list.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">list</span><span class="p">)</span>
+</code></pre></div>
+</td></tr></table>
         </details>
     </div>
 
@@ -1539,10 +1807,10 @@ List            (<a title="mkreports.md.base.MdObj" href="../base/#mkreports.md.
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "../../..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../../assets/javascripts/workers/search.22074ed6.min.js"}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.5e67fbfe.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.960e086b.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.c44cc438.min.js"></script>
       
     
   </body>

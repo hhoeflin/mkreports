@@ -10,7 +10,7 @@
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.9">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.2.8">
     
     
       
@@ -18,7 +18,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.2b4465f4.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.644de097.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.e6a45f82.min.css">
@@ -29,8 +29,9 @@
     
       
         
+        
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
@@ -389,8 +390,36 @@
   
   
     <li class="md-nav__item">
+      <a href="../../cli/" class="md-nav__link">
+        cli
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../code_context/" class="md-nav__link">
         code_context
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../config/" class="md-nav__link">
+        config
       </a>
     </li>
   
@@ -450,18 +479,18 @@
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_5" type="checkbox" id="__nav_4_5" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_7" type="checkbox" id="__nav_4_7" checked>
       
       
       
       
-        <label class="md-nav__link" for="__nav_4_5">
+        <label class="md-nav__link" for="__nav_4_7">
           md
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="md" data-md-level="2">
-        <label class="md-nav__title" for="__nav_4_5">
+        <label class="md-nav__title" for="__nav_4_7">
           <span class="md-nav__icon md-icon"></span>
           md
         </label>
@@ -621,6 +650,20 @@
   
   
     <li class="md-nav__item">
+      <a href="../handler/" class="md-nav__link">
+        handler
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../header/" class="md-nav__link">
         header
       </a>
@@ -729,6 +772,20 @@
           
         </ul>
       </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../page/" class="md-nav__link">
+        page
+      </a>
     </li>
   
 
@@ -1041,6 +1098,7 @@
               
                 
 
+
   <h1>containers</h1>
 
 <div class="doc doc-object doc-module">
@@ -1064,72 +1122,99 @@
 
 
 <h2 id="mkreports.md.containers.Admonition" class="doc doc-heading">
-        <code>
-Admonition            (<a title="mkreports.md.base.MdObj" href="../base/#mkreports.md.base.MdObj">MdObj</a>)
-        </code>
+          <code>Admonition</code>
 
 
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-dataclass"><code>dataclass</code></small>
-  </span>
 
 </h2>
 
+
     <div class="doc doc-contents ">
+        <p class="doc doc-class-bases">
+          Bases: <code><a class="autorefs autorefs-internal" title="mkreports.md.base.MdObj" href="../base/#mkreports.md.base.MdObj">MdObj</a></code></p>
 
-      <p>An admonition to be added to a page. Can also be collapsed. For more
-details see also the Materials-theme for mkdocs.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
-      <tr>
-        <td><code>obj</code></td>
-        <td><code>Union[MdObj, Text]</code></td>
-        <td><p>object in the admonition. Markdown object, string
-or SpacedText.</p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>title</code></td>
-        <td><code>Optional[str]</code></td>
-        <td><p>title shown in the admonition. If missing, defaults
-to 'kind'.</p></td>
-        <td><code>None</code></td>
-      </tr>
-      <tr>
-        <td><code>kind</code></td>
-        <td><code>Literal[ &#39;note&#39;, &#39;abstract&#39;, &#39;info&#39;, &#39;tip&#39;, &#39;success&#39;, &#39;question&#39;, &#39;warning&#39;, &#39;failure&#39;, &#39;danger&#39;, &#39;bug&#39;, &#39;example&#39;, &#39;quote&#39;, &#39;code&#39;]</code></td>
-        <td><p>The type of
-admonition to be shown. See also the Materials-theme for mkdocs for
-more details.</p></td>
-        <td><code>&#39;note&#39;</code></td>
-      </tr>
-      <tr>
-        <td><code>collapse</code></td>
-        <td><code>bool</code></td>
-        <td><p>Should the admonition be collapsed?</p></td>
-        <td><code>False</code></td>
-      </tr>
-      <tr>
-        <td><code>page_info</code></td>
-        <td><code>Optional[PageInfo]</code></td>
-        <td><p>Only needed when 'kind=="code"'.</p></td>
-        <td><code>None</code></td>
-      </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>mkreports/md/containers.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="nd">@register_md</span><span class="p">(</span><span class="s2">&quot;Admonition&quot;</span><span class="p">)</span>
+
+
+          <details class="quote">
+            <summary>Source code in <code>mkreports/md/containers.py</code></summary>
+            <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span>
+<span class="normal">83</span>
+<span class="normal">84</span>
+<span class="normal">85</span>
+<span class="normal">86</span>
+<span class="normal">87</span>
+<span class="normal">88</span>
+<span class="normal">89</span>
+<span class="normal">90</span>
+<span class="normal">91</span>
+<span class="normal">92</span>
+<span class="normal">93</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="nd">@register_md</span><span class="p">(</span><span class="s2">&quot;Admonition&quot;</span><span class="p">)</span>
 <span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">Admonition</span><span class="p">(</span><span class="n">MdObj</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -1207,15 +1292,12 @@ more details.</p></td>
         <span class="bp">self</span><span class="o">.</span><span class="n">_back</span> <span class="o">=</span> <span class="n">back</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_settings</span> <span class="o">=</span> <span class="n">settings</span>
 </code></pre></div>
-        </details>
+</td></tr></table>
+          </details>
 
 
 
   <div class="doc doc-children">
-
-
-
-
 
 
 
@@ -1245,74 +1327,78 @@ more details.</p></td>
 
 
 <h2 id="mkreports.md.containers.Code" class="doc doc-heading">
-        <code>
-Code            (<a title="mkreports.md.base.MdObj" href="../base/#mkreports.md.base.MdObj">MdObj</a>)
-        </code>
+          <code>Code</code>
 
 
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-dataclass"><code>dataclass</code></small>
-  </span>
 
 </h2>
 
+
     <div class="doc doc-contents ">
+        <p class="doc doc-class-bases">
+          Bases: <code><a class="autorefs autorefs-internal" title="mkreports.md.base.MdObj" href="../base/#mkreports.md.base.MdObj">MdObj</a></code></p>
 
-      <p>Shows a code-block.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
-      <tr>
-        <td><code>code</code></td>
-        <td><code>str</code></td>
-        <td><p>The code to be shown as a string.</p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>title</code></td>
-        <td><code>Optional[str]</code></td>
-        <td><p>Optional title for the code block.</p></td>
-        <td><code>None</code></td>
-      </tr>
-      <tr>
-        <td><code>first_line</code></td>
-        <td><code>Optional[int]</code></td>
-        <td><p>Number at the first line.</p></td>
-        <td><code>None</code></td>
-      </tr>
-      <tr>
-        <td><code>hl_lines</code></td>
-        <td><code>Optional[Tuple[int, int]]</code></td>
-        <td><p>Line-range for highlighting.
-Is counted relative to 'first_line'.</p></td>
-        <td><code>None</code></td>
-      </tr>
-      <tr>
-        <td><code>language</code></td>
-        <td><code>Optional[str]</code></td>
-        <td><p>Language for syntax highlighting.</p></td>
-        <td><code>&#39;python&#39;</code></td>
-      </tr>
-      <tr>
-        <td><code>dedent</code></td>
-        <td><code>bool</code></td>
-        <td><p>Should the string be de-dented?</p></td>
-        <td><code>True</code></td>
-      </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>mkreports/md/containers.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="nd">@register_md</span><span class="p">(</span><span class="s2">&quot;Code&quot;</span><span class="p">)</span>
+
+
+          <details class="quote">
+            <summary>Source code in <code>mkreports/md/containers.py</code></summary>
+            <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="nd">@register_md</span><span class="p">(</span><span class="s2">&quot;Code&quot;</span><span class="p">)</span>
 <span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">Code</span><span class="p">(</span><span class="n">MdObj</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -1369,15 +1455,12 @@ Is counted relative to 'first_line'.</p></td>
         <span class="bp">self</span><span class="o">.</span><span class="n">_back</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_settings</span> <span class="o">=</span> <span class="n">settings</span>
 </code></pre></div>
-        </details>
+</td></tr></table>
+          </details>
 
 
 
   <div class="doc doc-children">
-
-
-
-
 
 
 
@@ -1408,21 +1491,90 @@ Is counted relative to 'first_line'.</p></td>
 
 
 <h2 id="mkreports.md.containers.CodeFile" class="doc doc-heading">
-        <code>
-CodeFile            (<a title="mkreports.md.file.File" href="../file/#mkreports.md.file.File">File</a>)
-        </code>
+          <code>CodeFile</code>
 
 
 
 </h2>
 
+
     <div class="doc doc-contents ">
+        <p class="doc doc-class-bases">
+          Bases: <code><a class="autorefs autorefs-internal" title="mkreports.md.file.File" href="../file/#mkreports.md.file.File">File</a></code></p>
+
 
       <p>Code block with the content of a file.</p>
 
-        <details class="quote">
-          <summary>Source code in <code>mkreports/md/containers.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="nd">@register_md</span><span class="p">(</span><span class="s2">&quot;CodeFile&quot;</span><span class="p">)</span>
+
+          <details class="quote">
+            <summary>Source code in <code>mkreports/md/containers.py</code></summary>
+            <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span>
+<span class="normal">211</span>
+<span class="normal">212</span>
+<span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span>
+<span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span>
+<span class="normal">225</span>
+<span class="normal">226</span>
+<span class="normal">227</span>
+<span class="normal">228</span>
+<span class="normal">229</span>
+<span class="normal">230</span>
+<span class="normal">231</span>
+<span class="normal">232</span>
+<span class="normal">233</span>
+<span class="normal">234</span>
+<span class="normal">235</span>
+<span class="normal">236</span>
+<span class="normal">237</span>
+<span class="normal">238</span>
+<span class="normal">239</span>
+<span class="normal">240</span>
+<span class="normal">241</span>
+<span class="normal">242</span>
+<span class="normal">243</span>
+<span class="normal">244</span>
+<span class="normal">245</span>
+<span class="normal">246</span>
+<span class="normal">247</span>
+<span class="normal">248</span>
+<span class="normal">249</span>
+<span class="normal">250</span>
+<span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span>
+<span class="normal">255</span>
+<span class="normal">256</span>
+<span class="normal">257</span>
+<span class="normal">258</span>
+<span class="normal">259</span>
+<span class="normal">260</span>
+<span class="normal">261</span>
+<span class="normal">262</span>
+<span class="normal">263</span>
+<span class="normal">264</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="nd">@register_md</span><span class="p">(</span><span class="s2">&quot;CodeFile&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">CodeFile</span><span class="p">(</span><span class="n">File</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Code block with the content of a file.</span>
@@ -1490,7 +1642,8 @@ CodeFile            (<a title="mkreports.md.file.File" href="../file/#mkreports.
         <span class="bp">self</span><span class="o">.</span><span class="n">_back</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_settings</span> <span class="o">=</span> <span class="n">settings</span>
 </code></pre></div>
-        </details>
+</td></tr></table>
+          </details>
 
 
 
@@ -1504,72 +1657,156 @@ CodeFile            (<a title="mkreports.md.file.File" href="../file/#mkreports.
 
 
 
-  <div class="doc doc-object doc-method">
+
+
+
+
+
+  <div class="doc doc-object doc-function">
 
 
 
 <h3 id="mkreports.md.containers.CodeFile.__init__" class="doc doc-heading">
-<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">page_info</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">hl_lines</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="s1">&#39;python&#39;</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">page_info</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">hl_lines</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="s1">&#39;python&#39;</span><span class="p">)</span></code>
 
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-special"><code>special</code></small>
-  </span>
 
 </h3>
+
 
     <div class="doc doc-contents ">
 
       <p>Set up the code-block with file content.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>path</code></td>
-        <td><code>Union[Path, str]</code></td>
-        <td><p>Abolute path or relative to current working dir for the
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>path</code></td>
+          <td>
+                <code><span title="typing.Union">Union</span>[<span title="pathlib.Path">Path</span>, str]</code>
+          </td>
+          <td><p>Abolute path or relative to current working dir for the
 code-file to be included.</p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>page_info</code></td>
-        <td><code>PageInfo</code></td>
-        <td><p>PageInfo on the page where the code is to be added.</p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>title</code></td>
-        <td><code>Optional[str]</code></td>
-        <td><p>Title of the code-block. If 'None', the path of the
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>page_info</code></td>
+          <td>
+                <code><span title="mkreports.md.settings.PageInfo">PageInfo</span></code>
+          </td>
+          <td><p>PageInfo on the page where the code is to be added.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>title</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[str]</code>
+          </td>
+          <td><p>Title of the code-block. If 'None', the path of the
 code file relative to the project root will be added. If it should be
 empty, set to empty string.</p></td>
-        <td><code>None</code></td>
-      </tr>
-      <tr>
-        <td><code>hl_lines</code></td>
-        <td><code>Optional[Tuple[int, int]]</code></td>
-        <td><p>Optional range of lines for highlighting.</p></td>
-        <td><code>None</code></td>
-      </tr>
-      <tr>
-        <td><code>language</code></td>
-        <td><code>Optional[str]</code></td>
-        <td><p>Language for syntax highlighting.</p></td>
-        <td><code>&#39;python&#39;</code></td>
-      </tr>
-  </tbody>
-</table>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>hl_lines</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[<span title="typing.Tuple">Tuple</span>[int, int]]</code>
+          </td>
+          <td><p>Optional range of lines for highlighting.</p></td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>language</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[str]</code>
+          </td>
+          <td><p>Language for syntax highlighting.</p></td>
+          <td>
+                <code>&#39;python&#39;</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
         <details class="quote">
           <summary>Source code in <code>mkreports/md/containers.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span>
+<span class="normal">211</span>
+<span class="normal">212</span>
+<span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span>
+<span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span>
+<span class="normal">225</span>
+<span class="normal">226</span>
+<span class="normal">227</span>
+<span class="normal">228</span>
+<span class="normal">229</span>
+<span class="normal">230</span>
+<span class="normal">231</span>
+<span class="normal">232</span>
+<span class="normal">233</span>
+<span class="normal">234</span>
+<span class="normal">235</span>
+<span class="normal">236</span>
+<span class="normal">237</span>
+<span class="normal">238</span>
+<span class="normal">239</span>
+<span class="normal">240</span>
+<span class="normal">241</span>
+<span class="normal">242</span>
+<span class="normal">243</span>
+<span class="normal">244</span>
+<span class="normal">245</span>
+<span class="normal">246</span>
+<span class="normal">247</span>
+<span class="normal">248</span>
+<span class="normal">249</span>
+<span class="normal">250</span>
+<span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span>
+<span class="normal">255</span>
+<span class="normal">256</span>
+<span class="normal">257</span>
+<span class="normal">258</span>
+<span class="normal">259</span>
+<span class="normal">260</span>
+<span class="normal">261</span>
+<span class="normal">262</span>
+<span class="normal">263</span>
+<span class="normal">264</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
     <span class="n">page_info</span><span class="p">:</span> <span class="n">PageInfo</span><span class="p">,</span>
@@ -1631,6 +1868,7 @@ empty, set to empty string.</p></td>
     <span class="bp">self</span><span class="o">.</span><span class="n">_back</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_settings</span> <span class="o">=</span> <span class="n">settings</span>
 </code></pre></div>
+</td></tr></table>
         </details>
     </div>
 
@@ -1653,50 +1891,64 @@ empty, set to empty string.</p></td>
 
 
 <h2 id="mkreports.md.containers.Tab" class="doc doc-heading">
-        <code>
-Tab            (<a title="mkreports.md.base.MdObj" href="../base/#mkreports.md.base.MdObj">MdObj</a>)
-        </code>
+          <code>Tab</code>
 
 
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-dataclass"><code>dataclass</code></small>
-  </span>
 
 </h2>
 
+
     <div class="doc doc-contents ">
+        <p class="doc doc-class-bases">
+          Bases: <code><a class="autorefs autorefs-internal" title="mkreports.md.base.MdObj" href="../base/#mkreports.md.base.MdObj">MdObj</a></code></p>
 
-      <p>Tab interface</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
-      <tr>
-        <td><code>obj</code></td>
-        <td><code>Union[Text, MdObj]</code></td>
-        <td><p>The object to be shown in the tab. An MdObj,
-string or SpacedText.</p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>title</code></td>
-        <td><code>Optional[str]</code></td>
-        <td><p>Optional title for the tab.</p></td>
-        <td><code>None</code></td>
-      </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>mkreports/md/containers.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="nd">@register_md</span><span class="p">(</span><span class="s2">&quot;Tab&quot;</span><span class="p">)</span>
+
+
+          <details class="quote">
+            <summary>Source code in <code>mkreports/md/containers.py</code></summary>
+            <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="nd">@register_md</span><span class="p">(</span><span class="s2">&quot;Tab&quot;</span><span class="p">)</span>
 <span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">Tab</span><span class="p">(</span><span class="n">MdObj</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -1739,15 +1991,12 @@ string or SpacedText.</p></td>
         <span class="bp">self</span><span class="o">.</span><span class="n">_back</span> <span class="o">=</span> <span class="n">back</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_settings</span> <span class="o">=</span> <span class="n">settings</span>
 </code></pre></div>
-        </details>
+</td></tr></table>
+          </details>
 
 
 
   <div class="doc doc-children">
-
-
-
-
 
 
 
@@ -1766,7 +2015,6 @@ string or SpacedText.</p></td>
     </div>
 
   </div>
-
 
 
 
@@ -1843,10 +2091,10 @@ string or SpacedText.</p></td>
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "../../..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../../assets/javascripts/workers/search.22074ed6.min.js"}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.5e67fbfe.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.960e086b.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.c44cc438.min.js"></script>
       
     
   </body>

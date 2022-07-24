@@ -10,7 +10,7 @@
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.9">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.2.8">
     
     
       
@@ -18,7 +18,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.2b4465f4.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.644de097.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.e6a45f82.min.css">
@@ -29,8 +29,9 @@
     
       
         
+        
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
@@ -389,8 +390,36 @@
   
   
     <li class="md-nav__item">
+      <a href="../../cli/" class="md-nav__link">
+        cli
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../code_context/" class="md-nav__link">
         code_context
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../config/" class="md-nav__link">
+        config
       </a>
     </li>
   
@@ -450,18 +479,18 @@
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_5" type="checkbox" id="__nav_4_5" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_7" type="checkbox" id="__nav_4_7" checked>
       
       
       
       
-        <label class="md-nav__link" for="__nav_4_5">
+        <label class="md-nav__link" for="__nav_4_7">
           md
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="md" data-md-level="2">
-        <label class="md-nav__title" for="__nav_4_5">
+        <label class="md-nav__title" for="__nav_4_7">
           <span class="md-nav__icon md-icon"></span>
           md
         </label>
@@ -531,6 +560,20 @@
     <li class="md-nav__item">
       <a href="../file/" class="md-nav__link">
         file
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../handler/" class="md-nav__link">
+        handler
       </a>
     </li>
   
@@ -748,6 +791,20 @@
           
         </ul>
       </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../page/" class="md-nav__link">
+        page
+      </a>
     </li>
   
 
@@ -1079,6 +1136,7 @@
               
                 
 
+
   <h1>table</h1>
 
 <div class="doc doc-object doc-module">
@@ -1103,21 +1161,190 @@
 
 
 <h2 id="mkreports.md.table.DataTable" class="doc doc-heading">
-        <code>
-DataTable            (<a title="mkreports.md.file.File" href="../file/#mkreports.md.file.File">File</a>)
-        </code>
+          <code>DataTable</code>
 
 
 
 </h2>
 
+
     <div class="doc doc-contents ">
+        <p class="doc doc-class-bases">
+          Bases: <code><a class="autorefs autorefs-internal" title="mkreports.md.file.File" href="../file/#mkreports.md.file.File">File</a></code></p>
+
 
       <p>Table using DataTable javascript library.</p>
 
-        <details class="quote">
-          <summary>Source code in <code>mkreports/md/table.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="nd">@register_md</span><span class="p">(</span><span class="s2">&quot;DataTable&quot;</span><span class="p">)</span>
+
+          <details class="quote">
+            <summary>Source code in <code>mkreports/md/table.py</code></summary>
+            <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span>
+<span class="normal">211</span>
+<span class="normal">212</span>
+<span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span>
+<span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span>
+<span class="normal">225</span>
+<span class="normal">226</span>
+<span class="normal">227</span>
+<span class="normal">228</span>
+<span class="normal">229</span>
+<span class="normal">230</span>
+<span class="normal">231</span>
+<span class="normal">232</span>
+<span class="normal">233</span>
+<span class="normal">234</span>
+<span class="normal">235</span>
+<span class="normal">236</span>
+<span class="normal">237</span>
+<span class="normal">238</span>
+<span class="normal">239</span>
+<span class="normal">240</span>
+<span class="normal">241</span>
+<span class="normal">242</span>
+<span class="normal">243</span>
+<span class="normal">244</span>
+<span class="normal">245</span>
+<span class="normal">246</span>
+<span class="normal">247</span>
+<span class="normal">248</span>
+<span class="normal">249</span>
+<span class="normal">250</span>
+<span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span>
+<span class="normal">255</span>
+<span class="normal">256</span>
+<span class="normal">257</span>
+<span class="normal">258</span>
+<span class="normal">259</span>
+<span class="normal">260</span>
+<span class="normal">261</span>
+<span class="normal">262</span>
+<span class="normal">263</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="nd">@register_md</span><span class="p">(</span><span class="s2">&quot;DataTable&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">DataTable</span><span class="p">(</span><span class="n">File</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Table using DataTable javascript library.&quot;&quot;&quot;</span>
 
@@ -1133,6 +1360,8 @@ DataTable            (<a title="mkreports.md.file.File" href="../file/#mkreports
         <span class="n">table_kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">downloads</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">table_settings</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">json_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;datatable&quot;</span><span class="p">,</span>
+        <span class="n">use_hash</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialize the table using the DataTable javascript library.</span>
@@ -1155,12 +1384,14 @@ DataTable            (<a title="mkreports.md.file.File" href="../file/#mkreports
 <span class="sd">            downloads (bool): Should download buttons be shown?</span>
 <span class="sd">            table_settings (Optional[dict]): Dictionary with the DataTable settings.</span>
 <span class="sd">                Anything set here will overwrite existing ones.</span>
+<span class="sd">            json_name (str): Name of the saved file (before hash if hash=True)</span>
+<span class="sd">            use_hash (bool): Should the name of the copied image be updated with a hash (Default: True)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">assert</span> <span class="n">page_info</span><span class="o">.</span><span class="n">idstore</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
         <span class="k">assert</span> <span class="n">page_info</span><span class="o">.</span><span class="n">page_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
 
         <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="nb">dir</span><span class="p">:</span>
-            <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="nb">dir</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="s2">&quot;datatable.json&quot;</span><span class="p">)</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="nb">dir</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">json_name</span><span class="si">}</span><span class="s2">.json&quot;</span><span class="p">)</span>
             <span class="c1"># here we use the split method; the index and columns</span>
             <span class="k">if</span> <span class="n">max_rows</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">table</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">max_rows</span><span class="p">:</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
@@ -1177,7 +1408,7 @@ DataTable            (<a title="mkreports.md.file.File" href="../file/#mkreports
 
             <span class="c1"># Make sure the file is moved to the right place</span>
             <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-                <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">page_info</span><span class="o">=</span><span class="n">page_info</span><span class="p">,</span> <span class="n">allow_copy</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">use_hash</span><span class="o">=</span><span class="kc">True</span>
+                <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">page_info</span><span class="o">=</span><span class="n">page_info</span><span class="p">,</span> <span class="n">allow_copy</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">use_hash</span><span class="o">=</span><span class="n">use_hash</span>
             <span class="p">)</span>
 
         <span class="n">javascript_settings</span> <span class="o">=</span> <span class="p">[</span>
@@ -1281,7 +1512,8 @@ DataTable            (<a title="mkreports.md.file.File" href="../file/#mkreports
         <span class="bp">self</span><span class="o">.</span><span class="n">_back</span> <span class="o">=</span> <span class="n">SpacedText</span><span class="p">(</span><span class="n">back_html</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> <span class="o">+</span> <span class="n">comment_ids</span><span class="p">(</span><span class="n">datatable_id</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_settings</span> <span class="o">=</span> <span class="n">settings</span>
 </code></pre></div>
-        </details>
+</td></tr></table>
+          </details>
 
 
 
@@ -1295,106 +1527,332 @@ DataTable            (<a title="mkreports.md.file.File" href="../file/#mkreports
 
 
 
-  <div class="doc doc-object doc-method">
+
+
+
+
+
+  <div class="doc doc-object doc-function">
 
 
 
 <h3 id="mkreports.md.table.DataTable.__init__" class="doc doc-heading">
-<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">page_info</span><span class="p">,</span> <span class="n">max_rows</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">column_settings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">prettify_colnames</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">add_header_filters</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">yadcf_settings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">table_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">downloads</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">table_settings</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">page_info</span><span class="p">,</span> <span class="n">max_rows</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">column_settings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">prettify_colnames</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">add_header_filters</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">yadcf_settings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">table_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">downloads</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">table_settings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">json_name</span><span class="o">=</span><span class="s1">&#39;datatable&#39;</span><span class="p">,</span> <span class="n">use_hash</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
 
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-special"><code>special</code></small>
-  </span>
 
 </h3>
+
 
     <div class="doc doc-contents ">
 
       <p>Initialize the table using the DataTable javascript library.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>table</code></td>
-        <td><code>pd.DataFrame</code></td>
-        <td><p>The table in pandas.DataFrame format.</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
-      <tr>
-        <td><code>page_info</code></td>
-        <td><code>PageInfo</code></td>
-        <td><p>PageInfo object for the page where the
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>table</code></td>
+          <td>
+                <code><span title="pandas">pd</span>.<span title="pandas.DataFrame">DataFrame</span></code>
+          </td>
+          <td><p>The table in pandas.DataFrame format.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>page_info</code></td>
+          <td>
+                <code><span title="mkreports.md.settings.PageInfo">PageInfo</span></code>
+          </td>
+          <td><p>PageInfo object for the page where the
 table should be located.</p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>max_rows</code></td>
-        <td><code>Optional[int]</code></td>
-        <td><p>Maximum number of rows. If None, all will
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>max_rows</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[int]</code>
+          </td>
+          <td><p>Maximum number of rows. If None, all will
 be included. If longer, a warning will be logged and the first <code>max_rows</code>
 will be included.</p></td>
-        <td><code>1000</code></td>
-      </tr>
-      <tr>
-        <td><code>column_settings</code></td>
-        <td><code>Optional[dict]</code></td>
-        <td><p>Dict of settings for the columns. Will be
+          <td>
+                <code>1000</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>column_settings</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[dict]</code>
+          </td>
+          <td><p>Dict of settings for the columns. Will be
 passed as json to the DataTable library. Overrides any automatic settings.</p></td>
-        <td><code>None</code></td>
-      </tr>
-      <tr>
-        <td><code>prettify_colnames</code></td>
-        <td><code>bool</code></td>
-        <td><p>Run colnames through 'snake_to_text' function.</p></td>
-        <td><code>True</code></td>
-      </tr>
-      <tr>
-        <td><code>add_header_filters</code></td>
-        <td><code>bool</code></td>
-        <td><p>Should header filters be added.</p></td>
-        <td><code>False</code></td>
-      </tr>
-      <tr>
-        <td><code>yadcf_settings</code></td>
-        <td><code>Optional[dict]</code></td>
-        <td><p>Settings for the <em>yadcf</em> header filter plugin.
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>prettify_colnames</code></td>
+          <td>
+                <code>bool</code>
+          </td>
+          <td><p>Run colnames through 'snake_to_text' function.</p></td>
+          <td>
+                <code>True</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>add_header_filters</code></td>
+          <td>
+                <code>bool</code>
+          </td>
+          <td><p>Should header filters be added.</p></td>
+          <td>
+                <code>False</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>yadcf_settings</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[dict]</code>
+          </td>
+          <td><p>Settings for the <em>yadcf</em> header filter plugin.
 Overrides any automatic settings.</p></td>
-        <td><code>None</code></td>
-      </tr>
-      <tr>
-        <td><code>table_kwargs</code></td>
-        <td><code>Optional[dict]</code></td>
-        <td><p>Keyword args for the table
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>table_kwargs</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[dict]</code>
+          </td>
+          <td><p>Keyword args for the table
 when serializing to json.</p></td>
-        <td><code>None</code></td>
-      </tr>
-      <tr>
-        <td><code>downloads</code></td>
-        <td><code>bool</code></td>
-        <td><p>Should download buttons be shown?</p></td>
-        <td><code>False</code></td>
-      </tr>
-      <tr>
-        <td><code>table_settings</code></td>
-        <td><code>Optional[dict]</code></td>
-        <td><p>Dictionary with the DataTable settings.
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>downloads</code></td>
+          <td>
+                <code>bool</code>
+          </td>
+          <td><p>Should download buttons be shown?</p></td>
+          <td>
+                <code>False</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>table_settings</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[dict]</code>
+          </td>
+          <td><p>Dictionary with the DataTable settings.
 Anything set here will overwrite existing ones.</p></td>
-        <td><code>None</code></td>
-      </tr>
-  </tbody>
-</table>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>json_name</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>Name of the saved file (before hash if hash=True)</p></td>
+          <td>
+                <code>&#39;datatable&#39;</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>use_hash</code></td>
+          <td>
+                <code>bool</code>
+          </td>
+          <td><p>Should the name of the copied image be updated with a hash (Default: True)</p></td>
+          <td>
+                <code>True</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
         <details class="quote">
           <summary>Source code in <code>mkreports/md/table.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span>
+<span class="normal">211</span>
+<span class="normal">212</span>
+<span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span>
+<span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span>
+<span class="normal">225</span>
+<span class="normal">226</span>
+<span class="normal">227</span>
+<span class="normal">228</span>
+<span class="normal">229</span>
+<span class="normal">230</span>
+<span class="normal">231</span>
+<span class="normal">232</span>
+<span class="normal">233</span>
+<span class="normal">234</span>
+<span class="normal">235</span>
+<span class="normal">236</span>
+<span class="normal">237</span>
+<span class="normal">238</span>
+<span class="normal">239</span>
+<span class="normal">240</span>
+<span class="normal">241</span>
+<span class="normal">242</span>
+<span class="normal">243</span>
+<span class="normal">244</span>
+<span class="normal">245</span>
+<span class="normal">246</span>
+<span class="normal">247</span>
+<span class="normal">248</span>
+<span class="normal">249</span>
+<span class="normal">250</span>
+<span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span>
+<span class="normal">255</span>
+<span class="normal">256</span>
+<span class="normal">257</span>
+<span class="normal">258</span>
+<span class="normal">259</span>
+<span class="normal">260</span>
+<span class="normal">261</span>
+<span class="normal">262</span>
+<span class="normal">263</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">table</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
     <span class="n">page_info</span><span class="p">:</span> <span class="n">PageInfo</span><span class="p">,</span>
@@ -1406,6 +1864,8 @@ Anything set here will overwrite existing ones.</p></td>
     <span class="n">table_kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">downloads</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">table_settings</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">json_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;datatable&quot;</span><span class="p">,</span>
+    <span class="n">use_hash</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
 <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Initialize the table using the DataTable javascript library.</span>
@@ -1428,12 +1888,14 @@ Anything set here will overwrite existing ones.</p></td>
 <span class="sd">        downloads (bool): Should download buttons be shown?</span>
 <span class="sd">        table_settings (Optional[dict]): Dictionary with the DataTable settings.</span>
 <span class="sd">            Anything set here will overwrite existing ones.</span>
+<span class="sd">        json_name (str): Name of the saved file (before hash if hash=True)</span>
+<span class="sd">        use_hash (bool): Should the name of the copied image be updated with a hash (Default: True)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">assert</span> <span class="n">page_info</span><span class="o">.</span><span class="n">idstore</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
     <span class="k">assert</span> <span class="n">page_info</span><span class="o">.</span><span class="n">page_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
 
     <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="nb">dir</span><span class="p">:</span>
-        <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="nb">dir</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="s2">&quot;datatable.json&quot;</span><span class="p">)</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="nb">dir</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">json_name</span><span class="si">}</span><span class="s2">.json&quot;</span><span class="p">)</span>
         <span class="c1"># here we use the split method; the index and columns</span>
         <span class="k">if</span> <span class="n">max_rows</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">table</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">max_rows</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
@@ -1450,7 +1912,7 @@ Anything set here will overwrite existing ones.</p></td>
 
         <span class="c1"># Make sure the file is moved to the right place</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-            <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">page_info</span><span class="o">=</span><span class="n">page_info</span><span class="p">,</span> <span class="n">allow_copy</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">use_hash</span><span class="o">=</span><span class="kc">True</span>
+            <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">page_info</span><span class="o">=</span><span class="n">page_info</span><span class="p">,</span> <span class="n">allow_copy</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">use_hash</span><span class="o">=</span><span class="n">use_hash</span>
         <span class="p">)</span>
 
     <span class="n">javascript_settings</span> <span class="o">=</span> <span class="p">[</span>
@@ -1554,6 +2016,7 @@ Anything set here will overwrite existing ones.</p></td>
     <span class="bp">self</span><span class="o">.</span><span class="n">_back</span> <span class="o">=</span> <span class="n">SpacedText</span><span class="p">(</span><span class="n">back_html</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> <span class="o">+</span> <span class="n">comment_ids</span><span class="p">(</span><span class="n">datatable_id</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_settings</span> <span class="o">=</span> <span class="n">settings</span>
 </code></pre></div>
+</td></tr></table>
         </details>
     </div>
 
@@ -1576,21 +2039,58 @@ Anything set here will overwrite existing ones.</p></td>
 
 
 <h2 id="mkreports.md.table.Table" class="doc doc-heading">
-        <code>
-Table            (<a title="mkreports.md.base.MdObj" href="../base/#mkreports.md.base.MdObj">MdObj</a>)
-        </code>
+          <code>Table</code>
 
 
 
 </h2>
 
+
     <div class="doc doc-contents ">
+        <p class="doc doc-class-bases">
+          Bases: <code><a class="autorefs autorefs-internal" title="mkreports.md.base.MdObj" href="../base/#mkreports.md.base.MdObj">MdObj</a></code></p>
+
 
       <p>Standard markdown table.</p>
 
-        <details class="quote">
-          <summary>Source code in <code>mkreports/md/table.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="nd">@register_md</span><span class="p">(</span><span class="s2">&quot;Table&quot;</span><span class="p">)</span>
+
+          <details class="quote">
+            <summary>Source code in <code>mkreports/md/table.py</code></summary>
+            <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="nd">@register_md</span><span class="p">(</span><span class="s2">&quot;Table&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">Table</span><span class="p">(</span><span class="n">MdObj</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Standard markdown table.&quot;&quot;&quot;</span>
 
@@ -1626,7 +2126,8 @@ Table            (<a title="mkreports.md.base.MdObj" href="../base/#mkreports.md
         <span class="bp">self</span><span class="o">.</span><span class="n">_back</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_settings</span> <span class="o">=</span> <span class="kc">None</span>
 </code></pre></div>
-        </details>
+</td></tr></table>
+          </details>
 
 
 
@@ -1640,53 +2141,91 @@ Table            (<a title="mkreports.md.base.MdObj" href="../base/#mkreports.md
 
 
 
-  <div class="doc doc-object doc-method">
+
+
+
+
+  <div class="doc doc-object doc-function">
 
 
 
 <h3 id="mkreports.md.table.Table.__init__" class="doc doc-heading">
-<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">max_rows</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">max_rows</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-special"><code>special</code></small>
-  </span>
 
 </h3>
+
 
     <div class="doc doc-contents ">
 
       <p>Initialize the table object.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>table</code></td>
-        <td><code>pd.DataFrame</code></td>
-        <td><p>The table to include in pandas format.</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
-      <tr>
-        <td><code>max_rows</code></td>
-        <td><code>Optional[int]</code></td>
-        <td><p>Maximum number of rows. If None, all will
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>table</code></td>
+          <td>
+                <code><span title="pandas">pd</span>.<span title="pandas.DataFrame">DataFrame</span></code>
+          </td>
+          <td><p>The table to include in pandas format.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>max_rows</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[int]</code>
+          </td>
+          <td><p>Maximum number of rows. If None, all will
 be included. If longer, a warning will be logged and the first <code>max_rows</code>
 will be included.</p></td>
-        <td><code>100</code></td>
-      </tr>
-  </tbody>
-</table>
+          <td>
+                <code>100</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
         <details class="quote">
           <summary>Source code in <code>mkreports/md/table.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">max_rows</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">max_rows</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Initialize the table object.</span>
 
@@ -1715,6 +2254,7 @@ will be included.</p></td>
     <span class="bp">self</span><span class="o">.</span><span class="n">_back</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_settings</span> <span class="o">=</span> <span class="kc">None</span>
 </code></pre></div>
+</td></tr></table>
         </details>
     </div>
 
@@ -1737,21 +2277,203 @@ will be included.</p></td>
 
 
 <h2 id="mkreports.md.table.Tabulator" class="doc doc-heading">
-        <code>
-Tabulator            (<a title="mkreports.md.file.File" href="../file/#mkreports.md.file.File">File</a>)
-        </code>
+          <code>Tabulator</code>
 
 
 
 </h2>
 
+
     <div class="doc doc-contents ">
+        <p class="doc doc-class-bases">
+          Bases: <code><a class="autorefs autorefs-internal" title="mkreports.md.file.File" href="../file/#mkreports.md.file.File">File</a></code></p>
+
 
       <p>A table using the Tabulator javascript library.</p>
 
-        <details class="quote">
-          <summary>Source code in <code>mkreports/md/table.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="nd">@register_md</span><span class="p">(</span><span class="s2">&quot;Tabulator&quot;</span><span class="p">)</span>
+
+          <details class="quote">
+            <summary>Source code in <code>mkreports/md/table.py</code></summary>
+            <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">318</span>
+<span class="normal">319</span>
+<span class="normal">320</span>
+<span class="normal">321</span>
+<span class="normal">322</span>
+<span class="normal">323</span>
+<span class="normal">324</span>
+<span class="normal">325</span>
+<span class="normal">326</span>
+<span class="normal">327</span>
+<span class="normal">328</span>
+<span class="normal">329</span>
+<span class="normal">330</span>
+<span class="normal">331</span>
+<span class="normal">332</span>
+<span class="normal">333</span>
+<span class="normal">334</span>
+<span class="normal">335</span>
+<span class="normal">336</span>
+<span class="normal">337</span>
+<span class="normal">338</span>
+<span class="normal">339</span>
+<span class="normal">340</span>
+<span class="normal">341</span>
+<span class="normal">342</span>
+<span class="normal">343</span>
+<span class="normal">344</span>
+<span class="normal">345</span>
+<span class="normal">346</span>
+<span class="normal">347</span>
+<span class="normal">348</span>
+<span class="normal">349</span>
+<span class="normal">350</span>
+<span class="normal">351</span>
+<span class="normal">352</span>
+<span class="normal">353</span>
+<span class="normal">354</span>
+<span class="normal">355</span>
+<span class="normal">356</span>
+<span class="normal">357</span>
+<span class="normal">358</span>
+<span class="normal">359</span>
+<span class="normal">360</span>
+<span class="normal">361</span>
+<span class="normal">362</span>
+<span class="normal">363</span>
+<span class="normal">364</span>
+<span class="normal">365</span>
+<span class="normal">366</span>
+<span class="normal">367</span>
+<span class="normal">368</span>
+<span class="normal">369</span>
+<span class="normal">370</span>
+<span class="normal">371</span>
+<span class="normal">372</span>
+<span class="normal">373</span>
+<span class="normal">374</span>
+<span class="normal">375</span>
+<span class="normal">376</span>
+<span class="normal">377</span>
+<span class="normal">378</span>
+<span class="normal">379</span>
+<span class="normal">380</span>
+<span class="normal">381</span>
+<span class="normal">382</span>
+<span class="normal">383</span>
+<span class="normal">384</span>
+<span class="normal">385</span>
+<span class="normal">386</span>
+<span class="normal">387</span>
+<span class="normal">388</span>
+<span class="normal">389</span>
+<span class="normal">390</span>
+<span class="normal">391</span>
+<span class="normal">392</span>
+<span class="normal">393</span>
+<span class="normal">394</span>
+<span class="normal">395</span>
+<span class="normal">396</span>
+<span class="normal">397</span>
+<span class="normal">398</span>
+<span class="normal">399</span>
+<span class="normal">400</span>
+<span class="normal">401</span>
+<span class="normal">402</span>
+<span class="normal">403</span>
+<span class="normal">404</span>
+<span class="normal">405</span>
+<span class="normal">406</span>
+<span class="normal">407</span>
+<span class="normal">408</span>
+<span class="normal">409</span>
+<span class="normal">410</span>
+<span class="normal">411</span>
+<span class="normal">412</span>
+<span class="normal">413</span>
+<span class="normal">414</span>
+<span class="normal">415</span>
+<span class="normal">416</span>
+<span class="normal">417</span>
+<span class="normal">418</span>
+<span class="normal">419</span>
+<span class="normal">420</span>
+<span class="normal">421</span>
+<span class="normal">422</span>
+<span class="normal">423</span>
+<span class="normal">424</span>
+<span class="normal">425</span>
+<span class="normal">426</span>
+<span class="normal">427</span>
+<span class="normal">428</span>
+<span class="normal">429</span>
+<span class="normal">430</span>
+<span class="normal">431</span>
+<span class="normal">432</span>
+<span class="normal">433</span>
+<span class="normal">434</span>
+<span class="normal">435</span>
+<span class="normal">436</span>
+<span class="normal">437</span>
+<span class="normal">438</span>
+<span class="normal">439</span>
+<span class="normal">440</span>
+<span class="normal">441</span>
+<span class="normal">442</span>
+<span class="normal">443</span>
+<span class="normal">444</span>
+<span class="normal">445</span>
+<span class="normal">446</span>
+<span class="normal">447</span>
+<span class="normal">448</span>
+<span class="normal">449</span>
+<span class="normal">450</span>
+<span class="normal">451</span>
+<span class="normal">452</span>
+<span class="normal">453</span>
+<span class="normal">454</span>
+<span class="normal">455</span>
+<span class="normal">456</span>
+<span class="normal">457</span>
+<span class="normal">458</span>
+<span class="normal">459</span>
+<span class="normal">460</span>
+<span class="normal">461</span>
+<span class="normal">462</span>
+<span class="normal">463</span>
+<span class="normal">464</span>
+<span class="normal">465</span>
+<span class="normal">466</span>
+<span class="normal">467</span>
+<span class="normal">468</span>
+<span class="normal">469</span>
+<span class="normal">470</span>
+<span class="normal">471</span>
+<span class="normal">472</span>
+<span class="normal">473</span>
+<span class="normal">474</span>
+<span class="normal">475</span>
+<span class="normal">476</span>
+<span class="normal">477</span>
+<span class="normal">478</span>
+<span class="normal">479</span>
+<span class="normal">480</span>
+<span class="normal">481</span>
+<span class="normal">482</span>
+<span class="normal">483</span>
+<span class="normal">484</span>
+<span class="normal">485</span>
+<span class="normal">486</span>
+<span class="normal">487</span>
+<span class="normal">488</span>
+<span class="normal">489</span>
+<span class="normal">490</span>
+<span class="normal">491</span>
+<span class="normal">492</span>
+<span class="normal">493</span>
+<span class="normal">494</span>
+<span class="normal">495</span>
+<span class="normal">496</span>
+<span class="normal">497</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="nd">@register_md</span><span class="p">(</span><span class="s2">&quot;Tabulator&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">Tabulator</span><span class="p">(</span><span class="n">File</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A table using the Tabulator javascript library.&quot;&quot;&quot;</span>
 
@@ -1766,6 +2488,8 @@ Tabulator            (<a title="mkreports.md.file.File" href="../file/#mkreports
         <span class="n">col_settings</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">downloads</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">table_kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">json_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;tabulator&quot;</span><span class="p">,</span>
+        <span class="n">use_hash</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1784,13 +2508,15 @@ Tabulator            (<a title="mkreports.md.file.File" href="../file/#mkreports
 <span class="sd">            downloads (bool): Add download options.</span>
 <span class="sd">            table_kwargs (Optional[dict]): Keyword args for the table</span>
 <span class="sd">                when serializing to json.</span>
+<span class="sd">            json_name (str): Name of the saved file (before hash if hash=True)</span>
+<span class="sd">            use_hash (bool): Should the name of the copied image be updated with a hash (Default: True)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">assert</span> <span class="n">page_info</span><span class="o">.</span><span class="n">idstore</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
         <span class="k">assert</span> <span class="n">page_info</span><span class="o">.</span><span class="n">page_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
         <span class="k">assert</span> <span class="n">page_info</span><span class="o">.</span><span class="n">javascript_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
 
         <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="nb">dir</span><span class="p">:</span>
-            <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="nb">dir</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="s2">&quot;tabulator.json&quot;</span><span class="p">)</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="nb">dir</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">json_name</span><span class="si">}</span><span class="s2">.json&quot;</span><span class="p">)</span>
             <span class="c1"># here we use the split method; the index and columns</span>
             <span class="c1"># are not useful, but the rest gets set as &#39;data&#39;, which we need</span>
             <span class="k">if</span> <span class="n">max_rows</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">table</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">max_rows</span><span class="p">:</span>
@@ -1807,7 +2533,7 @@ Tabulator            (<a title="mkreports.md.file.File" href="../file/#mkreports
 
             <span class="c1"># Make sure the file is moved to the right place</span>
             <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-                <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">page_info</span><span class="o">=</span><span class="n">page_info</span><span class="p">,</span> <span class="n">allow_copy</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">use_hash</span><span class="o">=</span><span class="kc">True</span>
+                <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">page_info</span><span class="o">=</span><span class="n">page_info</span><span class="p">,</span> <span class="n">allow_copy</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">use_hash</span><span class="o">=</span><span class="n">use_hash</span>
             <span class="p">)</span>
 
         <span class="c1"># produce the column settings</span>
@@ -1928,7 +2654,8 @@ Tabulator            (<a title="mkreports.md.file.File" href="../file/#mkreports
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_settings</span> <span class="o">=</span> <span class="n">settings</span>
 </code></pre></div>
-        </details>
+</td></tr></table>
+          </details>
 
 
 
@@ -1942,97 +2669,330 @@ Tabulator            (<a title="mkreports.md.file.File" href="../file/#mkreports
 
 
 
-  <div class="doc doc-object doc-method">
+
+
+
+  <div class="doc doc-object doc-function">
 
 
 
 <h3 id="mkreports.md.table.Tabulator.__init__" class="doc doc-heading">
-<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">page_info</span><span class="p">,</span> <span class="n">max_rows</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">table_settings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">add_header_filters</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">prettify_colnames</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">col_settings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">downloads</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">table_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">page_info</span><span class="p">,</span> <span class="n">max_rows</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">table_settings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">add_header_filters</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">prettify_colnames</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">col_settings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">downloads</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">table_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">json_name</span><span class="o">=</span><span class="s1">&#39;tabulator&#39;</span><span class="p">,</span> <span class="n">use_hash</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
 
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-special"><code>special</code></small>
-  </span>
 
 </h3>
+
 
     <div class="doc doc-contents ">
 
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>table</code></td>
-        <td><code>pd.DataFrame</code></td>
-        <td><p>The table to be added.</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
-      <tr>
-        <td><code>page_info</code></td>
-        <td><code>PageInfo</code></td>
-        <td><p>PageInfo for the page where the table should be added.</p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>max_rows</code></td>
-        <td><code>Optional[int]</code></td>
-        <td><p>Maximum number of rows. If None, all will
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>table</code></td>
+          <td>
+                <code><span title="pandas">pd</span>.<span title="pandas.DataFrame">DataFrame</span></code>
+          </td>
+          <td><p>The table to be added.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>page_info</code></td>
+          <td>
+                <code><span title="mkreports.md.settings.PageInfo">PageInfo</span></code>
+          </td>
+          <td><p>PageInfo for the page where the table should be added.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>max_rows</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[int]</code>
+          </td>
+          <td><p>Maximum number of rows. If None, all will
 be included. If longer, a warning will be logged and the first <code>max_rows</code>
 will be included.</p></td>
-        <td><code>1000</code></td>
-      </tr>
-      <tr>
-        <td><code>table_settings</code></td>
-        <td><code>Optional[dict]</code></td>
-        <td><p>Settings passed to Tabulator as json. Overrides
+          <td>
+                <code>1000</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>table_settings</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[dict]</code>
+          </td>
+          <td><p>Settings passed to Tabulator as json. Overrides
 any internal settings created by this function.</p></td>
-        <td><code>None</code></td>
-      </tr>
-      <tr>
-        <td><code>add_header_filters</code></td>
-        <td><code>bool</code></td>
-        <td><p>Should header-filters be added.</p></td>
-        <td><code>True</code></td>
-      </tr>
-      <tr>
-        <td><code>prettify_colnames</code></td>
-        <td><code>bool</code></td>
-        <td><p>Run column names through <em>snake_to_text</em>.</p></td>
-        <td><code>True</code></td>
-      </tr>
-      <tr>
-        <td><code>col_settings</code></td>
-        <td><code>Optional[dict]</code></td>
-        <td><p>Column settings for tabulator, passed
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>add_header_filters</code></td>
+          <td>
+                <code>bool</code>
+          </td>
+          <td><p>Should header-filters be added.</p></td>
+          <td>
+                <code>True</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>prettify_colnames</code></td>
+          <td>
+                <code>bool</code>
+          </td>
+          <td><p>Run column names through <em>snake_to_text</em>.</p></td>
+          <td>
+                <code>True</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>col_settings</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[dict]</code>
+          </td>
+          <td><p>Column settings for tabulator, passed
 as json to the Tabulator library. Overrides any internal settings created.</p></td>
-        <td><code>None</code></td>
-      </tr>
-      <tr>
-        <td><code>downloads</code></td>
-        <td><code>bool</code></td>
-        <td><p>Add download options.</p></td>
-        <td><code>False</code></td>
-      </tr>
-      <tr>
-        <td><code>table_kwargs</code></td>
-        <td><code>Optional[dict]</code></td>
-        <td><p>Keyword args for the table
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>downloads</code></td>
+          <td>
+                <code>bool</code>
+          </td>
+          <td><p>Add download options.</p></td>
+          <td>
+                <code>False</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>table_kwargs</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[dict]</code>
+          </td>
+          <td><p>Keyword args for the table
 when serializing to json.</p></td>
-        <td><code>None</code></td>
-      </tr>
-  </tbody>
-</table>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>json_name</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>Name of the saved file (before hash if hash=True)</p></td>
+          <td>
+                <code>&#39;tabulator&#39;</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>use_hash</code></td>
+          <td>
+                <code>bool</code>
+          </td>
+          <td><p>Should the name of the copied image be updated with a hash (Default: True)</p></td>
+          <td>
+                <code>True</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
         <details class="quote">
           <summary>Source code in <code>mkreports/md/table.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">322</span>
+<span class="normal">323</span>
+<span class="normal">324</span>
+<span class="normal">325</span>
+<span class="normal">326</span>
+<span class="normal">327</span>
+<span class="normal">328</span>
+<span class="normal">329</span>
+<span class="normal">330</span>
+<span class="normal">331</span>
+<span class="normal">332</span>
+<span class="normal">333</span>
+<span class="normal">334</span>
+<span class="normal">335</span>
+<span class="normal">336</span>
+<span class="normal">337</span>
+<span class="normal">338</span>
+<span class="normal">339</span>
+<span class="normal">340</span>
+<span class="normal">341</span>
+<span class="normal">342</span>
+<span class="normal">343</span>
+<span class="normal">344</span>
+<span class="normal">345</span>
+<span class="normal">346</span>
+<span class="normal">347</span>
+<span class="normal">348</span>
+<span class="normal">349</span>
+<span class="normal">350</span>
+<span class="normal">351</span>
+<span class="normal">352</span>
+<span class="normal">353</span>
+<span class="normal">354</span>
+<span class="normal">355</span>
+<span class="normal">356</span>
+<span class="normal">357</span>
+<span class="normal">358</span>
+<span class="normal">359</span>
+<span class="normal">360</span>
+<span class="normal">361</span>
+<span class="normal">362</span>
+<span class="normal">363</span>
+<span class="normal">364</span>
+<span class="normal">365</span>
+<span class="normal">366</span>
+<span class="normal">367</span>
+<span class="normal">368</span>
+<span class="normal">369</span>
+<span class="normal">370</span>
+<span class="normal">371</span>
+<span class="normal">372</span>
+<span class="normal">373</span>
+<span class="normal">374</span>
+<span class="normal">375</span>
+<span class="normal">376</span>
+<span class="normal">377</span>
+<span class="normal">378</span>
+<span class="normal">379</span>
+<span class="normal">380</span>
+<span class="normal">381</span>
+<span class="normal">382</span>
+<span class="normal">383</span>
+<span class="normal">384</span>
+<span class="normal">385</span>
+<span class="normal">386</span>
+<span class="normal">387</span>
+<span class="normal">388</span>
+<span class="normal">389</span>
+<span class="normal">390</span>
+<span class="normal">391</span>
+<span class="normal">392</span>
+<span class="normal">393</span>
+<span class="normal">394</span>
+<span class="normal">395</span>
+<span class="normal">396</span>
+<span class="normal">397</span>
+<span class="normal">398</span>
+<span class="normal">399</span>
+<span class="normal">400</span>
+<span class="normal">401</span>
+<span class="normal">402</span>
+<span class="normal">403</span>
+<span class="normal">404</span>
+<span class="normal">405</span>
+<span class="normal">406</span>
+<span class="normal">407</span>
+<span class="normal">408</span>
+<span class="normal">409</span>
+<span class="normal">410</span>
+<span class="normal">411</span>
+<span class="normal">412</span>
+<span class="normal">413</span>
+<span class="normal">414</span>
+<span class="normal">415</span>
+<span class="normal">416</span>
+<span class="normal">417</span>
+<span class="normal">418</span>
+<span class="normal">419</span>
+<span class="normal">420</span>
+<span class="normal">421</span>
+<span class="normal">422</span>
+<span class="normal">423</span>
+<span class="normal">424</span>
+<span class="normal">425</span>
+<span class="normal">426</span>
+<span class="normal">427</span>
+<span class="normal">428</span>
+<span class="normal">429</span>
+<span class="normal">430</span>
+<span class="normal">431</span>
+<span class="normal">432</span>
+<span class="normal">433</span>
+<span class="normal">434</span>
+<span class="normal">435</span>
+<span class="normal">436</span>
+<span class="normal">437</span>
+<span class="normal">438</span>
+<span class="normal">439</span>
+<span class="normal">440</span>
+<span class="normal">441</span>
+<span class="normal">442</span>
+<span class="normal">443</span>
+<span class="normal">444</span>
+<span class="normal">445</span>
+<span class="normal">446</span>
+<span class="normal">447</span>
+<span class="normal">448</span>
+<span class="normal">449</span>
+<span class="normal">450</span>
+<span class="normal">451</span>
+<span class="normal">452</span>
+<span class="normal">453</span>
+<span class="normal">454</span>
+<span class="normal">455</span>
+<span class="normal">456</span>
+<span class="normal">457</span>
+<span class="normal">458</span>
+<span class="normal">459</span>
+<span class="normal">460</span>
+<span class="normal">461</span>
+<span class="normal">462</span>
+<span class="normal">463</span>
+<span class="normal">464</span>
+<span class="normal">465</span>
+<span class="normal">466</span>
+<span class="normal">467</span>
+<span class="normal">468</span>
+<span class="normal">469</span>
+<span class="normal">470</span>
+<span class="normal">471</span>
+<span class="normal">472</span>
+<span class="normal">473</span>
+<span class="normal">474</span>
+<span class="normal">475</span>
+<span class="normal">476</span>
+<span class="normal">477</span>
+<span class="normal">478</span>
+<span class="normal">479</span>
+<span class="normal">480</span>
+<span class="normal">481</span>
+<span class="normal">482</span>
+<span class="normal">483</span>
+<span class="normal">484</span>
+<span class="normal">485</span>
+<span class="normal">486</span>
+<span class="normal">487</span>
+<span class="normal">488</span>
+<span class="normal">489</span>
+<span class="normal">490</span>
+<span class="normal">491</span>
+<span class="normal">492</span>
+<span class="normal">493</span>
+<span class="normal">494</span>
+<span class="normal">495</span>
+<span class="normal">496</span>
+<span class="normal">497</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">table</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
     <span class="n">page_info</span><span class="p">:</span> <span class="n">PageInfo</span><span class="p">,</span>
@@ -2043,6 +3003,8 @@ when serializing to json.</p></td>
     <span class="n">col_settings</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">downloads</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">table_kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">json_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;tabulator&quot;</span><span class="p">,</span>
+    <span class="n">use_hash</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
 <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -2061,13 +3023,15 @@ when serializing to json.</p></td>
 <span class="sd">        downloads (bool): Add download options.</span>
 <span class="sd">        table_kwargs (Optional[dict]): Keyword args for the table</span>
 <span class="sd">            when serializing to json.</span>
+<span class="sd">        json_name (str): Name of the saved file (before hash if hash=True)</span>
+<span class="sd">        use_hash (bool): Should the name of the copied image be updated with a hash (Default: True)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">assert</span> <span class="n">page_info</span><span class="o">.</span><span class="n">idstore</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
     <span class="k">assert</span> <span class="n">page_info</span><span class="o">.</span><span class="n">page_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
     <span class="k">assert</span> <span class="n">page_info</span><span class="o">.</span><span class="n">javascript_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
 
     <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="nb">dir</span><span class="p">:</span>
-        <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="nb">dir</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="s2">&quot;tabulator.json&quot;</span><span class="p">)</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="nb">dir</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">json_name</span><span class="si">}</span><span class="s2">.json&quot;</span><span class="p">)</span>
         <span class="c1"># here we use the split method; the index and columns</span>
         <span class="c1"># are not useful, but the rest gets set as &#39;data&#39;, which we need</span>
         <span class="k">if</span> <span class="n">max_rows</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">table</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">max_rows</span><span class="p">:</span>
@@ -2084,7 +3048,7 @@ when serializing to json.</p></td>
 
         <span class="c1"># Make sure the file is moved to the right place</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-            <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">page_info</span><span class="o">=</span><span class="n">page_info</span><span class="p">,</span> <span class="n">allow_copy</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">use_hash</span><span class="o">=</span><span class="kc">True</span>
+            <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">page_info</span><span class="o">=</span><span class="n">page_info</span><span class="p">,</span> <span class="n">allow_copy</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">use_hash</span><span class="o">=</span><span class="n">use_hash</span>
         <span class="p">)</span>
 
     <span class="c1"># produce the column settings</span>
@@ -2205,6 +3169,7 @@ when serializing to json.</p></td>
     <span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_settings</span> <span class="o">=</span> <span class="n">settings</span>
 </code></pre></div>
+</td></tr></table>
         </details>
     </div>
 
@@ -2219,6 +3184,9 @@ when serializing to json.</p></td>
     </div>
 
   </div>
+
+
+
 
 
 
@@ -2296,10 +3264,10 @@ when serializing to json.</p></td>
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "../../..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../../assets/javascripts/workers/search.22074ed6.min.js"}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.5e67fbfe.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.960e086b.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.c44cc438.min.js"></script>
       
     
   </body>

@@ -14,7 +14,7 @@
     
     
       
-        <title>docs - Mkreports documentations</title>
+        <title>cli - Mkreports documentations</title>
       
     
     
@@ -67,7 +67,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#mkreports.docs" class="md-skip">
+        <a href="#mkreports.cli" class="md-skip">
           Skip to content
         </a>
       
@@ -100,7 +100,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              docs
+              cli
             
           </span>
         </div>
@@ -388,11 +388,69 @@
               
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../cli/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          cli
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         cli
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#mkreports.cli" class="md-nav__link">
+    mkreports.cli
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mkreports.cli.dir" class="md-nav__link">
+    dir()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mkreports.cli.new" class="md-nav__link">
+    new()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mkreports.cli.serve" class="md-nav__link">
+    serve()
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -430,55 +488,11 @@
               
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-      
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          docs
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../docs/" class="md-nav__link">
         docs
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#mkreports.docs" class="md-nav__link">
-    mkreports.docs
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#mkreports.docs.add_pkg_docs" class="md-nav__link">
-    add_pkg_docs()
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1002,15 +1016,29 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#mkreports.docs" class="md-nav__link">
-    mkreports.docs
+  <a href="#mkreports.cli" class="md-nav__link">
+    mkreports.cli
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#mkreports.docs.add_pkg_docs" class="md-nav__link">
-    add_pkg_docs()
+  <a href="#mkreports.cli.dir" class="md-nav__link">
+    dir()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mkreports.cli.new" class="md-nav__link">
+    new()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mkreports.cli.serve" class="md-nav__link">
+    serve()
   </a>
   
 </li>
@@ -1029,11 +1057,11 @@
                 
 
 
-  <h1>docs</h1>
+  <h1>cli</h1>
 
 <div class="doc doc-object doc-module">
 
-<a id="mkreports.docs"></a>
+<a id="mkreports.cli"></a>
     <div class="doc doc-contents first">
 
 
@@ -1048,12 +1076,15 @@
 
 
 
+
+
+
   <div class="doc doc-object doc-function">
 
 
 
-<h2 id="mkreports.docs.add_pkg_docs" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">add_pkg_docs</span><span class="p">(</span><span class="n">pkg_path</span><span class="p">,</span> <span class="n">parent_name</span><span class="p">,</span> <span class="n">report</span><span class="p">,</span> <span class="n">omit_package_name</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+<h2 id="mkreports.cli.dir" class="doc doc-heading">
+<code class="highlight language-python"><span class="nb">dir</span><span class="p">()</span></code>
 
 
 </h2>
@@ -1061,86 +1092,113 @@
 
     <div class="doc doc-contents ">
 
-      <p>Add docstrings of the object to the report</p>
-
-  <p><strong>Parameters:</strong></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td><code>pkg_path</code></td>
-          <td>
-                <code><span title="pathlib.Path">Path</span></code>
-          </td>
-          <td><p>Path of the package for which to add the docs.</p></td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-        <tr>
-          <td><code>parent_name</code></td>
-          <td>
-                <code><span title="typing.Union">Union</span>[<a class="autorefs autorefs-internal" title="mkreports.settings.NavEntry" href="../settings/#mkreports.settings.NavEntry">NavEntry</a>, <span title="pathlib.Path">Path</span>, str]</code>
-          </td>
-          <td><p>Name under which it should be
-added in the Navigation.</p></td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-        <tr>
-          <td><code>report</code></td>
-          <td>
-                <code><a class="autorefs autorefs-internal" title="mkreports.report.Report" href="../report/#mkreports.report.Report">Report</a></code>
-          </td>
-          <td><p>the report to which it should be added.</p></td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-        <tr>
-          <td><code>omit_package_name</code></td>
-          <td>
-                <code>bool</code>
-          </td>
-          <td><p>Should the package-name be omitted in the nav?</p></td>
-          <td>
-                <code>False</code>
-          </td>
-        </tr>
-    </tbody>
-  </table>
+      <p>Print the directory mkreports uses by default to the screen.</p>
 
         <details class="quote">
-          <summary>Source code in <code>mkreports/docs.py</code></summary>
-          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 8</span>
-<span class="normal"> 9</span>
-<span class="normal">10</span>
-<span class="normal">11</span>
-<span class="normal">12</span>
-<span class="normal">13</span>
-<span class="normal">14</span>
+          <summary>Source code in <code>mkreports/cli.py</code></summary>
+          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">14</span>
 <span class="normal">15</span>
 <span class="normal">16</span>
-<span class="normal">17</span>
-<span class="normal">18</span>
-<span class="normal">19</span>
-<span class="normal">20</span>
-<span class="normal">21</span>
-<span class="normal">22</span>
-<span class="normal">23</span>
-<span class="normal">24</span>
-<span class="normal">25</span>
-<span class="normal">26</span>
-<span class="normal">27</span>
-<span class="normal">28</span>
+<span class="normal">17</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="nd">@app</span><span class="o">.</span><span class="n">command</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">dir</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Print the directory mkreports uses by default to the screen.&quot;&quot;&quot;</span>
+    <span class="n">typer</span><span class="o">.</span><span class="n">echo</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">get_mkreports_dir</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+</td></tr></table>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="mkreports.cli.new" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">new</span><span class="p">(</span><span class="n">mkreports_dir</span><span class="o">=</span><span class="n">typer</span><span class="o">.</span><span class="n">Argument</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;mkreports directory to use to serve out of. If not given, then default directory as shown by `dir` subcommand used.&#39;</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="n">typer</span><span class="o">.</span><span class="n">Option</span><span class="p">(</span><span class="s1">&#39;Mkreports report&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Name of the report&#39;</span><span class="p">))</span></code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+      <p>Create a new mkreports report.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>mkreports/cli.py</code></summary>
+          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="nd">@app</span><span class="o">.</span><span class="n">command</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">new</span><span class="p">(</span>
+    <span class="n">mkreports_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="n">typer</span><span class="o">.</span><span class="n">Argument</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;mkreports directory to use to serve out of. If not given, then default directory as shown by `dir` subcommand used.&quot;</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">typer</span><span class="o">.</span><span class="n">Option</span><span class="p">(</span><span class="s2">&quot;Mkreports report&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Name of the report&quot;</span><span class="p">),</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create a new mkreports report.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">mkreports_dir</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">mkreports_dir</span> <span class="o">=</span> <span class="n">get_mkreports_dir</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">Report</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">mkreports_dir</span><span class="p">,</span> <span class="n">report_name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">typer</span><span class="o">.</span><span class="n">echo</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Create report in </span><span class="si">{</span><span class="n">mkreports_dir</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">mkreports_dir</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+            <span class="n">typer</span><span class="o">.</span><span class="n">echo</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Directory already exists and could not create report in </span><span class="si">{</span><span class="n">mkreports_dir</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">typer</span><span class="o">.</span><span class="n">echo</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Could not create report in </span><span class="si">{</span><span class="n">mkreports_dir</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+</td></tr></table>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="mkreports.cli.serve" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">serve</span><span class="p">(</span><span class="n">mkreports_dir</span><span class="o">=</span><span class="n">typer</span><span class="o">.</span><span class="n">Argument</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;mkreports directory to use to serve out of. If not given, then default directory as shown by `dir` subcommand used.&#39;</span><span class="p">),</span> <span class="n">mkdocs_args</span><span class="o">=</span><span class="n">typer</span><span class="o">.</span><span class="n">Argument</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;All values passed directly to `mkdocs serve` function. Use `--` to separate options for mkdocs from options for the core command.&#39;</span><span class="p">))</span></code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+      <p>Serve an mkdocs site.</p>
+<p>This is a convenience wrapper for <code>mkdocs serve</code> that changes to the correct directory
+and invokes <code>mkdocs serve</code>, restarting when error occur.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>mkreports/cli.py</code></summary>
+          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">28</span>
 <span class="normal">29</span>
 <span class="normal">30</span>
 <span class="normal">31</span>
@@ -1161,48 +1219,98 @@ added in the Navigation.</p></td>
 <span class="normal">46</span>
 <span class="normal">47</span>
 <span class="normal">48</span>
-<span class="normal">49</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">add_pkg_docs</span><span class="p">(</span>
-    <span class="n">pkg_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
-    <span class="n">parent_name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">NavEntry</span><span class="p">,</span> <span class="n">Path</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
-    <span class="n">report</span><span class="p">:</span> <span class="n">Report</span><span class="p">,</span>
-    <span class="n">omit_package_name</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span>
+<span class="normal">83</span>
+<span class="normal">84</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="nd">@app</span><span class="o">.</span><span class="n">command</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">serve</span><span class="p">(</span>
+    <span class="n">mkreports_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="n">typer</span><span class="o">.</span><span class="n">Argument</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;mkreports directory to use to serve out of. If not given, then default directory as shown by `dir` subcommand used.&quot;</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">mkdocs_args</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">typer</span><span class="o">.</span><span class="n">Argument</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;All values passed directly to `mkdocs serve` function. Use `--` to separate options for mkdocs from options for the core command.&quot;</span><span class="p">,</span>
+    <span class="p">),</span>
 <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Add docstrings of the object to the report</span>
+<span class="sd">    Serve an mkdocs site.</span>
 
-<span class="sd">    Args:</span>
-<span class="sd">        pkg_path (Path): Path of the package for which to add the docs.</span>
-<span class="sd">        parent_name (Union[NavEntry, Path, str]): Name under which it should be</span>
-<span class="sd">            added in the Navigation.</span>
-<span class="sd">        report (Report): the report to which it should be added.</span>
-<span class="sd">        omit_package_name (bool): Should the package-name be omitted in the nav?</span>
+<span class="sd">    This is a convenience wrapper for `mkdocs serve` that changes to the correct directory</span>
+<span class="sd">    and invokes `mkdocs serve`, restarting when error occur.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># we need the parent name as a nav_entry</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parent_name</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-        <span class="n">parent_name</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">parent_name</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parent_name</span><span class="p">,</span> <span class="n">Path</span><span class="p">):</span>
-        <span class="n">parent_name</span> <span class="o">=</span> <span class="n">path_to_nav_entry</span><span class="p">(</span><span class="n">parent_name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">mkreports_dir</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">mkreports_dir</span> <span class="o">=</span> <span class="n">get_mkreports_dir</span><span class="p">()</span>
 
-    <span class="c1"># now iterate through all python entries</span>
-    <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">pkg_path</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;**/*.py&quot;</span><span class="p">)):</span>
-        <span class="n">module_path</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">relative_to</span><span class="p">(</span><span class="n">pkg_path</span><span class="o">.</span><span class="n">parent</span><span class="p">)</span><span class="o">.</span><span class="n">with_suffix</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">module_path</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">):</span>
-            <span class="k">continue</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">omit_package_name</span><span class="p">:</span>
-                <span class="n">nav_module_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="o">*</span><span class="n">module_path</span><span class="o">.</span><span class="n">parts</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">nav_module_path</span> <span class="o">=</span> <span class="n">module_path</span>
+    <span class="n">mkdocs_cmd</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;cd </span><span class="si">{</span><span class="n">mkreports_dir</span><span class="si">}</span><span class="s2"> &amp;&amp; mkdocs serve </span><span class="si">{</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">mkdocs_args</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
 
-            <span class="c1"># now create the new nav_entry for this page</span>
-            <span class="n">module_nav_entry</span> <span class="o">=</span> <span class="n">NavEntry</span><span class="p">(</span>
-                <span class="nb">tuple</span><span class="p">(</span><span class="n">parent_name</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">nav_module_path</span><span class="o">.</span><span class="n">parts</span><span class="p">),</span>
-                <span class="p">(</span><span class="n">parent_name</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">nav_module_path</span><span class="p">)</span><span class="o">.</span><span class="n">with_suffix</span><span class="p">(</span><span class="s2">&quot;.md&quot;</span><span class="p">),</span>
-            <span class="p">)</span>
+    <span class="c1"># we first do an initial start; this has to run without error</span>
+    <span class="c1"># for a few seconds before the automatic restart is initiated</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">mkreports_dir</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+        <span class="n">typer</span><span class="o">.</span><span class="n">echo</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Directory </span><span class="si">{</span><span class="n">mkreports_dir</span><span class="si">}</span><span class="s2"> does not exist or is not a directory.&quot;</span><span class="p">,</span> <span class="n">err</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+        <span class="k">raise</span> <span class="n">typer</span><span class="o">.</span><span class="n">Exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
-            <span class="c1"># now create a new page and add the doc-entry</span>
-            <span class="n">page</span> <span class="o">=</span> <span class="n">report</span><span class="o">.</span><span class="n">page</span><span class="p">(</span><span class="n">module_nav_entry</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-            <span class="n">page</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">page</span><span class="o">.</span><span class="n">md</span><span class="o">.</span><span class="n">Docstring</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">module_path</span><span class="o">.</span><span class="n">parts</span><span class="p">)))</span>
+    <span class="c1"># we do the initial run; this needs to last for at least 5 seconds;</span>
+    <span class="c1"># if an error occurs in this time, we do not restart</span>
+    <span class="n">time_first_start</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">typer</span><span class="o">.</span><span class="n">echo</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Run bash command: </span><span class="si">{</span><span class="n">mkdocs_cmd</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">cmd</span> <span class="o">=</span> <span class="n">sh</span><span class="o">.</span><span class="n">bash</span><span class="p">(</span><span class="s2">&quot;-c&quot;</span><span class="p">,</span> <span class="n">mkdocs_cmd</span><span class="p">,</span> <span class="n">_out</span><span class="o">=</span><span class="n">_process_out</span><span class="p">,</span> <span class="n">_err</span><span class="o">=</span><span class="n">_process_err</span><span class="p">,</span> <span class="n">_bg</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+                <span class="n">cmd</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+            <span class="k">except</span> <span class="n">sh</span><span class="o">.</span><span class="n">ErrorReturnCode</span><span class="p">:</span>
+                <span class="n">time_error</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+
+                <span class="n">elapsed_time</span> <span class="o">=</span> <span class="n">time_error</span> <span class="o">-</span> <span class="n">time_first_start</span>
+                <span class="k">if</span> <span class="n">elapsed_time</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="mi">5</span><span class="p">:</span>
+                    <span class="n">typer</span><span class="o">.</span><span class="n">echo</span><span class="p">(</span><span class="s2">&quot;Error occured before 5 seconds. Exiting.&quot;</span><span class="p">)</span>
+                    <span class="k">raise</span> <span class="n">typer</span><span class="o">.</span><span class="n">Exit</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">typer</span><span class="o">.</span><span class="n">echo</span><span class="p">(</span><span class="s2">&quot;Restarting!&quot;</span><span class="p">)</span>
+
+    <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">cmd</span><span class="o">.</span><span class="n">is_alive</span><span class="p">():</span>  <span class="c1"># type: ignore</span>
+                <span class="n">cmd</span><span class="o">.</span><span class="n">terminate</span><span class="p">()</span>  <span class="c1"># type: ignore</span>
+                <span class="n">typer</span><span class="o">.</span><span class="n">echo</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Terminated mkdocs serve&quot;</span><span class="p">)</span>
+            <span class="n">typer</span><span class="o">.</span><span class="n">Abort</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">UnboundLocalError</span><span class="p">:</span>
+            <span class="k">pass</span>
 </code></pre></div>
 </td></tr></table>
         </details>
@@ -1232,7 +1340,7 @@ added in the Navigation.</p></td>
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
         
-        <a href="../config/" class="md-footer__link md-footer__link--prev" aria-label="Previous: config" rel="prev">
+        <a href="../../usage/sidebar/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Sidebar" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
           </div>
@@ -1241,20 +1349,20 @@ added in the Navigation.</p></td>
               <span class="md-footer__direction">
                 Previous
               </span>
-              config
+              Sidebar
             </div>
           </div>
         </a>
       
       
         
-        <a href="../exceptions/" class="md-footer__link md-footer__link--next" aria-label="Next: exceptions" rel="next">
+        <a href="../code_context/" class="md-footer__link md-footer__link--next" aria-label="Next: code_context" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              exceptions
+              code_context
             </div>
           </div>
           <div class="md-footer__button md-icon">
