@@ -82,42 +82,13 @@ analyses.
 
 ## Why write this package?
 
-In this reports we want to provide an easier way to create static
-reports for data analysis. The main tool of choice in this space
-are of course Jupyter notebooks which can also be converted to
-static html files. So why another tool?
+First of all, because developing it is fun to do. It is a very nice challenge to provide
+a user friendly interface that provides a lot of flexibility.
 
-The main reason is that having to switch to jupyter
-notebooks breaks a workflow
-in common editors such as vim as they don't natively
-support jupyter notebooks. This problem can somewhat be
-alleviated by using packages such as `jupytext` that allow
-for the seamless conversion between notebooks and python files.
-The end results are ok but not quite satisfactory as
-- One python file corresponds to one output document
-  (which can get very long)
-- Incremental execution is not possible (or at least hard to achieve)
-- Regular debuggers such as pudb are not well supported
-- It does not solve the issue that in remote ssh development
-  shells the viewing of graphics can be complicated
-- The display options for code and complex tables are limited.
-- Easily pass paramters to create reports. This is functionality
-  that for Jupyter is provided by tools such as `papermill`, but
-  can be much easier achieved in native python.
-
-For this package, the planned features are:
-- Simple and convenient ways to save and include graphics in markdown files
-- Simple way to include tables in markdown files, also for more complicated
-  javascript display options
-- Include code that was run in the output. For this, we would like
-  a tabbed style, so that the code is only visible when desired and not
-  all the time.
-- Include an option to write the local variables of a stacktrace.
-- Use this functionality together with IPython console to get a running
-  log of an analysis session.
-
-Using the development server of `mkdocs`, live updates of sessions will be
-possible, including live updates of long-running scripts.
+Another reason was to provide a highly modular and flexible way to create reports
+in markdown that can contain fragments obtained in computation. The main tool in this
+space is Jupyter Notebooks at the moment, but hopefully this tool can provide an
+alternative in certain settings.
 
 ## Packages used here
 

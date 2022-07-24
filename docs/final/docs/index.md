@@ -55,19 +55,6 @@ Also related to their design of one notebook, one html page, parametrization of
 notebooks can be cumbersome and is certainly not as simple and straightforward as
 a function.
 
-Another drawback is the fact that notebooks hard or impossible to edit in many
-IDEs, requiring the use of a different environment than the one the scientist
-is used to. Tools like [jupytext][jupytext] can help here, but they still rely
-on the special interpretation of comments to function properly and inherently
-still follow the linear form and one file one document view of Jupyter (and
-pretty much any other Literate Programming approach).
-
-Next to these, some more issues are that:
-- Some debuggers such as pudb are not supported well supported.
-- Jupytext does not solve the issue that in remote ssh development
-  shells the viewing of graphics can be complicated.
-- The display options for code and complex tables are limited.
-
 ## This package
 
 This package was developed to give an alternative to Jupyter providing
