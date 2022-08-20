@@ -1,4 +1,4 @@
-from typing import Iterable, Literal, Sequence, Union
+from typing import Iterable, Literal, Sequence, Set, Union
 
 from .base import MdObj, MdSeq, Raw
 from .md_proxy import register_md
@@ -104,3 +104,10 @@ class List(MdObj):
             int: Number of items in the list.
         """
         return len(self.list)
+
+    def render(self, **kwargs) -> None:
+        super().render()
+        self.list.render(**kwargs)
+
+    def render_fixtures(self) -> Set[str]:
+        return self.list.render_fixtures()

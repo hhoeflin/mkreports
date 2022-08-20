@@ -91,6 +91,10 @@ class Admonition(MdObj):
         ) + SpacedText(indent(str(admon_text), "    "), (2, 2))
         self._back = back
         self._settings = settings
+        self.rendered = True
+
+    def render(self) -> None:
+        super().render()
 
 
 @register_md("Tab")
@@ -135,6 +139,9 @@ class Tab(MdObj):
         )
         self._back = back
         self._settings = settings
+
+    def render(self) -> None:
+        super().render()
 
 
 @register_md("Code")
@@ -193,6 +200,9 @@ class Code(MdObj):
         )
         self._back = None
         self._settings = settings
+
+    def render(self) -> None:
+        super().render()
 
 
 @register_md("CodeFile")
@@ -262,3 +272,6 @@ class CodeFile(File):
         )
         self._back = None
         self._settings = settings
+
+    def render(self) -> None:
+        super().render()

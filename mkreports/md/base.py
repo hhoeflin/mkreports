@@ -1,18 +1,23 @@
 import functools
 import html
+import inspect
 import textwrap
-from abc import ABC
+from abc import ABC, abstractmethod
 from collections.abc import Sequence
 from dataclasses import dataclass
 from os.path import relpath
 from pathlib import Path
-from typing import Any, Dict, Iterable, Optional, Tuple, Union
+from typing import Any, Dict, Iterable, Optional, Set, Tuple, Union
 
 from .md_proxy import register_md
 from .settings import PageInfo, Settings
 from .text import SpacedText, Text
 
 store_path_dict = {}
+
+
+class NotRenderedError(Exception):
+    pass
 
 
 class MdObj(ABC):
@@ -39,6 +44,7 @@ class MdObj(ABC):
     _body: Optional[SpacedText]
     _back: Optional[SpacedText]
     _settings: Optional[Settings]
+    rendered: bool = False
 
     def __add__(self, other) -> "MdSeq":
         first = self if isinstance(self, MdSeq) else MdSeq([self])
@@ -47,8 +53,8 @@ class MdObj(ABC):
         return first + second
 
     def __radd__(self, other) -> "MdSeq":
-        first = other if isinstance(self, MdSeq) else MdSeq([other])
-        second = self if isinstance(other, MdSeq) else MdSeq([self])
+        first = other if isinstance(other, MdSeq) else MdSeq([other])
+        second = self if isinstance(self, MdSeq) else MdSeq([self])
 
         return first + second
 
@@ -64,7 +70,10 @@ class MdObj(ABC):
             SpacedText: A string representing the body with info on how many
                 newlines are expected before and after.
         """
-        return self._body if self._body is not None else SpacedText("")
+        if self.rendered:
+            return self._body if self._body is not None else SpacedText("")
+        else:
+            raise NotRenderedError()
 
     @property
     def back(self) -> SpacedText:
@@ -78,7 +87,10 @@ class MdObj(ABC):
             SpacedText: A string representing the backmatter with info on how many
                 newlines are expected before and after.
         """
-        return self._back if self._back is not None else SpacedText("")
+        if self.rendered:
+            return self._back if self._back is not None else SpacedText("")
+        else:
+            raise NotRenderedError()
 
     @property
     def settings(self) -> Settings:
@@ -92,6 +104,21 @@ class MdObj(ABC):
             Settings: A settings object.
         """
         return self._settings if self._settings is not None else Settings()
+
+    @abstractmethod
+    def render(self) -> None:
+        self.rendered = True
+
+    def render_fixtures(self) -> Set[str]:
+        """
+        Get the fixtures used by render.
+
+        Returns:
+            Set of strings representing the used fixtures.
+
+        """
+        render_sig = inspect.signature(self.render)
+        return set(render_sig.parameters.keys())
 
 
 @register_md("MdSeq")
@@ -180,6 +207,20 @@ class MdSeq(MdObj, Sequence):
                 lambda x, y: x + y, [elem.settings for elem in self.items]
             )
 
+    def render(self, **kwargs) -> None:
+        for item in self.items:
+            fixtures = item.render_fixtures()
+            item_kwargs = {fixture: kwargs[fixture] for fixture in fixtures}
+            item.render(**item_kwargs)
+
+    def render_fixtures(self) -> Set[str]:
+        # we iterate through all items and concatenate the sets
+        fixtures = set()
+        for item in self.items:
+            fixtures.update(item.render_fixtures())
+
+        return fixtures
+
 
 @register_md("Raw")
 @dataclass()
@@ -227,6 +268,9 @@ class Raw(MdObj):
             mkdocs=mkdocs_settings if mkdocs_settings is not None else {},
         )
 
+    def render(self) -> None:
+        super().render()
+
 
 @register_md("Anchor")
 class Anchor(MdObj):
@@ -256,6 +300,9 @@ class Anchor(MdObj):
         self._body = SpacedText(f"[](){{:name='{name}'}}", (0, 0))
         self._settings = None
 
+    def render(self) -> None:
+        super().render()
+
 
 @register_md("Link")
 @dataclass()
@@ -278,6 +325,9 @@ class Link(MdObj):
         self._back = None
         self._settings = None
 
+    def render(self) -> None:
+        super().render()
+
 
 @register_md("ReportLink")
 class ReportLink(Link):
@@ -293,7 +343,7 @@ class ReportLink(Link):
 
         Args:
             text (str): The text of the link
-            page_info (Optional[PageInfo]): PageInfo object cotaining info of the page
+            page_info (Optional[PageInfo]): PageInfo object containing info of the page
             to_page_path (Optional[Path]): internal page to link to
             anchor (Optional[Union[str, Anchor]]): anchor to use
         """
@@ -316,6 +366,9 @@ class ReportLink(Link):
                 anchor_id = anchor if isinstance(anchor, str) else anchor.name
                 link = f"{relpath(to_page_path, start=page_path.parent)}#{anchor_id}"
         super().__init__(text=text, url=link)
+
+    def render(self) -> None:
+        super().render()
 
 
 @register_md("P")
@@ -354,6 +407,9 @@ class Paragraph(MdObj):
         self._body = SpacedText(res_body, (2, 2))
         self._back = None if not isinstance(self.anchor, Anchor) else self.anchor.back
         self._settings = None
+
+    def render(self) -> None:
+        super().render()
 
 
 def comment(x: str) -> SpacedText:

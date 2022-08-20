@@ -1,5 +1,6 @@
 import hashlib
 import shutil
+import sys
 from os.path import relpath
 from pathlib import Path
 from typing import Optional, Union
@@ -9,6 +10,11 @@ import importlib_resources as imp_res
 from .base import MdObj
 from .md_proxy import register_md
 from .settings import PageInfo
+
+if sys.version_info <= (3, 8):
+    import importlib_resources as imp_res
+else:
+    import importlib.resources as imp_res
 
 
 def true_stem(path: Path) -> str:
@@ -76,10 +82,13 @@ def store_asset_relpath(asset_path_mkreports: Path, page_info: PageInfo) -> str:
         page_info.javascript_path / "assets" / asset_path_mkreports.name
     )
     asset_path_report_abs.parent.mkdir(parents=True, exist_ok=True)
-    shutil.copy(
-        imp_res.files("mkreports") / "assets" / asset_path_mkreports,
-        asset_path_report_abs,
-    )
+    with imp_res.as_file(
+        imp_res.files("mkreports") / "assets" / asset_path_mkreports
+    ) as asset_file:
+        shutil.copy(
+            str(asset_file),
+            str(asset_path_report_abs),
+        )
     return relpath_html(asset_path_report_abs, page_info.page_path)
 
 
