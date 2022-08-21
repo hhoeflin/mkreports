@@ -16,16 +16,21 @@ to display the code and the results such as:
 """
 import inspect
 from pathlib import Path
-from typing import Literal, Optional
+from typing import List, Literal, Optional
 
-from .md import Admonition, HLine, MdObj, MdSeq, PageInfo, Tab
+import attrs
+from typing_extensions import Self
+
+from .md import Admonition, HLine, MdObj, MdSeq, Tab
 from .tracker import BaseTracker, SimpleTracker
 
 Layouts = Literal["top-c", "top-o", "bottom-c", "bottom-o", "tabbed", "nocode"]
 
 
 def do_layout(
-    code: Optional[MdObj], content: MdObj, layout: Layouts, page_info: PageInfo
+    code: Optional[MdObj],
+    content: MdObj,
+    layout: Layouts,
 ) -> MdObj:
     """
     Do the layouting for a content and code block.
@@ -50,7 +55,6 @@ def do_layout(
             return (
                 Admonition(
                     code,
-                    page_info=page_info,
                     collapse=True,
                     title="Code",
                     kind="code",
@@ -65,7 +69,6 @@ def do_layout(
                 content
                 + Admonition(
                     code,
-                    page_info=page_info,
                     collapse=True,
                     title="Code",
                     kind="code",
@@ -146,7 +149,8 @@ class CodeContext:
         else:
             self.obj_list.insert(0, md_obj)
 
-    def md_obj(self, page_info: PageInfo) -> MdObj:
+    @property
+    def md_obj(self) -> MdObj:
         """
         Return the markdown object that represents output and code.
 
@@ -177,6 +181,83 @@ class CodeContext:
                 # just keep the code block as is
                 code_final = code_md_list[0]
 
-        return do_layout(
-            code=code_final, content=content, page_info=page_info, layout=self.layout
+        return do_layout(code=code_final, content=content, layout=self.layout)
+
+
+@attrs.mutable()
+class MultiCodeContext:
+    code_layout: Layouts = "tabbed"
+    code_name_only: bool = False
+    add_bottom: bool = True
+    relative_to: Optional[Path] = None
+    code_context_stack: List[CodeContext] = attrs.field(default=[], init=False)
+    md_obj: Optional[MdObj] = None
+
+    def __enter__(self) -> Self:
+        if len(self.code_context_stack) == 0 or (
+            len(self.code_context_stack) > 0 and self.code_context_stack[-1].active
+        ):
+            # need to enter a new context
+            self.code_context_stack.append(
+                CodeContext(
+                    layout=self.code_layout,
+                    name_only=self.code_name_only,
+                    add_bottom=self.add_bottom,
+                    relative_to=self.relative_to,
+                )
+            )
+        else:
+            # use the existing one that is not active yet
+            pass
+        # the last one on the stack is the one we activate
+        self.code_context_stack[-1].__enter__()
+        return self
+
+    def ctx(
+        self,
+        layout: Optional[Layouts] = None,
+        name_only: Optional[bool] = None,
+        add_bottom: Optional[bool] = None,
+    ) -> Self:
+        """
+        Sets the next context to be used. Only counts for the next tracking context.
+
+        Args:
+            layout (Optional[Layouts]): The layout to use. One of
+                'tabbed', 'top-o', 'top-c', 'bottom-o', 'bottom-c' or 'nocode'.
+            name_only (Optional[bool]): In the code block, should only the name of the
+                file be used.
+            add_bottom (Optional[bool]): Is new output added to the bottom or top.
+
+        Returns:
+            Page: The page object, but with the new *CodeContext* object set.
+
+        """
+        new_code_context = CodeContext(
+            layout=layout if layout is not None else self.code_layout,
+            name_only=name_only if name_only is not None else self.code_name_only,
+            add_bottom=add_bottom if add_bottom is not None else self.add_bottom,
+            relative_to=self.relative_to,
         )
+
+        if len(self.code_context_stack) == 0 or (
+            len(self.code_context_stack) > 0 and self.code_context_stack[-1].active
+        ):
+            # need to add new one
+            self.code_context_stack.append(new_code_context)
+        else:
+            # need to replace existing one
+            self.code_context_stack[-1] = new_code_context
+
+        return self
+
+    def __exit__(self, exc_type, exc_val, traceback) -> None:
+        if len(self.code_context_stack) == 0:
+            raise Exception("__exit__ called before __enter__")
+        active_code_context = self.code_context_stack.pop()
+        active_code_context.__exit__(exc_type, exc_val, traceback)
+
+        if len(self.code_context_stack) > 0:
+            self.code_context_stack[-1].add(active_code_context.md_obj)
+        else:
+            self.md_obj = active_code_context.md_obj

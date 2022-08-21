@@ -92,7 +92,6 @@ class ConsoleWriter(Magics):
                     code=code,
                     content=content,
                     layout=self.console.code_layout,
-                    page_info=self.console.page_info,
                 )
                 # and we also want a separator and a date
                 post = (

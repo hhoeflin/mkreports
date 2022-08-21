@@ -6,8 +6,8 @@ from frontmatter.default_handlers import DEFAULT_POST_TEMPLATE, YAMLHandler
 
 from .code_context import CodeContext, Layouts
 from .exceptions import IncorrectSuffixError
-from .md import (IDStore, MdObj, MdProxy, PageInfo, Raw, SpacedText, Text,
-                 comment, merge_settings)
+from .md import (IDStore, MdObj, MdProxy, Raw, SpacedText, Text, comment,
+                 merge_settings)
 from .settings import NavEntry
 from .utils import find_comment_ids
 
@@ -118,7 +118,7 @@ class Page:
         self.code_layout: Layouts = code_layout
         self.code_name_only = code_name_only
 
-        self._md = MdProxy(page_info=self.page_info, md_defaults=md_defaults)
+        self._md = MdProxy(md_defaults=md_defaults)
 
         self.code_context_stack: List[CodeContext] = []
 
@@ -187,7 +187,7 @@ class Page:
         active_code_context.__exit__(exc_type, exc_val, traceback)
 
         # self.add accounts for remaining active code_context
-        self.add(active_code_context.md_obj(page_info=self.page_info))
+        self.add(active_code_context.md_obj)
 
     def __getattr__(self, name):
         md_class = self.md.__getattr__(name)
@@ -209,12 +209,12 @@ class Page:
         return result
 
     @property
-    def page_info(self):
+    def fixtures(self):
         """
         Returns:
-            PageInfo: An object with info about the page used in markdown objects.
+            dict: A dictionary with the default fixtures for the page.
         """
-        return PageInfo(
+        return dict(
             store_path=self.store_path,
             report_path=self.report.path,
             javascript_path=self.report.javascript_path,
@@ -318,10 +318,13 @@ class Page:
         frontmatter library, that filters the newlines at the end of the file.
         https://github.com/eyeseast/python-frontmatter/issues/87
         """
-        # call the markdown and the backmatter
-        md_text = item.body + item.back
+        # first the item needs to be rendered
+        item_rendered = item.render(**self.fixtures)
 
-        req = item.settings
+        # call the markdown and the backmatter
+        md_text = item_rendered.body + item_rendered.back
+
+        req = item_rendered.settings
         if len(req.mkdocs) > 0:
             # merge these things into mkdocs
             # there is not allowed to be a nav here

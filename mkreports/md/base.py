@@ -7,10 +7,14 @@ from collections.abc import Sequence
 from dataclasses import dataclass
 from os.path import relpath
 from pathlib import Path
-from typing import Any, Dict, Iterable, Optional, Set, Tuple, Union
+from typing import (Any, Callable, Dict, Iterable, Optional, Set, Tuple, Union,
+                    final)
 
+import attrs
+
+from .idstore import IDStore
 from .md_proxy import register_md
-from .settings import PageInfo, Settings
+from .settings import Settings
 from .text import SpacedText, Text
 
 store_path_dict = {}
@@ -18,6 +22,44 @@ store_path_dict = {}
 
 class NotRenderedError(Exception):
     pass
+
+
+def to_spaced_text(x: Union[str, SpacedText, None]) -> SpacedText:
+    if isinstance(x, str):
+        return SpacedText(x)
+    elif x is None:
+        return SpacedText("")
+    else:
+        return x
+
+
+def to_settings(x: Optional[Settings]) -> Settings:
+    if x is None:
+        return Settings()
+    else:
+        return x
+
+
+@attrs.mutable()
+class RenderedMd:
+    body: SpacedText
+    back: SpacedText
+    settings: Settings
+    src: "MdObj"
+
+    def __init__(
+        self,
+        body: Union[str, SpacedText, None],
+        back: Union[str, SpacedText, None],
+        settings: Optional[Settings],
+        src: "MdObj",
+    ):
+        self.__attrs_init__(  # type: ignore
+            body=to_spaced_text(body),
+            back=to_spaced_text(back),
+            settings=to_settings(settings),
+            src=src,
+        )
 
 
 class MdObj(ABC):
@@ -41,11 +83,6 @@ class MdObj(ABC):
     End-users should never have to call this class.
     """
 
-    _body: Optional[SpacedText]
-    _back: Optional[SpacedText]
-    _settings: Optional[Settings]
-    rendered: bool = False
-
     def __add__(self, other) -> "MdSeq":
         first = self if isinstance(self, MdSeq) else MdSeq([self])
         second = other if isinstance(other, MdSeq) else MdSeq([other])
@@ -58,57 +95,16 @@ class MdObj(ABC):
 
         return first + second
 
-    @property
-    def body(self) -> SpacedText:
-        """
-        Default handler returning the body.
+    @abstractmethod
+    def _render(self) -> RenderedMd:
+        pass
 
-        For subclasses, this can be used by setting 'self._body', but
-        can also be overriden.
-
-        Returns:
-            SpacedText: A string representing the body with info on how many
-                newlines are expected before and after.
-        """
-        if self.rendered:
-            return self._body if self._body is not None else SpacedText("")
-        else:
-            raise NotRenderedError()
-
-    @property
-    def back(self) -> SpacedText:
-        """
-        Default handler returning the backmatter.
-
-        For subclasses, this can be used by setting 'self._back', but
-        can also be overriden.
-
-        Returns:
-            SpacedText: A string representing the backmatter with info on how many
-                newlines are expected before and after.
-        """
-        if self.rendered:
-            return self._back if self._back is not None else SpacedText("")
-        else:
-            raise NotRenderedError()
-
-    @property
-    def settings(self) -> Settings:
-        """
-        Default handler returning the settings.
-
-        For subclasses, this can be used by setting 'self._settings', but
-        can also be overriden.
-
-        Returns:
-            Settings: A settings object.
-        """
-        return self._settings if self._settings is not None else Settings()
+    @final
+    def render(self, **kwargs) -> RenderedMd:
+        used_fixtures = {key: kwargs[key] for key in self.render_fixtures()}
+        return self._render(**used_fixtures)
 
     @abstractmethod
-    def render(self) -> None:
-        self.rendered = True
-
     def render_fixtures(self) -> Set[str]:
         """
         Get the fixtures used by render.
@@ -117,8 +113,12 @@ class MdObj(ABC):
             Set of strings representing the used fixtures.
 
         """
-        render_sig = inspect.signature(self.render)
-        return set(render_sig.parameters.keys())
+        pass
+
+
+def func_kwargs_as_set(f: Callable) -> Set[str]:
+    render_sig = inspect.signature(f)
+    return set(render_sig.parameters.keys())
 
 
 @register_md("MdSeq")
@@ -161,57 +161,24 @@ class MdSeq(MdObj, Sequence):
         second_items = other if type(other) == MdSeq else (other,)
         return MdSeq(second_items + self.items)
 
-    @property
-    def body(self) -> SpacedText:
-        """
-        Body of the object in markdown - concatenating all individual items.
+    def _render(self, **kwargs) -> RenderedMd:
+        rendered_items = [item.render(**kwargs) for item in self.items]
 
-        Returns:
-            SpacedText: The body as a SpacedText object.
-        """
         if len(self.items) == 0:
-            return SpacedText("")
-        else:
-            return functools.reduce(
-                lambda x, y: x + y, [elem.body for elem in self.items]
+            return RenderedMd(
+                body=SpacedText(""), back=SpacedText(""), settings=Settings(), src=self
             )
-
-    @property
-    def back(self) -> SpacedText:
-        """
-        Back of the object in markdown - concatenating all individual items.
-
-        Returns:
-            SpacedText: The back as a SpacedText object.
-        """
-        if len(self.items) == 0:
-            return SpacedText("")
         else:
-            return functools.reduce(
-                lambda x, y: x + y, [elem.back for elem in self.items]
+            body = functools.reduce(
+                lambda x, y: x + y, [elem.body for elem in rendered_items]
             )
-
-    @property
-    def settings(self) -> Settings:
-        """
-        Setting to be added to page or report.
-
-        Returns:
-            Settings: A settings object.
-
-        """
-        if len(self.items) == 0:
-            return Settings()
-        else:
-            return functools.reduce(
-                lambda x, y: x + y, [elem.settings for elem in self.items]
+            back = functools.reduce(
+                lambda x, y: x + y, [elem.back for elem in rendered_items]
             )
-
-    def render(self, **kwargs) -> None:
-        for item in self.items:
-            fixtures = item.render_fixtures()
-            item_kwargs = {fixture: kwargs[fixture] for fixture in fixtures}
-            item.render(**item_kwargs)
+            settings = functools.reduce(
+                lambda x, y: x + y, [elem.settings for elem in rendered_items]
+            )
+            return RenderedMd(body=body, back=back, settings=settings, src=self)
 
     def render_fixtures(self) -> Set[str]:
         # we iterate through all items and concatenate the sets
@@ -223,7 +190,7 @@ class MdSeq(MdObj, Sequence):
 
 
 @register_md("Raw")
-@dataclass()
+@attrs.mutable(slots=False)
 class Raw(MdObj):
     """
     Class to encapsulate raw markdown.
@@ -253,7 +220,6 @@ class Raw(MdObj):
             page_settings (): Settings to be added for the page.
             mkdocs_settings (): Settings for the entire report.
         """
-        super().__init__()
         if dedent:
             # we only apply dedent to raw strings
             if isinstance(raw, str):
@@ -261,19 +227,28 @@ class Raw(MdObj):
         if isinstance(back, str):
             back = textwrap.dedent(back)
 
-        self._body = SpacedText(raw)
-        self._back = SpacedText(back)
-        self._settings = Settings(
+        self.body = SpacedText(raw)
+        self.back = SpacedText(back)
+        self.settings = Settings(
             page=page_settings if page_settings is not None else {},
             mkdocs=mkdocs_settings if mkdocs_settings is not None else {},
         )
 
-    def render(self) -> None:
-        super().render()
+    def _render(self) -> RenderedMd:
+        return RenderedMd(
+            back=self.back, body=self.body, settings=self.settings, src=self
+        )
+
+    def render_fixtures(self) -> Set[str]:
+        return super().render_fixtures()
 
 
-@register_md("Anchor")
 class Anchor(MdObj):
+    name: str
+
+
+@register_md("NamedAnchor")
+class NamedAnchor(Anchor):
     """
     Create an anchor object.
 
@@ -283,29 +258,49 @@ class Anchor(MdObj):
 
     def __init__(
         self,
-        name: Optional[str] = None,
-        prefix: str = "anchor",
-        page_info: Optional[PageInfo] = None,
+        name: str,
     ):
-        if name is None:
-            assert page_info is not None
-            assert page_info.idstore is not None
-            # need to create it using the IDStore
-            name = page_info.idstore.next_id(prefix)
-            self._back = SpacedText(comment_ids(name), (2, 2))
-        else:
-            self._back = None
-
         self.name = name
-        self._body = SpacedText(f"[](){{:name='{name}'}}", (0, 0))
-        self._settings = None
 
-    def render(self) -> None:
-        super().render()
+    def _render(self) -> RenderedMd:
+        back = SpacedText("")
+
+        body = SpacedText(f"[](){{:name='{self.name}'}}", (0, 0))
+        settings = Settings()
+        return RenderedMd(body=body, back=back, settings=settings, src=self)
+
+    def render_fixtures(self) -> Set[str]:
+        return super().render_fixtures()
+
+
+@register_md("AutoAnchor")
+class AutoAnchor(Anchor):
+    """
+    Create an anchor object.
+
+    Args:
+        name (str): Name of the anchor.
+    """
+
+    def __init__(
+        self,
+        prefix: str = "anchor",
+    ):
+        self.prefix = prefix
+
+    def _render(self, idstore: IDStore) -> RenderedMd:
+        self.name = idstore.next_id(self.prefix)
+        back = SpacedText(comment_ids(self.name), (2, 2))
+        body = SpacedText(f"[](){{:name='{self.name}'}}", (0, 0))
+        settings = Settings()
+        return RenderedMd(body=body, back=back, settings=settings, src=self)
+
+    def render_fixtures(self) -> Set[str]:
+        return super().render_fixtures()
 
 
 @register_md("Link")
-@dataclass()
+@attrs.mutable()
 class Link(MdObj):
     """
     Create a link to another page.
@@ -318,15 +313,14 @@ class Link(MdObj):
     text: str = ""
     url: str = ""
 
-    def __post_init__(self):
-        link = self.url
+    def _render(self) -> RenderedMd:
+        body = SpacedText(f"[{html.escape(self.text)}]({self.url})", (0, 0))
+        back = SpacedText("")
+        settings = Settings()
+        return RenderedMd(body=body, back=back, settings=settings, src=self)
 
-        self._body = SpacedText(f"[{html.escape(self.text)}]({link})", (0, 0))
-        self._back = None
-        self._settings = None
-
-    def render(self) -> None:
-        super().render()
+    def render_fixtures(self) -> Set[str]:
+        return super().render_fixtures()
 
 
 @register_md("ReportLink")
@@ -334,9 +328,8 @@ class ReportLink(Link):
     def __init__(
         self,
         text: str = "",
-        to_page_path: Optional[Path] = None,
+        to_page_path: Optional[Union[str, Path]] = None,
         anchor: Optional[Union[str, Anchor]] = None,
-        page_info: Optional[PageInfo] = None,
     ):
         """
         Create a link to another page in this report.
@@ -347,28 +340,39 @@ class ReportLink(Link):
             to_page_path (Optional[Path]): internal page to link to
             anchor (Optional[Union[str, Anchor]]): anchor to use
         """
-        assert page_info is not None
-        assert (page_path := page_info.page_path) is not None
-        if to_page_path is None:
-            if anchor is None:
+        if isinstance(anchor, str):
+            self.anchor = NamedAnchor(anchor)
+        else:
+            self.anchor = anchor
+        self.to_page_path = (
+            Path(to_page_path) if isinstance(to_page_path, str) else to_page_path
+        )
+        self.text = text
+
+    def _render(self, page_path: Path) -> RenderedMd:
+
+        if self.to_page_path is None:
+            if self.anchor is None:
                 raise ValueError(
                     "Either id or to_page_path and page_path have to be defined"
                 )
             else:
                 # assume is on the same page
-                anchor_id = anchor if isinstance(anchor, str) else anchor.name
-                link = f"#{anchor_id}"
+                link = f"#{self.anchor.name}"
         else:
             # both are not none, do relative
-            if anchor is None:
-                link = f"{relpath(to_page_path, start=page_path.parent)}"
+            if self.anchor is None:
+                link = f"{relpath(self.to_page_path, start=page_path.parent)}"
             else:
-                anchor_id = anchor if isinstance(anchor, str) else anchor.name
-                link = f"{relpath(to_page_path, start=page_path.parent)}#{anchor_id}"
-        super().__init__(text=text, url=link)
+                link = f"{relpath(self.to_page_path, start=page_path.parent)}#{self.anchor.name}"
+        self.url = link
+        return super().render()
 
-    def render(self) -> None:
-        super().render()
+    def render_fixtures(self) -> Set[str]:
+        fixtures = super().render_fixtures()
+        if self.anchor is not None:
+            fixtures.update(self.anchor.render_fixtures())
+        return fixtures
 
 
 @register_md("P")
@@ -397,19 +401,28 @@ class Paragraph(MdObj):
             anchor (Optional[Union[Anchor, str]]): Anchor to add to the paragraph.
         """
         self.obj = obj if not isinstance(obj, str) else Raw(obj)
-        self.anchor = anchor if not isinstance(anchor, str) else Anchor(anchor)
+        self.anchor = anchor if not isinstance(anchor, str) else NamedAnchor(anchor)
 
+    def _render(self, **kwargs) -> RenderedMd:
+        obj_rendered = self.obj.render(**kwargs)
         if isinstance(self.anchor, Anchor):
+            anchor_rendered = self.anchor.render(**kwargs)
             # note, string conversion to Anchor done in post-init
-            res_body = SpacedText(self.obj.body.text, (0, 1)) + self.anchor.body
+            body = SpacedText(obj_rendered.body.text, (0, 1)) + anchor_rendered.body
+            back = obj_rendered.back + anchor_rendered.back
         else:
-            res_body = self.obj.body
-        self._body = SpacedText(res_body, (2, 2))
-        self._back = None if not isinstance(self.anchor, Anchor) else self.anchor.back
-        self._settings = None
+            body = obj_rendered.body
+            back = obj_rendered.back
+        body = SpacedText(body, (2, 2))
+        settings = Settings()
 
-    def render(self) -> None:
-        super().render()
+        return RenderedMd(body=body, back=back, settings=settings, src=self)
+
+    def render_fixtures(self) -> Set[str]:
+        fixtures = self.obj.render_fixtures()
+        if isinstance(self.anchor, Anchor):
+            fixtures.update(self.anchor.render_fixtures())
+        return fixtures
 
 
 def comment(x: str) -> SpacedText:

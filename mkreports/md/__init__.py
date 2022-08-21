@@ -9,7 +9,7 @@ from .image import (PIL, Altair, ImageFile, Matplotlib, Plotly, Plotnine,
                     Seaborn)
 from .list import List
 from .md_proxy import MdProxy, register_md
-from .settings import PageInfo, Settings, merge_settings
+from .settings import Settings, merge_settings
 from .table import DataTable, Table, Tabulator
 from .text import SpacedText, Text
 
@@ -50,7 +50,6 @@ __all__ = [
     "List",
     "MdProxy",
     "register_md",
-    "PageInfo",
     "Settings",
     "merge_settings",
     "DataTable",

@@ -7,9 +7,8 @@ from typing import Optional, Union
 
 import importlib_resources as imp_res
 
-from .base import MdObj
+from .base import MdObj, NotRenderedError
 from .md_proxy import register_md
-from .settings import PageInfo
 
 if sys.version_info <= (3, 8):
     import importlib_resources as imp_res
@@ -65,7 +64,9 @@ def relpath_html(target: Path, page_path: Path) -> str:
         return relpath(target, page_path)
 
 
-def store_asset_relpath(asset_path_mkreports: Path, page_info: PageInfo) -> str:
+def store_asset_relpath(
+    asset_path_mkreports: Path, javascript_path: Path, page_path: Path
+) -> str:
     """
     Store an asset and return relative path to it.
 
@@ -76,11 +77,7 @@ def store_asset_relpath(asset_path_mkreports: Path, page_info: PageInfo) -> str:
     Returns:
         str: Path to the asset as it should be used from html
     """
-    assert page_info.javascript_path is not None
-    assert page_info.page_path is not None
-    asset_path_report_abs = (
-        page_info.javascript_path / "assets" / asset_path_mkreports.name
-    )
+    asset_path_report_abs = javascript_path / "assets" / asset_path_mkreports.name
     asset_path_report_abs.parent.mkdir(parents=True, exist_ok=True)
     with imp_res.as_file(
         imp_res.files("mkreports") / "assets" / asset_path_mkreports
@@ -89,7 +86,7 @@ def store_asset_relpath(asset_path_mkreports: Path, page_info: PageInfo) -> str:
             str(asset_file),
             str(asset_path_report_abs),
         )
-    return relpath_html(asset_path_report_abs, page_info.page_path)
+    return relpath_html(asset_path_report_abs, page_path)
 
 
 @register_md("File")
@@ -100,7 +97,7 @@ class File(MdObj):
     This is typically not needed by the end-user.
     """
 
-    path: Path
+    _path: Optional[Path]
     allow_copy: bool
     use_hash: bool
     _hash: Optional[str] = None
@@ -108,7 +105,6 @@ class File(MdObj):
     def __init__(
         self,
         path: Union[str, Path],
-        page_info: PageInfo,
         allow_copy: bool = True,
         use_hash: bool = False,
     ) -> None:
@@ -126,35 +122,24 @@ class File(MdObj):
         super().__init__()
 
         # store path needs to be set
-        assert page_info.store_path is not None
 
         # set the existing attributes
         self.allow_copy = allow_copy
         self.use_hash = use_hash
-        self.store_path = page_info.store_path
 
         # for the path we first have to see if they will be copied
-        self.path = Path(path).absolute()
+        if not self.allow_copy:
+            self._path = Path(path).absolute()
+        else:
+            self._path = None
+            self._file_binary = Path(path).read_bytes()
 
-        if self.allow_copy:
-
-            if self.use_hash:
-                # we calculate the hash of the file to be ingested
-                new_path = self.store_path / (
-                    true_stem(self.path) + "-" + self.hash + "".join(self.path.suffixes)
-                )
-            else:
-                new_path = self.store_path / self.path.name
-
-            # now see if we move or copy the file
-            new_path.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copy(path, new_path)
-            self.path = new_path
-
-        # it returns nothing
-        self._body = None
-        self._back = None
-        self._settings = None
+    @property
+    def path(self) -> Path:
+        if self._path is None:
+            raise NotRenderedError("Not yet rendered")
+        else:
+            return self._path
 
     @property
     def hash(self) -> str:
@@ -168,3 +153,21 @@ class File(MdObj):
         if self._hash is None:
             self._hash = md5_hash_file(self.path)
         return self._hash
+
+    def _render(self, store_path: Path) -> None:
+        super().render()
+        if self.allow_copy:
+
+            if self.use_hash:
+                # we calculate the hash of the file to be ingested
+                new_path = store_path / (
+                    true_stem(self.path) + "-" + self.hash + "".join(self.path.suffixes)
+                )
+            else:
+                new_path = store_path / self.path.name
+
+            # now see if we move or copy the file
+            new_path.parent.mkdir(parents=True, exist_ok=True)
+            with new_path.open("wb") as f:
+                f.write(self._file_binary)
+            self._path = new_path

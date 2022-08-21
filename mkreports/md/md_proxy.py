@@ -2,8 +2,6 @@ import inspect
 from functools import partial, update_wrapper
 from typing import Any, Dict, Optional
 
-from .settings import PageInfo
-
 
 def register_md(name):
     def register_md_named(cls):
@@ -24,7 +22,6 @@ class MdProxy:
 
     def __init__(
         self,
-        page_info: PageInfo,
         md_defaults: Optional[Dict[str, Dict[str, Any]]] = None,
     ):
         """
@@ -36,7 +33,6 @@ class MdProxy:
                 md objects (accessed from the proxy) to default keywords included when
                 they are being called.
         """
-        self.page_info = page_info
         self.md_defaults = md_defaults if md_defaults is not None else {}
 
     def __getattr__(self, name):
@@ -50,10 +46,6 @@ class MdProxy:
         if inspect.isclass(obj):
             # check the init method signature
             partial_kwargs = {}
-            obj_sig = inspect.signature(obj)
-            if "page_info" in obj_sig.parameters:
-                partial_kwargs["page_info"] = self.page_info
-
             # check if there are defaults for the md-object
             if name in self.md_defaults:
                 partial_kwargs.update(self.md_defaults[name])

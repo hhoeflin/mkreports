@@ -1,7 +1,9 @@
+import functools
 from typing import Iterable, Literal, Sequence, Set, Union
 
-from .base import MdObj, MdSeq, Raw
+from .base import MdObj, MdSeq, Raw, RenderedMd
 from .md_proxy import register_md
+from .settings import Settings
 from .text import SpacedText, Text
 
 
@@ -38,27 +40,8 @@ class List(MdObj):
             marker (Literal["-", "*", "+", "1"]): Marker to use for the list.
         """
         super().__init__()
-        self.list = MdSeq(items)
+        self.items = tuple(items)
         self.marker = marker
-
-        # create the markdown output for every item; indent it appropriately
-        # and then put it all together.
-
-        # create the body
-        # now we need to attach the right element at the beginning
-        if self.marker == "1":
-            prefix = [f"{i}. " for i in range(self.num_items)]
-        else:
-            prefix = [f"{self.marker} "] * self.num_items
-
-        md_list = [
-            _indent_hanging(elem.body.text, hanging=prefix)
-            for elem, prefix in zip(self.list.items, prefix)
-        ]
-
-        self._body = SpacedText("\n".join(md_list), (2, 2))
-        self._back = self.list.back
-        self._settings = self.list.settings
 
     def append(self, item: Union[Text, MdObj]) -> "List":
         """
@@ -72,7 +55,7 @@ class List(MdObj):
         """
         if isinstance(item, (str, SpacedText)):
             item = Raw(item)
-        return List(self.list.items + (item,), marker=self.marker)
+        return List(self.items + (item,), marker=self.marker)
 
     def extend(self, items: Sequence[Union[Text, MdObj]]) -> "List":
         """
@@ -93,7 +76,7 @@ class List(MdObj):
                 for item in items
             ]
         )
-        return List(self.list.items + items, marker=self.marker)
+        return List(self.items + items, marker=self.marker)
 
     @property
     def num_items(self) -> int:
@@ -103,11 +86,38 @@ class List(MdObj):
         Returns:
             int: Number of items in the list.
         """
-        return len(self.list)
+        return len(self.items)
 
-    def render(self, **kwargs) -> None:
-        super().render()
-        self.list.render(**kwargs)
+    def _render(self, **kwargs) -> RenderedMd:
+        if len(self.items) == 0:
+            return RenderedMd(
+                body=SpacedText(""), back=SpacedText(""), settings=Settings(), src=self
+            )
+        else:
+            # create the markdown output for every item; indent it appropriately
+            # and then put it all together.
+
+            # create the body
+            # now we need to attach the right element at the beginning
+            if self.marker == "1":
+                prefix = [f"{i}. " for i in range(self.num_items)]
+            else:
+                prefix = [f"{self.marker} "] * self.num_items
+
+            rendered_list = [elem.render(**kwargs) for elem in self.list]
+            md_list = [
+                _indent_hanging(elem.body.text, hanging=prefix)
+                for elem, prefix in zip(rendered_list, prefix)
+            ]
+
+            body = SpacedText("\n".join(md_list), (2, 2))
+            back = functools.reduce(
+                lambda x, y: x + y, [elem.back for elem in rendered_list]
+            )
+            settings = functools.reduce(
+                lambda x, y: x + y, [elem.settings for elem in rendered_list]
+            )
+            return RenderedMd(body=body, back=back, settings=settings, src=self)
 
     def render_fixtures(self) -> Set[str]:
         return self.list.render_fixtures()

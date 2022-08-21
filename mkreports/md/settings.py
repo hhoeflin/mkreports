@@ -1,20 +1,8 @@
 from copy import deepcopy
 from dataclasses import dataclass, field
-from pathlib import Path
-from typing import Any, Dict, NamedTuple, Optional
+from typing import Any, Dict
 
 from deepmerge import Merger
-
-from .idstore import IDStore
-
-
-class PageInfo(NamedTuple):
-    store_path: Optional[Path] = None
-    page_path: Optional[Path] = None
-    report_path: Optional[Path] = None
-    project_root: Optional[Path] = None
-    javascript_path: Optional[Path] = None
-    idstore: Optional[IDStore] = None
 
 
 @dataclass

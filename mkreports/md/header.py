@@ -1,16 +1,17 @@
 import functools
-from dataclasses import dataclass
-from typing import Literal, Optional, Union
+from typing import Literal, Optional, Set, Union
 
+import attrs
 import mdutils.tools as mdt
 
-from .base import Anchor, MdObj
+from .base import Anchor, MdObj, NamedAnchor, RenderedMd
 from .md_proxy import register_md
+from .settings import Settings
 from .text import SpacedText
 
 
 @register_md("Heading")
-@dataclass
+@attrs.mutable()
 class Heading(MdObj):
     """
     Create a heading.
@@ -30,27 +31,35 @@ class Heading(MdObj):
     anchor: Optional[Union[Anchor, str]] = None
 
     def __post_init__(self):
-        if isinstance(self.anchor, Anchor):
-            self._back = self.anchor.back
-        else:
-            self._back = None
         if isinstance(self.anchor, str):
-            self.anchor = Anchor(self.anchor)
+            self.anchor = NamedAnchor(self.anchor)
+
+    def _render(self, **kwargs) -> RenderedMd:
 
         heading = mdt.Header.Header.choose_header(
             self.level, self.title, self.style
         ).strip("\n")
 
         if isinstance(self.anchor, Anchor):
-            # note, string conversion to Anchor done in post-init
-            heading += self.anchor.body.text
+            anchor_rendered = self.anchor.render(**kwargs)
+            heading += anchor_rendered.body.text
+            back = anchor_rendered.back
+        else:
+            back = SpacedText("")
 
-        self._body = SpacedText(
+        body = SpacedText(
             heading,
             (2, 2),
         )
 
-        self._settings = None
+        settings = Settings()
+        return RenderedMd(body=body, back=back, settings=settings, src=self)
+
+    def render_fixtures(self) -> Set[str]:
+        if isinstance(self.anchor, Anchor):
+            return self.anchor.render_fixtures()
+        else:
+            return set()
 
 
 H1 = register_md("H1")(functools.partial(Heading, level=1))
