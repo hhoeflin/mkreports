@@ -190,57 +190,46 @@ class MdSeq(MdObj, Sequence):
 
 
 @register_md("Raw")
-@attrs.mutable(slots=False)
+@attrs.mutable()
 class Raw(MdObj):
     """
-    Class to encapsulate raw markdown.
+    Create the 'Raw' object.
+
+    Args:
+        raw (Text): The text to take as is to markdown.
+        dedent (): Should the passed text be 'dedented'. Useful for strings
+            in triple-quotes that are indented.
+        back (): The back to be added. As it has be be left-aligned, will always be
+            dedented.
+        page_settings (): Settings to be added for the page.
+        mkdocs_settings (): Settings for the entire report.
     """
 
-    raw: Text
-    page_settings: Dict[str, Any]
-    mkdocs_settings: Dict[str, Any]
+    raw: Text = ""
+    back: Text = ""
+    dedent: bool = True
+    page_settings: Dict[str, Any] = attrs.field(factory=dict)
+    mkdocs_settings: Dict[str, Any] = attrs.field(factory=dict)
 
-    def __init__(
-        self,
-        raw: Text = "",
-        dedent=True,
-        back: Text = "",
-        page_settings=None,
-        mkdocs_settings=None,
-    ):
-        """
-        Create the 'Raw' object.
-
-        Args:
-            raw (Text): The text to take as is to markdown.
-            dedent (): Should the passed text be 'dedented'. Useful for strings
-                in triple-quotes that are indented.
-            back (): The back to be added. As it has be be left-aligned, will always be
-                dedented.
-            page_settings (): Settings to be added for the page.
-            mkdocs_settings (): Settings for the entire report.
-        """
-        if dedent:
+    def __post_init__(self):
+        if self.dedent:
             # we only apply dedent to raw strings
-            if isinstance(raw, str):
-                raw = textwrap.dedent(raw)
-        if isinstance(back, str):
-            back = textwrap.dedent(back)
-
-        self.body = SpacedText(raw)
-        self.back = SpacedText(back)
-        self.settings = Settings(
-            page=page_settings if page_settings is not None else {},
-            mkdocs=mkdocs_settings if mkdocs_settings is not None else {},
-        )
+            if isinstance(self.raw, str):
+                self.raw = textwrap.dedent(self.raw)
+        if isinstance(self.back, str):
+            self.back = textwrap.dedent(self.back)
 
     def _render(self) -> RenderedMd:
-        return RenderedMd(
-            back=self.back, body=self.body, settings=self.settings, src=self
+        body = SpacedText(self.raw)
+        back = SpacedText(self.back)
+        settings = Settings(
+            page=self.page_settings,
+            mkdocs=self.mkdocs_settings,
         )
+        return RenderedMd(back=back, body=body, settings=settings, src=self)
 
     def render_fixtures(self) -> Set[str]:
-        return super().render_fixtures()
+        return set()
 
 
 class Anchor(MdObj):

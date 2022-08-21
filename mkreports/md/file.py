@@ -7,10 +7,10 @@ from typing import Optional, Union
 
 import importlib_resources as imp_res
 
-from .base import MdObj, NotRenderedError
+from .base import MdObj, NotRenderedError, RenderedMd
 from .md_proxy import register_md
 
-if sys.version_info <= (3, 8):
+if sys.version_info < (3, 9):
     import importlib_resources as imp_res
 else:
     import importlib.resources as imp_res
@@ -133,6 +133,7 @@ class File(MdObj):
         else:
             self._path = None
             self._file_binary = Path(path).read_bytes()
+            self._orig_path = Path(path).absolute()
 
     @property
     def path(self) -> Path:
@@ -141,27 +142,16 @@ class File(MdObj):
         else:
             return self._path
 
-    @property
-    def hash(self) -> str:
-        """
-        Calculate the hash of the file.
-
-        Returns:
-            str: Md5-hash as a string.
-
-        """
-        if self._hash is None:
-            self._hash = md5_hash_file(self.path)
-        return self._hash
-
-    def _render(self, store_path: Path) -> None:
-        super().render()
+    def _render(self, store_path: Path) -> RenderedMd:
         if self.allow_copy:
 
             if self.use_hash:
                 # we calculate the hash of the file to be ingested
                 new_path = store_path / (
-                    true_stem(self.path) + "-" + self.hash + "".join(self.path.suffixes)
+                    true_stem(self._orig_path)
+                    + "-"
+                    + hashlib.md5(self._file_binary).hexdigest()
+                    + "".join(self._orig_path.suffixes)
                 )
             else:
                 new_path = store_path / self.path.name
@@ -171,3 +161,5 @@ class File(MdObj):
             with new_path.open("wb") as f:
                 f.write(self._file_binary)
             self._path = new_path
+
+        return RenderedMd(body=None, back=None, settings=None, src=self)

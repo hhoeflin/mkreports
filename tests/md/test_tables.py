@@ -5,7 +5,7 @@ from mkreports import md
 
 
 class TestTables:
-    def test_non_json_types(self, page_info):
+    def test_non_json_types(self, page_fixtures):
         """Test if table with non-JSON types can be created."""
         # create an example table with path objects
         test_table = pd.DataFrame(
@@ -16,9 +16,6 @@ class TestTables:
         )
 
         # create a table instance
-        # here we don't need to call 'to_markdown' as the
-        # serialization is done during initialization.
         md.Tabulator(
             test_table,
-            page_info=page_info,
-        )
+        ).render(**page_fixtures)
