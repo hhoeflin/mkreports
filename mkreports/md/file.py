@@ -3,11 +3,11 @@ import shutil
 import sys
 from os.path import relpath
 from pathlib import Path
-from typing import Optional, Union
+from typing import Optional, Set, Union
 
 import importlib_resources as imp_res
 
-from .base import MdObj, NotRenderedError, RenderedMd
+from .base import MdObj, NotRenderedError, RenderedMd, func_kwargs_as_set
 from .md_proxy import register_md
 
 if sys.version_info < (3, 9):
@@ -72,7 +72,6 @@ def store_asset_relpath(
 
     Args:
         asset_path (Path): Relative asset path inside 'mkreports'
-        page_info (PageInfo): PageInfo for the page in use
 
     Returns:
         str: Path to the asset as it should be used from html
@@ -114,7 +113,6 @@ class File(MdObj):
         Args:
             path (Union[str, Path]): Path to the file,
                 relative to current directory or absolute.
-            page_info (PageInfo): PageInfo for the page where the file should be stored.
             allow_copy (bool): Is the file allowed to be copied? Otherwise, original
                 location is used.
             use_hash (bool): If copy is allowed, renames the file to include the file hash.
@@ -163,3 +161,6 @@ class File(MdObj):
             self._path = new_path
 
         return RenderedMd(body=None, back=None, settings=None, src=self)
+
+    def render_fixtures(self) -> Set[str]:
+        return func_kwargs_as_set(self._render)

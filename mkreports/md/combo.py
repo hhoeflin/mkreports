@@ -26,7 +26,6 @@ class CollapsedCodeFile(MdObj):
 
         Args:
             file (Path): The file path (absolute or reltive to cwd) of the code-file.
-            page_info (PageInfo): PageInfo about the page where it is to be added.
             title (str): Title on the admonition that is visible.
         """
         file = Path(file)
@@ -40,9 +39,20 @@ class CollapsedCodeFile(MdObj):
             kind="code",
         )
 
-    def _render(self, javascript_path: Path, page_path: Path) -> RenderedMd:
+    def _render(
+        self,
+        javascript_path: Path,
+        page_path: Path,
+        store_path: Path,
+        project_root: Path,
+        report_path: Path,
+    ) -> RenderedMd:
         obj_rendered = self.obj.render(
-            javascript_path=javascript_path, page_path=page_path
+            javascript_path=javascript_path,
+            page_path=page_path,
+            store_path=store_path,
+            project_root=project_root,
+            report_path=report_path,
         )
         return obj_rendered
 

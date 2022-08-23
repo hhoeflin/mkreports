@@ -40,8 +40,6 @@ def do_layout(
         content (MdObj): The content to add. Can't be missing.
         layout (Layouts): Type of layout for code-tracking. One of
                 'tabbed', 'top-o', 'top-c', 'bottom-o', 'bottom-c' or 'nocode'.
-        page_info (PageInfo): PageInfo object corresponding to the page to which it
-            should be added.
 
     Returns:
         A MdObj with the requested layout.
@@ -153,10 +151,6 @@ class CodeContext:
     def md_obj(self) -> MdObj:
         """
         Return the markdown object that represents output and code.
-
-        Args:
-            page_info (PageInfo): PageInfo object about the page where the
-                content is to be added.
 
         Returns:
             MdObj: Markdown object representing the formatted output in the

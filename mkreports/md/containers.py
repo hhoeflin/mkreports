@@ -31,7 +31,6 @@ class Admonition(MdObj):
             admonition to be shown. See also the Materials-theme for mkdocs for
             more details.
         collapse (bool): Should the admonition be collapsed?
-        page_info (Optional[PageInfo]): Only needed when 'kind=="code"'.
     """
 
     obj: Union[Text, MdObj]
@@ -216,7 +215,7 @@ class Code(MdObj):
 
 
 @register_md("CodeFile")
-class CodeFile(File):
+class CodeFile(MdObj):
     """
     Code block with the content of a file.
     """
@@ -240,15 +239,16 @@ class CodeFile(File):
             hl_lines (Optional[Tuple[int, int]]): Optional range of lines for highlighting.
             language (Optional[str]): Language for syntax highlighting.
         """
-        super().__init__(path=Path(path), allow_copy=True, use_hash=True)
+        self.file = File(path=Path(path), allow_copy=True, use_hash=True)
         self.title = title
         self.hl_lines = hl_lines
         self.language = language
+        self.path = Path(path)
 
     def _render(
         self, project_root: Path, report_path: Path, store_path: Path
     ) -> RenderedMd:
-        super().render(store_path=store_path)
+        self.file.render(store_path=store_path)
         self.title = (
             self.title
             if self.title is not None
@@ -275,7 +275,7 @@ class CodeFile(File):
         )
         body = SpacedText(
             TextUtils.insert_code(
-                f"--8<-- '{self.path.relative_to(report_path)}'", annots
+                f"--8<-- '{self.file.path.relative_to(report_path)}'", annots
             ),
             (2, 2),
         )

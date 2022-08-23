@@ -35,7 +35,6 @@ class ImageFile(File):
 
         Args:
             path (Union[str, Path]): Path to the image file.
-            page_info (PageInfo): PageInfo object about the page. Added by page-wrapper
             link_type (Literal["inline", "ref"]): Link-type to use.
             text (str): Text shown if the image can't be displayed.
             tooltip (str): The tooltip shown when hovering over the image.
@@ -46,8 +45,6 @@ class ImageFile(File):
         self.text = text
         self.tooltip = tooltip
         self.link_type = link_type
-
-        # page_info needs to be set
 
     def _render(self, page_path: Path, store_path: Path) -> RenderedMd:
         super()._render(store_path=store_path)
@@ -93,7 +90,6 @@ class Matplotlib(ImageFile):
         Args:
             image: The image to be included. Has to be supported by one of the handlers, which
                 are Matplotlib, plotnine and seaborn.
-            page_info (PageInfo): PageInfo for the page where the image should be included.
             width (Optional[float]): width of the image
             height (Optional[float]): height of the image
             units (Literal["in", "cm", "mm"]): units of the width and height
@@ -313,7 +309,6 @@ class Altair(File):
 
         Args:
             altair: An altair image.
-            page_info (PageInfo): PageInfo to the page where it is to be included.
             csv_name (str): Name of the saved file (before hash if hash=True)
             use_hash (bool): Should the name of the copied image be updated with a hash (Default: True)
         """

@@ -30,7 +30,7 @@ class Heading(MdObj):
     style: Literal["atx", "setext"] = "atx"
     anchor: Optional[Union[Anchor, str]] = None
 
-    def __post_init__(self):
+    def __attrs_post_init__(self):
         if isinstance(self.anchor, str):
             self.anchor = NamedAnchor(self.anchor)
 

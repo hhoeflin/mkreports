@@ -211,7 +211,7 @@ class Raw(MdObj):
     page_settings: Dict[str, Any] = attrs.field(factory=dict)
     mkdocs_settings: Dict[str, Any] = attrs.field(factory=dict)
 
-    def __post_init__(self):
+    def __attrs_post_init__(self):
         if self.dedent:
             # we only apply dedent to raw strings
             if isinstance(self.raw, str):
@@ -232,8 +232,21 @@ class Raw(MdObj):
         return set()
 
 
+@register_md("Anchor")
 class Anchor(MdObj):
     name: str
+
+    def __new__(cls, name: Optional[str] = None):
+        if name is not None:
+            cls = NamedAnchor
+            self = object.__new__(cls)
+            self.__init__(name=name)
+            return self
+        else:
+            cls = AutoAnchor
+            self = object.__new__(cls)
+            self.__init__()
+            return self
 
 
 @register_md("NamedAnchor")
@@ -259,7 +272,7 @@ class NamedAnchor(Anchor):
         return RenderedMd(body=body, back=back, settings=settings, src=self)
 
     def render_fixtures(self) -> Set[str]:
-        return super().render_fixtures()
+        return set()
 
 
 @register_md("AutoAnchor")
@@ -285,7 +298,7 @@ class AutoAnchor(Anchor):
         return RenderedMd(body=body, back=back, settings=settings, src=self)
 
     def render_fixtures(self) -> Set[str]:
-        return super().render_fixtures()
+        return func_kwargs_as_set(self._render)
 
 
 @register_md("Link")
@@ -309,7 +322,7 @@ class Link(MdObj):
         return RenderedMd(body=body, back=back, settings=settings, src=self)
 
     def render_fixtures(self) -> Set[str]:
-        return super().render_fixtures()
+        return set()
 
 
 @register_md("ReportLink")
@@ -325,7 +338,6 @@ class ReportLink(Link):
 
         Args:
             text (str): The text of the link
-            page_info (Optional[PageInfo]): PageInfo object containing info of the page
             to_page_path (Optional[Path]): internal page to link to
             anchor (Optional[Union[str, Anchor]]): anchor to use
         """
@@ -355,13 +367,10 @@ class ReportLink(Link):
             else:
                 link = f"{relpath(self.to_page_path, start=page_path.parent)}#{self.anchor.name}"
         self.url = link
-        return super().render()
+        return super()._render()
 
     def render_fixtures(self) -> Set[str]:
-        fixtures = super().render_fixtures()
-        if self.anchor is not None:
-            fixtures.update(self.anchor.render_fixtures())
-        return fixtures
+        return func_kwargs_as_set(self._render)
 
 
 @register_md("P")

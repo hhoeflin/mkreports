@@ -28,7 +28,6 @@ class MdProxy:
         Initialize the proxy.
 
         Args:
-            page_info (PageInfo): The info of the page for which the proxy works.
             md_defaults (Optional[Dict[str, Dict[str, Any]]): A dictionary mapping the names
                 md objects (accessed from the proxy) to default keywords included when
                 they are being called.

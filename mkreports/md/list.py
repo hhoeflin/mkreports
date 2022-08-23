@@ -1,7 +1,7 @@
 import functools
-from typing import Iterable, Literal, Sequence, Set, Union
+from typing import Iterable, Literal, Sequence, Set, Tuple, Union
 
-from .base import MdObj, MdSeq, Raw, RenderedMd
+from .base import MdObj, Raw, RenderedMd
 from .md_proxy import register_md
 from .settings import Settings
 from .text import SpacedText, Text
@@ -25,7 +25,7 @@ class List(MdObj):
     """
 
     marker: Literal["-", "*", "+", "1"]
-    list: MdSeq
+    items: Tuple[MdObj]
 
     def __init__(
         self,
@@ -40,7 +40,7 @@ class List(MdObj):
             marker (Literal["-", "*", "+", "1"]): Marker to use for the list.
         """
         super().__init__()
-        self.items = tuple(items)
+        self.items = tuple([x if not isinstance(x, str) else Raw(x) for x in items])
         self.marker = marker
 
     def append(self, item: Union[Text, MdObj]) -> "List":
@@ -104,7 +104,7 @@ class List(MdObj):
             else:
                 prefix = [f"{self.marker} "] * self.num_items
 
-            rendered_list = [elem.render(**kwargs) for elem in self.list]
+            rendered_list = [elem.render(**kwargs) for elem in self.items]
             md_list = [
                 _indent_hanging(elem.body.text, hanging=prefix)
                 for elem, prefix in zip(rendered_list, prefix)
@@ -120,4 +120,9 @@ class List(MdObj):
             return RenderedMd(body=body, back=back, settings=settings, src=self)
 
     def render_fixtures(self) -> Set[str]:
-        return self.list.render_fixtures()
+        # we iterate through all items and concatenate the sets
+        fixtures = set()
+        for item in self.items:
+            fixtures.update(item.render_fixtures())
+
+        return fixtures
