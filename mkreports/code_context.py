@@ -16,12 +16,12 @@ to display the code and the results such as:
 """
 import inspect
 from pathlib import Path
-from typing import List, Literal, Optional
+from typing import Callable, List, Literal, Optional, Union
 
 import attrs
 from typing_extensions import Self
 
-from .md import Admonition, HLine, MdObj, MdSeq, Tab
+from .md import Admonition, HLine, MdObj, MdSeq, Tab, Text, ensure_md_obj
 from .tracker import BaseTracker, SimpleTracker
 
 Layouts = Literal["top-c", "top-o", "bottom-c", "bottom-o", "tabbed", "nocode"]
@@ -180,12 +180,12 @@ class CodeContext:
 
 @attrs.mutable()
 class MultiCodeContext:
+    add_no_active_ctx_cb: Callable[[MdObj], None]
     code_layout: Layouts = "tabbed"
     code_name_only: bool = False
     add_bottom: bool = True
     relative_to: Optional[Path] = None
     code_context_stack: List[CodeContext] = attrs.field(default=[], init=False)
-    md_obj: Optional[MdObj] = None
 
     def __enter__(self) -> Self:
         if len(self.code_context_stack) == 0 or (
@@ -254,4 +254,34 @@ class MultiCodeContext:
         if len(self.code_context_stack) > 0:
             self.code_context_stack[-1].add(active_code_context.md_obj)
         else:
-            self.md_obj = active_code_context.md_obj
+            self.add_no_active_ctx_cb(active_code_context.md_obj)
+
+    def add(
+        self,
+        item: Union[MdObj, Text],
+    ) -> "Self":
+        """
+        Add a MdObj to the page.
+
+        Args:
+            item (Union[MdObj, Text]): Object to add to the page
+
+        Returns:
+            Page: The page itself.
+
+        """
+        item = ensure_md_obj(item)
+        # search from the top for active code_context
+        active_code_context = None
+        for i in reversed(range(len(self.code_context_stack))):
+            if self.code_context_stack[i].active:
+                active_code_context = self.code_context_stack[i]
+                break
+
+        # if a context-manager is active, pass along the object into there
+        if active_code_context is not None:
+            active_code_context.add(item)
+        else:  # else pass it directly to the page
+            self.add_no_active_ctx_cb(item)
+
+        return self

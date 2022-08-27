@@ -449,3 +449,26 @@ def comment_ids(id: str) -> SpacedText:
 
     """
     return comment(f"id: {id}")
+
+
+def ensure_md_obj(x: Union[Text, MdObj]) -> MdObj:
+    """
+    Ensures return type is MdObj.
+
+    Args:
+        x (Union[MdObj, Text]): Object to return as MdObj
+
+    Returns:
+        MdObj: The input item converted to MdObj.
+
+    """
+
+    # first ensure that item is an MdObj
+    if isinstance(x, str):
+        return Raw(x, dedent=True)
+    elif isinstance(x, SpacedText):
+        return Raw(x)
+    elif isinstance(x, MdObj):
+        return x
+    else:
+        raise TypeError("Expected class Text or MdObj but got {x.__class__.__name__}")
