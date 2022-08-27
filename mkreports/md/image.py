@@ -2,14 +2,15 @@ import inspect
 import tempfile
 from copy import deepcopy
 from pathlib import Path
-from typing import Literal, Optional, Union
+from typing import Literal, Optional, Set, Union
 
 from mdutils.tools.Image import Image as UtilsImage
 
-from .base import comment_ids
+from .base import RenderedMd, comment_ids, func_kwargs_as_set
 from .file import File, relpath_html
+from .idstore import IDStore
 from .md_proxy import register_md
-from .settings import PageInfo, Settings
+from .settings import Settings
 from .text import SpacedText
 
 
@@ -24,7 +25,6 @@ class ImageFile(File):
     def __init__(
         self,
         path: Union[str, Path],
-        page_info: PageInfo,
         link_type: Literal["inline", "ref"] = "inline",
         text: str = "",
         tooltip: str = "",
@@ -35,37 +35,37 @@ class ImageFile(File):
 
         Args:
             path (Union[str, Path]): Path to the image file.
-            page_info (PageInfo): PageInfo object about the page. Added by page-wrapper
             link_type (Literal["inline", "ref"]): Link-type to use.
             text (str): Text shown if the image can't be displayed.
             tooltip (str): The tooltip shown when hovering over the image.
             allow_copy (bool): Should the image-file be copied to the store (Default: True)
             use_hash (bool): Should the name of the copied image be updated with a hash (Default: True)
         """
-        super().__init__(
-            path=path, page_info=page_info, allow_copy=allow_copy, use_hash=use_hash
-        )
+        super().__init__(path=path, allow_copy=allow_copy, use_hash=use_hash)
         self.text = text
         self.tooltip = tooltip
         self.link_type = link_type
 
-        # page_info needs to be set
-        assert page_info.page_path is not None
-
+    def _render(self, page_path: Path, store_path: Path) -> RenderedMd:
+        super()._render(store_path=store_path)
         if self.link_type == "inline":
-            self._body = SpacedText(
+            body = SpacedText(
                 UtilsImage.new_inline_image(
                     text=self.text,
-                    path=str(relpath_html(self.path, page_info.page_path.parent)),
+                    path=str(relpath_html(self.path, page_path.parent)),
                     tooltip=self.tooltip,
                 )
             )
-            self._back = None
-            self._settings = None
+            back = None
+            settings = None
+            return RenderedMd(body=body, back=back, settings=settings, src=self)
         elif type == "ref":
             raise NotImplementedError()
         else:
             raise ValueError(f"Unknown type {self.link_type}")
+
+    def render_fixtures(self) -> Set[str]:
+        return func_kwargs_as_set(self._render)
 
 
 @register_md("Matplotlib")
@@ -73,7 +73,6 @@ class Matplotlib(ImageFile):
     def __init__(
         self,
         image,
-        page_info: PageInfo,
         width: Optional[float] = None,
         height: Optional[float] = None,
         units: Literal["in", "cm", "mm"] = "in",
@@ -91,7 +90,6 @@ class Matplotlib(ImageFile):
         Args:
             image: The image to be included. Has to be supported by one of the handlers, which
                 are Matplotlib, plotnine and seaborn.
-            page_info (PageInfo): PageInfo for the page where the image should be included.
             width (Optional[float]): width of the image
             height (Optional[float]): height of the image
             units (Literal["in", "cm", "mm"]): units of the width and height
@@ -139,7 +137,6 @@ class Matplotlib(ImageFile):
 
             super().__init__(
                 path=path,
-                page_info=page_info,
                 link_type=link_type,
                 text=text,
                 tooltip=tooltip,
@@ -153,7 +150,6 @@ class Seaborn(Matplotlib):
     def __init__(
         self,
         image,
-        page_info: PageInfo,
         width: Optional[float] = None,
         height: Optional[float] = None,
         units: Literal["in", "cm", "mm"] = "in",
@@ -171,7 +167,6 @@ class Seaborn(Matplotlib):
         Args:
             image: The image to be included. Has to be supported by one of the handlers, which
                 are Matplotlib, plotnine and seaborn.
-            page_info (PageInfo): PageInfo for the page where the image should be included.
             width (Optional[float]): width of the image
             height (Optional[float]): height of the image
             units (Literal["in", "cm", "mm"]): units of the width and height
@@ -186,7 +181,6 @@ class Seaborn(Matplotlib):
 
         super().__init__(
             image.figure,
-            page_info=page_info,
             width=width,
             height=height,
             units=units,
@@ -205,7 +199,6 @@ class Plotnine(ImageFile):
     def __init__(
         self,
         image,
-        page_info: PageInfo,
         width: Optional[float] = None,
         height: Optional[float] = None,
         units: Literal["in", "cm", "mm"] = "in",
@@ -223,7 +216,6 @@ class Plotnine(ImageFile):
         Args:
             image: The image to be included. Has to be supported by one of the handlers, which
                 are Matplotlib, plotnine and seaborn.
-            page_info (PageInfo): PageInfo for the page where the image should be included.
             width (Optional[float]): width of the image
             height (Optional[float]): height of the image
             units (Literal["in", "cm", "mm"]): units of the width and height
@@ -250,7 +242,6 @@ class Plotnine(ImageFile):
             # which will also move it into the store
             super().__init__(
                 path=path,
-                page_info=page_info,
                 link_type=link_type,
                 text=text,
                 tooltip=tooltip,
@@ -266,7 +257,6 @@ class PIL(ImageFile):
     def __init__(
         self,
         image,
-        page_info: PageInfo,
         link_type: Literal["inline", "ref"] = "inline",
         text: str = "",
         tooltip: str = "",
@@ -279,7 +269,6 @@ class PIL(ImageFile):
 
         Args:
             image (PIL.Image.Image): an Image object from PIL
-            page_info (PageInfo): PageInfo for the page where the image is to be included.
             link_type (Literal["inline", "ref"]): Link-type to use.
             text (str): Alternative text for the image.
             tooltip (str): Tooltip when hovering over the image.
@@ -294,7 +283,6 @@ class PIL(ImageFile):
             # which will also move it into the store
             super().__init__(
                 path=path,
-                page_info=page_info,
                 link_type=link_type,
                 text=text,
                 tooltip=tooltip,
@@ -312,7 +300,6 @@ class Altair(File):
     def __init__(
         self,
         altair,
-        page_info: PageInfo,
         csv_name: str = "altair",
         use_hash: bool = True,
         **kwargs,
@@ -322,13 +309,9 @@ class Altair(File):
 
         Args:
             altair: An altair image.
-            page_info (PageInfo): PageInfo to the page where it is to be included.
             csv_name (str): Name of the saved file (before hash if hash=True)
             use_hash (bool): Should the name of the copied image be updated with a hash (Default: True)
         """
-        assert page_info.page_path is not None
-        assert page_info.idstore is not None
-
         with tempfile.TemporaryDirectory() as dir:
             path = Path(dir) / (f"{csv_name}.csv")
             # here we use the split method; the index and columns
@@ -339,24 +322,27 @@ class Altair(File):
             # Make sure the file is moved to the rigth place
             super().__init__(
                 path=path,
-                page_info=page_info,
                 allow_copy=True,
                 use_hash=use_hash,
             )
 
+    def _render(
+        self, page_path: Path, idstore: IDStore, store_path: Path
+    ) -> RenderedMd:
+        super()._render(store_path=store_path)
         # note; in the body we just insert the div.
         # The reason is that this part can be indented, e.g.
         # inside a tab. But then <script> content can be escaped, leading to errors for '=>'
         # so the script tag itself gets done in the backmatter
 
-        altair_id = page_info.idstore.next_id("altair_id")
+        altair_id = idstore.next_id("altair_id")
         body_html = inspect.cleandoc(
             f"""
             <div id='{altair_id}'> </div>
             """
         )
 
-        rel_spec_path = str(relpath_html(self.path, page_info.page_path))
+        rel_spec_path = str(relpath_html(self.path, page_path))
         back_html = inspect.cleandoc(
             f"""
             <script>
@@ -379,9 +365,12 @@ class Altair(File):
             )
         )
 
-        self._body = SpacedText(body_html, (2, 2))
-        self._back = SpacedText(back_html, (2, 2)) + comment_ids(altair_id)
-        self._settings = settings
+        body = SpacedText(body_html, (2, 2))
+        back = SpacedText(back_html, (2, 2)) + comment_ids(altair_id)
+        return RenderedMd(body=body, back=back, settings=settings, src=self)
+
+    def render_fixtures(self) -> Set[str]:
+        return func_kwargs_as_set(self._render)
 
 
 @register_md("Plotly")
@@ -393,7 +382,6 @@ class Plotly(File):
     def __init__(
         self,
         plotly,
-        page_info: PageInfo,
         json_name: str = "plotly",
         use_hash: bool = True,
         **kwargs,
@@ -403,13 +391,9 @@ class Plotly(File):
 
         Args:
             plotly (): The plotly graph to plot.
-            page_info (PageInfo): PageInfo to the page where it is to be included.
             json_name (str): Name of the saved file (before hash if hash=True)
             use_hash (bool): Should the name of the copied image be updated with a hash (Default: True)
         """
-        assert page_info.page_path is not None
-        assert page_info.idstore is not None
-
         with tempfile.TemporaryDirectory() as dir:
             path = Path(dir) / (f"{json_name}.json")
             # here we use the split method; the index and columns
@@ -418,23 +402,25 @@ class Plotly(File):
                 f.write(plotly.to_json(**kwargs))
 
             # Make sure the file is moved to the rigth place
-            super().__init__(
-                path=path, page_info=page_info, allow_copy=True, use_hash=use_hash
-            )
+            super().__init__(path=path, allow_copy=True, use_hash=use_hash)
 
+    def _render(
+        self, page_path: Path, idstore: IDStore, store_path: Path
+    ) -> RenderedMd:
+        super()._render(store_path=store_path)
         # note; in the body we just insert the div.
         # The reason is that this part can be indented, e.g.
         # inside a tab. But then <script> content can be escaped, leading to errors for '=>'
         # so the script tag itself gets done in the backmatter
 
-        plotly_id = page_info.idstore.next_id("plotly_id")
+        plotly_id = idstore.next_id("plotly_id")
         body_html = inspect.cleandoc(
             f"""
             <div id='{plotly_id}'> </div>
             """
         )
 
-        rel_spec_path = str(relpath_html(self.path, page_info.page_path))
+        rel_spec_path = str(relpath_html(self.path, page_path))
         back_html = inspect.cleandoc(
             f"""
             <script>
@@ -468,6 +454,9 @@ class Plotly(File):
             )
         )
 
-        self._body = SpacedText(body_html, (2, 2))
-        self._back = SpacedText(back_html, (2, 2)) + comment_ids(plotly_id)
-        self._settings = settings
+        body = SpacedText(body_html, (2, 2))
+        back = SpacedText(back_html, (2, 2)) + comment_ids(plotly_id)
+        return RenderedMd(body=body, back=back, settings=settings, src=self)
+
+    def render_fixtures(self) -> Set[str]:
+        return func_kwargs_as_set(self._render)

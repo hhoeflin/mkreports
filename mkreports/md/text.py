@@ -1,5 +1,7 @@
 from typing import Any, Tuple, Union
 
+import attrs
+
 Text = Union[str, "SpacedText"]
 
 
@@ -25,6 +27,7 @@ def count_newlines(x: str, before=True) -> int:
     return num_nl
 
 
+@attrs.frozen(eq=True)
 class SpacedText:
     """Representation of text with newlines before or after."""
 
@@ -49,8 +52,7 @@ class SpacedText:
                 max(req_nl[1], text.req_nl[1]),
             )
 
-        self.text = my_text
-        self.req_nl = my_req_nl
+        self.__attrs_init__(text=my_text, req_nl=my_req_nl)  # type: ignore
 
     def __str__(self) -> str:
         """
@@ -59,11 +61,6 @@ class SpacedText:
         We assume that 3 newlines are before and after. That should be enough.
         """
         return self.format_text("\n\n\n", "\n\n\n")
-
-    def __eq__(self, other: Any) -> bool:
-        if type(self) != type(other):
-            return False
-        return self.text == other.text and self.req_nl == other.req_nl
 
     def __add__(self, follow: Text) -> "SpacedText":
         return _add_text(self, SpacedText(follow))

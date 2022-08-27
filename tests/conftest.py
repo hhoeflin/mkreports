@@ -1,10 +1,10 @@
 import pytest
-from mkreports.md import IDStore, PageInfo
+from mkreports.md import IDStore
 
 
 @pytest.fixture
-def page_info(tmp_path):
-    return PageInfo(
+def page_fixtures(tmp_path):
+    return dict(
         store_path=tmp_path,
         report_path=tmp_path,
         javascript_path=tmp_path,

@@ -1,14 +1,19 @@
 import hashlib
 import shutil
+import sys
 from os.path import relpath
 from pathlib import Path
-from typing import Optional, Union
+from typing import Optional, Set, Union
 
 import importlib_resources as imp_res
 
-from .base import MdObj
+from .base import MdObj, NotRenderedError, RenderedMd, func_kwargs_as_set
 from .md_proxy import register_md
-from .settings import PageInfo
+
+if sys.version_info < (3, 9):
+    import importlib_resources as imp_res
+else:
+    import importlib.resources as imp_res
 
 
 def true_stem(path: Path) -> str:
@@ -59,28 +64,28 @@ def relpath_html(target: Path, page_path: Path) -> str:
         return relpath(target, page_path)
 
 
-def store_asset_relpath(asset_path_mkreports: Path, page_info: PageInfo) -> str:
+def store_asset_relpath(
+    asset_path_mkreports: Path, javascript_path: Path, page_path: Path
+) -> str:
     """
     Store an asset and return relative path to it.
 
     Args:
         asset_path (Path): Relative asset path inside 'mkreports'
-        page_info (PageInfo): PageInfo for the page in use
 
     Returns:
         str: Path to the asset as it should be used from html
     """
-    assert page_info.javascript_path is not None
-    assert page_info.page_path is not None
-    asset_path_report_abs = (
-        page_info.javascript_path / "assets" / asset_path_mkreports.name
-    )
+    asset_path_report_abs = javascript_path / "assets" / asset_path_mkreports.name
     asset_path_report_abs.parent.mkdir(parents=True, exist_ok=True)
-    shutil.copy(
-        imp_res.files("mkreports") / "assets" / asset_path_mkreports,
-        asset_path_report_abs,
-    )
-    return relpath_html(asset_path_report_abs, page_info.page_path)
+    with imp_res.as_file(
+        imp_res.files("mkreports") / "assets" / asset_path_mkreports
+    ) as asset_file:
+        shutil.copy(
+            str(asset_file),
+            str(asset_path_report_abs),
+        )
+    return relpath_html(asset_path_report_abs, page_path)
 
 
 @register_md("File")
@@ -91,7 +96,7 @@ class File(MdObj):
     This is typically not needed by the end-user.
     """
 
-    path: Path
+    _path: Optional[Path]
     allow_copy: bool
     use_hash: bool
     _hash: Optional[str] = None
@@ -99,7 +104,6 @@ class File(MdObj):
     def __init__(
         self,
         path: Union[str, Path],
-        page_info: PageInfo,
         allow_copy: bool = True,
         use_hash: bool = False,
     ) -> None:
@@ -109,7 +113,6 @@ class File(MdObj):
         Args:
             path (Union[str, Path]): Path to the file,
                 relative to current directory or absolute.
-            page_info (PageInfo): PageInfo for the page where the file should be stored.
             allow_copy (bool): Is the file allowed to be copied? Otherwise, original
                 location is used.
             use_hash (bool): If copy is allowed, renames the file to include the file hash.
@@ -117,45 +120,47 @@ class File(MdObj):
         super().__init__()
 
         # store path needs to be set
-        assert page_info.store_path is not None
 
         # set the existing attributes
         self.allow_copy = allow_copy
         self.use_hash = use_hash
-        self.store_path = page_info.store_path
 
         # for the path we first have to see if they will be copied
-        self.path = Path(path).absolute()
+        if not self.allow_copy:
+            self._path = Path(path).absolute()
+        else:
+            self._path = None
+            self._file_binary = Path(path).read_bytes()
+            self._orig_path = Path(path).absolute()
 
+    @property
+    def path(self) -> Path:
+        if self._path is None:
+            raise NotRenderedError("Not yet rendered")
+        else:
+            return self._path
+
+    def _render(self, store_path: Path) -> RenderedMd:
         if self.allow_copy:
 
             if self.use_hash:
                 # we calculate the hash of the file to be ingested
-                new_path = self.store_path / (
-                    true_stem(self.path) + "-" + self.hash + "".join(self.path.suffixes)
+                new_path = store_path / (
+                    true_stem(self._orig_path)
+                    + "-"
+                    + hashlib.md5(self._file_binary).hexdigest()
+                    + "".join(self._orig_path.suffixes)
                 )
             else:
-                new_path = self.store_path / self.path.name
+                new_path = store_path / self.path.name
 
             # now see if we move or copy the file
             new_path.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copy(path, new_path)
-            self.path = new_path
+            with new_path.open("wb") as f:
+                f.write(self._file_binary)
+            self._path = new_path
 
-        # it returns nothing
-        self._body = None
-        self._back = None
-        self._settings = None
+        return RenderedMd(body=None, back=None, settings=None, src=self)
 
-    @property
-    def hash(self) -> str:
-        """
-        Calculate the hash of the file.
-
-        Returns:
-            str: Md5-hash as a string.
-
-        """
-        if self._hash is None:
-            self._hash = md5_hash_file(self.path)
-        return self._hash
+    def render_fixtures(self) -> Set[str]:
+        return func_kwargs_as_set(self._render)

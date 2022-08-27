@@ -4,16 +4,17 @@ import logging
 import tempfile
 from copy import deepcopy
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Set
 
 import pandas as pd
 from mkreports.utils import func_ref, serialize_json, snake_to_text
 from pandas.api import types
 
-from .base import MdObj, comment_ids
+from .base import MdObj, RenderedMd, comment_ids, func_kwargs_as_set
 from .file import File, relpath_html, store_asset_relpath
+from .idstore import IDStore
 from .md_proxy import register_md
-from .settings import PageInfo, Settings, merge_settings
+from .settings import Settings, merge_settings
 from .text import SpacedText
 
 logger = logging.getLogger(__name__)
@@ -40,20 +41,25 @@ class Table(MdObj):
         self.kwargs = kwargs
         # think about making this a static-frame
         self.table = deepcopy(table)
-
-        # check if the table has too many rows
         if max_rows is not None and table.shape[0] > max_rows:
             logger.warning(
                 f"Table has {table.shape[0]} rows, but only {max_rows} allowed. Truncating."
             )
             self.table = self.table.iloc[0:max_rows]
 
+    def _render(self) -> RenderedMd:
+        # check if the table has too many rows
+
         table_md = self.table.to_markdown(**self.kwargs)
         table_md = table_md if table_md is not None else ""
 
-        self._body = SpacedText(table_md, (2, 2))
-        self._back = None
-        self._settings = None
+        body = SpacedText(table_md, (2, 2))
+        back = None
+        settings = None
+        return RenderedMd(body=body, back=back, settings=settings, src=self)
+
+    def render_fixtures(self) -> Set[str]:
+        return set()
 
 
 def _create_yadcf_settings_datatable(
@@ -101,7 +107,6 @@ class DataTable(File):
     def __init__(
         self,
         table: pd.DataFrame,
-        page_info: PageInfo,
         max_rows: Optional[int] = 1000,
         column_settings: Optional[dict] = None,
         prettify_colnames: bool = True,
@@ -118,8 +123,6 @@ class DataTable(File):
 
         Args:
             table (pd.DataFrame): The table in pandas.DataFrame format.
-            page_info (PageInfo): PageInfo object for the page where the
-                table should be located.
             max_rows (Optional[int]): Maximum number of rows. If None, all will
                 be included. If longer, a warning will be logged and the first `max_rows`
                 will be included.
@@ -137,8 +140,12 @@ class DataTable(File):
             json_name (str): Name of the saved file (before hash if hash=True)
             use_hash (bool): Should the name of the copied image be updated with a hash (Default: True)
         """
-        assert page_info.idstore is not None
-        assert page_info.page_path is not None
+        self.column_settings = column_settings
+        self.prettify_colnames = prettify_colnames
+        self.add_header_filters = add_header_filters
+        self.yadcf_settings = yadcf_settings
+        self.downloads = downloads
+        self.user_table_settings = table_settings
 
         with tempfile.TemporaryDirectory() as dir:
             path = Path(dir) / (f"{json_name}.json")
@@ -157,9 +164,13 @@ class DataTable(File):
             )
 
             # Make sure the file is moved to the right place
-            super().__init__(
-                path=path, page_info=page_info, allow_copy=True, use_hash=use_hash
-            )
+            super().__init__(path=path, allow_copy=True, use_hash=use_hash)
+        self.table = table
+
+    def _render(
+        self, store_path: Path, idstore: IDStore, page_path: Path
+    ) -> RenderedMd:
+        super()._render(store_path=store_path)
 
         javascript_settings = [
             "https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js",
@@ -172,31 +183,33 @@ class DataTable(File):
         ]
 
         # prepare the table settings
-        if prettify_colnames:
+        if self.prettify_colnames:
             col_set = {
                 col: {"title": snake_to_text(col) if isinstance(col, str) else col}
-                for col in table.columns
+                for col in self.table.columns
             }
         else:
-            col_set = {col: {"title": col} for col in table.columns}
-        if column_settings is not None:
+            col_set = {col: {"title": col} for col in self.table.columns}
+        if self.column_settings is not None:
             # only pick out settings for columns that occur in the table
-            col_set.update({col: column_settings[col] for col in table.columns})
+            col_set.update(
+                {col: self.column_settings[col] for col in self.table.columns}
+            )
 
-        self.add_header_filters = add_header_filters
-        if add_header_filters:
+        if self.add_header_filters:
             self.yadcf_settings = _create_yadcf_settings_datatable(
-                table, yadcf_settings if yadcf_settings is not None else {}
+                self.table,
+                self.yadcf_settings if self.yadcf_settings is not None else {},
             )
 
         # put together the settings for the table
         # there, the columns are a list in the correct order
         self.table_settings = {
             "scrollX": "true",
-            "columns": [col_set[col] for col in table.columns],
+            "columns": [col_set[col] for col in self.table.columns],
         }
 
-        if downloads:
+        if self.downloads:
             self.table_settings["buttons"] = ["copy", "csv", "excel", "pdf", "print"]
             # self.table_settings["dom"] = "Bfrtlp"
             self.table_settings["dom"] = "<lfr>t<Bp>"
@@ -214,17 +227,19 @@ class DataTable(File):
                 ]
             )
 
-        datatable_id = page_info.idstore.next_id("datatable_id")
+        datatable_id = idstore.next_id("datatable_id")
         body_html = inspect.cleandoc(
             f"""
             <table id='{datatable_id}' class='display' style='width:100%'> </table>
             """
         )
 
-        rel_table_path = relpath_html(self.path, page_info.page_path)
+        rel_table_path = relpath_html(self.path, page_path)
         self.table_settings["ajax"] = str(rel_table_path)
         # overwrite with given settigns if necessary
-        self.table_settings.update(table_settings if table_settings is not None else {})
+        self.table_settings.update(
+            self.user_table_settings if self.user_table_settings is not None else {}
+        )
         settings_str = serialize_json(self.table_settings)
 
         # prepare the header script if necessary
@@ -258,9 +273,12 @@ class DataTable(File):
             )
         )
 
-        self._body = SpacedText(body_html, (2, 2))
-        self._back = SpacedText(back_html, (2, 2)) + comment_ids(datatable_id)
-        self._settings = settings
+        body = SpacedText(body_html, (2, 2))
+        back = SpacedText(back_html, (2, 2)) + comment_ids(datatable_id)
+        return RenderedMd(body=body, back=back, settings=settings, src=self)
+
+    def render_fixtures(self) -> Set[str]:
+        return func_kwargs_as_set(self._render)
 
 
 def _create_col_settings_tabulator(
@@ -322,7 +340,6 @@ class Tabulator(File):
     def __init__(
         self,
         table: pd.DataFrame,
-        page_info: PageInfo,
         max_rows: Optional[int] = 1000,
         table_settings: Optional[dict] = None,
         add_header_filters: bool = True,
@@ -337,7 +354,6 @@ class Tabulator(File):
 
         Args:
             table (pd.DataFrame): The table to be added.
-            page_info (PageInfo): PageInfo for the page where the table should be added.
             max_rows (Optional[int]): Maximum number of rows. If None, all will
                 be included. If longer, a warning will be logged and the first `max_rows`
                 will be included.
@@ -353,9 +369,6 @@ class Tabulator(File):
             json_name (str): Name of the saved file (before hash if hash=True)
             use_hash (bool): Should the name of the copied image be updated with a hash (Default: True)
         """
-        assert page_info.idstore is not None
-        assert page_info.page_path is not None
-        assert page_info.javascript_path is not None
 
         with tempfile.TemporaryDirectory() as dir:
             path = Path(dir) / (f"{json_name}.json")
@@ -372,18 +385,26 @@ class Tabulator(File):
                 default_handler=str,
                 **(table_kwargs if table_kwargs is not None else {}),
             )
+            self.table = deepcopy(table)
 
             # Make sure the file is moved to the right place
-            super().__init__(
-                path=path, page_info=page_info, allow_copy=True, use_hash=use_hash
-            )
+            super().__init__(path=path, allow_copy=True, use_hash=use_hash)
+        self.user_table_settings = table_settings
+        self.add_header_filters = add_header_filters
+        self.prettify_colnames = prettify_colnames
+        self.col_settings = col_settings
+        self.downloads = downloads
 
+    def _render(
+        self, idstore: IDStore, page_path: Path, javascript_path: Path, store_path: Path
+    ) -> RenderedMd:
+        super()._render(store_path=store_path)
         # produce the column settings
         col_list = _create_col_settings_tabulator(
-            table,
-            add_header_filters=add_header_filters,
-            prettify_colnames=prettify_colnames,
-            col_settings=col_settings if col_settings is not None else {},
+            self.table,
+            add_header_filters=self.add_header_filters,
+            prettify_colnames=self.prettify_colnames,
+            col_settings=self.col_settings if self.col_settings is not None else {},
         )
 
         # put the other settings together
@@ -394,19 +415,19 @@ class Tabulator(File):
                 paginationSize=10,
                 paginationSizeSelector=True,
             ),
-            table_settings if table_settings is not None else {},
+            self.user_table_settings if self.user_table_settings is not None else {},
         )
         self.table_settings["columns"] = col_list
 
         used_ids = []
-        used_ids.append(tabulator_id := page_info.idstore.next_id("tabulator_id"))
+        used_ids.append(tabulator_id := idstore.next_id("tabulator_id"))
         body_html = inspect.cleandoc(
             f"""
             <div id='{tabulator_id}' class='display'> </div>
             """
         )
 
-        rel_table_path = relpath_html(self.path, page_info.page_path)
+        rel_table_path = relpath_html(self.path, page_path)
         table_settings = copy.deepcopy(self.table_settings)
         table_settings["ajaxURL"] = str(rel_table_path)
 
@@ -429,17 +450,21 @@ class Tabulator(File):
             "https://unpkg.com/tabulator-tables@5.1.0/dist/css/tabulator.min.css"
         ]
 
-        if add_header_filters:
+        if self.add_header_filters:
             javascript_settings.append(
-                store_asset_relpath(Path("min_max_filter.js"), page_info)
+                store_asset_relpath(
+                    Path("min_max_filter.js"),
+                    javascript_path=javascript_path,
+                    page_path=page_path,
+                )
             )
 
-        if downloads:
+        if self.downloads:
             # add the necessary things to enable downloads
             # to the body
-            used_ids.append(csv_down_id := page_info.idstore.next_id("csv_down_id"))
-            used_ids.append(json_down_id := page_info.idstore.next_id("json_down_id"))
-            used_ids.append(xlsx_down_id := page_info.idstore.next_id("xslx_down_id"))
+            used_ids.append(csv_down_id := idstore.next_id("csv_down_id"))
+            used_ids.append(json_down_id := idstore.next_id("json_down_id"))
+            used_ids.append(xlsx_down_id := idstore.next_id("xslx_down_id"))
             body_html = body_html + inspect.cleandoc(
                 f"""
                     <div>
@@ -478,7 +503,11 @@ class Tabulator(File):
                 "https://oss.sheetjs.com/sheetjs/xlsx.full.min.js"
             )
             css_settings.append(
-                store_asset_relpath(Path("download_buttons.css"), page_info)
+                store_asset_relpath(
+                    Path("download_buttons.css"),
+                    javascript_path=javascript_path,
+                    page_path=page_path,
+                )
             )
 
         settings = Settings(
@@ -490,8 +519,11 @@ class Tabulator(File):
             )
         )
 
-        self._body = SpacedText(body_html, (2, 2))
-        self._back = SpacedText(back_html, (2, 2)) + "\n".join(
+        body = SpacedText(body_html, (2, 2))
+        back = SpacedText(back_html, (2, 2)) + "\n".join(
             [str(comment_ids(this_id)) for this_id in used_ids]
         )
-        self._settings = settings
+        return RenderedMd(body=body, back=back, settings=settings, src=self)
+
+    def render_fixtures(self) -> Set[str]:
+        return func_kwargs_as_set(self._render)

@@ -3,14 +3,15 @@ import textwrap
 from dataclasses import dataclass
 from pathlib import Path
 from textwrap import indent
-from typing import Literal, Optional, Tuple, Union
+from typing import Literal, Optional, Set, Tuple, Union
 
+import attrs
 from mdutils.tools.TextUtils import TextUtils
 
-from .base import MdObj
+from .base import MdObj, RenderedMd, func_kwargs_as_set
 from .file import File, store_asset_relpath
 from .md_proxy import register_md
-from .settings import PageInfo, Settings
+from .settings import Settings
 from .text import SpacedText, Text
 
 
@@ -30,7 +31,6 @@ class Admonition(MdObj):
             admonition to be shown. See also the Materials-theme for mkdocs for
             more details.
         collapse (bool): Should the admonition be collapsed?
-        page_info (Optional[PageInfo]): Only needed when 'kind=="code"'.
     """
 
     obj: Union[Text, MdObj]
@@ -51,14 +51,14 @@ class Admonition(MdObj):
         "code",
     ] = "note"
     collapse: bool = False
-    page_info: Optional[PageInfo] = None
 
-    def __post_init__(self):
-        assert self.page_info is not None
+    def _render(self, javascript_path: Path, page_path: Path, **kwargs) -> RenderedMd:
         # if code-admonition, we need to load additional css
         if self.kind == "code":
             rel_css_path = store_asset_relpath(
-                Path("code_admonition.css"), self.page_info
+                Path("code_admonition.css"),
+                javascript_path=javascript_path,
+                page_path=page_path,
             )
             page_settings = dict(css=[rel_css_path])
         else:
@@ -74,9 +74,12 @@ class Admonition(MdObj):
             page=page_settings,
         )
         if isinstance(self.obj, MdObj):
-            admon_text = self.obj.body
-            back = self.obj.back
-            settings = self.obj.settings
+            obj_rendered = self.obj.render(
+                **dict(kwargs, javascript_path=javascript_path, page_path=page_path)
+            )
+            admon_text = obj_rendered.body
+            back = obj_rendered.back
+            settings = obj_rendered.settings
             settings = cont_settings + settings
         else:
             admon_text, back, settings = str(self.obj), SpacedText(), cont_settings
@@ -86,15 +89,22 @@ class Admonition(MdObj):
         else:
             title_md = f'"{self.title}"'
 
-        self._body = SpacedText(
+        body = SpacedText(
             f"{'???' if self.collapse else '!!!'} {self.kind} {title_md}", (2, 2)
         ) + SpacedText(indent(str(admon_text), "    "), (2, 2))
-        self._back = back
-        self._settings = settings
+
+        return RenderedMd(body=body, back=back, settings=settings, src=self)
+
+    def render_fixtures(self) -> Set[str]:
+        fixtures = set(["javascript_path", "page_path"])
+        if isinstance(self.obj, MdObj):
+            fixtures.update(self.obj.render_fixtures())
+
+        return fixtures
 
 
 @register_md("Tab")
-@dataclass
+@attrs.mutable
 class Tab(MdObj):
     """
     Tab interface
@@ -108,7 +118,7 @@ class Tab(MdObj):
     obj: Union[Text, MdObj]
     title: Optional[str] = None
 
-    def __post_init__(self):
+    def _render(self, **kwargs) -> RenderedMd:
         tab_settings = Settings(
             mkdocs={
                 "markdown_extensions": [
@@ -118,9 +128,10 @@ class Tab(MdObj):
             }
         )
         if isinstance(self.obj, MdObj):
-            tab_text = self.obj.body
-            back = self.obj.back
-            settings = self.obj.settings
+            obj_rendered = self.obj.render(**kwargs)
+            tab_text = obj_rendered.body
+            back = obj_rendered.back
+            settings = obj_rendered.settings
             settings = tab_settings + settings
         else:
             tab_text, back, settings = str(self.obj), SpacedText(), tab_settings
@@ -130,11 +141,16 @@ class Tab(MdObj):
         else:
             title_text = ""
 
-        self._body = SpacedText(f'=== "{title_text}"', (2, 2)) + SpacedText(
+        body = SpacedText(f'=== "{title_text}"', (2, 2)) + SpacedText(
             indent(str(tab_text), "    "), (2, 2)
         )
-        self._back = back
-        self._settings = settings
+        return RenderedMd(body=body, back=back, settings=settings, src=self)
+
+    def render_fixtures(self) -> Set[str]:
+        if isinstance(self.obj, MdObj):
+            return self.obj.render_fixtures()
+        else:
+            return set()
 
 
 @register_md("Code")
@@ -161,7 +177,7 @@ class Code(MdObj):
     language: Optional[str] = "python"
     dedent: bool = True
 
-    def __post_init__(self):
+    def _render(self) -> RenderedMd:
         annots = ""
         if self.language is not None:
             annots = annots + self.language
@@ -188,15 +204,18 @@ class Code(MdObj):
                 markdown_extensions=[{"pymdownx.highlight": dict(use_pygments=True)}]
             )
         )
-        self._body = SpacedText(
+        body = SpacedText(
             TextUtils.insert_code(textwrap.dedent(self.code), annots), (2, 2)
         )
-        self._back = None
-        self._settings = settings
+        back = SpacedText("")
+        return RenderedMd(body=body, back=back, settings=settings, src=self)
+
+    def render_fixtures(self) -> Set[str]:
+        return func_kwargs_as_set(self._render)
 
 
 @register_md("CodeFile")
-class CodeFile(File):
+class CodeFile(MdObj):
     """
     Code block with the content of a file.
     """
@@ -204,7 +223,6 @@ class CodeFile(File):
     def __init__(
         self,
         path: Union[Path, str],
-        page_info: PageInfo,
         title: Optional[str] = None,
         hl_lines: Optional[Tuple[int, int]] = None,
         language: Optional[str] = "python",
@@ -215,26 +233,27 @@ class CodeFile(File):
         Args:
             path (Union[Path, str]): Abolute path or relative to current working dir for the
                 code-file to be included.
-            page_info (PageInfo): PageInfo on the page where the code is to be added.
             title (Optional[str]): Title of the code-block. If 'None', the path of the
                 code file relative to the project root will be added. If it should be
                 empty, set to empty string.
             hl_lines (Optional[Tuple[int, int]]): Optional range of lines for highlighting.
             language (Optional[str]): Language for syntax highlighting.
         """
-        assert page_info.project_root is not None
-        assert page_info.report_path is not None
-
-        path = Path(path)
-
-        super().__init__(path=path, page_info=page_info, allow_copy=True, use_hash=True)
-        self.title = (
-            title
-            if title is not None
-            else str(path.relative_to(page_info.project_root))
-        )
+        self.file = File(path=Path(path), allow_copy=True, use_hash=True)
+        self.title = title
         self.hl_lines = hl_lines
         self.language = language
+        self.path = Path(path)
+
+    def _render(
+        self, project_root: Path, report_path: Path, store_path: Path
+    ) -> RenderedMd:
+        self.file.render(store_path=store_path)
+        self.title = (
+            self.title
+            if self.title is not None
+            else str(self.path.relative_to(project_root))
+        )
 
         annots = ""
         if self.language is not None:
@@ -254,11 +273,15 @@ class CodeFile(File):
                 ]
             )
         )
-        self._body = SpacedText(
+        body = SpacedText(
             TextUtils.insert_code(
-                f"--8<-- '{self.path.relative_to(page_info.report_path)}'", annots
+                f"--8<-- '{self.file.path.relative_to(report_path)}'", annots
             ),
             (2, 2),
         )
-        self._back = None
-        self._settings = settings
+        back = SpacedText("")
+        settings = settings
+        return RenderedMd(body=body, back=back, settings=settings, src=self)
+
+    def render_fixtures(self) -> Set[str]:
+        return func_kwargs_as_set(self._render)

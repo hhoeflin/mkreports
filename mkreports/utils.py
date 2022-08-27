@@ -19,7 +19,10 @@ def repo_root(path: Path = Path(".")) -> Optional[Path]:
     """
     try:
         repo = Repo(path, search_parent_directories=True)
-        return repo.working_tree_dir
+        if repo.working_tree_dir is not None:
+            return Path(repo.working_tree_dir)
+        else:
+            return None
     except Exception:
         pass
 

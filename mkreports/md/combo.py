@@ -1,10 +1,9 @@
 from pathlib import Path
-from typing import Union
+from typing import Set, Union
 
-from .base import MdObj, Raw
+from .base import MdObj, Raw, RenderedMd, func_kwargs_as_set
 from .containers import Admonition, CodeFile
 from .md_proxy import register_md
-from .settings import PageInfo
 from .text import SpacedText
 
 
@@ -21,15 +20,12 @@ class HLine(Raw):
 class CollapsedCodeFile(MdObj):
     """A code-file in a collapsed admonition."""
 
-    def __init__(
-        self, file: Union[Path, str], page_info: PageInfo, title: str = "Code"
-    ) -> None:
+    def __init__(self, file: Union[Path, str], title: str = "Code") -> None:
         """
         Initialize the object.
 
         Args:
             file (Path): The file path (absolute or reltive to cwd) of the code-file.
-            page_info (PageInfo): PageInfo about the page where it is to be added.
             title (str): Title on the admonition that is visible.
         """
         file = Path(file)
@@ -37,17 +33,31 @@ class CollapsedCodeFile(MdObj):
             CodeFile(
                 file,
                 title=None,
-                page_info=page_info,
             ),
             collapse=True,
             title=title,
             kind="code",
-            page_info=page_info,
         )
 
-        self._body = self.obj.body
-        self._back = self.obj.back
-        self._settings = self.obj.settings
+    def _render(
+        self,
+        javascript_path: Path,
+        page_path: Path,
+        store_path: Path,
+        project_root: Path,
+        report_path: Path,
+    ) -> RenderedMd:
+        obj_rendered = self.obj.render(
+            javascript_path=javascript_path,
+            page_path=page_path,
+            store_path=store_path,
+            project_root=project_root,
+            report_path=report_path,
+        )
+        return obj_rendered
+
+    def render_fixtures(self) -> Set[str]:
+        return func_kwargs_as_set(self._render)
 
 
 @register_md("HideToc")

@@ -4,10 +4,10 @@ from typing import Any, Dict, List, Literal, Optional, Tuple, Union
 
 from frontmatter.default_handlers import DEFAULT_POST_TEMPLATE, YAMLHandler
 
-from .code_context import CodeContext, Layouts
+from .code_context import CodeContext, Layouts, MultiCodeContext
 from .exceptions import IncorrectSuffixError
-from .md import (IDStore, MdObj, MdProxy, PageInfo, Raw, SpacedText, Text,
-                 comment, merge_settings)
+from .md import (IDStore, MdObj, MdProxy, Raw, SpacedText, Text, comment,
+                 merge_settings)
 from .settings import NavEntry
 from .utils import find_comment_ids
 
@@ -70,7 +70,7 @@ def merge_pages(
     write_page(path=path_target, metadata=metadata_res, content=content_res)
 
 
-class Page:
+class Page(MultiCodeContext):
     """Represents a single page of report."""
 
     def __init__(
@@ -114,80 +114,19 @@ class Page:
         # we need to parse the file for ids
         self._idstore = IDStore(used_ids=find_comment_ids(self.path.read_text()))
         self.report = report
-        self.add_bottom = add_bottom
-        self.code_layout: Layouts = code_layout
-        self.code_name_only = code_name_only
 
-        self._md = MdProxy(page_info=self.page_info, md_defaults=md_defaults)
-
-        self.code_context_stack: List[CodeContext] = []
-
-    def __enter__(self) -> "Page":
-        if len(self.code_context_stack) == 0 or (
-            len(self.code_context_stack) > 0 and self.code_context_stack[-1].active
-        ):
-            # need to enter a new context
-            self.code_context_stack.append(
-                CodeContext(
-                    layout=self.code_layout,
-                    name_only=self.code_name_only,
-                    add_bottom=self.add_bottom,
-                    relative_to=self.report.project_root,
-                )
-            )
-        else:
-            # use the existing one that is not active yet
-            pass
-        # the last one on the stack is the one we activate
-        self.code_context_stack[-1].__enter__()
-        return self
-
-    def ctx(
-        self,
-        layout: Optional[Layouts] = None,
-        name_only: Optional[bool] = None,
-        add_bottom: Optional[bool] = None,
-    ) -> "Page":
-        """
-        Sets the next context to be used. Only counts for the next tracking context.
-
-        Args:
-            layout (Optional[Layouts]): The layout to use. One of
-                'tabbed', 'top-o', 'top-c', 'bottom-o', 'bottom-c' or 'nocode'.
-            name_only (Optional[bool]): In the code block, should only the name of the
-                file be used.
-            add_bottom (Optional[bool]): Is new output added to the bottom or top.
-
-        Returns:
-            Page: The page object, but with the new *CodeContext* object set.
-
-        """
-        new_code_context = CodeContext(
-            layout=layout if layout is not None else self.code_layout,
-            name_only=name_only if name_only is not None else self.code_name_only,
-            add_bottom=add_bottom if add_bottom is not None else self.add_bottom,
+        # initialize the MultiCodeContext
+        super().__init__(
+            add_no_active_ctx_cb=self._add_to_page,  # on exit, adds to the page
+            code_layout=code_layout,
+            code_name_only=code_name_only,
+            add_bottom=add_bottom,
             relative_to=self.report.project_root,
         )
 
-        if len(self.code_context_stack) == 0 or (
-            len(self.code_context_stack) > 0 and self.code_context_stack[-1].active
-        ):
-            # need to add new one
-            self.code_context_stack.append(new_code_context)
-        else:
-            # need to replace existing one
-            self.code_context_stack[-1] = new_code_context
+        self._md = MdProxy(md_defaults=md_defaults)
 
-        return self
-
-    def __exit__(self, exc_type, exc_val, traceback) -> None:
-        if len(self.code_context_stack) == 0:
-            raise Exception("__exit__ called before __enter__")
-        active_code_context = self.code_context_stack.pop()
-        active_code_context.__exit__(exc_type, exc_val, traceback)
-
-        # self.add accounts for remaining active code_context
-        self.add(active_code_context.md_obj(page_info=self.page_info))
+        self.code_context_stack: List[CodeContext] = []
 
     def __getattr__(self, name):
         md_class = self.md.__getattr__(name)
@@ -209,12 +148,12 @@ class Page:
         return result
 
     @property
-    def page_info(self):
+    def fixtures(self):
         """
         Returns:
-            PageInfo: An object with info about the page used in markdown objects.
+            dict: A dictionary with the default fixtures for the page.
         """
-        return PageInfo(
+        return dict(
             store_path=self.store_path,
             report_path=self.report.path,
             javascript_path=self.report.javascript_path,
@@ -268,45 +207,6 @@ class Page:
         shutil.rmtree(self.store_path)
         self.path.unlink()
 
-    def add(
-        self,
-        item: Union[MdObj, Text],
-    ) -> "Page":
-        """
-        Add a MdObj to the page.
-
-        Args:
-            item (Union[MdObj, Text]): Object to add to the page
-
-        Returns:
-            Page: The page itself.
-
-        """
-        # first ensure that item is an MdObj
-        if isinstance(item, str):
-            item = Raw(item, dedent=True)
-        elif isinstance(item, SpacedText):
-            item = Raw(item)
-
-        # search from the top for active code_context
-        active_code_context = None
-        for i in reversed(range(len(self.code_context_stack))):
-            if self.code_context_stack[i].active:
-                active_code_context = self.code_context_stack[i]
-                break
-
-        # if a context-manager is active, pass along the object into there
-        if active_code_context is not None:
-            active_code_context.add(item)
-        else:  # else pass it directly to the page
-            self._add_to_page(item)
-
-        # we return a copy of the page, but with the code context not copied
-        # the copy is therefore a shallow copy
-        # page_copy = copy.copy(self)
-        # page_copy.code_context = None
-        return self
-
     def _add_to_page(
         self,
         item: MdObj,
@@ -318,10 +218,13 @@ class Page:
         frontmatter library, that filters the newlines at the end of the file.
         https://github.com/eyeseast/python-frontmatter/issues/87
         """
-        # call the markdown and the backmatter
-        md_text = item.body + item.back
+        # first the item needs to be rendered
+        item_rendered = item.render(**self.fixtures)
 
-        req = item.settings
+        # call the markdown and the backmatter
+        md_text = item_rendered.body + item_rendered.back
+
+        req = item_rendered.settings
         if len(req.mkdocs) > 0:
             # merge these things into mkdocs
             # there is not allowed to be a nav here
