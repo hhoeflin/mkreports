@@ -33,7 +33,7 @@ def ip_shell_init():
 
 
 def files_console(report) -> List[Path]:
-    return list(report.page("console/active.md").store_path.glob("*"))
+    return list(report.page("console/active.md").asset_path.glob("*"))
 
 
 def test_pil(ip_shell_init):

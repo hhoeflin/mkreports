@@ -17,8 +17,6 @@ from .md_proxy import register_md
 from .settings import Settings
 from .text import SpacedText, Text
 
-store_path_dict = {}
-
 
 class NotRenderedError(Exception):
     pass

@@ -1,6 +1,7 @@
-from typing import Any, Tuple, Union
+from typing import Tuple, Union
 
 import attrs
+from typing_extensions import Self
 
 Text = Union[str, "SpacedText"]
 
@@ -34,7 +35,9 @@ class SpacedText:
     text: str
     req_nl: Tuple[int, int]
 
-    def __init__(self, text: Text = "", req_nl: Tuple[int, int] = (0, 0)) -> None:
+    def __init__(
+        self, text: Union[str, Self] = "", req_nl: Tuple[int, int] = (0, 0)
+    ) -> None:
         """
         Initialize the object.
 
@@ -62,13 +65,15 @@ class SpacedText:
         """
         return self.format_text("\n\n\n", "\n\n\n")
 
-    def __add__(self, follow: Text) -> "SpacedText":
+    def __add__(self, follow: Union[str, Self]) -> "SpacedText":
         return _add_text(self, SpacedText(follow))
 
-    def __radd__(self, precede: Text) -> "SpacedText":
+    def __radd__(self, precede: Union[str, Self]) -> "SpacedText":
         return _add_text(SpacedText(precede), self)
 
-    def format_text(self, precede: Text = "", follow: Text = "") -> str:
+    def format_text(
+        self, precede: Union[str, Self] = "", follow: Union[str, Self] = ""
+    ) -> str:
         add_before = _needed_nl_between(SpacedText(precede), self)
         add_after = _needed_nl_between(self, SpacedText(follow))
 

@@ -140,19 +140,19 @@ class File(MdObj):
         else:
             return self._path
 
-    def _render(self, store_path: Path) -> RenderedMd:
+    def _render(self, page_asset_path: Path) -> RenderedMd:
         if self.allow_copy:
 
             if self.use_hash:
                 # we calculate the hash of the file to be ingested
-                new_path = store_path / (
+                new_path = page_asset_path / (
                     true_stem(self._orig_path)
                     + "-"
                     + hashlib.md5(self._file_binary).hexdigest()
                     + "".join(self._orig_path.suffixes)
                 )
             else:
-                new_path = store_path / self.path.name
+                new_path = page_asset_path / self.path.name
 
             # now see if we move or copy the file
             new_path.parent.mkdir(parents=True, exist_ok=True)

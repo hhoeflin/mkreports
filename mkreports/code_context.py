@@ -178,7 +178,7 @@ class CodeContext:
         return do_layout(code=code_final, content=content, layout=self.layout)
 
 
-@attrs.mutable()
+@attrs.mutable(slots=False)
 class MultiCodeContext:
     add_no_active_ctx_cb: Callable[[MdObj], None]
     code_layout: Layouts = "tabbed"

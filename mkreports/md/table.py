@@ -168,9 +168,9 @@ class DataTable(File):
         self.table = table
 
     def _render(
-        self, store_path: Path, idstore: IDStore, page_path: Path
+        self, page_asset_path: Path, idstore: IDStore, page_path: Path
     ) -> RenderedMd:
-        super()._render(store_path=store_path)
+        super()._render(page_asset_path=page_asset_path)
 
         javascript_settings = [
             "https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js",
@@ -396,9 +396,13 @@ class Tabulator(File):
         self.downloads = downloads
 
     def _render(
-        self, idstore: IDStore, page_path: Path, javascript_path: Path, store_path: Path
+        self,
+        idstore: IDStore,
+        page_path: Path,
+        javascript_path: Path,
+        page_asset_path: Path,
     ) -> RenderedMd:
-        super()._render(store_path=store_path)
+        super()._render(page_asset_path=page_asset_path)
         # produce the column settings
         col_list = _create_col_settings_tabulator(
             self.table,

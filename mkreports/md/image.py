@@ -46,8 +46,8 @@ class ImageFile(File):
         self.tooltip = tooltip
         self.link_type = link_type
 
-    def _render(self, page_path: Path, store_path: Path) -> RenderedMd:
-        super()._render(store_path=store_path)
+    def _render(self, page_path: Path, page_asset_path: Path) -> RenderedMd:
+        super()._render(page_asset_path=page_asset_path)
         if self.link_type == "inline":
             body = SpacedText(
                 UtilsImage.new_inline_image(
@@ -327,9 +327,9 @@ class Altair(File):
             )
 
     def _render(
-        self, page_path: Path, idstore: IDStore, store_path: Path
+        self, page_path: Path, idstore: IDStore, page_asset_path: Path
     ) -> RenderedMd:
-        super()._render(store_path=store_path)
+        super()._render(page_asset_path=page_asset_path)
         # note; in the body we just insert the div.
         # The reason is that this part can be indented, e.g.
         # inside a tab. But then <script> content can be escaped, leading to errors for '=>'
@@ -405,9 +405,9 @@ class Plotly(File):
             super().__init__(path=path, allow_copy=True, use_hash=use_hash)
 
     def _render(
-        self, page_path: Path, idstore: IDStore, store_path: Path
+        self, page_path: Path, idstore: IDStore, page_asset_path: Path
     ) -> RenderedMd:
-        super()._render(store_path=store_path)
+        super()._render(page_asset_path=page_asset_path)
         # note; in the body we just insert the div.
         # The reason is that this part can be indented, e.g.
         # inside a tab. But then <script> content can be escaped, leading to errors for '=>'

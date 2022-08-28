@@ -246,9 +246,9 @@ class CodeFile(MdObj):
         self.path = Path(path)
 
     def _render(
-        self, project_root: Path, report_path: Path, store_path: Path
+        self, project_root: Path, report_path: Path, page_asset_path: Path
     ) -> RenderedMd:
-        self.file.render(store_path=store_path)
+        self.file.render(page_asset_path=page_asset_path)
         self.title = (
             self.title
             if self.title is not None

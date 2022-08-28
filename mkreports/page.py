@@ -6,8 +6,7 @@ from frontmatter.default_handlers import DEFAULT_POST_TEMPLATE, YAMLHandler
 
 from .code_context import CodeContext, Layouts, MultiCodeContext
 from .exceptions import IncorrectSuffixError
-from .md import (IDStore, MdObj, MdProxy, Raw, SpacedText, Text, comment,
-                 merge_settings)
+from .md import IDStore, MdObj, MdProxy, comment, merge_settings
 from .settings import NavEntry
 from .utils import find_comment_ids
 
@@ -154,7 +153,8 @@ class Page(MultiCodeContext):
             dict: A dictionary with the default fixtures for the page.
         """
         return dict(
-            store_path=self.store_path,
+            page_asset_path=self.asset_path,
+            report_asset_path=self.report.asset_path,
             report_path=self.report.path,
             javascript_path=self.report.javascript_path,
             project_root=self.report.project_root,
@@ -172,15 +172,6 @@ class Page(MultiCodeContext):
         return self._path
 
     @property
-    def rel_path(self) -> Path:
-        """
-        Returns:
-            Path: Relative to the docs_dir of the report.
-
-        """
-        return self._path.relative_to(self.report.docs_dir)
-
-    @property
     def nav_entry(self) -> NavEntry:
         """
         Returns:
@@ -194,17 +185,17 @@ class Page(MultiCodeContext):
         return nav_entry
 
     @property
-    def store_path(self) -> Path:
+    def asset_path(self) -> Path:
         """
         Returns:
             Path: Location of the path for object storage for the page.
 
         """
-        return self.path.parent / (self._path.stem + "_store")
+        return self.path.parent / self._path.stem
 
     def clear(self) -> None:
         """Clear the page markdown file and the generated assets directory."""
-        shutil.rmtree(self.store_path)
+        shutil.rmtree(self.asset_path)
         self.path.unlink()
 
     def _add_to_page(
