@@ -9,7 +9,7 @@ hide:
 ??? code "Code"
 
     ```python title="docs/staging/sidebar.py"
-    --8<-- 'docs/usage/sidebar_store/sidebar-4eaf9eb2a6c09580ff86f321534aa255.py'
+    --8<-- 'docs/usage/sidebar/sidebar-4eaf9eb2a6c09580ff86f321534aa255.py'
     ```
 
 # Sidebars

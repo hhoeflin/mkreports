@@ -3,6 +3,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Literal, Optional, Tuple, Union
 
 from frontmatter.default_handlers import DEFAULT_POST_TEMPLATE, YAMLHandler
+from typing_extensions import Self
 
 from .code_context import CodeContext, Layouts, MultiCodeContext
 from .exceptions import IncorrectSuffixError
@@ -69,7 +70,7 @@ def merge_pages(
     write_page(path=path_target, metadata=metadata_res, content=content_res)
 
 
-class Page(MultiCodeContext):
+class Page:
     """Represents a single page of report."""
 
     def __init__(
@@ -113,41 +114,57 @@ class Page(MultiCodeContext):
         # we need to parse the file for ids
         self._idstore = IDStore(used_ids=find_comment_ids(self.path.read_text()))
         self.report = report
-
-        # initialize the MultiCodeContext
-        super().__init__(
-            add_no_active_ctx_cb=self._add_to_page,  # on exit, adds to the page
+        self.multi_code_context = MultiCodeContext(
             code_layout=code_layout,
             code_name_only=code_name_only,
             add_bottom=add_bottom,
             relative_to=self.report.project_root,
         )
+        self.add_bottom = add_bottom
+        self.code_layout = code_layout
+        self.code_name_only = code_name_only
 
         self._md = MdProxy(md_defaults=md_defaults)
 
-        self.code_context_stack: List[CodeContext] = []
+    # implement the MultiCodeContext wrappers
+    def ctx(
+        self,
+        layout: Optional[Layouts] = None,
+        name_only: Optional[bool] = None,
+        add_bottom: Optional[bool] = None,
+    ) -> Self:
+        """
+        Sets the next context to be used. Only counts for the next tracking context.
 
-    def __getattr__(self, name):
-        md_class = self.md.__getattr__(name)
+        Args:
+            layout (Optional[Layouts]): The layout to use. One of
+                'tabbed', 'top-o', 'top-c', 'bottom-o', 'bottom-c' or 'nocode'.
+            name_only (Optional[bool]): In the code block, should only the name of the
+                file be used.
+            add_bottom (Optional[bool]): Is new output added to the bottom or top.
 
-        def md_and_add(*args, **kwargs):
-            kwargs_add = {}
-            kwargs_md = kwargs
+        Returns:
+            Page: The page object, but with the new *CodeContext* object set.
 
-            # now apply to md
-            md_obj = md_class(*args, **kwargs_md)
-            return self.add(md_obj, **kwargs_add)
+        """
+        self.multi_code_context.ctx(
+            layout=layout, name_only=name_only, add_bottom=add_bottom
+        )
+        return self
 
-        return md_and_add
+    def __enter__(self) -> Self:
+        self.multi_code_context.__enter__()
+        return self
 
-    def __copy__(self):
-        cls = self.__class__
-        result = cls.__new__(cls)
-        result.__dict__.update(self.__dict__)
-        return result
+    def __exit__(self, exc_type, exc_val, traceback) -> None:
+        self.multi_code_context.__exit__(exc_type, exc_val, traceback)
+        if self.multi_code_context.md_obj_after_finish is not None:
+            # exited the last context
+            self.add(self.multi_code_context.md_obj_after_finish)
+            self.multi_code_context.md_obj_after_finish = None
 
     @property
-    def fixtures(self):
+    def fixtures(self) -> Dict[str, Any]:
         """
         Returns:
             dict: A dictionary with the default fixtures for the page.
@@ -172,13 +189,22 @@ class Page(MultiCodeContext):
         return self._path
 
     @property
+    def path_relative_docs(self) -> Path:
+        """
+        Returns:
+            Path relative to docs-directory of report.
+
+        """
+        return self._path.relative_to(self.report.docs_dir)
+
+    @property
     def nav_entry(self) -> NavEntry:
         """
         Returns:
             NavEntry for this page.
 
         """
-        nav_entry = self.report.get_nav_entry(self.rel_path)
+        nav_entry = self.report.get_nav_entry(self.path_relative_docs)
 
         # the entry cannot be none, or the page would not exist
         assert nav_entry is not None
@@ -198,10 +224,10 @@ class Page(MultiCodeContext):
         shutil.rmtree(self.asset_path)
         self.path.unlink()
 
-    def _add_to_page(
+    def add(
         self,
         item: MdObj,
-    ) -> None:
+    ) -> Self:
         """
         Read the frontmatter and merge it with the additional settings.
 
@@ -209,6 +235,10 @@ class Page(MultiCodeContext):
         frontmatter library, that filters the newlines at the end of the file.
         https://github.com/eyeseast/python-frontmatter/issues/87
         """
+        if self.multi_code_context.active:
+            self.multi_code_context.add(item)
+            return self
+
         # first the item needs to be rendered
         item_rendered = item.render(**self.fixtures)
 
@@ -234,6 +264,7 @@ class Page(MultiCodeContext):
             content = md_text.format_text("", content) + content
 
         write_page(self.path, metadata, content)
+        return self
 
     @property
     def md(self) -> MdProxy:
@@ -242,13 +273,26 @@ class Page(MultiCodeContext):
         """
         return self._md
 
+    def __getattr__(self, name):
+        md_class = self.md.__getattr__(name)
+
+        def md_and_add(*args, **kwargs):
+            kwargs_add = {}
+            kwargs_md = kwargs
+
+            # now apply to md
+            md_obj = md_class(*args, **kwargs_md)
+            return self.add(md_obj, **kwargs_add)
+
+        return md_and_add
+
     def __getstate__(self):
         return self.__dict__
 
     def __setstate__(self, d):
         self.__dict__.update(d)
 
-    def __eq__(self, other):
+    def __eq__(self, other) -> bool:
         if type(self) != type(other):
             return False
 

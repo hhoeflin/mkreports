@@ -9,7 +9,7 @@ css:
 ??? code "Code"
 
     ```python title="docs/staging/basic.py"
-    --8<-- 'docs/usage/basic_store/basic-e2790dcbcc97bebbab0872249f1c0d78.py'
+    --8<-- 'docs/usage/basic/basic-e2790dcbcc97bebbab0872249f1c0d78.py'
     ```
 
 ## Headings[](){:name='anchor-0'}
@@ -32,20 +32,12 @@ css:
 
 === "Code"
 
-    ```python title="docs/staging/basic.py" linenums="12"
-    p.Code(
-        """
-        md.H1("Header type 1")
-        md.H2("Header type 2")
-        md.H3("Header type 3")
-        md.H4("Header type 4")
-        md.H5("Header type 5")
-        md.H6("Header type 6")
-        md.H7("Header type 7")
-        """,
-        title="Available headings",
-    )
+    ```python title=".conda_env/lib/python3.8/site-packages/mkreports/page.py" linenums="157"
+        return self
 
+    def __exit__(self, exc_type, exc_val, traceback) -> None:
+        self.multi_code_context.__exit__(exc_type, exc_val, traceback)
+        if self.multi_code_context.md_obj_after_finish is not None:
 
     ```
 
@@ -73,30 +65,12 @@ css:
 
 === "Code"
 
-    ```python title="docs/staging/basic.py" linenums="26"
-    numbered_list = (
-        md.List(marker="1")
-        .append("First item")
-        .append("Second item")
-        .append("Third item")
-    )
-    unordered_list = md.List(("apples", "pears", "strawberry"), marker="*")
+    ```python title=".conda_env/lib/python3.8/site-packages/mkreports/page.py" linenums="157"
+        return self
 
-    numbered_list = numbered_list.append(
-        md.Raw("Some fruit:") + unordered_list
-    ).append(
-        md.Raw("A code block:")
-        + md.Code(
-            """
-            print("Hello world")                    
-            """,
-            title="Hello world",
-            language="python",
-        ),
-    )
-
-    p2.add(numbered_list)
-
+    def __exit__(self, exc_type, exc_val, traceback) -> None:
+        self.multi_code_context.__exit__(exc_type, exc_val, traceback)
+        if self.multi_code_context.md_obj_after_finish is not None:
 
     ```
 
@@ -119,25 +93,12 @@ css:
 
 === "Code"
 
-    ```python title="docs/staging/basic.py" linenums="50"
-    p2.Raw(
-        """
-        A number of different types of links are possible. Those within
-        a page to an anchor or to another page (with or without anchor)
-        """
-    )
-    p2.P(
-        "A link back to the "
-        + p.md.ReportLink(anchor=heading_anchor, text="first heading")
-    )
-    p2.P(
-        "A link to another page "
-        + p.md.ReportLink(
-            "Images", to_page_path=report.page("usage/images.md").path
-        )
-    )
-    p2.P("Or just to any page " + p.md.Link("Google", url="https://google.com"))
-    p2.P("Or of course also just straight markdown [Google](https://google.com)")
+    ```python title=".conda_env/lib/python3.8/site-packages/mkreports/page.py" linenums="157"
+        return self
+
+    def __exit__(self, exc_type, exc_val, traceback) -> None:
+        self.multi_code_context.__exit__(exc_type, exc_val, traceback)
+        if self.multi_code_context.md_obj_after_finish is not None:
 
     ```
 

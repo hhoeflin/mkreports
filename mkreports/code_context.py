@@ -178,34 +178,14 @@ class CodeContext:
         return do_layout(code=code_final, content=content, layout=self.layout)
 
 
-@attrs.mutable(slots=False)
+@attrs.mutable()
 class MultiCodeContext:
-    add_no_active_ctx_cb: Callable[[MdObj], None]
     code_layout: Layouts = "tabbed"
     code_name_only: bool = False
     add_bottom: bool = True
     relative_to: Optional[Path] = None
     code_context_stack: List[CodeContext] = attrs.field(default=[], init=False)
-
-    def __enter__(self) -> Self:
-        if len(self.code_context_stack) == 0 or (
-            len(self.code_context_stack) > 0 and self.code_context_stack[-1].active
-        ):
-            # need to enter a new context
-            self.code_context_stack.append(
-                CodeContext(
-                    layout=self.code_layout,
-                    name_only=self.code_name_only,
-                    add_bottom=self.add_bottom,
-                    relative_to=self.relative_to,
-                )
-            )
-        else:
-            # use the existing one that is not active yet
-            pass
-        # the last one on the stack is the one we activate
-        self.code_context_stack[-1].__enter__()
-        return self
+    md_obj_after_finish: Optional[MdObj] = attrs.field(default=None, init=False)
 
     def ctx(
         self,
@@ -245,6 +225,26 @@ class MultiCodeContext:
 
         return self
 
+    def __enter__(self) -> Self:
+        if len(self.code_context_stack) == 0 or (
+            len(self.code_context_stack) > 0 and self.code_context_stack[-1].active
+        ):
+            # need to enter a new context
+            self.code_context_stack.append(
+                CodeContext(
+                    layout=self.code_layout,
+                    name_only=self.code_name_only,
+                    add_bottom=self.add_bottom,
+                    relative_to=self.relative_to,
+                )
+            )
+        else:
+            # use the existing one that is not active yet
+            pass
+        # the last one on the stack is the one we activate
+        self.code_context_stack[-1].__enter__()
+        return self
+
     def __exit__(self, exc_type, exc_val, traceback) -> None:
         if len(self.code_context_stack) == 0:
             raise Exception("__exit__ called before __enter__")
@@ -254,7 +254,12 @@ class MultiCodeContext:
         if len(self.code_context_stack) > 0:
             self.code_context_stack[-1].add(active_code_context.md_obj)
         else:
-            self.add_no_active_ctx_cb(active_code_context.md_obj)
+            self.md_obj_after_finish = active_code_context.md_obj
+
+    @property
+    def active(self):
+        """Is a code context active?"""
+        return len(self.code_context_stack) > 0 and self.code_context_stack[-1].active
 
     def add(
         self,
@@ -271,17 +276,8 @@ class MultiCodeContext:
 
         """
         item = ensure_md_obj(item)
-        # search from the top for active code_context
-        active_code_context = None
-        for i in reversed(range(len(self.code_context_stack))):
-            if self.code_context_stack[i].active:
-                active_code_context = self.code_context_stack[i]
-                break
-
-        # if a context-manager is active, pass along the object into there
-        if active_code_context is not None:
-            active_code_context.add(item)
-        else:  # else pass it directly to the page
-            self.add_no_active_ctx_cb(item)
+        if len(self.code_context_stack) == 0 or not self.code_context_stack[-1].active:
+            raise Exception("Can't add MdObj to inactive code context")
+        self.code_context_stack[-1].add(item)
 
         return self

@@ -27,7 +27,7 @@ javascript:
 ??? code "Code"
 
     ```python title="docs/staging/tables.py"
-    --8<-- 'docs/usage/tables_store/tables-1de6e59c7f2c203b4a7b452262c65704.py'
+    --8<-- 'docs/usage/tables/tables-1de6e59c7f2c203b4a7b452262c65704.py'
     ```
 
 Conveying information with tables is very important for 
@@ -58,16 +58,12 @@ larger tables more sophisticated libraries are needed.
 
 === "Code"
 
-    ```python title="docs/staging/tables.py" linenums="39"
-    p.Raw(
-        """
-        Below an example of a regular markdown table. As it is very wide,
-        horizontal scrolling is enabled by default. In addition, the number
-        of rows is limited to 10 as there is no automatic paging available.
-        """
-    )
-    p.add(md.Table(pd.DataFrame(mtcars).head(10), index=False))
+    ```python title=".conda_env/lib/python3.8/site-packages/mkreports/page.py" linenums="157"
+        return self
 
+    def __exit__(self, exc_type, exc_val, traceback) -> None:
+        self.multi_code_context.__exit__(exc_type, exc_val, traceback)
+        if self.multi_code_context.md_obj_after_finish is not None:
 
     ```
 
@@ -105,41 +101,12 @@ larger tables more sophisticated libraries are needed.
 
 === "Code"
 
-    ```python title="docs/staging/tables.py" linenums="49"
-    p.Raw(
-        """
-        Here the same table, but displayed using the 
-        [DataTables](https://datatables.net/)  
-        plugin. With this, we get automatic paging, searching as well as sorting
-        by columns. 
-        """
-    )
-    # and as a DataTable
-    p.DataTable(pd.DataFrame(mtcars))
+    ```python title=".conda_env/lib/python3.8/site-packages/mkreports/page.py" linenums="157"
+        return self
 
-    with p.H3("Header filters").ctx("nocode"):
-        p.Raw(
-            """
-            Below a DataTable example with column filters in the header.
-            The header in use is determined by the column type of the pandas
-            table used for display. 
-
-            - A numeric column gets a range selector
-            - A categorical or boolean column a dropdown selection
-            - Any other column a text-field.
-            """
-        )
-        p.DataTable(ex_table, add_header_filters=True)
-
-    with p.H3("Download buttons").ctx("nocode"):
-        p.Raw(
-            """
-            An example with buttons for downloading and printing
-            of the table.
-            """
-        )
-        p.DataTable(ex_table, downloads=True)
-
+    def __exit__(self, exc_type, exc_val, traceback) -> None:
+        self.multi_code_context.__exit__(exc_type, exc_val, traceback)
+        if self.multi_code_context.md_obj_after_finish is not None:
 
     ```
 
@@ -147,7 +114,7 @@ larger tables more sophisticated libraries are needed.
 
 <script>
 $(document).ready( function () {
-var myTable = $('#datatable_id-0').DataTable({"scrollX": "true", "columns": [{"title": "Name"}, {"title": "Mpg"}, {"title": "Cyl"}, {"title": "Disp"}, {"title": "Hp"}, {"title": "Drat"}, {"title": "Wt"}, {"title": "Qsec"}, {"title": "Vs"}, {"title": "Am"}, {"title": "Gear"}, {"title": "Carb"}], "ajax": "../tables_store/datatable-ca9b6f052f673e1d46f468ebb1ccc5d1.json"});
+var myTable = $('#datatable_id-0').DataTable({"scrollX": "true", "columns": [{"title": "Name"}, {"title": "Mpg"}, {"title": "Cyl"}, {"title": "Disp"}, {"title": "Hp"}, {"title": "Drat"}, {"title": "Wt"}, {"title": "Qsec"}, {"title": "Vs"}, {"title": "Am"}, {"title": "Gear"}, {"title": "Carb"}], "ajax": "../tables/datatable-ca9b6f052f673e1d46f468ebb1ccc5d1.json"});
 
 } );
 </script>
@@ -156,7 +123,7 @@ var myTable = $('#datatable_id-0').DataTable({"scrollX": "true", "columns": [{"t
 
 <script>
 $(document).ready( function () {
-var myTable = $('#datatable_id-1').DataTable({"scrollX": "true", "columns": [{"title": "Name"}, {"title": "Age"}, {"title": "Hair"}, {"title": "Married"}], "ajax": "../tables_store/datatable-580c4149445c9b58b5740c532e20a5a0.json"});
+var myTable = $('#datatable_id-1').DataTable({"scrollX": "true", "columns": [{"title": "Name"}, {"title": "Age"}, {"title": "Hair"}, {"title": "Married"}], "ajax": "../tables/datatable-580c4149445c9b58b5740c532e20a5a0.json"});
 yadcf.init(myTable, [{"column_number": 0, "filter_type": "text"}, {"column_number": 1, "filter_type": "range_number"}, {"column_number": 2, "filter_type": "select"}, {"column_number": 3, "filter_type": "select"}]);
 } );
 </script>
@@ -165,7 +132,7 @@ yadcf.init(myTable, [{"column_number": 0, "filter_type": "text"}, {"column_numbe
 
 <script>
 $(document).ready( function () {
-var myTable = $('#datatable_id-2').DataTable({"scrollX": "true", "columns": [{"title": "Name"}, {"title": "Age"}, {"title": "Hair"}, {"title": "Married"}], "buttons": ["copy", "csv", "excel", "pdf", "print"], "dom": "<lfr>t<Bp>", "ajax": "../tables_store/datatable-580c4149445c9b58b5740c532e20a5a0.json"});
+var myTable = $('#datatable_id-2').DataTable({"scrollX": "true", "columns": [{"title": "Name"}, {"title": "Age"}, {"title": "Hair"}, {"title": "Married"}], "buttons": ["copy", "csv", "excel", "pdf", "print"], "dom": "<lfr>t<Bp>", "ajax": "../tables/datatable-580c4149445c9b58b5740c532e20a5a0.json"});
 
 } );
 </script>
@@ -216,74 +183,31 @@ var myTable = $('#datatable_id-2').DataTable({"scrollX": "true", "columns": [{"t
 
 === "Code"
 
-    ```python title="docs/staging/tables.py" linenums="84"
-    p.Raw(
-        """
-        This time, we use the [Tabulator](http://tabulator.info)
-        library. A library with a lot of interesting 
-        functionality.
-        """
-    )
-    p.Tabulator(
-        pd.DataFrame(mtcars), add_header_filters=False, prettify_colnames=False
-    )
+    ```python title=".conda_env/lib/python3.8/site-packages/mkreports/page.py" linenums="157"
+        return self
 
-    with p.H3("Header filters").ctx("nocode"):
-        p.Raw(
-            """
-            We also can enable header filtering. For the datatypes
-
-            - numeric
-            - boolean
-            - categorical 
-            - str
-
-            default filter options have been defined. Below
-            we create a table with various different data types
-            to show these functions.
-
-            The applied filters are
-
-            - Input filter for the names
-            - Range filter with min and max for age
-            - Select dropdown for hair color
-            - and checkbox for marital status
-            """
-        )
-        p.Tabulator(ex_table, add_header_filters=True, prettify_colnames=True)
-
-    with p.H3("Download buttons").ctx("nocode"):
-        p.P(
-            """
-            An example showing download buttons for export to csv, json or excel.
-            """
-        )
-        p.Tabulator(
-            ex_table,
-            add_header_filters=True,
-            prettify_colnames=True,
-            downloads=True,
-        )
-
+    def __exit__(self, exc_type, exc_val, traceback) -> None:
+        self.multi_code_context.__exit__(exc_type, exc_val, traceback)
+        if self.multi_code_context.md_obj_after_finish is not None:
 
     ```
 
 ---
 
 <script>
-var table = new Tabulator('#tabulator_id-0', {"layout": "fitDataTable", "pagination": true, "paginationSize": 10, "paginationSizeSelector": true, "columns": [{"field": "name", "title": "name"}, {"field": "mpg", "title": "mpg"}, {"field": "cyl", "title": "cyl"}, {"field": "disp", "title": "disp"}, {"field": "hp", "title": "hp"}, {"field": "drat", "title": "drat"}, {"field": "wt", "title": "wt"}, {"field": "qsec", "title": "qsec"}, {"field": "vs", "title": "vs"}, {"field": "am", "title": "am"}, {"field": "gear", "title": "gear"}, {"field": "carb", "title": "carb"}], "ajaxURL": "../tables_store/tabulator-c8469972d60cd61d98262704e068f4e9.json"});
+var table = new Tabulator('#tabulator_id-0', {"layout": "fitDataTable", "pagination": true, "paginationSize": 10, "paginationSizeSelector": true, "columns": [{"field": "name", "title": "name"}, {"field": "mpg", "title": "mpg"}, {"field": "cyl", "title": "cyl"}, {"field": "disp", "title": "disp"}, {"field": "hp", "title": "hp"}, {"field": "drat", "title": "drat"}, {"field": "wt", "title": "wt"}, {"field": "qsec", "title": "qsec"}, {"field": "vs", "title": "vs"}, {"field": "am", "title": "am"}, {"field": "gear", "title": "gear"}, {"field": "carb", "title": "carb"}], "ajaxURL": "../tables/tabulator-c8469972d60cd61d98262704e068f4e9.json"});
 </script>
 
 [comment]: # (id: tabulator_id-0)
 
 <script>
-var table = new Tabulator('#tabulator_id-1', {"layout": "fitDataTable", "pagination": true, "paginationSize": 10, "paginationSizeSelector": true, "columns": [{"field": "name", "headerFilter": "input", "title": "Name"}, {"field": "age", "width": 80, "headerFilter": minMaxFilterEditor, "headerFilterFunc": minMaxFilterFunction, "headerFilterLiveFilter": false, "title": "Age"}, {"field": "hair", "headerFilter": "select", "headerFilterParams": {"values": ["", "brown", "green", "red"]}, "title": "Hair"}, {"field": "married", "headerFilter": "tickCross", "formatter": "tickCross", "headerFilterParams": {"tristate": true}, "title": "Married"}], "ajaxURL": "../tables_store/tabulator-75b468c8a8bcf5fff9d211e88d0e6972.json"});
+var table = new Tabulator('#tabulator_id-1', {"layout": "fitDataTable", "pagination": true, "paginationSize": 10, "paginationSizeSelector": true, "columns": [{"field": "name", "headerFilter": "input", "title": "Name"}, {"field": "age", "width": 80, "headerFilter": minMaxFilterEditor, "headerFilterFunc": minMaxFilterFunction, "headerFilterLiveFilter": false, "title": "Age"}, {"field": "hair", "headerFilter": "select", "headerFilterParams": {"values": ["", "brown", "green", "red"]}, "title": "Hair"}, {"field": "married", "headerFilter": "tickCross", "formatter": "tickCross", "headerFilterParams": {"tristate": true}, "title": "Married"}], "ajaxURL": "../tables/tabulator-75b468c8a8bcf5fff9d211e88d0e6972.json"});
 </script>
 
 [comment]: # (id: tabulator_id-1)
 
 <script>
-var table = new Tabulator('#tabulator_id-2', {"layout": "fitDataTable", "pagination": true, "paginationSize": 10, "paginationSizeSelector": true, "columns": [{"field": "name", "headerFilter": "input", "title": "Name"}, {"field": "age", "width": 80, "headerFilter": minMaxFilterEditor, "headerFilterFunc": minMaxFilterFunction, "headerFilterLiveFilter": false, "title": "Age"}, {"field": "hair", "headerFilter": "select", "headerFilterParams": {"values": ["", "brown", "green", "red"]}, "title": "Hair"}, {"field": "married", "headerFilter": "tickCross", "formatter": "tickCross", "headerFilterParams": {"tristate": true}, "title": "Married"}], "ajaxURL": "../tables_store/tabulator-75b468c8a8bcf5fff9d211e88d0e6972.json"});
+var table = new Tabulator('#tabulator_id-2', {"layout": "fitDataTable", "pagination": true, "paginationSize": 10, "paginationSizeSelector": true, "columns": [{"field": "name", "headerFilter": "input", "title": "Name"}, {"field": "age", "width": 80, "headerFilter": minMaxFilterEditor, "headerFilterFunc": minMaxFilterFunction, "headerFilterLiveFilter": false, "title": "Age"}, {"field": "hair", "headerFilter": "select", "headerFilterParams": {"values": ["", "brown", "green", "red"]}, "title": "Hair"}, {"field": "married", "headerFilter": "tickCross", "formatter": "tickCross", "headerFilterParams": {"tristate": true}, "title": "Married"}], "ajaxURL": "../tables/tabulator-75b468c8a8bcf5fff9d211e88d0e6972.json"});
 //trigger download of data.csv file
 $("#csv_down_id-0").click(function(){
     table.download("csv", "data.csv");
@@ -317,16 +241,12 @@ $("#xslx_down_id-0").click(function(){
 
 === "Code"
 
-    ```python title="docs/staging/tables.py" linenums="133"
-    p.Raw(
-        """
-        Internally, the tables are serialized to json so that 
-        they can be displayed in the web-browser. For any types 
-        that are non-native to json (e.g. Path-instances), as a
-        default handler the `str` funtion is called. If this
-        is not ok, please transform the table columns accordingly.
-        """
-    )
+    ```python title=".conda_env/lib/python3.8/site-packages/mkreports/page.py" linenums="157"
+        return self
+
+    def __exit__(self, exc_type, exc_val, traceback) -> None:
+        self.multi_code_context.__exit__(exc_type, exc_val, traceback)
+        if self.multi_code_context.md_obj_after_finish is not None:
 
     ```
 

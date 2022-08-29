@@ -14,7 +14,7 @@ javascript:
 ??? code "Code"
 
     ```python title="docs/staging/images.py"
-    --8<-- 'docs/usage/images_store/images-904b9e74011d8731fcc104997285400a.py'
+    --8<-- 'docs/usage/images/images-904b9e74011d8731fcc104997285400a.py'
     ```
 
 ## Supported formats
@@ -34,25 +34,16 @@ image manually and then include it as an `ImageFile` object.
 
     Here as an example we simply have a black and white image of a black
     and grey square.
-    ![](images_store/pil_image-c8343f974dc12426173f781a465749d2.png)
+    ![](images/pil_image-c8343f974dc12426173f781a465749d2.png)
 
 === "Code"
 
-    ```python title="docs/staging/images.py" linenums="33"
-    p.Raw(
-        """
-        PIL is the standard python image library. `Image` objects are written
-        out to files and included in the markdown.
+    ```python title=".conda_env/lib/python3.8/site-packages/mkreports/page.py" linenums="157"
+        return self
 
-        Here as an example we simply have a black and white image of a black
-        and grey square.
-        """
-    )
-    img_np = np.zeros((200, 400), dtype=np.uint8)
-    img_np[:, 200:400] = 128
-    img = Image.fromarray(img_np)
-    p.PIL(img)
-
+    def __exit__(self, exc_type, exc_val, traceback) -> None:
+        self.multi_code_context.__exit__(exc_type, exc_val, traceback)
+        if self.multi_code_context.md_obj_after_finish is not None:
 
     ```
 
@@ -64,22 +55,16 @@ image manually and then include it as an `ImageFile` object.
 
     For many scientific graphing purposes, `matplotlib` is either the direct
     choice or the backend being used for plotting. 
-    ![](images_store/matplotlib_image-9eacde53d07030438d059ea6a19b8285.png)
+    ![](images/matplotlib_image-9eacde53d07030438d059ea6a19b8285.png)
 
 === "Code"
 
-    ```python title="docs/staging/images.py" linenums="49"
-    p.Raw(
-        """
-        For many scientific graphing purposes, `matplotlib` is either the direct
-        choice or the backend being used for plotting. 
-        """
-    )
+    ```python title=".conda_env/lib/python3.8/site-packages/mkreports/page.py" linenums="157"
+        return self
 
-    fig, ax = plt.subplots()
-    ax.plot([1, 2, 3, 4], [1, 4, 2, 3])
-    p.Matplotlib(fig)
-
+    def __exit__(self, exc_type, exc_val, traceback) -> None:
+        self.multi_code_context.__exit__(exc_type, exc_val, traceback)
+        if self.multi_code_context.md_obj_after_finish is not None:
 
     ```
 
@@ -91,25 +76,16 @@ image manually and then include it as an `ImageFile` object.
 
     Any plots created by `plotnine` can be included directly. The code below
     is from the beginner example of the library.
-    ![](images_store/plotnine_image-9446dc7872bbfae6dd221f72376fc7bb.png)
+    ![](images/plotnine_image-9446dc7872bbfae6dd221f72376fc7bb.png)
 
 === "Code"
 
-    ```python title="docs/staging/images.py" linenums="61"
-    p.Raw(
-        """
-        Any plots created by `plotnine` can be included directly. The code below
-        is from the beginner example of the library.
-        """
-    )
+    ```python title=".conda_env/lib/python3.8/site-packages/mkreports/page.py" linenums="157"
+        return self
 
-    p.Plotnine(
-        ggplot(mtcars, aes("wt", "mpg", color="factor(gear)"))
-        + geom_point()
-        + stat_smooth(method="lm")
-        + facet_wrap("~gear"),
-    )
-
+    def __exit__(self, exc_type, exc_val, traceback) -> None:
+        self.multi_code_context.__exit__(exc_type, exc_val, traceback)
+        if self.multi_code_context.md_obj_after_finish is not None:
 
     ```
 
@@ -122,40 +98,16 @@ image manually and then include it as an `ImageFile` object.
     Another well known option is Seaborn. The interface is similar to the 
     ones before. Under the hood, the `figure` attribute of the seaborn plot is 
     accessed and saved in the same fashion as for matplotlib.
-    ![](images_store/seaborn_image-c3fb8cb2918f73795ffbae41eb5404ae.png)
+    ![](images/seaborn_image-c3fb8cb2918f73795ffbae41eb5404ae.png)
 
 === "Code"
 
-    ```python title="docs/staging/images.py" linenums="76"
-    p.add(
-        """
-        Another well known option is Seaborn. The interface is similar to the 
-        ones before. Under the hood, the `figure` attribute of the seaborn plot is 
-        accessed and saved in the same fashion as for matplotlib.
-        """
-    )
+    ```python title=".conda_env/lib/python3.8/site-packages/mkreports/page.py" linenums="157"
+        return self
 
-    sns.set_theme(style="ticks")
-
-    # Load the example dataset for Anscombe's quartet
-    df = sns.load_dataset("anscombe")
-
-    # Show the results of a linear regression within each dataset
-    p.Seaborn(
-        sns.lmplot(
-            x="x",
-            y="y",
-            col="dataset",
-            hue="dataset",
-            data=df,
-            col_wrap=2,
-            ci=None,
-            palette="muted",
-            height=4,
-            scatter_kws={"s": 50, "alpha": 1},
-        ),
-    )
-
+    def __exit__(self, exc_type, exc_val, traceback) -> None:
+        self.multi_code_context.__exit__(exc_type, exc_val, traceback)
+        if self.multi_code_context.md_obj_after_finish is not None:
 
     ```
 
@@ -169,28 +121,19 @@ image manually and then include it as an `ImageFile` object.
 
 === "Code"
 
-    ```python title="docs/staging/images.py" linenums="106"
-    import altair as alt
-    import pandas as pd
+    ```python title=".conda_env/lib/python3.8/site-packages/mkreports/page.py" linenums="157"
+        return self
 
-    source = pd.DataFrame(
-        {
-            "a": ["A", "B", "C", "D", "E", "F", "G", "H", "I"],
-            "b": [28, 55, 43, 91, 81, 53, 19, 87, 52],
-        }
-    )
-
-    p.Altair(
-        alt.Chart(source).mark_bar().encode(x="a", y="b").properties(width=600)
-    )
-
+    def __exit__(self, exc_type, exc_val, traceback) -> None:
+        self.multi_code_context.__exit__(exc_type, exc_val, traceback)
+        if self.multi_code_context.md_obj_after_finish is not None:
 
     ```
 
 ---
 
 <script>
-    vegaEmbed("#altair_id-0", "../images_store/altair-a7a2eb773c7d9454c694b490a77e5a7e.csv")
+    vegaEmbed("#altair_id-0", "../images/altair-a7a2eb773c7d9454c694b490a77e5a7e.csv")
     // result.view provides access to the Vega View API
     .then(result => console.log(result))
     .catch(console.warn);
@@ -206,19 +149,19 @@ image manually and then include it as an `ImageFile` object.
 
 === "Code"
 
-    ```python title="docs/staging/images.py" linenums="121"
-    import plotly.express as px
+    ```python title=".conda_env/lib/python3.8/site-packages/mkreports/page.py" linenums="157"
+        return self
 
-    fig = px.scatter(x=[0, 1, 2, 3, 4], y=[0, 1, 4, 9, 16])
-    p.Plotly(fig)
-
+    def __exit__(self, exc_type, exc_val, traceback) -> None:
+        self.multi_code_context.__exit__(exc_type, exc_val, traceback)
+        if self.multi_code_context.md_obj_after_finish is not None:
 
     ```
 
 ---
 
 <script>
-    fetch('../images_store/plotly-920e2f4c0fce23ec31200a1619f50e95.json')
+    fetch('../images/plotly-920e2f4c0fce23ec31200a1619f50e95.json')
         .then(function (response) {
             return response.json();
         })
@@ -252,34 +195,20 @@ internally how it is rendered may change.
 
     #### Larger
 
-    ![](images_store/plotnine_image-8538e0eb406bf0315a35ac3270cf7c7f.png)
+    ![](images/plotnine_image-8538e0eb406bf0315a35ac3270cf7c7f.png)
 
     #### Smaller
 
-    ![](images_store/plotnine_image-4efe8b0294d554ffefcdb815b8010041.png)
+    ![](images/plotnine_image-4efe8b0294d554ffefcdb815b8010041.png)
 
 === "Code"
 
-    ```python title="docs/staging/images.py" linenums="139"
-    p.H4("Larger")
-    p.Plotnine(
-        ggplot(mtcars, aes("wt", "mpg", color="factor(gear)"))
-        + geom_point()
-        + stat_smooth(method="lm")
-        + facet_wrap("~gear"),
-        width=10,
-        height=6,
-    )
-    p.H4("Smaller")
-    p.Plotnine(
-        ggplot(mtcars, aes("wt", "mpg", color="factor(gear)"))
-        + geom_point()
-        + stat_smooth(method="lm")
-        + facet_wrap("~gear"),
-        width=5,
-        height=3,
-    )
+    ```python title=".conda_env/lib/python3.8/site-packages/mkreports/page.py" linenums="157"
+        return self
 
+    def __exit__(self, exc_type, exc_val, traceback) -> None:
+        self.multi_code_context.__exit__(exc_type, exc_val, traceback)
+        if self.multi_code_context.md_obj_after_finish is not None:
 
     ```
 
@@ -291,5 +220,5 @@ Images can also be placed next to each other, if there is enough
 space. Just specify them directly one after the other and if there
 is enough space, they will be placed next to each other.
 
-![](images_store/plotnine_image-a4ca255d40ff37342ccbc426ca56cc54.png)
-![](images_store/plotnine_image-a4ca255d40ff37342ccbc426ca56cc54.png)
+![](images/plotnine_image-a4ca255d40ff37342ccbc426ca56cc54.png)
+![](images/plotnine_image-a4ca255d40ff37342ccbc426ca56cc54.png)

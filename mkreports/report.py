@@ -174,6 +174,14 @@ class Report:
         return self.docs_dir / "index.md"
 
     @property
+    def asset_path(self):
+        """
+        Returns:
+            The asset path for the report.
+        """
+        return self.docs_dir / "assets"
+
+    @property
     def javascript_path(self) -> Path:
         """
         Returns:
