@@ -41,16 +41,16 @@ class CollapsedCodeFile(MdObj):
 
     def _render(
         self,
-        javascript_path: Path,
+        report_asset_dir: Path,
         page_path: Path,
-        page_asset_path: Path,
+        page_asset_dir: Path,
         project_root: Path,
         report_path: Path,
     ) -> RenderedMd:
         obj_rendered = self.obj.render(
-            javascript_path=javascript_path,
+            report_asset_dir=report_asset_dir,
             page_path=page_path,
-            page_asset_path=page_asset_path,
+            page_asset_dir=page_asset_dir,
             project_root=project_root,
             report_path=report_path,
         )

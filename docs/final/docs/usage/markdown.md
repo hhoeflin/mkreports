@@ -33,19 +33,17 @@ for the user:
 ### Markdown attributes of a page
 
 All markdown objects are available under their name directory for a
-`Page` object (created from a `Report`). For these, all parameters related to
-a page and project are captured in a single parameter `page_info` that expects
-and object of type `PageInfo` with names:
+`Page` object (created from a `Report`). When created, the object stores
+all necessary information for later rendering. During the rendering
+additional information (in terms of fixtures to the rendering function)
+can be requested. The available fixtures are:
 
-- `store_path`
-- `page_path`
+- `report_asset_dir`
+- `page_asset_dir`
 - `report_path`
 - `project_root`
-- `javascript_path`
 - `idstore`
-
-When requesting a markdown object from a page, this is automatically added.
-The object is immediately added to the page.
+- `page_path`
 
 A list of all available object can be obtained with
 

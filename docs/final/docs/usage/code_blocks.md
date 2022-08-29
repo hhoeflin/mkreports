@@ -1,6 +1,6 @@
 ---
 css:
-- ../../javascript/assets/code_admonition.css
+- ../../assets/assets/code_admonition.css
 ---
 
 

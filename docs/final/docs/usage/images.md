@@ -1,6 +1,6 @@
 ---
 css:
-- ../../javascript/assets/code_admonition.css
+- ../../assets/assets/code_admonition.css
 javascript:
 - https://cdn.jsdelivr.net/npm/vega@5
 - https://cdn.jsdelivr.net/npm/vega-lite@5

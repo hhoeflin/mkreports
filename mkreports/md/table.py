@@ -168,9 +168,9 @@ class DataTable(File):
         self.table = table
 
     def _render(
-        self, page_asset_path: Path, idstore: IDStore, page_path: Path
+        self, page_asset_dir: Path, idstore: IDStore, page_path: Path
     ) -> RenderedMd:
-        super()._render(page_asset_path=page_asset_path)
+        super()._render(page_asset_dir=page_asset_dir)
 
         javascript_settings = [
             "https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js",
@@ -399,10 +399,10 @@ class Tabulator(File):
         self,
         idstore: IDStore,
         page_path: Path,
-        javascript_path: Path,
-        page_asset_path: Path,
+        report_asset_dir: Path,
+        page_asset_dir: Path,
     ) -> RenderedMd:
-        super()._render(page_asset_path=page_asset_path)
+        super()._render(page_asset_dir=page_asset_dir)
         # produce the column settings
         col_list = _create_col_settings_tabulator(
             self.table,
@@ -458,7 +458,7 @@ class Tabulator(File):
             javascript_settings.append(
                 store_asset_relpath(
                     Path("min_max_filter.js"),
-                    javascript_path=javascript_path,
+                    asset_dir=report_asset_dir,
                     page_path=page_path,
                 )
             )
@@ -509,7 +509,7 @@ class Tabulator(File):
             css_settings.append(
                 store_asset_relpath(
                     Path("download_buttons.css"),
-                    javascript_path=javascript_path,
+                    asset_dir=report_asset_dir,
                     page_path=page_path,
                 )
             )

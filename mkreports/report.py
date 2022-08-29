@@ -174,21 +174,12 @@ class Report:
         return self.docs_dir / "index.md"
 
     @property
-    def asset_path(self):
+    def asset_dir(self):
         """
         Returns:
             The asset path for the report.
         """
         return self.docs_dir / "assets"
-
-    @property
-    def javascript_path(self) -> Path:
-        """
-        Returns:
-            Path: Location of the javascript folder.
-
-        """
-        return self.docs_dir / "javascript"
 
     @property
     def settings(self):
@@ -310,7 +301,7 @@ class Report:
                 **NavEntry**, a custom nav-entry and path can be specified. The path
                 is always relative to the report-docs directory.
             truncate (bool): Should the page be truncated if it exists? Also deletes
-                the *asset_path*.
+                the *asset_dir*.
             add_bottom (bool): Should new entries be added at the bottom or at the
                 top of the page. Top of the page is used for IPython.
             md_defaults (Optional[Dict[str, Dict[str, Any]]): A dictionary mapping the names
@@ -350,8 +341,8 @@ class Report:
         )
 
         if truncate:
-            if page.asset_path.exists():
-                shutil.rmtree(page.asset_path)
+            if page.asset_dir.exists():
+                shutil.rmtree(page.asset_dir)
 
         return page
 

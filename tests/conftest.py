@@ -5,10 +5,9 @@ from mkreports.md import IDStore
 @pytest.fixture
 def page_fixtures(tmp_path):
     return dict(
-        page_asset_path=tmp_path,
-        report_asset_path=tmp_path,
+        page_asset_dir=tmp_path,
+        report_asset_dir=tmp_path,
         report_path=tmp_path,
-        javascript_path=tmp_path,
         project_root=tmp_path,
         page_path=tmp_path,
         idstore=IDStore(),

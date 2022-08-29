@@ -1,11 +1,11 @@
 ---
 css:
-- ../../javascript/assets/code_admonition.css
+- ../../assets/assets/code_admonition.css
 - https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css
 - https://cdn.jsdelivr.net/gh/vedmack/yadcf@332407eeacbda299e6253530e24c15041b270227/dist/jquery.dataTables.yadcf.css
 - https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css
 - https://unpkg.com/tabulator-tables@5.1.0/dist/css/tabulator.min.css
-- ../../javascript/assets/download_buttons.css
+- ../../assets/assets/download_buttons.css
 javascript:
 - https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js
 - https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js
@@ -17,7 +17,7 @@ javascript:
 - https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js
 - https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js
 - https://unpkg.com/tabulator-tables@5.1.0/dist/js/tabulator.min.js
-- ../../javascript/assets/min_max_filter.js
+- ../../assets/assets/min_max_filter.js
 - https://oss.sheetjs.com/sheetjs/xlsx.full.min.js
 ---
 

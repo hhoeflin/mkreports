@@ -52,12 +52,12 @@ class Admonition(MdObj):
     ] = "note"
     collapse: bool = False
 
-    def _render(self, javascript_path: Path, page_path: Path, **kwargs) -> RenderedMd:
+    def _render(self, report_asset_dir: Path, page_path: Path, **kwargs) -> RenderedMd:
         # if code-admonition, we need to load additional css
         if self.kind == "code":
             rel_css_path = store_asset_relpath(
                 Path("code_admonition.css"),
-                javascript_path=javascript_path,
+                asset_dir=report_asset_dir,
                 page_path=page_path,
             )
             page_settings = dict(css=[rel_css_path])
@@ -75,7 +75,7 @@ class Admonition(MdObj):
         )
         if isinstance(self.obj, MdObj):
             obj_rendered = self.obj.render(
-                **dict(kwargs, javascript_path=javascript_path, page_path=page_path)
+                **dict(kwargs, report_asset_dir=report_asset_dir, page_path=page_path)
             )
             admon_text = obj_rendered.body
             back = obj_rendered.back
@@ -96,7 +96,7 @@ class Admonition(MdObj):
         return RenderedMd(body=body, back=back, settings=settings, src=self)
 
     def render_fixtures(self) -> Set[str]:
-        fixtures = set(["javascript_path", "page_path"])
+        fixtures = set(["page_path", "report_asset_dir"])
         if isinstance(self.obj, MdObj):
             fixtures.update(self.obj.render_fixtures())
 
@@ -246,9 +246,9 @@ class CodeFile(MdObj):
         self.path = Path(path)
 
     def _render(
-        self, project_root: Path, report_path: Path, page_asset_path: Path
+        self, project_root: Path, report_path: Path, page_asset_dir: Path
     ) -> RenderedMd:
-        self.file.render(page_asset_path=page_asset_path)
+        self.file.render(page_asset_dir=page_asset_dir)
         self.title = (
             self.title
             if self.title is not None

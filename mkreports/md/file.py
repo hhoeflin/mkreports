@@ -65,27 +65,27 @@ def relpath_html(target: Path, page_path: Path) -> str:
 
 
 def store_asset_relpath(
-    asset_path_mkreports: Path, javascript_path: Path, page_path: Path
+    asset_path_mkreports: Path, asset_dir: Path, page_path: Path
 ) -> str:
     """
     Store an asset and return relative path to it.
 
     Args:
-        asset_path (Path): Relative asset path inside 'mkreports'
+        asset_dir (Path): Relative asset path inside 'mkreports'
 
     Returns:
         str: Path to the asset as it should be used from html
     """
-    asset_path_report_abs = javascript_path / "assets" / asset_path_mkreports.name
-    asset_path_report_abs.parent.mkdir(parents=True, exist_ok=True)
+    asset_path_abs = asset_dir / "assets" / asset_path_mkreports.name
+    asset_path_abs.parent.mkdir(parents=True, exist_ok=True)
     with imp_res.as_file(
         imp_res.files("mkreports") / "assets" / asset_path_mkreports
     ) as asset_file:
         shutil.copy(
             str(asset_file),
-            str(asset_path_report_abs),
+            str(asset_path_abs),
         )
-    return relpath_html(asset_path_report_abs, page_path)
+    return relpath_html(asset_path_abs, page_path)
 
 
 @register_md("File")
@@ -140,19 +140,19 @@ class File(MdObj):
         else:
             return self._path
 
-    def _render(self, page_asset_path: Path) -> RenderedMd:
+    def _render(self, page_asset_dir: Path) -> RenderedMd:
         if self.allow_copy:
 
             if self.use_hash:
                 # we calculate the hash of the file to be ingested
-                new_path = page_asset_path / (
+                new_path = page_asset_dir / (
                     true_stem(self._orig_path)
                     + "-"
                     + hashlib.md5(self._file_binary).hexdigest()
                     + "".join(self._orig_path.suffixes)
                 )
             else:
-                new_path = page_asset_path / self.path.name
+                new_path = page_asset_dir / self.path.name
 
             # now see if we move or copy the file
             new_path.parent.mkdir(parents=True, exist_ok=True)

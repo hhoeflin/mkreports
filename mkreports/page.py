@@ -170,10 +170,9 @@ class Page:
             dict: A dictionary with the default fixtures for the page.
         """
         return dict(
-            page_asset_path=self.asset_path,
-            report_asset_path=self.report.asset_path,
+            page_asset_dir=self.asset_dir,
+            report_asset_dir=self.report.asset_dir,
             report_path=self.report.path,
-            javascript_path=self.report.javascript_path,
             project_root=self.report.project_root,
             idstore=self._idstore,
             page_path=self.path,
@@ -211,7 +210,7 @@ class Page:
         return nav_entry
 
     @property
-    def asset_path(self) -> Path:
+    def asset_dir(self) -> Path:
         """
         Returns:
             Path: Location of the path for object storage for the page.
@@ -221,7 +220,7 @@ class Page:
 
     def clear(self) -> None:
         """Clear the page markdown file and the generated assets directory."""
-        shutil.rmtree(self.asset_path)
+        shutil.rmtree(self.asset_dir)
         self.path.unlink()
 
     def add(
