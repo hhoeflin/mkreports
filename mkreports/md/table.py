@@ -6,6 +6,7 @@ from copy import deepcopy
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Set
 
+import attrs
 import pandas as pd
 from mkreports.utils import func_ref, serialize_json, snake_to_text
 from pandas.api import types
@@ -21,26 +22,25 @@ logger = logging.getLogger(__name__)
 
 
 @register_md("Table")
+@attrs.mutable()
 class Table(MdObj):
-    """Standard markdown table."""
+    """
+    Standard markdown table.
+
+    Args:
+        table (pd.DataFrame): The table to include in pandas format.
+        max_rows (Optional[int]): Maximum number of rows. If None, all will
+            be included. If longer, a warning will be logged and the first `max_rows`
+            will be included.
+    """
 
     table: pd.DataFrame
     kwargs: Dict[str, Any]
 
     def __init__(self, table: pd.DataFrame, max_rows: Optional[int] = 100, **kwargs):
-        """
-        Initialize the table object.
-
-        Args:
-            table (pd.DataFrame): The table to include in pandas format.
-            max_rows (Optional[int]): Maximum number of rows. If None, all will
-                be included. If longer, a warning will be logged and the first `max_rows`
-                will be included.
-        """
-        super().__init__()
-        self.kwargs = kwargs
+        Table.__attrs_init__(self, table=table, kwargs=kwargs)  # type: ignore
         # think about making this a static-frame
-        self.table = deepcopy(table)
+        self.table = deepcopy(self.table)
         if max_rows is not None and table.shape[0] > max_rows:
             logger.warning(
                 f"Table has {table.shape[0]} rows, but only {max_rows} allowed. Truncating."
@@ -101,8 +101,40 @@ def _series_to_filter_yadcf(series: pd.Series) -> Dict[str, Any]:
 
 
 @register_md("DataTable")
+@attrs.mutable()
 class DataTable(File):
-    """Table using DataTable javascript library."""
+    """
+    Initialize the table using the DataTable javascript library.
+
+    Args:
+        table (pd.DataFrame): The table in pandas.DataFrame format.
+        max_rows (Optional[int]): Maximum number of rows. If None, all will
+            be included. If longer, a warning will be logged and the first `max_rows`
+            will be included.
+        column_settings (Optional[dict]): Dict of settings for the columns. Will be
+            passed as json to the DataTable library. Overrides any automatic settings.
+        prettify_colnames (bool): Run colnames through 'snake_to_text' function.
+        add_header_filters (bool): Should header filters be added.
+        yadcf_settings (Optional[dict]): Settings for the *yadcf* header filter plugin.
+            Overrides any automatic settings.
+        table_kwargs (Optional[dict]): Keyword args for the table
+            when serializing to json.
+        downloads (bool): Should download buttons be shown?
+        table_settings (Optional[dict]): Dictionary with the DataTable settings.
+            Anything set here will overwrite existing ones.
+        json_name (str): Name of the saved file (before hash if hash=True)
+        use_hash (bool): Should the name of the copied image be updated with a hash (Default: True)
+    """
+
+    table: pd.DataFrame
+    column_settings: Optional[dict]
+    prettify_colnames: bool
+    add_header_filters: bool
+    yadcf_settings: Optional[dict]
+    table_kwargs: Optional[dict]
+    downloads: bool
+    user_table_settings: Optional[dict]
+    json_name: str
 
     def __init__(
         self,
@@ -118,28 +150,6 @@ class DataTable(File):
         json_name: str = "datatable",
         use_hash: bool = True,
     ):
-        """
-        Initialize the table using the DataTable javascript library.
-
-        Args:
-            table (pd.DataFrame): The table in pandas.DataFrame format.
-            max_rows (Optional[int]): Maximum number of rows. If None, all will
-                be included. If longer, a warning will be logged and the first `max_rows`
-                will be included.
-            column_settings (Optional[dict]): Dict of settings for the columns. Will be
-                passed as json to the DataTable library. Overrides any automatic settings.
-            prettify_colnames (bool): Run colnames through 'snake_to_text' function.
-            add_header_filters (bool): Should header filters be added.
-            yadcf_settings (Optional[dict]): Settings for the *yadcf* header filter plugin.
-                Overrides any automatic settings.
-            table_kwargs (Optional[dict]): Keyword args for the table
-                when serializing to json.
-            downloads (bool): Should download buttons be shown?
-            table_settings (Optional[dict]): Dictionary with the DataTable settings.
-                Anything set here will overwrite existing ones.
-            json_name (str): Name of the saved file (before hash if hash=True)
-            use_hash (bool): Should the name of the copied image be updated with a hash (Default: True)
-        """
         self.column_settings = column_settings
         self.prettify_colnames = prettify_colnames
         self.add_header_filters = add_header_filters

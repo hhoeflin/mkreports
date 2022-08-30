@@ -1,6 +1,8 @@
 import inspect
 from functools import partial, update_wrapper
-from typing import Any, Dict, Optional
+from typing import Any, ClassVar, Dict, Optional
+
+import attrs
 
 
 def register_md(name):
@@ -11,28 +13,27 @@ def register_md(name):
     return register_md_named
 
 
+@attrs.mutable(slots=False)
 class MdProxy:
     """
     Proxies the MdObj objects
 
-    Makes the MdObj available with PageInfo prefilled.
+    Args:
+        md_defaults (Optional[Dict[str, Dict[str, Any]]): A dictionary mapping the names
+            md objects (accessed from the proxy) to default keywords included when
+            they are being called.
     """
 
-    _proxied_classes: Dict[str, Any] = dict()
+    _proxied_classes: ClassVar[Dict[str, Any]] = dict()
+    md_defaults: Dict[str, Dict[str, Any]] = attrs.field(factory=dict)
 
     def __init__(
         self,
         md_defaults: Optional[Dict[str, Dict[str, Any]]] = None,
     ):
-        """
-        Initialize the proxy.
-
-        Args:
-            md_defaults (Optional[Dict[str, Dict[str, Any]]): A dictionary mapping the names
-                md objects (accessed from the proxy) to default keywords included when
-                they are being called.
-        """
-        self.md_defaults = md_defaults if md_defaults is not None else {}
+        MdProxy.__attrs_init__(  # type: ignore
+            self, md_defaults=md_defaults if md_defaults is not None else {}
+        )
 
     def __getattr__(self, name):
         # we are not checking if it is included; if not, should raise error

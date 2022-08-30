@@ -1,6 +1,8 @@
 import functools
 from typing import Iterable, Literal, Sequence, Set, Tuple, Union
 
+import attrs
+
 from .base import MdObj, Raw, RenderedMd
 from .md_proxy import register_md
 from .settings import Settings
@@ -19,9 +21,14 @@ def _indent_hanging(x: str, hanging: str, spaces: int = 4):
 
 
 @register_md("List")
+@attrs.mutable()
 class List(MdObj):
     """
-    Markdown list.
+    Initialize the list as a markdown object.
+
+    Args:
+        items (Union[str, Iterable[Union[MdObj, str]]]): List of items in the list.
+        marker (Literal["-", "*", "+", "1"]): Marker to use for the list.
     """
 
     marker: Literal["-", "*", "+", "1"]
@@ -32,16 +39,11 @@ class List(MdObj):
         items: Union[str, Iterable[Union[MdObj, str]]] = (),
         marker: Literal["-", "*", "+", "1"] = "-",
     ):
-        """
-        Initialize the list as a markdown object.
-
-        Args:
-            items (Union[str, Iterable[Union[MdObj, str]]]): List of items in the list.
-            marker (Literal["-", "*", "+", "1"]): Marker to use for the list.
-        """
-        super().__init__()
-        self.items = tuple([x if not isinstance(x, str) else Raw(x) for x in items])
-        self.marker = marker
+        List.__attrs_init__(  # type: ignore
+            self,
+            items=tuple([x if not isinstance(x, str) else Raw(x) for x in items]),
+            marker=marker,
+        )
 
     def append(self, item: Union[Text, MdObj]) -> "List":
         """

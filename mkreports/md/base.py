@@ -52,7 +52,8 @@ class RenderedMd:
         settings: Optional[Settings],
         src: "MdObj",
     ):
-        self.__attrs_init__(  # type: ignore
+        RenderedMd.__attrs_init__(  # type: ignore
+            self,
             body=to_spaced_text(body),
             back=to_spaced_text(back),
             settings=to_settings(settings),
@@ -248,6 +249,7 @@ class Anchor(MdObj):
 
 
 @register_md("NamedAnchor")
+@attrs.mutable()
 class NamedAnchor(Anchor):
     """
     Create an anchor object.
@@ -256,11 +258,7 @@ class NamedAnchor(Anchor):
         name (str): Name of the anchor.
     """
 
-    def __init__(
-        self,
-        name: str,
-    ):
-        self.name = name
+    name: str
 
     def _render(self) -> RenderedMd:
         back = SpacedText("")
@@ -274,6 +272,7 @@ class NamedAnchor(Anchor):
 
 
 @register_md("AutoAnchor")
+@attrs.mutable()
 class AutoAnchor(Anchor):
     """
     Create an anchor object.
@@ -282,11 +281,7 @@ class AutoAnchor(Anchor):
         name (str): Name of the anchor.
     """
 
-    def __init__(
-        self,
-        prefix: str = "anchor",
-    ):
-        self.prefix = prefix
+    prefix: str = "anchor"
 
     def _render(self, idstore: IDStore) -> RenderedMd:
         self.name = idstore.next_id(self.prefix)
@@ -324,29 +319,35 @@ class Link(MdObj):
 
 
 @register_md("ReportLink")
+@attrs.mutable()
 class ReportLink(Link):
+    """
+    Create a link to another page in this report.
+
+    Args:
+        text (str): The text of the link
+        to_page_path (Optional[Path]): internal page to link to
+        anchor (Optional[Union[str, Anchor]]): anchor to use
+    """
+
+    text: str = ""
+    to_page_path: Optional[Path] = None
+    anchor: Optional[Anchor] = None
+
     def __init__(
         self,
         text: str = "",
         to_page_path: Optional[Union[str, Path]] = None,
         anchor: Optional[Union[str, Anchor]] = None,
     ):
-        """
-        Create a link to another page in this report.
-
-        Args:
-            text (str): The text of the link
-            to_page_path (Optional[Path]): internal page to link to
-            anchor (Optional[Union[str, Anchor]]): anchor to use
-        """
-        if isinstance(anchor, str):
-            self.anchor = NamedAnchor(anchor)
-        else:
-            self.anchor = anchor
-        self.to_page_path = (
-            Path(to_page_path) if isinstance(to_page_path, str) else to_page_path
+        ReportLink.__attrs_init__(  # type: ignore
+            self,
+            text=text,
+            to_page_path=Path(to_page_path)
+            if isinstance(to_page_path, str)
+            else to_page_path,
+            anchor=NamedAnchor(anchor) if isinstance(anchor, str) else anchor,
         )
-        self.text = text
 
     def _render(self, page_path: Path) -> RenderedMd:
 
@@ -373,31 +374,31 @@ class ReportLink(Link):
 
 @register_md("P")
 @register_md("Paragraph")
-@dataclass
+@attrs.mutable()
 class Paragraph(MdObj):
     """
     Wraps an object in a paragraph.
 
     Similar to 'Raw', but ensures 2 newlines before and after the text and
     supports adding an anchor to the paragraph.
+
+    Args:
+        obj (Union[str, MdObj]): Markdown object or string. String will be wrapped in
+            'Raw'.
+        anchor (Optional[Union[Anchor, str]]): Anchor to add to the paragraph.
     """
 
     obj: MdObj
-    anchor: Optional[Union[Anchor, str]]
+    anchor: Optional[Anchor]
 
     def __init__(
         self, obj: Union[str, MdObj], anchor: Optional[Union[Anchor, str]] = None
     ):
-        """
-        Initialize the paragraph.
-
-        Args:
-            obj (Union[str, MdObj]): Markdown object or string. String will be wrapped in
-                'Raw'.
-            anchor (Optional[Union[Anchor, str]]): Anchor to add to the paragraph.
-        """
-        self.obj = obj if not isinstance(obj, str) else Raw(obj)
-        self.anchor = anchor if not isinstance(anchor, str) else NamedAnchor(anchor)
+        Paragraph.__attrs_init__(  # type: ignore
+            self,
+            obj=obj if not isinstance(obj, str) else Raw(obj),
+            anchor=anchor if not isinstance(anchor, str) else NamedAnchor(anchor),
+        )
 
     def _render(self, **kwargs) -> RenderedMd:
         obj_rendered = self.obj.render(**kwargs)

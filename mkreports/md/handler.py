@@ -1,11 +1,12 @@
 from contextlib import suppress
-from dataclasses import dataclass
 from typing import Any, Callable, List, Optional, Tuple, Union
+
+import attrs
 
 from .base import MdObj
 
 
-@dataclass
+@attrs.mutable()
 class Handler:
     """
     A handler for output.

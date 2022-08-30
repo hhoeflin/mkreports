@@ -1,5 +1,7 @@
 from typing import Set
 
+import attrs
+
 from .base import MdObj, RenderedMd
 from .md_proxy import register_md
 from .settings import Settings
@@ -7,18 +9,16 @@ from .text import SpacedText
 
 
 @register_md("Docstring")
+@attrs.mutable()
 class Docstring(MdObj):
-    """Add a docstring to the page."""
+    """
+    Docstring for the page.
 
-    def __init__(self, obj_name: str) -> None:
-        """
-        Docstring for the page.
+    Args:
+        obj_name (str): Name of the object for which a docstring should be added.
+    """
 
-        Args:
-            obj_name (str): Name of the object for which a docstring should be added.
-        """
-        super().__init__()
-        self.obj_name = obj_name
+    obj_name: str
 
     def _render(self) -> RenderedMd:
         settings = Settings(

@@ -55,7 +55,7 @@ class SpacedText:
                 max(req_nl[1], text.req_nl[1]),
             )
 
-        self.__attrs_init__(text=my_text, req_nl=my_req_nl)  # type: ignore
+        SpacedText.__attrs_init__(self, text=my_text, req_nl=my_req_nl)  # type: ignore
 
     def __str__(self) -> str:
         """

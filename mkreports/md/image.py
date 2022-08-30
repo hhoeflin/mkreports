@@ -4,6 +4,7 @@ from copy import deepcopy
 from pathlib import Path
 from typing import Literal, Optional, Set, Union
 
+import attrs
 from mdutils.tools.Image import Image as UtilsImage
 
 from .base import RenderedMd, comment_ids, func_kwargs_as_set
@@ -15,8 +16,19 @@ from .text import SpacedText
 
 
 @register_md("ImageFile")
+@attrs.mutable()
 class ImageFile(File):
-    """An image file."""
+    """
+    An image file.
+
+    Args:
+        path (Union[str, Path]): Path to the image file.
+        link_type (Literal["inline", "ref"]): Link-type to use.
+        text (str): Text shown if the image can't be displayed.
+        tooltip (str): The tooltip shown when hovering over the image.
+        allow_copy (bool): Should the image-file be copied to the store (Default: True)
+        use_hash (bool): Should the name of the copied image be updated with a hash (Default: True)
+    """
 
     text: str
     tooltip: str
@@ -31,16 +43,6 @@ class ImageFile(File):
         allow_copy: bool = True,
         use_hash: bool = True,
     ) -> None:
-        """
-
-        Args:
-            path (Union[str, Path]): Path to the image file.
-            link_type (Literal["inline", "ref"]): Link-type to use.
-            text (str): Text shown if the image can't be displayed.
-            tooltip (str): The tooltip shown when hovering over the image.
-            allow_copy (bool): Should the image-file be copied to the store (Default: True)
-            use_hash (bool): Should the name of the copied image be updated with a hash (Default: True)
-        """
         super().__init__(path=path, allow_copy=allow_copy, use_hash=use_hash)
         self.text = text
         self.tooltip = tooltip
@@ -70,6 +72,24 @@ class ImageFile(File):
 
 @register_md("Matplotlib")
 class Matplotlib(ImageFile):
+    """
+    An image object for inclusion on a page.
+
+    Args:
+        image: The image to be included. Has to be supported by one of the handlers, which
+            are Matplotlib, plotnine and seaborn.
+        width (Optional[float]): width of the image
+        height (Optional[float]): height of the image
+        units (Literal["in", "cm", "mm"]): units of the width and height
+        dpi (Optional[float]): dpi of the image output.
+        link_type (Literal["inline", "ref"]): Link-type to be used.
+        text (str): The alternative text if the image is not available.
+        tooltip (str): The tooltip to use when hovering over the image.
+        img_type (Literal["jpg", "png"]): Type of the image to create during saving.
+        img_name (str): Name of the saved file (before hash if hash=True)
+        use_hash (bool): Should the name of the copied image be updated with a hash (Default: True)
+    """
+
     def __init__(
         self,
         image,
@@ -84,23 +104,6 @@ class Matplotlib(ImageFile):
         img_name: str = "matplotlib_image",
         use_hash=True,
     ) -> None:
-        """
-        An image object for inclusion on a page.
-
-        Args:
-            image: The image to be included. Has to be supported by one of the handlers, which
-                are Matplotlib, plotnine and seaborn.
-            width (Optional[float]): width of the image
-            height (Optional[float]): height of the image
-            units (Literal["in", "cm", "mm"]): units of the width and height
-            dpi (Optional[float]): dpi of the image output.
-            link_type (Literal["inline", "ref"]): Link-type to be used.
-            text (str): The alternative text if the image is not available.
-            tooltip (str): The tooltip to use when hovering over the image.
-            img_type (Literal["jpg", "png"]): Type of the image to create during saving.
-            img_name (str): Name of the saved file (before hash if hash=True)
-            use_hash (bool): Should the name of the copied image be updated with a hash (Default: True)
-        """
         with tempfile.TemporaryDirectory() as dir:
             path = Path(dir) / (f"{img_name}.{img_type}")
             # for matplotlib
@@ -147,6 +150,24 @@ class Matplotlib(ImageFile):
 
 @register_md("Seaborn")
 class Seaborn(Matplotlib):
+    """
+    An image object for inclusion on a page.
+
+    Args:
+        image: The image to be included. Has to be supported by one of the handlers, which
+            are Matplotlib, plotnine and seaborn.
+        width (Optional[float]): width of the image
+        height (Optional[float]): height of the image
+        units (Literal["in", "cm", "mm"]): units of the width and height
+        dpi (Optional[float]): dpi of the image output.
+        link_type (Literal["inline", "ref"]): Link-type to be used.
+        text (str): The alternative text if the image is not available.
+        tooltip (str): The tooltip to use when hovering over the image.
+        img_type (Literal["jpg", "png"]): Type of the image to create during saving.
+        img_name (str): Name of the saved file (before hash if hash=True)
+        use_hash (bool): Should the name of the copied image be updated with a hash (Default: True)
+    """
+
     def __init__(
         self,
         image,
@@ -161,23 +182,6 @@ class Seaborn(Matplotlib):
         img_name: str = "seaborn_image",
         use_hash: bool = True,
     ) -> None:
-        """
-        An image object for inclusion on a page.
-
-        Args:
-            image: The image to be included. Has to be supported by one of the handlers, which
-                are Matplotlib, plotnine and seaborn.
-            width (Optional[float]): width of the image
-            height (Optional[float]): height of the image
-            units (Literal["in", "cm", "mm"]): units of the width and height
-            dpi (Optional[float]): dpi of the image output.
-            link_type (Literal["inline", "ref"]): Link-type to be used.
-            text (str): The alternative text if the image is not available.
-            tooltip (str): The tooltip to use when hovering over the image.
-            img_type (Literal["jpg", "png"]): Type of the image to create during saving.
-            img_name (str): Name of the saved file (before hash if hash=True)
-            use_hash (bool): Should the name of the copied image be updated with a hash (Default: True)
-        """
 
         super().__init__(
             image.figure,
@@ -196,6 +200,24 @@ class Seaborn(Matplotlib):
 
 @register_md("Plotnine")
 class Plotnine(ImageFile):
+    """
+    An image object for inclusion on a page.
+
+    Args:
+        image: The image to be included. Has to be supported by one of the handlers, which
+            are Matplotlib, plotnine and seaborn.
+        width (Optional[float]): width of the image
+        height (Optional[float]): height of the image
+        units (Literal["in", "cm", "mm"]): units of the width and height
+        dpi (Optional[float]): dpi of the image output.
+        link_type (Literal["inline", "ref"]): Link-type to be used.
+        text (str): The alternative text if the image is not available.
+        tooltip (str): The tooltip to use when hovering over the image.
+        img_type (Literal["jpg", "png"]): Type of the image to create during saving.
+        img_name (str): Name of the saved file (before hash if hash=True)
+        use_hash (bool): Should the name of the copied image be updated with a hash (Default: True)
+    """
+
     def __init__(
         self,
         image,
@@ -210,24 +232,6 @@ class Plotnine(ImageFile):
         img_name: str = "plotnine_image",
         use_hash: bool = True,
     ) -> None:
-        """
-        An image object for inclusion on a page.
-
-        Args:
-            image: The image to be included. Has to be supported by one of the handlers, which
-                are Matplotlib, plotnine and seaborn.
-            width (Optional[float]): width of the image
-            height (Optional[float]): height of the image
-            units (Literal["in", "cm", "mm"]): units of the width and height
-            dpi (Optional[float]): dpi of the image output.
-            link_type (Literal["inline", "ref"]): Link-type to be used.
-            text (str): The alternative text if the image is not available.
-            tooltip (str): The tooltip to use when hovering over the image.
-            img_type (Literal["jpg", "png"]): Type of the image to create during saving.
-            img_name (str): Name of the saved file (before hash if hash=True)
-            use_hash (bool): Should the name of the copied image be updated with a hash (Default: True)
-        """
-
         with tempfile.TemporaryDirectory() as dir:
             path = Path(dir) / (f"{img_name}.{img_type}")
             image.save(
@@ -252,7 +256,18 @@ class Plotnine(ImageFile):
 
 @register_md("PIL")
 class PIL(ImageFile):
-    """A PIL image for inclusion."""
+    """
+    Create MdObj for PIL image.
+
+    Args:
+        image (PIL.Image.Image): an Image object from PIL
+        link_type (Literal["inline", "ref"]): Link-type to use.
+        text (str): Alternative text for the image.
+        tooltip (str): Tooltip when hovering over the image.
+        img_type (Literal["jpg", "png"]): File-type to use when saving the image.
+        img_name (str): Name of the saved file (before hash if hash=True)
+        use_hash (bool): Should the name of the copied image be updated with a hash (Default: True)
+    """
 
     def __init__(
         self,
@@ -264,18 +279,6 @@ class PIL(ImageFile):
         img_name: str = "pil_image",
         use_hash: bool = True,
     ) -> None:
-        """
-        Create MdObj for PIL image.
-
-        Args:
-            image (PIL.Image.Image): an Image object from PIL
-            link_type (Literal["inline", "ref"]): Link-type to use.
-            text (str): Alternative text for the image.
-            tooltip (str): Tooltip when hovering over the image.
-            img_type (Literal["jpg", "png"]): File-type to use when saving the image.
-            img_name (str): Name of the saved file (before hash if hash=True)
-            use_hash (bool): Should the name of the copied image be updated with a hash (Default: True)
-        """
         with tempfile.TemporaryDirectory() as dir:
             path = Path(dir) / (f"{img_name}.{img_type}")
             image.save(path)
@@ -294,7 +297,12 @@ class PIL(ImageFile):
 @register_md("Altair")
 class Altair(File):
     """
-    Include an Altair image.
+    Create object to include an Altair image.
+
+    Args:
+        altair: An altair image.
+        csv_name (str): Name of the saved file (before hash if hash=True)
+        use_hash (bool): Should the name of the copied image be updated with a hash (Default: True)
     """
 
     def __init__(
@@ -304,14 +312,6 @@ class Altair(File):
         use_hash: bool = True,
         **kwargs,
     ):
-        """
-        Create object to include an Altair image.
-
-        Args:
-            altair: An altair image.
-            csv_name (str): Name of the saved file (before hash if hash=True)
-            use_hash (bool): Should the name of the copied image be updated with a hash (Default: True)
-        """
         with tempfile.TemporaryDirectory() as dir:
             path = Path(dir) / (f"{csv_name}.csv")
             # here we use the split method; the index and columns
@@ -376,7 +376,12 @@ class Altair(File):
 @register_md("Plotly")
 class Plotly(File):
     """
-    Plotly image as MdObj.
+    Initialize the Plotly MdObj.
+
+    Args:
+        plotly (): The plotly graph to plot.
+        json_name (str): Name of the saved file (before hash if hash=True)
+        use_hash (bool): Should the name of the copied image be updated with a hash (Default: True)
     """
 
     def __init__(
@@ -386,14 +391,6 @@ class Plotly(File):
         use_hash: bool = True,
         **kwargs,
     ):
-        """
-        Initialize the Plotly MdObj.
-
-        Args:
-            plotly (): The plotly graph to plot.
-            json_name (str): Name of the saved file (before hash if hash=True)
-            use_hash (bool): Should the name of the copied image be updated with a hash (Default: True)
-        """
         with tempfile.TemporaryDirectory() as dir:
             path = Path(dir) / (f"{json_name}.json")
             # here we use the split method; the index and columns

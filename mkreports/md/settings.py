@@ -1,14 +1,14 @@
 from copy import deepcopy
-from dataclasses import dataclass, field
 from typing import Any, Dict
 
+import attrs
 from deepmerge import Merger
 
 
-@dataclass
+@attrs.mutable()
 class Settings:
-    mkdocs: Dict[str, Any] = field(default_factory=dict)
-    page: Dict[str, Any] = field(default_factory=dict)
+    mkdocs: Dict[str, Any] = attrs.field(factory=dict)
+    page: Dict[str, Any] = attrs.field(factory=dict)
 
     def __add__(self, other: "Settings"):
         """

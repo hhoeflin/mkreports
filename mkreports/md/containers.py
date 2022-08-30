@@ -16,7 +16,7 @@ from .text import SpacedText, Text
 
 
 @register_md("Admonition")
-@dataclass
+@attrs.mutable()
 class Admonition(MdObj):
     """
     An admonition to be added to a page. Can also be collapsed. For more
@@ -154,7 +154,7 @@ class Tab(MdObj):
 
 
 @register_md("Code")
-@dataclass
+@attrs.mutable()
 class Code(MdObj):
     """
     Shows a code-block.
@@ -215,10 +215,26 @@ class Code(MdObj):
 
 
 @register_md("CodeFile")
+@attrs.mutable()
 class CodeFile(MdObj):
     """
     Code block with the content of a file.
+
+    Args:
+        path (Union[Path, str]): Abolute path or relative to current working dir for the
+            code-file to be included.
+        title (Optional[str]): Title of the code-block. If 'None', the path of the
+            code file relative to the project root will be added. If it should be
+            empty, set to empty string.
+        hl_lines (Optional[Tuple[int, int]]): Optional range of lines for highlighting.
+        language (Optional[str]): Language for syntax highlighting.
     """
+
+    file: File
+    path: Path
+    title: Optional[str]
+    hl_lines: Optional[Tuple[int, int]] = None
+    language: Optional[str] = "python"
 
     def __init__(
         self,
@@ -227,23 +243,14 @@ class CodeFile(MdObj):
         hl_lines: Optional[Tuple[int, int]] = None,
         language: Optional[str] = "python",
     ):
-        """
-        Set up the code-block with file content.
-
-        Args:
-            path (Union[Path, str]): Abolute path or relative to current working dir for the
-                code-file to be included.
-            title (Optional[str]): Title of the code-block. If 'None', the path of the
-                code file relative to the project root will be added. If it should be
-                empty, set to empty string.
-            hl_lines (Optional[Tuple[int, int]]): Optional range of lines for highlighting.
-            language (Optional[str]): Language for syntax highlighting.
-        """
-        self.file = File(path=Path(path), allow_copy=True, use_hash=True)
-        self.title = title
-        self.hl_lines = hl_lines
-        self.language = language
-        self.path = Path(path)
+        CodeFile.__attrs_init__(  # type: ignore
+            self,
+            file=File(path=Path(path), allow_copy=True, use_hash=True),
+            title=title,
+            hl_lines=hl_lines,
+            language=language,
+            path=Path(path),
+        )
 
     def _render(
         self, project_root: Path, report_path: Path, page_asset_dir: Path

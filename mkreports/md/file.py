@@ -5,6 +5,7 @@ from os.path import relpath
 from pathlib import Path
 from typing import Optional, Set, Union
 
+import attrs
 import importlib_resources as imp_res
 
 from .base import MdObj, NotRenderedError, RenderedMd, func_kwargs_as_set
@@ -89,17 +90,27 @@ def store_asset_relpath(
 
 
 @register_md("File")
+@attrs.mutable()
 class File(MdObj):
     """
-    A stored file.
+    Reference a File
 
-    This is typically not needed by the end-user.
+    If `allow_copy` then it will be added to the page-assets. Otherwise, it
+    needs to be part of the report alreayd.
+
+    Args:
+        path (Union[str, Path]): Path to the file,
+            relative to current directory or absolute.
+        allow_copy (bool): Is the file allowed to be copied? Otherwise, original
+            location is used.
+        use_hash (bool): If copy is allowed, renames the file to include the file hash.
     """
 
     _path: Optional[Path]
     allow_copy: bool
     use_hash: bool
-    _hash: Optional[str] = None
+    _orig_path: Optional[Path]
+    _file_binary: Optional[bytes]
 
     def __init__(
         self,
@@ -107,31 +118,25 @@ class File(MdObj):
         allow_copy: bool = True,
         use_hash: bool = False,
     ) -> None:
-        """
-        Store a file in the page-store.
-
-        Args:
-            path (Union[str, Path]): Path to the file,
-                relative to current directory or absolute.
-            allow_copy (bool): Is the file allowed to be copied? Otherwise, original
-                location is used.
-            use_hash (bool): If copy is allowed, renames the file to include the file hash.
-        """
-        super().__init__()
-
-        # store path needs to be set
-
-        # set the existing attributes
-        self.allow_copy = allow_copy
-        self.use_hash = use_hash
-
         # for the path we first have to see if they will be copied
-        if not self.allow_copy:
-            self._path = Path(path).absolute()
+        if not allow_copy:
+            File.__attrs_init__(  # type: ignore
+                self,
+                path=Path(path).absolute(),
+                allow_copy=allow_copy,
+                use_hash=use_hash,
+                _orig_path=None,
+                _file_binary=None,
+            )
         else:
-            self._path = None
-            self._file_binary = Path(path).read_bytes()
-            self._orig_path = Path(path).absolute()
+            File.__attrs_init__(  # type: ignore
+                self,
+                path=None,
+                allow_copy=allow_copy,
+                use_hash=use_hash,
+                file_binary=Path(path).read_bytes(),
+                orig_path=Path(path).absolute(),
+            )
 
     @property
     def path(self) -> Path:
@@ -142,7 +147,8 @@ class File(MdObj):
 
     def _render(self, page_asset_dir: Path) -> RenderedMd:
         if self.allow_copy:
-
+            assert self._orig_path is not None
+            assert self._file_binary is not None
             if self.use_hash:
                 # we calculate the hash of the file to be ingested
                 new_path = page_asset_dir / (
