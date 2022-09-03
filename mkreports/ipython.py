@@ -3,7 +3,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, List, Optional
 
-from IPython.core.magic import Magics, line_magic, magics_class
+from IPython.core.magic import Magics, line_magic, magics_class  # type: ignore
 
 from . import md
 from .code_context import do_layout

@@ -14,13 +14,12 @@ import yaml
 from immutabledict import immutabledict
 
 from .config import get_mkreports_dir
-from .exceptions import (ReportExistsError, ReportNotExistsError,
-                         ReportNotValidError)
+from .exceptions import ReportExistsError, ReportNotExistsError, ReportNotValidError
 from .page import Page, merge_pages
 from .settings import NavEntry, ReportSettings, path_to_nav_entry
 from .utils import repo_root
 
-default_settings = immutabledict(
+default_settings: Any = immutabledict(
     {
         "theme": {
             "name": "material",
@@ -79,8 +78,7 @@ def normalize_nav_entry(nav_entry: Union[str, Path, NavEntry]) -> NavEntry:
             path = path.with_suffix(".md")
         nav_entry = path_to_nav_entry(path)
     else:
-        path = nav_entry.loc
-        assert isinstance(path, Path)
+        path = Path(nav_entry.loc)
 
     if path.suffix != ".md":
         raise ValueError(f"{path} needs to have extension '.md'")

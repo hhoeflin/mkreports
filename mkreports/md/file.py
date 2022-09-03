@@ -89,6 +89,13 @@ def store_asset_relpath(
     return relpath_html(asset_path_abs, page_path)
 
 
+def _path_to_abs(path: Optional[Union[str, Path]]) -> Optional[Path]:
+    if path is None:
+        return None
+    else:
+        return Path(path).absolute()
+
+
 @register_md("File")
 @attrs.mutable()
 class File(MdObj):
@@ -106,37 +113,20 @@ class File(MdObj):
         use_hash (bool): If copy is allowed, renames the file to include the file hash.
     """
 
-    _path: Optional[Path]
+    _path: Optional[Path] = attrs.field(converter=_path_to_abs)
     allow_copy: bool
     use_hash: bool
-    _orig_path: Optional[Path]
-    _file_binary: Optional[bytes]
+    _orig_path: Optional[Path] = attrs.field(init=False)
+    _file_binary: Optional[bytes] = attrs.field(init=False)
 
-    def __init__(
-        self,
-        path: Union[str, Path],
-        allow_copy: bool = True,
-        use_hash: bool = False,
-    ) -> None:
-        # for the path we first have to see if they will be copied
-        if not allow_copy:
-            File.__attrs_init__(  # type: ignore
-                self,
-                path=Path(path).absolute(),
-                allow_copy=allow_copy,
-                use_hash=use_hash,
-                _orig_path=None,
-                _file_binary=None,
-            )
+    def __attrs_post_init__(self):
+        if not self.allow_copy:
+            self._orig_path = None
+            self._file_binary = None
         else:
-            File.__attrs_init__(  # type: ignore
-                self,
-                path=None,
-                allow_copy=allow_copy,
-                use_hash=use_hash,
-                file_binary=Path(path).read_bytes(),
-                orig_path=Path(path).absolute(),
-            )
+            self._file_binary = self.path.read_bytes()
+            self._orig_path = self._path
+            self._path = None
 
     @property
     def path(self) -> Path:
@@ -145,7 +135,7 @@ class File(MdObj):
         else:
             return self._path
 
-    def _render(self, page_asset_dir: Path) -> RenderedMd:
+    def _render(self, page_asset_dir: Path) -> RenderedMd:  # type: ignore
         if self.allow_copy:
             assert self._orig_path is not None
             assert self._file_binary is not None

@@ -8,7 +8,7 @@ def use_basic(report: Report) -> None:
 
     p.CollapsedCodeFile(__file__)
 
-    with p.H2("Headings", anchor=(heading_anchor := p.md.Anchor())):
+    with p.H2("Headings", anchor=(heading_anchor := p.md.anchor())):
         p.Code(
             """
             md.H1("Header type 1")

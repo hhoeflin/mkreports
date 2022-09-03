@@ -2,7 +2,7 @@ import functools
 from typing import Literal, Optional, Set, Union
 
 import attrs
-import mdutils.tools as mdt
+import mdutils.tools as mdt  # type: ignore
 
 from .base import Anchor, MdObj, NamedAnchor, RenderedMd
 from .md_proxy import register_md

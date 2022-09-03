@@ -9,7 +9,7 @@ css:
 ??? code "Code"
 
     ```python title="docs/staging/basic.py"
-    --8<-- 'docs/usage/basic/basic-e2790dcbcc97bebbab0872249f1c0d78.py'
+    --8<-- 'docs/usage/basic/basic-488791be69d4bcbbb01cd32cf0a7f941.py'
     ```
 
 ## Headings[](){:name='anchor-0'}
@@ -32,7 +32,7 @@ css:
 
 === "Code"
 
-    ```python title=".conda_env/lib/python3.8/site-packages/mkreports/page.py" linenums="157"
+    ```python title=".conda_env/lib/python3.8/site-packages/mkreports/page.py" linenums="193"
         return self
 
     def __exit__(self, exc_type, exc_val, traceback) -> None:
@@ -65,7 +65,7 @@ css:
 
 === "Code"
 
-    ```python title=".conda_env/lib/python3.8/site-packages/mkreports/page.py" linenums="157"
+    ```python title=".conda_env/lib/python3.8/site-packages/mkreports/page.py" linenums="193"
         return self
 
     def __exit__(self, exc_type, exc_val, traceback) -> None:
@@ -93,7 +93,7 @@ css:
 
 === "Code"
 
-    ```python title=".conda_env/lib/python3.8/site-packages/mkreports/page.py" linenums="157"
+    ```python title=".conda_env/lib/python3.8/site-packages/mkreports/page.py" linenums="193"
         return self
 
     def __exit__(self, exc_type, exc_val, traceback) -> None:

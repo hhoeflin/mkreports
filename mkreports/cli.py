@@ -1,8 +1,9 @@
+"""Implement the CLI for mkreports."""
 from datetime import datetime
 from pathlib import Path
 from typing import List, Optional
 
-import sh
+import sh  # type: ignore
 import typer
 
 from .config import get_mkreports_dir
@@ -29,17 +30,21 @@ def _process_err(line: str):
 def serve(
     mkreports_dir: Optional[Path] = typer.Argument(
         None,
-        help="mkreports directory to use to serve out of. If not given, then default directory as shown by `dir` subcommand used.",
+        help="mkreports directory to use to serve out of. If not given, then "
+        "default directory as shown by `dir` subcommand used.",
     ),
     mkdocs_args: List[str] = typer.Argument(
         None,
-        help="All values passed directly to `mkdocs serve` function. Use `--` to separate options for mkdocs from options for the core command.",
+        help="All values passed directly to `mkdocs serve` function. "
+        "Use `--` to separate options for mkdocs from options "
+        "for the core command.",
     ),
 ):
     """
     Serve an mkdocs site.
 
-    This is a convenience wrapper for `mkdocs serve` that changes to the correct directory
+    This is a convenience wrapper for `mkdocs serve` that
+    changes to the correct directory
     and invokes `mkdocs serve`, restarting when error occur.
     """
     if mkreports_dir is None:
@@ -62,7 +67,9 @@ def serve(
         while True:
             try:
                 typer.echo(f"Run bash command: {mkdocs_cmd}")
-                cmd = sh.bash("-c", mkdocs_cmd, _out=_process_out, _err=_process_err, _bg=True)  # type: ignore
+                cmd = sh.bash(
+                    "-c", mkdocs_cmd, _out=_process_out, _err=_process_err, _bg=True
+                )  # type: ignore
                 cmd.wait()
             except sh.ErrorReturnCode:
                 time_error = datetime.now()

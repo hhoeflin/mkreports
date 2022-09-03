@@ -1,12 +1,11 @@
 import html
 import textwrap
-from dataclasses import dataclass
 from pathlib import Path
 from textwrap import indent
 from typing import Literal, Optional, Set, Tuple, Union
 
 import attrs
-from mdutils.tools.TextUtils import TextUtils
+from mdutils.tools.TextUtils import TextUtils  # type: ignore
 
 from .base import MdObj, RenderedMd, func_kwargs_as_set
 from .file import File, store_asset_relpath
@@ -52,7 +51,7 @@ class Admonition(MdObj):
     ] = "note"
     collapse: bool = False
 
-    def _render(self, report_asset_dir: Path, page_path: Path, **kwargs) -> RenderedMd:
+    def _render(self, report_asset_dir: Path, page_path: Path, **kwargs) -> RenderedMd: # type: ignore
         # if code-admonition, we need to load additional css
         if self.kind == "code":
             rel_css_path = store_asset_relpath(
@@ -82,7 +81,9 @@ class Admonition(MdObj):
             settings = obj_rendered.settings
             settings = cont_settings + settings
         else:
-            admon_text, back, settings = str(self.obj), SpacedText(), cont_settings
+            admon_text= SpacedText(str(self.obj))
+            back = SpacedText()
+            settings = cont_settings
 
         if self.title is None:
             title_md = ""
@@ -134,7 +135,9 @@ class Tab(MdObj):
             settings = obj_rendered.settings
             settings = tab_settings + settings
         else:
-            tab_text, back, settings = str(self.obj), SpacedText(), tab_settings
+            tab_text = SpacedText(str(self.obj))
+            back = SpacedText()
+            settings = tab_settings
 
         if self.title is not None:
             title_text = html.escape(self.title)
@@ -177,13 +180,14 @@ class Code(MdObj):
     language: Optional[str] = "python"
     dedent: bool = True
 
-    def _render(self) -> RenderedMd:
+    def _render(self) -> RenderedMd: # type: ignore
         annots = ""
         if self.language is not None:
             annots = annots + self.language
         if self.title is not None:
             annots = annots + f' title="{html.escape(self.title)}"'
         if self.first_line is not None:
+            hl_lines: Optional[Tuple[int, int]]
             # hi_lines get intrepreted relative to first_line
             if self.hl_lines is not None:
                 hl_lines = (
@@ -215,7 +219,7 @@ class Code(MdObj):
 
 
 @register_md("CodeFile")
-@attrs.mutable()
+@attrs.mutable(init=False)
 class CodeFile(MdObj):
     """
     Code block with the content of a file.
@@ -252,7 +256,7 @@ class CodeFile(MdObj):
             path=Path(path),
         )
 
-    def _render(
+    def _render(  # type: ignore
         self, project_root: Path, report_path: Path, page_asset_dir: Path
     ) -> RenderedMd:
         self.file.render(page_asset_dir=page_asset_dir)

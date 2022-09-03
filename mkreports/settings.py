@@ -2,8 +2,7 @@ from collections import defaultdict
 from collections.abc import MutableMapping
 from copy import deepcopy
 from pathlib import Path
-from typing import (Any, Dict, List, Literal, Mapping, NamedTuple, Sequence,
-                    Tuple, Union)
+from typing import Any, Dict, List, Literal, Mapping, NamedTuple, Sequence, Tuple, Union
 
 import yaml
 from more_itertools import unique_everseen
@@ -26,7 +25,7 @@ class NavEntry(NamedTuple):
 
 
 NavList = List[NavEntry]
-MkdocsNav = List[Union[str, Mapping[str, Union[str, "MkdocsNav"]]]]
+MkdocsNav = List[Union[str, Mapping[str, Union[str, "MkdocsNav"]]]]  # type: ignore
 
 
 def path_to_nav_entry(path: Path) -> NavEntry:

@@ -20,7 +20,7 @@ class Docstring(MdObj):
 
     obj_name: str
 
-    def _render(self) -> RenderedMd:
+    def _render(self) -> RenderedMd:  # type: ignore
         settings = Settings(
             mkdocs={
                 "plugins": [

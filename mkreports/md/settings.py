@@ -2,7 +2,7 @@ from copy import deepcopy
 from typing import Any, Dict
 
 import attrs
-from deepmerge import Merger
+from deepmerge import Merger  # type: ignore
 
 
 @attrs.mutable()

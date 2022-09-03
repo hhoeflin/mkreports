@@ -28,7 +28,7 @@ that is included with plotnine.
 
 === "Code"
 
-    ```python title=".conda_env/lib/python3.8/site-packages/mkreports/page.py" linenums="157"
+    ```python title=".conda_env/lib/python3.8/site-packages/mkreports/page.py" linenums="193"
         return self
 
     def __exit__(self, exc_type, exc_val, traceback) -> None:
@@ -53,7 +53,7 @@ var table = new Tabulator('#tabulator_id-0', {"layout": "fitDataTable", "paginat
 
 === "Code"
 
-    ```python title=".conda_env/lib/python3.8/site-packages/mkreports/page.py" linenums="157"
+    ```python title=".conda_env/lib/python3.8/site-packages/mkreports/page.py" linenums="193"
         return self
 
     def __exit__(self, exc_type, exc_val, traceback) -> None:

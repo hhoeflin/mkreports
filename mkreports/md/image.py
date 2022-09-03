@@ -5,7 +5,7 @@ from pathlib import Path
 from typing import Literal, Optional, Set, Union
 
 import attrs
-from mdutils.tools.Image import Image as UtilsImage
+from mdutils.tools.Image import Image as UtilsImage  # type: ignore
 
 from .base import RenderedMd, comment_ids, func_kwargs_as_set
 from .file import File, relpath_html
@@ -48,7 +48,7 @@ class ImageFile(File):
         self.tooltip = tooltip
         self.link_type = link_type
 
-    def _render(self, page_path: Path, page_asset_dir: Path) -> RenderedMd:
+    def _render(self, page_path: Path, page_asset_dir: Path) -> RenderedMd: # type: ignore
         super()._render(page_asset_dir=page_asset_dir)
         if self.link_type == "inline":
             body = SpacedText(
@@ -326,7 +326,7 @@ class Altair(File):
                 use_hash=use_hash,
             )
 
-    def _render(
+    def _render(  # type: ignore
         self, page_path: Path, idstore: IDStore, page_asset_dir: Path
     ) -> RenderedMd:
         super()._render(page_asset_dir=page_asset_dir)
@@ -401,8 +401,8 @@ class Plotly(File):
             # Make sure the file is moved to the rigth place
             super().__init__(path=path, allow_copy=True, use_hash=use_hash)
 
-    def _render(
-        self, page_path: Path, idstore: IDStore, page_asset_dir: Path
+    def _render(  # type: ignore
+        self, *, page_path: Path, idstore: IDStore, page_asset_dir: Path
     ) -> RenderedMd:
         super()._render(page_asset_dir=page_asset_dir)
         # note; in the body we just insert the div.

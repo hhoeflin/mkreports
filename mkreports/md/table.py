@@ -4,12 +4,13 @@ import logging
 import tempfile
 from copy import deepcopy
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Set
+from typing import Any, Dict, Optional, Set
 
 import attrs
 import pandas as pd
-from mkreports.utils import func_ref, serialize_json, snake_to_text
 from pandas.api import types
+
+from mkreports.utils import func_ref, serialize_json, snake_to_text
 
 from .base import MdObj, RenderedMd, comment_ids, func_kwargs_as_set
 from .file import File, relpath_html, store_asset_relpath
@@ -22,7 +23,7 @@ logger = logging.getLogger(__name__)
 
 
 @register_md("Table")
-@attrs.mutable()
+@attrs.mutable(init=False)
 class Table(MdObj):
     """
     Standard markdown table.
@@ -47,10 +48,9 @@ class Table(MdObj):
             )
             self.table = self.table.iloc[0:max_rows]
 
-    def _render(self) -> RenderedMd:
+    def _render(self) -> RenderedMd:  # type: ignore
         # check if the table has too many rows
-
-        table_md = self.table.to_markdown(**self.kwargs)
+        table_md = self.table.to_markdown(**self.kwargs)  # type: ignore
         table_md = table_md if table_md is not None else ""
 
         body = SpacedText(table_md, (2, 2))
@@ -65,7 +65,7 @@ class Table(MdObj):
 def _create_yadcf_settings_datatable(
     df: pd.DataFrame,
     yadcf_settings: Dict[str, Dict[str, Any]],
-) -> List[Dict[str, Any]]:
+) -> Dict[str, Dict[str, Any]]:
     # produce the column settings
     col_set_dict = {}
     for index, colname in enumerate(df.columns):
@@ -79,21 +79,19 @@ def _create_yadcf_settings_datatable(
     col_set_dict = merge_settings(
         col_set_dict, yadcf_settings if yadcf_settings is not None else {}
     )
-
-    col_list = list(col_set_dict.values())
-    return col_list
+    return col_set_dict
 
 
 def _series_to_filter_yadcf(series: pd.Series) -> Dict[str, Any]:
-    if types.is_bool_dtype(series.dtype):
+    if types.is_bool_dtype(series.dtype):  # type: ignore
         return dict(
             filter_type="select",
         )
-    if types.is_categorical_dtype(series.dtype):
+    if types.is_categorical_dtype(series.dtype):  # type: ignore
         return dict(
             filter_type="select",
         )
-    if types.is_numeric_dtype(series.dtype):
+    if types.is_numeric_dtype(series.dtype):  # type: ignore
         return dict(
             filter_type="range_number",
         )
@@ -130,11 +128,9 @@ class DataTable(File):
     column_settings: Optional[dict]
     prettify_colnames: bool
     add_header_filters: bool
-    yadcf_settings: Optional[dict]
-    table_kwargs: Optional[dict]
+    yadcf_settings: Dict[str, Dict[str, Any]]
     downloads: bool
     user_table_settings: Optional[dict]
-    json_name: str
 
     def __init__(
         self,
@@ -150,12 +146,6 @@ class DataTable(File):
         json_name: str = "datatable",
         use_hash: bool = True,
     ):
-        self.column_settings = column_settings
-        self.prettify_colnames = prettify_colnames
-        self.add_header_filters = add_header_filters
-        self.yadcf_settings = yadcf_settings
-        self.downloads = downloads
-        self.user_table_settings = table_settings
 
         with tempfile.TemporaryDirectory() as dir:
             path = Path(dir) / (f"{json_name}.json")
@@ -166,18 +156,28 @@ class DataTable(File):
                 )
                 table = table.iloc[0:max_rows]
             # are not useful, but the rest gets set as 'data', which we need
-            table.to_json(
+            table.to_json(  # type: ignore
                 path,
                 orient="split",
                 default_handler=str,
                 **(table_kwargs if table_kwargs is not None else {}),
             )
 
-            # Make sure the file is moved to the right place
-            super().__init__(path=path, allow_copy=True, use_hash=use_hash)
-        self.table = table
+            DataTable.__attrs_init__(  # type: ignore
+                self,
+                table=table,
+                column_settings=column_settings,
+                prettify_colnames=prettify_colnames,
+                add_header_filters=add_header_filters,
+                yadcf_settings=yadcf_settings if yadcf_settings is not None else {},
+                downloads=downloads,
+                user_table_settings=table_settings,
+                path=path,
+                allow_copy=True,
+                use_hash=use_hash,
+            )
 
-    def _render(
+    def _render(  # type: ignore
         self, page_asset_dir: Path, idstore: IDStore, page_path: Path
     ) -> RenderedMd:
         super()._render(page_asset_dir=page_asset_dir)
@@ -254,7 +254,7 @@ class DataTable(File):
 
         # prepare the header script if necessary
         if self.add_header_filters:
-            yadcf_settings_str = serialize_json(self.yadcf_settings)
+            yadcf_settings_str = serialize_json(list(self.yadcf_settings.values()))
             yadcf_script = inspect.cleandoc(
                 f"""
                 yadcf.init(myTable, {yadcf_settings_str});
@@ -296,7 +296,7 @@ def _create_col_settings_tabulator(
     add_header_filters: bool,
     prettify_colnames: bool,
     col_settings: Dict[str, Dict[str, Any]],
-) -> List[Dict[str, Any]]:
+) -> Dict[str, Dict[str, Any]]:
     # produce the column settings
     col_set_dict = {}
     for colname in df.columns:
@@ -314,26 +314,24 @@ def _create_col_settings_tabulator(
     col_set_dict = merge_settings(
         col_set_dict, col_settings if col_settings is not None else {}
     )
-
-    col_list = list(col_set_dict.values())
-    return col_list
+    return col_set_dict
 
 
 def _series_to_filter_tabulator(series: pd.Series) -> Dict[str, Any]:
-    if types.is_bool_dtype(series.dtype):
+    if types.is_bool_dtype(series.dtype):  # type: ignore
         return dict(
             headerFilter="tickCross",
             formatter="tickCross",
             headerFilterParams=dict(tristate=True),
         )
-    if types.is_categorical_dtype(series.dtype):
+    if types.is_categorical_dtype(series.dtype):  # type: ignore
         return dict(
             headerFilter="select",
             headerFilterParams=dict(
-                values=[""] + series.cat.categories.values.tolist(),
+                values=[""] + series.cat.categories.values.tolist(),  # type: ignore
             ),
         )
-    if types.is_numeric_dtype(series.dtype):
+    if types.is_numeric_dtype(series.dtype):  # type: ignore
         return dict(
             width=80,
             headerFilter=func_ref("minMaxFilterEditor"),
@@ -345,7 +343,26 @@ def _series_to_filter_tabulator(series: pd.Series) -> Dict[str, Any]:
 
 @register_md("Tabulator")
 class Tabulator(File):
-    """A table using the Tabulator javascript library."""
+    """
+    A table using the Tabulator javascript library.
+
+    Args:
+        table (pd.DataFrame): The table to be added.
+        max_rows (Optional[int]): Maximum number of rows. If None, all will
+            be included. If longer, a warning will be logged and the first `max_rows`
+            will be included.
+        table_settings (Optional[dict]): Settings passed to Tabulator as json. Overrides
+            any internal settings created by this function.
+        add_header_filters (bool): Should header-filters be added.
+        prettify_colnames (bool): Run column names through *snake_to_text*.
+        col_settings (Optional[dict]): Column settings for tabulator, passed
+            as json to the Tabulator library. Overrides any internal settings created.
+        downloads (bool): Add download options.
+        table_kwargs (Optional[dict]): Keyword args for the table
+            when serializing to json.
+        json_name (str): Name of the saved file (before hash if hash=True)
+        use_hash (bool): Should the name of the copied image be updated with a hash (Default: True)
+    """
 
     def __init__(
         self,
@@ -360,26 +377,6 @@ class Tabulator(File):
         json_name: str = "tabulator",
         use_hash: bool = True,
     ):
-        """
-
-        Args:
-            table (pd.DataFrame): The table to be added.
-            max_rows (Optional[int]): Maximum number of rows. If None, all will
-                be included. If longer, a warning will be logged and the first `max_rows`
-                will be included.
-            table_settings (Optional[dict]): Settings passed to Tabulator as json. Overrides
-                any internal settings created by this function.
-            add_header_filters (bool): Should header-filters be added.
-            prettify_colnames (bool): Run column names through *snake_to_text*.
-            col_settings (Optional[dict]): Column settings for tabulator, passed
-                as json to the Tabulator library. Overrides any internal settings created.
-            downloads (bool): Add download options.
-            table_kwargs (Optional[dict]): Keyword args for the table
-                when serializing to json.
-            json_name (str): Name of the saved file (before hash if hash=True)
-            use_hash (bool): Should the name of the copied image be updated with a hash (Default: True)
-        """
-
         with tempfile.TemporaryDirectory() as dir:
             path = Path(dir) / (f"{json_name}.json")
             # here we use the split method; the index and columns
@@ -389,7 +386,7 @@ class Tabulator(File):
                     f"Table has {table.shape[0]} rows, but only {max_rows} allowed. Truncating."
                 )
                 table = table.iloc[0:max_rows]
-            table.to_json(
+            table.to_json(  # type: ignore
                 path,
                 orient="records",
                 default_handler=str,
@@ -405,7 +402,7 @@ class Tabulator(File):
         self.col_settings = col_settings
         self.downloads = downloads
 
-    def _render(
+    def _render(  # type: ignore
         self,
         idstore: IDStore,
         page_path: Path,
@@ -414,7 +411,7 @@ class Tabulator(File):
     ) -> RenderedMd:
         super()._render(page_asset_dir=page_asset_dir)
         # produce the column settings
-        col_list = _create_col_settings_tabulator(
+        col_dict = _create_col_settings_tabulator(
             self.table,
             add_header_filters=self.add_header_filters,
             prettify_colnames=self.prettify_colnames,
@@ -431,7 +428,8 @@ class Tabulator(File):
             ),
             self.user_table_settings if self.user_table_settings is not None else {},
         )
-        self.table_settings["columns"] = col_list
+        # the table settings expects a list; the column names are encoded in the settings as field
+        self.table_settings["columns"] = list(col_dict.values())
 
         used_ids = []
         used_ids.append(tabulator_id := idstore.next_id("tabulator_id"))

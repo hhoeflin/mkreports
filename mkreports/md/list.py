@@ -1,3 +1,4 @@
+"""Markdown lists."""
 import functools
 from typing import Iterable, Literal, Sequence, Set, Tuple, Union
 
@@ -20,6 +21,10 @@ def _indent_hanging(x: str, hanging: str, spaces: int = 4):
     return "\n".join(x_lines)
 
 
+def _convert_items(items: Union[str, Iterable[Union[MdObj, str]]]) -> Tuple[MdObj, ...]:
+    return tuple([x if not isinstance(x, str) else Raw(x) for x in items])
+
+
 @register_md("List")
 @attrs.mutable()
 class List(MdObj):
@@ -31,19 +36,8 @@ class List(MdObj):
         marker (Literal["-", "*", "+", "1"]): Marker to use for the list.
     """
 
-    marker: Literal["-", "*", "+", "1"]
-    items: Tuple[MdObj]
-
-    def __init__(
-        self,
-        items: Union[str, Iterable[Union[MdObj, str]]] = (),
-        marker: Literal["-", "*", "+", "1"] = "-",
-    ):
-        List.__attrs_init__(  # type: ignore
-            self,
-            items=tuple([x if not isinstance(x, str) else Raw(x) for x in items]),
-            marker=marker,
-        )
+    items: Tuple[MdObj, ...] = attrs.field(converter=_convert_items, factory=tuple)
+    marker: Literal["-", "*", "+", "1"] = "-"
 
     def append(self, item: Union[Text, MdObj]) -> "List":
         """
@@ -72,18 +66,18 @@ class List(MdObj):
             List: A new list object
 
         """
-        items = tuple(
+        items_conv: Tuple[MdObj, ...] = tuple(
             [
                 Raw(item) if isinstance(item, (str, SpacedText)) else item
                 for item in items
             ]
         )
-        return List(self.items + items, marker=self.marker)
+        return List(self.items + items_conv, marker=self.marker)
 
     @property
     def num_items(self) -> int:
         """
-        Number of items in the list.
+        Get number of items in the list.
 
         Returns:
             int: Number of items in the list.

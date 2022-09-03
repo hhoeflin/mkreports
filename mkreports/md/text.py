@@ -1,7 +1,6 @@
 from typing import Tuple, Union
 
 import attrs
-from typing_extensions import Self
 
 Text = Union[str, "SpacedText"]
 
@@ -28,7 +27,7 @@ def count_newlines(x: str, before=True) -> int:
     return num_nl
 
 
-@attrs.frozen(eq=True)
+@attrs.frozen(eq=True, init=False)
 class SpacedText:
     """Representation of text with newlines before or after."""
 
@@ -36,7 +35,7 @@ class SpacedText:
     req_nl: Tuple[int, int]
 
     def __init__(
-        self, text: Union[str, Self] = "", req_nl: Tuple[int, int] = (0, 0)
+        self, text: Union[str, "SpacedText"] = "", req_nl: Tuple[int, int] = (0, 0)
     ) -> None:
         """
         Initialize the object.
@@ -65,14 +64,16 @@ class SpacedText:
         """
         return self.format_text("\n\n\n", "\n\n\n")
 
-    def __add__(self, follow: Union[str, Self]) -> "SpacedText":
+    def __add__(self, follow: Union[str, "SpacedText"]) -> "SpacedText":
         return _add_text(self, SpacedText(follow))
 
-    def __radd__(self, precede: Union[str, Self]) -> "SpacedText":
+    def __radd__(self, precede: Union[str, "SpacedText"]) -> "SpacedText":
         return _add_text(SpacedText(precede), self)
 
     def format_text(
-        self, precede: Union[str, Self] = "", follow: Union[str, Self] = ""
+        self,
+        precede: Union[str, "SpacedText"] = "",
+        follow: Union[str, "SpacedText"] = "",
     ) -> str:
         add_before = _needed_nl_between(SpacedText(precede), self)
         add_after = _needed_nl_between(self, SpacedText(follow))

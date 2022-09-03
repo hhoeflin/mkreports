@@ -1,11 +1,14 @@
+"""Class for a markdown page."""
 import shutil
 from pathlib import Path
-from typing import Any, Dict, List, Literal, Optional, Tuple, Union
+from typing import Any, Dict, Literal, Optional, Tuple, Union
 
-from frontmatter.default_handlers import DEFAULT_POST_TEMPLATE, YAMLHandler
-from typing_extensions import Self
+from frontmatter.default_handlers import (  # type: ignore
+    DEFAULT_POST_TEMPLATE,
+    YAMLHandler,
+)
 
-from .code_context import CodeContext, Layouts, MultiCodeContext
+from .code_context import Layouts, MultiCodeContext
 from .exceptions import IncorrectSuffixError
 from .md import IDStore, MdObj, MdProxy, comment, merge_settings
 from .settings import NavEntry
@@ -13,6 +16,18 @@ from .utils import find_comment_ids
 
 
 def load_page(path: Union[Path, str]) -> Tuple[Dict[str, Any], str]:
+    """
+    Load a markdown page, separating out the YAML header.
+
+    Args:
+        path (Union[Path, str]): Path of the page to load
+
+    Returns:
+        Return a tuple:
+        metadata (dict): Metadata of the page
+        content (str): Page content
+
+    """
     path = Path(path)
     if not path.exists():
         return {}, ""
@@ -30,7 +45,17 @@ def load_page(path: Union[Path, str]) -> Tuple[Dict[str, Any], str]:
     return metadata, content
 
 
-def write_page(path: Union[Path, str], metadata, content) -> None:
+def write_page(path: Union[Path, str], metadata: dict, content: str) -> None:
+    """
+    Write out a page.
+
+    The page consists of the metadata and the content
+
+    Args:
+        metadata (dict): Metadata to put into the frontmatter.
+        content (str): Content of the page.
+        path (Union[Path, str]): Path of the page where to save it.
+    """
     handler = YAMLHandler()
     metadata = handler.export(metadata)
     start_delimiter = handler.START_DELIMITER
@@ -48,7 +73,15 @@ def write_page(path: Union[Path, str], metadata, content) -> None:
 def merge_pages(
     path_source: Path, path_target: Path, mode: Literal["S", "T", "ST", "TS"] = "TS"
 ) -> None:
+    """
+    Merge two pages.
 
+    Args:
+        path_source (Path): Source page.
+        path_target (Path): Target page.
+        mode (Literal["S", "T", "ST", "TS"]): Order in which to store the page,
+            with 'S' representing the source and 'T' representing the target.
+    """
     if mode == "S":
         shutil.copy(path_source, path_target)
         return
@@ -67,7 +100,7 @@ def merge_pages(
     else:
         raise ValueError("Unknown mode {mode}")
 
-    write_page(path=path_target, metadata=metadata_res, content=content_res)
+    write_page(path=path_target, metadata=metadata_res, content=str(content_res))
 
 
 class Page:
@@ -83,7 +116,9 @@ class Page:
         md_defaults: Optional[Dict[str, Dict[str, Any]]] = None,
     ) -> None:
         """
-        Initialize a page. Usually this is not used and instead a page is created
+        Initialize a page.
+
+        Usually this is not used and instead a page is created
         using the *page* method on a report.
 
         A page is also a context manager. If the context manager is active, code
@@ -124,7 +159,7 @@ class Page:
         self.code_layout = code_layout
         self.code_name_only = code_name_only
 
-        self._md = MdProxy(md_defaults=md_defaults)
+        self._md = MdProxy(md_defaults=md_defaults if md_defaults is not None else {})
 
     # implement the MultiCodeContext wrappers
     def ctx(
@@ -132,7 +167,7 @@ class Page:
         layout: Optional[Layouts] = None,
         name_only: Optional[bool] = None,
         add_bottom: Optional[bool] = None,
-    ) -> Self:
+    ) -> "Page":
         """
         Sets the next context to be used. Only counts for the next tracking context.
 
@@ -152,7 +187,7 @@ class Page:
         )
         return self
 
-    def __enter__(self) -> Self:
+    def __enter__(self) -> "Page":
         self.multi_code_context.__enter__()
         return self
 
@@ -226,7 +261,7 @@ class Page:
     def add(
         self,
         item: MdObj,
-    ) -> Self:
+    ) -> "Page":
         """
         Read the frontmatter and merge it with the additional settings.
 

@@ -58,7 +58,7 @@ larger tables more sophisticated libraries are needed.
 
 === "Code"
 
-    ```python title=".conda_env/lib/python3.8/site-packages/mkreports/page.py" linenums="157"
+    ```python title=".conda_env/lib/python3.8/site-packages/mkreports/page.py" linenums="193"
         return self
 
     def __exit__(self, exc_type, exc_val, traceback) -> None:
@@ -101,7 +101,7 @@ larger tables more sophisticated libraries are needed.
 
 === "Code"
 
-    ```python title=".conda_env/lib/python3.8/site-packages/mkreports/page.py" linenums="157"
+    ```python title=".conda_env/lib/python3.8/site-packages/mkreports/page.py" linenums="193"
         return self
 
     def __exit__(self, exc_type, exc_val, traceback) -> None:
@@ -183,7 +183,7 @@ var myTable = $('#datatable_id-2').DataTable({"scrollX": "true", "columns": [{"t
 
 === "Code"
 
-    ```python title=".conda_env/lib/python3.8/site-packages/mkreports/page.py" linenums="157"
+    ```python title=".conda_env/lib/python3.8/site-packages/mkreports/page.py" linenums="193"
         return self
 
     def __exit__(self, exc_type, exc_val, traceback) -> None:
@@ -241,7 +241,7 @@ $("#xslx_down_id-0").click(function(){
 
 === "Code"
 
-    ```python title=".conda_env/lib/python3.8/site-packages/mkreports/page.py" linenums="157"
+    ```python title=".conda_env/lib/python3.8/site-packages/mkreports/page.py" linenums="193"
         return self
 
     def __exit__(self, exc_type, exc_val, traceback) -> None:

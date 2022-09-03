@@ -2,7 +2,7 @@ import hashlib
 import os
 import tempfile
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Dict, Any
 
 from git.repo import Repo
 
@@ -59,5 +59,5 @@ def get_mkreports_dir() -> Path:
 
 
 # the mkreports_directory to use
-state = dict()
+state: Dict[str, Any] = dict()
 set_mkreports_dir()

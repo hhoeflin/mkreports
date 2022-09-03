@@ -39,8 +39,8 @@ class CollapsedCodeFile(MdObj):
             kind="code",
         )
 
-    def _render(
-        self,
+    def _render(  # type: ignore
+        self, 
         report_asset_dir: Path,
         page_path: Path,
         page_asset_dir: Path,

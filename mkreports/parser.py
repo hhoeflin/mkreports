@@ -6,7 +6,7 @@ import ast
 from pathlib import Path
 from typing import Optional, Tuple
 
-from intervaltree import Interval, IntervalTree
+from intervaltree import Interval, IntervalTree  # type: ignore
 
 
 def get_stmt_ranges(pyfile: Path) -> IntervalTree:

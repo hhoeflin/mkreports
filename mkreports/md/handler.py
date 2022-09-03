@@ -1,9 +1,11 @@
+"""Handlers for MdObj in Ipython."""
 from contextlib import suppress
 from typing import Any, Callable, List, Optional, Tuple, Union
 
 import attrs
 
 from .base import MdObj
+from .md_proxy import MdProxy
 
 
 @attrs.mutable()
@@ -22,7 +24,17 @@ class Handler:
     func: Callable
 
 
-def create_default_handlers(md_ns) -> List[Handler]:
+def create_default_handlers(md_ns: MdProxy) -> List[Handler]:
+    """
+    Create default handlers for the IPython integration.
+
+    Args:
+        md_ns (MdProxy): Namespace with MdObj classes to handle.
+
+    Returns:
+        List of handler objects.
+
+    """
     handlers = []
     with suppress(ImportError):
         import pandas as pd
@@ -43,6 +55,17 @@ def create_default_handlers(md_ns) -> List[Handler]:
 
 
 def get_handler(obj: Any, handler_list: List[Handler]) -> Optional[Handler]:
+    """
+    Get a fitting handler from a list of handlers.
+
+    Args:
+        obj (Any): The object for which we want the handler.
+        handler_list (List[Handler]): List of available handlers.
+
+    Returns:
+        The handler to use, or None if there isn't one.
+
+    """
     for handler in handler_list:
         if isinstance(obj, handler.class_type):
             return handler
@@ -50,7 +73,17 @@ def get_handler(obj: Any, handler_list: List[Handler]) -> Optional[Handler]:
         return None
 
 
-def create_image_handlers(md_ns) -> List[Handler]:
+def create_image_handlers(md_ns: MdProxy) -> List[Handler]:
+    """
+    Create handlers for images.
+
+    Args:
+        md_ns (MdProxy): The namespace for which to create handlers.
+
+    Returns:
+        List of created handlers.
+
+    """
     handlers = []
 
     with suppress(ImportError):
@@ -65,7 +98,7 @@ def create_image_handlers(md_ns) -> List[Handler]:
         )
     # handler for matplotlib
     with suppress(ImportError):
-        from matplotlib.figure import Figure as MplFigure
+        from matplotlib.figure import Figure as MplFigure  # type: ignore
 
         handlers.append(
             Handler(
@@ -76,7 +109,7 @@ def create_image_handlers(md_ns) -> List[Handler]:
         )
 
     with suppress(ImportError):
-        from plotnine.ggplot import ggplot
+        from plotnine.ggplot import ggplot  # type: ignore
 
         handlers.append(
             Handler(
@@ -87,7 +120,7 @@ def create_image_handlers(md_ns) -> List[Handler]:
         )
 
     with suppress(ImportError):
-        from seaborn import FacetGrid as SnsFacetGrid
+        from seaborn import FacetGrid as SnsFacetGrid  # type: ignore
         from seaborn import JointGrid as SnsJointGrid
         from seaborn import PairGrid as SnsPairGrid
 
@@ -100,7 +133,7 @@ def create_image_handlers(md_ns) -> List[Handler]:
         )
 
     with suppress(ImportError):
-        from altair import Chart
+        from altair import Chart  # type: ignore
 
         handlers.append(
             Handler(
@@ -111,7 +144,7 @@ def create_image_handlers(md_ns) -> List[Handler]:
         )
 
     with suppress(ImportError):
-        from plotly.graph_objs import Figure as PlotlyFigure
+        from plotly.graph_objs import Figure as PlotlyFigure  # type: ignore
 
         handlers.append(
             Handler(

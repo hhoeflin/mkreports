@@ -16,10 +16,9 @@ to display the code and the results such as:
 """
 import inspect
 from pathlib import Path
-from typing import Callable, List, Literal, Optional, Union
+from typing import List, Literal, Optional, Union
 
 import attrs
-from typing_extensions import Self
 
 from .md import Admonition, HLine, MdObj, MdSeq, Tab, Text, ensure_md_obj
 from .tracker import BaseTracker, SimpleTracker
@@ -112,7 +111,7 @@ class CodeContext:
         self.do_tracking = layout != "nocode"
         self.tracker = SimpleTracker()
         self.stack_level = stack_level
-        self.obj_list = []
+        self.obj_list: List[MdObj] = []
         self.relative_to = relative_to
         self.add_bottom = add_bottom
         self.name_only = name_only
@@ -158,7 +157,7 @@ class CodeContext:
         """
         content = MdSeq(self.obj_list)
         if self.layout == "nocode":
-            code_final = None
+            code_final: Optional[MdObj] = None
         else:
             code_blocks = self.tracker.code()
             # turn code blocks into md
@@ -192,7 +191,7 @@ class MultiCodeContext:
         layout: Optional[Layouts] = None,
         name_only: Optional[bool] = None,
         add_bottom: Optional[bool] = None,
-    ) -> Self:
+    ) -> 'MultiCodeContext':
         """
         Sets the next context to be used. Only counts for the next tracking context.
 
@@ -225,7 +224,7 @@ class MultiCodeContext:
 
         return self
 
-    def __enter__(self) -> Self:
+    def __enter__(self) -> 'MultiCodeContext':
         if len(self.code_context_stack) == 0 or (
             len(self.code_context_stack) > 0 and self.code_context_stack[-1].active
         ):
@@ -264,7 +263,7 @@ class MultiCodeContext:
     def add(
         self,
         item: Union[MdObj, Text],
-    ) -> "Self":
+    ) -> "MultiCodeContext":
         """
         Add a MdObj to the page.
 

@@ -1,16 +1,27 @@
+"""Base classes and functionality for Markdown classes."""
 import functools
 import html
 import inspect
 import textwrap
 from abc import ABC, abstractmethod
 from collections.abc import Sequence
-from dataclasses import dataclass
 from os.path import relpath
 from pathlib import Path
-from typing import (Any, Callable, Dict, Iterable, Optional, Set, Tuple, Union,
-                    final)
+from typing import (
+    Any,
+    Callable,
+    Dict,
+    Iterable,
+    Optional,
+    Set,
+    Tuple,
+    Union,
+    final,
+    overload,
+)
 
 import attrs
+from overrides import overrides  # type: ignore
 
 from .idstore import IDStore
 from .md_proxy import register_md
@@ -19,10 +30,12 @@ from .text import SpacedText, Text
 
 
 class NotRenderedError(Exception):
+    """Raised when object not yet rendered."""
+
     pass
 
 
-def to_spaced_text(x: Union[str, SpacedText, None]) -> SpacedText:
+def _to_spaced_text(x: Union[str, SpacedText, None]) -> SpacedText:
     if isinstance(x, str):
         return SpacedText(x)
     elif x is None:
@@ -31,7 +44,7 @@ def to_spaced_text(x: Union[str, SpacedText, None]) -> SpacedText:
         return x
 
 
-def to_settings(x: Optional[Settings]) -> Settings:
+def _to_settings(x: Optional[Settings]) -> Settings:
     if x is None:
         return Settings()
     else:
@@ -40,25 +53,12 @@ def to_settings(x: Optional[Settings]) -> Settings:
 
 @attrs.mutable()
 class RenderedMd:
-    body: SpacedText
-    back: SpacedText
-    settings: Settings
-    src: "MdObj"
+    """Result of rendering a MdObj."""
 
-    def __init__(
-        self,
-        body: Union[str, SpacedText, None],
-        back: Union[str, SpacedText, None],
-        settings: Optional[Settings],
-        src: "MdObj",
-    ):
-        RenderedMd.__attrs_init__(  # type: ignore
-            self,
-            body=to_spaced_text(body),
-            back=to_spaced_text(back),
-            settings=to_settings(settings),
-            src=src,
-        )
+    body: SpacedText = attrs.field(converter=_to_spaced_text)
+    back: SpacedText = attrs.field(converter=_to_spaced_text)
+    settings: Settings = attrs.field(converter=_to_settings)
+    src: "MdObj"
 
 
 class MdObj(ABC):
@@ -95,11 +95,12 @@ class MdObj(ABC):
         return first + second
 
     @abstractmethod
-    def _render(self) -> RenderedMd:
+    def _render(self, **_) -> RenderedMd:
         pass
 
     @final
     def render(self, **kwargs) -> RenderedMd:
+        """Render the object."""
         used_fixtures = {key: kwargs[key] for key in self.render_fixtures()}
         return self._render(**used_fixtures)
 
@@ -116,15 +117,23 @@ class MdObj(ABC):
 
 
 def func_kwargs_as_set(f: Callable) -> Set[str]:
+    """
+    Return arguments of function as a set.
+
+    Args:
+        f (Callable): The function for which to extract the arguments.
+
+    Returns:
+        Returns the arguments as a set of strings.
+
+    """
     render_sig = inspect.signature(f)
     return set(render_sig.parameters.keys())
 
 
 @register_md("MdSeq")
 class MdSeq(MdObj, Sequence):
-    """
-    Class to caputre a list of other MdObjs.
-    """
+    """Class to caputre a list of other MdObjs."""
 
     items: Tuple[MdObj, ...]
 
@@ -146,18 +155,26 @@ class MdSeq(MdObj, Sequence):
             items = [items]
         self.items = tuple([x if not isinstance(x, str) else Raw(x) for x in items])
 
+    @overload
     def __getitem__(self, index: int) -> MdObj:
+        ...
+
+    @overload
+    def __getitem__(self, index: slice) -> "MdSeq":
+        ...
+
+    def __getitem__(self, index):
         return self.items[index]
 
     def __len__(self) -> int:
         return len(self.items)
 
     def __add__(self, other) -> "MdSeq":
-        second_items = other.items if type(other) == MdSeq else (other,)
+        second_items = other.items if isinstance(other, MdSeq) else (other,)
         return MdSeq(self.items + second_items)
 
     def __radd__(self, other) -> "MdSeq":
-        second_items = other if type(other) == MdSeq else (other,)
+        second_items = other.items if type(other) == MdSeq else (other,)
         return MdSeq(second_items + self.items)
 
     def _render(self, **kwargs) -> RenderedMd:
@@ -179,6 +196,7 @@ class MdSeq(MdObj, Sequence):
             )
             return RenderedMd(body=body, back=back, settings=settings, src=self)
 
+    @overrides
     def render_fixtures(self) -> Set[str]:
         # we iterate through all items and concatenate the sets
         fixtures = set()
@@ -218,7 +236,7 @@ class Raw(MdObj):
         if isinstance(self.back, str):
             self.back = textwrap.dedent(self.back)
 
-    def _render(self) -> RenderedMd:
+    def _render(self) -> RenderedMd:  # type: ignore
         body = SpacedText(self.raw)
         back = SpacedText(self.back)
         settings = Settings(
@@ -231,21 +249,9 @@ class Raw(MdObj):
         return set()
 
 
-@register_md("Anchor")
 class Anchor(MdObj):
-    name: str
-
-    def __new__(cls, name: Optional[str] = None):
-        if name is not None:
-            cls = NamedAnchor
-            self = object.__new__(cls)
-            self.__init__(name=name)
-            return self
-        else:
-            cls = AutoAnchor
-            self = object.__new__(cls)
-            self.__init__()
-            return self
+    name: Optional[str] = None
+    pass
 
 
 @register_md("NamedAnchor")
@@ -260,7 +266,7 @@ class NamedAnchor(Anchor):
 
     name: str
 
-    def _render(self) -> RenderedMd:
+    def _render(self) -> RenderedMd:  # type: ignore
         back = SpacedText("")
 
         body = SpacedText(f"[](){{:name='{self.name}'}}", (0, 0))
@@ -283,7 +289,7 @@ class AutoAnchor(Anchor):
 
     prefix: str = "anchor"
 
-    def _render(self, idstore: IDStore) -> RenderedMd:
+    def _render(self, idstore: IDStore) -> RenderedMd:  # type: ignore
         self.name = idstore.next_id(self.prefix)
         back = SpacedText(comment_ids(self.name), (2, 2))
         body = SpacedText(f"[](){{:name='{self.name}'}}", (0, 0))
@@ -292,6 +298,14 @@ class AutoAnchor(Anchor):
 
     def render_fixtures(self) -> Set[str]:
         return func_kwargs_as_set(self._render)
+
+
+@register_md("anchor")
+def anchor(name: Optional[str] = None) -> Union[NamedAnchor, AutoAnchor]:
+    if name is not None:
+        return NamedAnchor(name=name)
+    else:
+        return AutoAnchor()
 
 
 @register_md("Link")
@@ -308,7 +322,7 @@ class Link(MdObj):
     text: str = ""
     url: str = ""
 
-    def _render(self) -> RenderedMd:
+    def _render(self) -> RenderedMd:  # type: ignore
         body = SpacedText(f"[{html.escape(self.text)}]({self.url})", (0, 0))
         back = SpacedText("")
         settings = Settings()
@@ -349,8 +363,7 @@ class ReportLink(Link):
             anchor=NamedAnchor(anchor) if isinstance(anchor, str) else anchor,
         )
 
-    def _render(self, page_path: Path) -> RenderedMd:
-
+    def _render(self, page_path: Path) -> RenderedMd:  # type: ignore
         if self.to_page_path is None:
             if self.anchor is None:
                 raise ValueError(
