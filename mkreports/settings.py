@@ -21,7 +21,7 @@ class NavEntry(NamedTuple):
     """
 
     hierarchy: Sequence[str]
-    loc: Union[Path, str]
+    loc: Path
 
 
 NavList = List[NavEntry]
@@ -87,7 +87,7 @@ def mkdocs_to_navlist(mkdocs_nav: MkdocsNav) -> NavList:
     return res
 
 
-def split_nav(x: NavList) -> Tuple[List[str], Dict[str, NavList]]:
+def split_nav(x: NavList) -> Tuple[List[Path], Dict[str, NavList]]:
     """
     Split the navigation entry into top level list of items and dict of Navs.
 
@@ -109,9 +109,9 @@ def split_nav(x: NavList) -> Tuple[List[str], Dict[str, NavList]]:
         if len(h) == 0:
             res_list.append(p)
         else:
-            res_nav[h[0]].append((h[1:], p))
+            res_nav[h[0]].append(NavEntry(h[1:], p))
 
-    return (res_list, res_nav)
+    return (res_list, dict(res_nav))
 
 
 def navlist_to_mkdocs(nav_list: NavList) -> MkdocsNav:

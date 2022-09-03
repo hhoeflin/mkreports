@@ -2,7 +2,7 @@ import json
 from pathlib import Path
 from typing import Any, Optional, Set, Union
 
-import parse
+import parse  # type: ignore
 from git.repo import Repo
 
 

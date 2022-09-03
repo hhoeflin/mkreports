@@ -8,7 +8,7 @@ css:
 
 ??? code "Code"
 
-    ```python title=".conda_env/lib/python3.8/site-packages/mkreports/page.py" linenums="193"
+    ```python title=".conda_env/lib/python3.8/site-packages/mkreports/page.py" linenums="192"
         return self
 
     def __exit__(self, exc_type, exc_val, traceback) -> None:
@@ -48,7 +48,7 @@ The other blocks below are nested inside this one.
 
 === "Code"
 
-    ```python title=".conda_env/lib/python3.8/site-packages/mkreports/page.py" linenums="193"
+    ```python title=".conda_env/lib/python3.8/site-packages/mkreports/page.py" linenums="192"
         return self
 
     def __exit__(self, exc_type, exc_val, traceback) -> None:
@@ -63,7 +63,7 @@ The other blocks below are nested inside this one.
 
 ??? code "Code"
 
-    ```python title=".conda_env/lib/python3.8/site-packages/mkreports/page.py" linenums="193"
+    ```python title=".conda_env/lib/python3.8/site-packages/mkreports/page.py" linenums="192"
         return self
 
     def __exit__(self, exc_type, exc_val, traceback) -> None:
@@ -80,7 +80,7 @@ fib(4) = 3
 
 ## Tracking code (top-o)
 
-```python title=".conda_env/lib/python3.8/site-packages/mkreports/page.py" linenums="193"
+```python title=".conda_env/lib/python3.8/site-packages/mkreports/page.py" linenums="192"
     return self
 
 def __exit__(self, exc_type, exc_val, traceback) -> None:
@@ -103,7 +103,7 @@ fib(6) = 8
 
 ??? code "Code"
 
-    ```python title=".conda_env/lib/python3.8/site-packages/mkreports/page.py" linenums="193"
+    ```python title=".conda_env/lib/python3.8/site-packages/mkreports/page.py" linenums="192"
         return self
 
     def __exit__(self, exc_type, exc_val, traceback) -> None:
@@ -120,7 +120,7 @@ The code as an open code block after the output.
 
 fib(7) = 13
 
-```python title=".conda_env/lib/python3.8/site-packages/mkreports/page.py" linenums="193"
+```python title=".conda_env/lib/python3.8/site-packages/mkreports/page.py" linenums="192"
     return self
 
 def __exit__(self, exc_type, exc_val, traceback) -> None:
@@ -148,7 +148,7 @@ def __exit__(self, exc_type, exc_val, traceback) -> None:
 
 === "Code"
 
-    ```python title=".conda_env/lib/python3.8/site-packages/mkreports/page.py" linenums="193"
+    ```python title=".conda_env/lib/python3.8/site-packages/mkreports/page.py" linenums="192"
         return self
 
     def __exit__(self, exc_type, exc_val, traceback) -> None:

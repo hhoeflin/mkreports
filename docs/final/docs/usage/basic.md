@@ -32,7 +32,7 @@ css:
 
 === "Code"
 
-    ```python title=".conda_env/lib/python3.8/site-packages/mkreports/page.py" linenums="193"
+    ```python title=".conda_env/lib/python3.8/site-packages/mkreports/page.py" linenums="192"
         return self
 
     def __exit__(self, exc_type, exc_val, traceback) -> None:
@@ -65,7 +65,7 @@ css:
 
 === "Code"
 
-    ```python title=".conda_env/lib/python3.8/site-packages/mkreports/page.py" linenums="193"
+    ```python title=".conda_env/lib/python3.8/site-packages/mkreports/page.py" linenums="192"
         return self
 
     def __exit__(self, exc_type, exc_val, traceback) -> None:
@@ -93,7 +93,7 @@ css:
 
 === "Code"
 
-    ```python title=".conda_env/lib/python3.8/site-packages/mkreports/page.py" linenums="193"
+    ```python title=".conda_env/lib/python3.8/site-packages/mkreports/page.py" linenums="192"
         return self
 
     def __exit__(self, exc_type, exc_val, traceback) -> None:
