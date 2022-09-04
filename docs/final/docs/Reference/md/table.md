@@ -1,5 +1,0 @@
----
-{}
----
-
-::: mkreports.md.table

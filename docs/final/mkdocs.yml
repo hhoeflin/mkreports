@@ -41,7 +41,10 @@ nav:
     - list: Reference/md/list.md
     - md_proxy: Reference/md/md_proxy.md
     - settings: Reference/md/settings.md
-    - table: Reference/md/table.md
+    - table:
+      - base: Reference/md/table/base.md
+      - datatable: Reference/md/table/datatable.md
+      - tabulator: Reference/md/table/tabulator.md
     - text: Reference/md/text.md
   - page: Reference/page.md
   - parser: Reference/parser.md
