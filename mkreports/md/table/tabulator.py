@@ -72,6 +72,7 @@ def _series_to_filter_tabulator(series: pd.Series) -> Dict[str, Any]:
 
 
 @register_md("Tabulator")
+@attrs.mutable(init=False)
 class Tabulator(File):
     """
     A table using the Tabulator javascript library.
@@ -93,6 +94,14 @@ class Tabulator(File):
         json_name (str): Name of the saved file (before hash if hash=True)
         use_hash (bool): Should the name of the copied image be updated with a hash (Default: True)
     """
+
+    table: pd.DataFrame
+    user_table_settings: Optional[dict] = None
+    add_header_filters: bool = True
+    prettify_colnames: bool = True
+    col_settings: dict = None
+    downloads: bool = False
+    table_kwargs: Optional[dict] = None
 
     def __init__(
         self,
@@ -122,15 +131,19 @@ class Tabulator(File):
                 default_handler=str,
                 **(table_kwargs if table_kwargs is not None else {}),
             )
-            self.table = deepcopy(table)
 
-            # Make sure the file is moved to the right place
-            super().__init__(path=path, allow_copy=True, use_hash=use_hash)
-        self.user_table_settings = table_settings
-        self.add_header_filters = add_header_filters
-        self.prettify_colnames = prettify_colnames
-        self.col_settings = col_settings
-        self.downloads = downloads
+            Tabulator.__attrs_init__(  # type: ignore
+                self,
+                table=deepcopy(table),
+                prettify_colnames=prettify_colnames,
+                add_header_filters=add_header_filters,
+                col_settings=col_settings if col_settings is not None else {},
+                downloads=downloads,
+                user_table_settings=table_settings,
+                path=path,
+                allow_copy=True,
+                use_hash=use_hash,
+            )
 
     def _render(  # type: ignore
         self,

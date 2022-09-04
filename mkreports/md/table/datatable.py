@@ -1,6 +1,7 @@
 import inspect
 import logging
 import tempfile
+from copy import deepcopy
 from pathlib import Path
 from typing import Any, Dict, Optional, Set
 
@@ -122,7 +123,7 @@ class DataTable(File):
 
             DataTable.__attrs_init__(  # type: ignore
                 self,
-                table=table,
+                table=deepcopy(table),
                 column_settings=column_settings,
                 prettify_colnames=prettify_colnames,
                 add_header_filters=add_header_filters,
