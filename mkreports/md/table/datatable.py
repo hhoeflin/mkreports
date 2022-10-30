@@ -7,6 +7,7 @@ from typing import Any, Dict, Optional, Set
 
 import attrs
 import pandas as pd
+from jinja2 import Environment, PackageLoader
 from pandas.api import types
 
 from mkreports.md.base import RenderedMd, comment_ids, func_kwargs_as_set
@@ -138,6 +139,8 @@ class DataTable(File):
     def _render(  # type: ignore
         self, page_asset_dir: Path, idstore: IDStore, page_path: Path
     ) -> RenderedMd:
+
+        jinja_env = Environment(loader=PackageLoader("mkreports.md"), autoescape=False)
         super()._render(page_asset_dir=page_asset_dir)
 
         javascript_settings = [
@@ -172,15 +175,15 @@ class DataTable(File):
 
         # put together the settings for the table
         # there, the columns are a list in the correct order
-        self.table_settings = {
+        table_settings = {
             "scrollX": "true",
             "columns": [col_set[col] for col in self.table.columns],
         }
 
         if self.downloads:
-            self.table_settings["buttons"] = ["copy", "csv", "excel", "pdf", "print"]
+            table_settings["buttons"] = ["copy", "csv", "excel", "pdf", "print"]
             # self.table_settings["dom"] = "Bfrtlp"
-            self.table_settings["dom"] = "<lfr>t<Bp>"
+            table_settings["dom"] = "<lfr>t<Bp>"
             css_settings.append(
                 "https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css"
             )
@@ -196,40 +199,32 @@ class DataTable(File):
             )
 
         datatable_id = idstore.next_id("datatable_id")
-        body_html = inspect.cleandoc(
-            f"""
-            <table id='{datatable_id}' class='display' style='width:100%'> </table>
-            """
+        body_html = jinja_env.get_template("table/datatable_body.html").render(
+            datatable_id=datatable_id
         )
 
         rel_table_path = relpath_html(self.path, page_path)
-        self.table_settings["ajax"] = str(rel_table_path)
+        table_settings["ajax"] = str(rel_table_path)
         # overwrite with given settigns if necessary
-        self.table_settings.update(
+        table_settings.update(
             self.user_table_settings if self.user_table_settings is not None else {}
         )
-        settings_str = serialize_json(self.table_settings)
 
         # prepare the header script if necessary
         if self.add_header_filters:
             yadcf_settings_str = serialize_json(list(self.yadcf_settings.values()))
-            yadcf_script = inspect.cleandoc(
+            yadcf_init = inspect.cleandoc(
                 f"""
                 yadcf.init(myTable, {yadcf_settings_str});
                 """
             )
         else:
-            yadcf_script = ""
+            yadcf_init = ""
 
-        back_html = inspect.cleandoc(
-            f"""
-            <script>
-            $(document).ready( function () {{
-            var myTable = $('#{datatable_id}').DataTable({settings_str});
-            {yadcf_script}
-            }} );
-            </script>
-            """
+        back_html = jinja_env.get_template("table/datatable_back.html").render(
+            datatable_id=datatable_id,
+            settings_str=serialize_json(table_settings),
+            yadcf_init=yadcf_init,
         )
 
         settings = Settings(

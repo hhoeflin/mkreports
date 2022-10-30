@@ -9,7 +9,7 @@ readme = "README.md"
 license = {file = "LICENSE"}
 classifiers = ["License :: OSI Approved :: MIT License"]
 dynamic = ["version", "description"]
-requires-python = ">=3.8"
+requires-python = ">= 3.8"
 
 dependencies = [
     "mkdocs >=1.2.3",
@@ -27,11 +27,12 @@ dependencies = [
     "mkdocstrings[python] >=0.17.0",
     "GitPython >=3.1.26",
     "parse >=1.19.0",
-    "importlib-resources >=5.4.0; python_version <= 3.8",
+    "importlib-resources >=5.4.0; python_version <= '3.8'",
     "sh",
     "ipython >=7.30.1",
     "attrs",
     "overrides",
+    "jinja2",
 ]
 
 [project.optional-dependencies]
@@ -46,6 +47,7 @@ dev = [
     "pandas-stubs",
     "types-Pillow",
     "pydocstyle",
+    "mypy",
 ]
 content = [
     "pandas",

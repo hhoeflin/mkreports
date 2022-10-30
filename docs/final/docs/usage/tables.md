@@ -114,8 +114,8 @@ larger tables more sophisticated libraries are needed.
 
 <script>
 $(document).ready( function () {
-var myTable = $('#datatable_id-0').DataTable({"scrollX": "true", "columns": [{"title": "Name"}, {"title": "Mpg"}, {"title": "Cyl"}, {"title": "Disp"}, {"title": "Hp"}, {"title": "Drat"}, {"title": "Wt"}, {"title": "Qsec"}, {"title": "Vs"}, {"title": "Am"}, {"title": "Gear"}, {"title": "Carb"}], "ajax": "../tables/datatable-ca9b6f052f673e1d46f468ebb1ccc5d1.json"});
-
+    var myTable = $('#datatable_id-0').DataTable({"scrollX": "true", "columns": [{"title": "Name"}, {"title": "Mpg"}, {"title": "Cyl"}, {"title": "Disp"}, {"title": "Hp"}, {"title": "Drat"}, {"title": "Wt"}, {"title": "Qsec"}, {"title": "Vs"}, {"title": "Am"}, {"title": "Gear"}, {"title": "Carb"}], "ajax": "../tables/datatable-ca9b6f052f673e1d46f468ebb1ccc5d1.json"});
+    
 } );
 </script>
 
@@ -123,8 +123,8 @@ var myTable = $('#datatable_id-0').DataTable({"scrollX": "true", "columns": [{"t
 
 <script>
 $(document).ready( function () {
-var myTable = $('#datatable_id-1').DataTable({"scrollX": "true", "columns": [{"title": "Name"}, {"title": "Age"}, {"title": "Hair"}, {"title": "Married"}], "ajax": "../tables/datatable-580c4149445c9b58b5740c532e20a5a0.json"});
-yadcf.init(myTable, [{"column_number": 0, "filter_type": "text"}, {"column_number": 1, "filter_type": "range_number"}, {"column_number": 2, "filter_type": "select"}, {"column_number": 3, "filter_type": "select"}]);
+    var myTable = $('#datatable_id-1').DataTable({"scrollX": "true", "columns": [{"title": "Name"}, {"title": "Age"}, {"title": "Hair"}, {"title": "Married"}], "ajax": "../tables/datatable-580c4149445c9b58b5740c532e20a5a0.json"});
+    yadcf.init(myTable, [{"column_number": 0, "filter_type": "text"}, {"column_number": 1, "filter_type": "range_number"}, {"column_number": 2, "filter_type": "select"}, {"column_number": 3, "filter_type": "select"}]);
 } );
 </script>
 
@@ -132,8 +132,8 @@ yadcf.init(myTable, [{"column_number": 0, "filter_type": "text"}, {"column_numbe
 
 <script>
 $(document).ready( function () {
-var myTable = $('#datatable_id-2').DataTable({"scrollX": "true", "columns": [{"title": "Name"}, {"title": "Age"}, {"title": "Hair"}, {"title": "Married"}], "buttons": ["copy", "csv", "excel", "pdf", "print"], "dom": "<lfr>t<Bp>", "ajax": "../tables/datatable-580c4149445c9b58b5740c532e20a5a0.json"});
-
+    var myTable = $('#datatable_id-2').DataTable({"scrollX": "true", "columns": [{"title": "Name"}, {"title": "Age"}, {"title": "Hair"}, {"title": "Married"}], "buttons": ["copy", "csv", "excel", "pdf", "print"], "dom": "<lfr>t<Bp>", "ajax": "../tables/datatable-580c4149445c9b58b5740c532e20a5a0.json"});
+    
 } );
 </script>
 
@@ -175,10 +175,11 @@ var myTable = $('#datatable_id-2').DataTable({"scrollX": "true", "columns": [{"t
 
     An example showing download buttons for export to csv, json or excel.
 
-    <div id='tabulator_id-2' class='display'> </div><div>
-      <button class="tabulator-btn-dwn", id="csv_down_id-0">to CSV</button>
-      <button class="tabulator-btn-dwn", id="json_down_id-0">to JSON</button>
-      <button class="tabulator-btn-dwn", id="xslx_down_id-0">to XLSX</button>
+    <div id='tabulator_id-2' class='display'> </div>
+    <div>
+      <button class="tabulator-btn-dwn", id="tabulator_id-2-btn-csv">to CSV</button>
+      <button class="tabulator-btn-dwn", id="tabulator_id-2-btn-json">to JSON</button>
+      <button class="tabulator-btn-dwn", id="tabulator_id-2-btn-xlsx">to XLSX</button>
     </div>
 
 === "Code"
@@ -195,39 +196,37 @@ var myTable = $('#datatable_id-2').DataTable({"scrollX": "true", "columns": [{"t
 ---
 
 <script>
-var table = new Tabulator('#tabulator_id-0', {"layout": "fitDataTable", "pagination": true, "paginationSize": 10, "paginationSizeSelector": true, "columns": [{"field": "name", "title": "name"}, {"field": "mpg", "title": "mpg"}, {"field": "cyl", "title": "cyl"}, {"field": "disp", "title": "disp"}, {"field": "hp", "title": "hp"}, {"field": "drat", "title": "drat"}, {"field": "wt", "title": "wt"}, {"field": "qsec", "title": "qsec"}, {"field": "vs", "title": "vs"}, {"field": "am", "title": "am"}, {"field": "gear", "title": "gear"}, {"field": "carb", "title": "carb"}], "ajaxURL": "../tables/tabulator-c8469972d60cd61d98262704e068f4e9.json"});
+    var table = new Tabulator('#tabulator_id-0', {"layout": "fitDataTable", "pagination": true, "paginationSize": 10, "paginationSizeSelector": true, "columns": [{"field": "name", "title": "name"}, {"field": "mpg", "title": "mpg"}, {"field": "cyl", "title": "cyl"}, {"field": "disp", "title": "disp"}, {"field": "hp", "title": "hp"}, {"field": "drat", "title": "drat"}, {"field": "wt", "title": "wt"}, {"field": "qsec", "title": "qsec"}, {"field": "vs", "title": "vs"}, {"field": "am", "title": "am"}, {"field": "gear", "title": "gear"}, {"field": "carb", "title": "carb"}], "ajaxURL": "../tables/tabulator-c8469972d60cd61d98262704e068f4e9.json"});
+
 </script>
 
 [comment]: # (id: tabulator_id-0)
 
 <script>
-var table = new Tabulator('#tabulator_id-1', {"layout": "fitDataTable", "pagination": true, "paginationSize": 10, "paginationSizeSelector": true, "columns": [{"field": "name", "headerFilter": "input", "title": "Name"}, {"field": "age", "width": 80, "headerFilter": minMaxFilterEditor, "headerFilterFunc": minMaxFilterFunction, "headerFilterLiveFilter": false, "title": "Age"}, {"field": "hair", "headerFilter": "select", "headerFilterParams": {"values": ["", "brown", "green", "red"]}, "title": "Hair"}, {"field": "married", "headerFilter": "tickCross", "formatter": "tickCross", "headerFilterParams": {"tristate": true}, "title": "Married"}], "ajaxURL": "../tables/tabulator-75b468c8a8bcf5fff9d211e88d0e6972.json"});
+    var table = new Tabulator('#tabulator_id-1', {"layout": "fitDataTable", "pagination": true, "paginationSize": 10, "paginationSizeSelector": true, "columns": [{"field": "name", "headerFilter": "input", "title": "Name"}, {"field": "age", "width": 80, "headerFilter": minMaxFilterEditor, "headerFilterFunc": minMaxFilterFunction, "headerFilterLiveFilter": false, "title": "Age"}, {"field": "hair", "headerFilter": "select", "headerFilterParams": {"values": ["", "brown", "green", "red"]}, "title": "Hair"}, {"field": "married", "headerFilter": "tickCross", "formatter": "tickCross", "headerFilterParams": {"tristate": true}, "title": "Married"}], "ajaxURL": "../tables/tabulator-75b468c8a8bcf5fff9d211e88d0e6972.json"});
+
 </script>
 
 [comment]: # (id: tabulator_id-1)
 
 <script>
-var table = new Tabulator('#tabulator_id-2', {"layout": "fitDataTable", "pagination": true, "paginationSize": 10, "paginationSizeSelector": true, "columns": [{"field": "name", "headerFilter": "input", "title": "Name"}, {"field": "age", "width": 80, "headerFilter": minMaxFilterEditor, "headerFilterFunc": minMaxFilterFunction, "headerFilterLiveFilter": false, "title": "Age"}, {"field": "hair", "headerFilter": "select", "headerFilterParams": {"values": ["", "brown", "green", "red"]}, "title": "Hair"}, {"field": "married", "headerFilter": "tickCross", "formatter": "tickCross", "headerFilterParams": {"tristate": true}, "title": "Married"}], "ajaxURL": "../tables/tabulator-75b468c8a8bcf5fff9d211e88d0e6972.json"});
+    var table = new Tabulator('#tabulator_id-2', {"layout": "fitDataTable", "pagination": true, "paginationSize": 10, "paginationSizeSelector": true, "columns": [{"field": "name", "headerFilter": "input", "title": "Name"}, {"field": "age", "width": 80, "headerFilter": minMaxFilterEditor, "headerFilterFunc": minMaxFilterFunction, "headerFilterLiveFilter": false, "title": "Age"}, {"field": "hair", "headerFilter": "select", "headerFilterParams": {"values": ["", "brown", "green", "red"]}, "title": "Hair"}, {"field": "married", "headerFilter": "tickCross", "formatter": "tickCross", "headerFilterParams": {"tristate": true}, "title": "Married"}], "ajaxURL": "../tables/tabulator-75b468c8a8bcf5fff9d211e88d0e6972.json"});
 //trigger download of data.csv file
-$("#csv_down_id-0").click(function(){
+    $("#tabulator_id-2-btn-csv").click(function(){
     table.download("csv", "data.csv");
 });
-
-//trigger download of data.json file
-$("#json_down_id-0").click(function(){
+    //trigger download of data.json file
+    $("#tabulator_id-2-btn=json").click(function(){
     table.download("json", "data.json");
 });
-
-//trigger download of data.xlsx file
-$("#xslx_down_id-0").click(function(){
+    //trigger download of data.xlsx file
+    $("#tabulator_id-2-btn-xlsx").click(function(){
     table.download("xlsx", "data.xlsx", {sheetName:"data"});
 });
+
 </script>
 
 [comment]: # (id: tabulator_id-2)
-[comment]: # (id: csv_down_id-0)
-[comment]: # (id: json_down_id-0)
-[comment]: # (id: xslx_down_id-0)
 
 ## Notes
 

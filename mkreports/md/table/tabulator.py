@@ -8,6 +8,7 @@ from typing import Any, Dict, Optional, Set
 
 import attrs
 import pandas as pd
+from jinja2 import Environment, PackageLoader
 from pandas.api import types
 
 from mkreports.md.base import RenderedMd, comment_ids, func_kwargs_as_set
@@ -152,6 +153,8 @@ class Tabulator(File):
         report_asset_dir: Path,
         page_asset_dir: Path,
     ) -> RenderedMd:
+
+        jinja_env = Environment(loader=PackageLoader("mkreports.md"), autoescape=False)
         super()._render(page_asset_dir=page_asset_dir)
         # produce the column settings
         col_dict = _create_col_settings_tabulator(
@@ -174,12 +177,9 @@ class Tabulator(File):
         # the table settings expects a list; the column names are encoded in the settings as field
         self.table_settings["columns"] = list(col_dict.values())
 
-        used_ids = []
-        used_ids.append(tabulator_id := idstore.next_id("tabulator_id"))
-        body_html = inspect.cleandoc(
-            f"""
-            <div id='{tabulator_id}' class='display'> </div>
-            """
+        tabulator_id = idstore.next_id("tabulator_id")
+        body_html = jinja_env.get_template("table/tabulator_body.html").render(
+            tabulator_id=tabulator_id, downloads=self.downloads
         )
 
         rel_table_path = relpath_html(self.path, page_path)
@@ -188,14 +188,10 @@ class Tabulator(File):
 
         # here we have to be careful to remove the '' around
         # the minMaxFilter function reference
-        settings_str = serialize_json(table_settings)
-
-        back_html = inspect.cleandoc(
-            f"""
-            <script>
-            var table = new Tabulator('#{tabulator_id}', {settings_str});
-            </script>
-            """
+        back_html = jinja_env.get_template("table/tabulator_back.html").render(
+            tabulator_id=tabulator_id,
+            downloads=self.downloads,
+            settings_str=serialize_json(table_settings),
         )
 
         javascript_settings = [
@@ -215,44 +211,6 @@ class Tabulator(File):
             )
 
         if self.downloads:
-            # add the necessary things to enable downloads
-            # to the body
-            used_ids.append(csv_down_id := idstore.next_id("csv_down_id"))
-            used_ids.append(json_down_id := idstore.next_id("json_down_id"))
-            used_ids.append(xlsx_down_id := idstore.next_id("xslx_down_id"))
-            body_html = body_html + inspect.cleandoc(
-                f"""
-                    <div>
-                      <button class="tabulator-btn-dwn", id="{csv_down_id}">to CSV</button>
-                      <button class="tabulator-btn-dwn", id="{json_down_id}">to JSON</button>
-                      <button class="tabulator-btn-dwn", id="{xlsx_down_id}">to XLSX</button>
-                    </div>
-                    """
-            )
-            # to the back_html
-            split_back_html = back_html.split("\n")
-            split_back_html.insert(
-                -1,
-                inspect.cleandoc(
-                    f"""
-                    //trigger download of data.csv file
-                    $("#{csv_down_id}").click(function(){{
-                        table.download("csv", "data.csv");
-                    }});
-
-                    //trigger download of data.json file
-                    $("#{json_down_id}").click(function(){{
-                        table.download("json", "data.json");
-                    }});
-
-                    //trigger download of data.xlsx file
-                    $("#{xlsx_down_id}").click(function(){{
-                        table.download("xlsx", "data.xlsx", {{sheetName:"data"}});
-                    }});
-                    """
-                ),
-            )
-            back_html = "\n".join(split_back_html)
             # to the settings
             javascript_settings.append(
                 "https://oss.sheetjs.com/sheetjs/xlsx.full.min.js"
@@ -275,9 +233,7 @@ class Tabulator(File):
         )
 
         body = SpacedText(body_html, (2, 2))
-        back = SpacedText(back_html, (2, 2)) + "\n".join(
-            [str(comment_ids(this_id)) for this_id in used_ids]
-        )
+        back = SpacedText(back_html, (2, 2)) + comment_ids(tabulator_id)
         return RenderedMd(body=body, back=back, settings=settings, src=self)
 
     def render_fixtures(self) -> Set[str]:

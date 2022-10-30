@@ -55,7 +55,7 @@ image manually and then include it as an `ImageFile` object.
 
     For many scientific graphing purposes, `matplotlib` is either the direct
     choice or the backend being used for plotting. 
-    ![](images/matplotlib_image-9eacde53d07030438d059ea6a19b8285.png)
+    ![](images/matplotlib_image-d615f010586e1f8b24e115b4d91e0c9c.png)
 
 === "Code"
 
@@ -76,7 +76,7 @@ image manually and then include it as an `ImageFile` object.
 
     Any plots created by `plotnine` can be included directly. The code below
     is from the beginner example of the library.
-    ![](images/plotnine_image-9446dc7872bbfae6dd221f72376fc7bb.png)
+    ![](images/plotnine_image-112e726d7835a2550ef5f6fb92c60369.png)
 
 === "Code"
 
@@ -98,7 +98,7 @@ image manually and then include it as an `ImageFile` object.
     Another well known option is Seaborn. The interface is similar to the 
     ones before. Under the hood, the `figure` attribute of the seaborn plot is 
     accessed and saved in the same fashion as for matplotlib.
-    ![](images/seaborn_image-c3fb8cb2918f73795ffbae41eb5404ae.png)
+    ![](images/seaborn_image-ef48aaad7e2233f746871359082583cb.png)
 
 === "Code"
 
@@ -195,11 +195,11 @@ internally how it is rendered may change.
 
     #### Larger
 
-    ![](images/plotnine_image-8538e0eb406bf0315a35ac3270cf7c7f.png)
+    ![](images/plotnine_image-eba6c8f39ef4de992579ef1e4b926fcb.png)
 
     #### Smaller
 
-    ![](images/plotnine_image-4efe8b0294d554ffefcdb815b8010041.png)
+    ![](images/plotnine_image-f497309ff6faf80c3f3729abdd691660.png)
 
 === "Code"
 
@@ -220,5 +220,5 @@ Images can also be placed next to each other, if there is enough
 space. Just specify them directly one after the other and if there
 is enough space, they will be placed next to each other.
 
-![](images/plotnine_image-a4ca255d40ff37342ccbc426ca56cc54.png)
-![](images/plotnine_image-a4ca255d40ff37342ccbc426ca56cc54.png)
+![](images/plotnine_image-089ffe0454c102b1007ebe71ce3e911a.png)
+![](images/plotnine_image-089ffe0454c102b1007ebe71ce3e911a.png)

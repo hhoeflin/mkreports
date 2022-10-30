@@ -1,0 +1,18 @@
+<script>
+    var table = new Tabulator('#{{tabulator_id}}', {{settings_str}});
+{% if downloads -%}
+    //trigger download of data.csv file
+    $("#{{tabulator_id}}-btn-csv").click(function(){
+    table.download("csv", "data.csv");
+});
+    //trigger download of data.json file
+    $("#{{tabulator_id}}-btn=json").click(function(){
+    table.download("json", "data.json");
+});
+    //trigger download of data.xlsx file
+    $("#{{tabulator_id}}-btn-xlsx").click(function(){
+    table.download("xlsx", "data.xlsx", {sheetName:"data"});
+});
+{% endif %}
+</script>
+
