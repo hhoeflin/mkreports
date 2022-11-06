@@ -13,7 +13,7 @@ from typing import Any, Dict, Literal, Mapping, Optional, Union
 import yaml
 from immutabledict import immutabledict
 
-from .config import get_mkreports_dir
+from .config import Config
 from .exceptions import ReportExistsError, ReportNotExistsError, ReportNotValidError
 from .page import Page, merge_pages
 from .settings import NavEntry, ReportSettings, path_to_nav_entry
@@ -112,7 +112,7 @@ class Report:
         """
         # need to ensure it is of type Path
         if path is None:
-            path = get_mkreports_dir()
+            path = Config.mkreports_dir
 
         self._path = Path(path).absolute()
         # first check if the path exists and is not empty and return error if that is not ok

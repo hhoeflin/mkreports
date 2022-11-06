@@ -1,8 +1,6 @@
-import hashlib
 import os
-import tempfile
 from pathlib import Path
-from typing import Optional, Dict, Any
+from typing import ClassVar, Optional
 
 from git.repo import Repo
 
@@ -30,34 +28,42 @@ def repo_root(path: Path = Path(".")) -> Optional[Path]:
     return None
 
 
-def set_mkreports_dir(
-    mkreports_dir: Optional[Path] = None,
-    repo_root_dir: Optional[Path] = repo_root(Path(os.getcwd())),
-    mkreports_root_dir: Path = Path(
-        os.environ.get("MKREPORTS_ROOT_DIR", Path(tempfile.gettempdir()) / "mkreports")
-    ),
-):
+def search_mkreports_upwards() -> Optional[Path]:
     """
-    Function to derive the ckpt directory.
+    Search for a '.mkreports' directory upwards.
+    """
+    cur_dir = Path.cwd()
 
-    This is called once at initialization. The reason is that it could change
-    if the working directory is changed and this would be undesirable
-    behavior.
-    """
-    if mkreports_dir is None:
-        if repo_root_dir is None:
-            mkreports_dir = mkreports_root_dir / "default"
+    while True:
+        if (cur_dir / ".mkreports").exists():
+            return cur_dir / ".mkreports"
+        if cur_dir.parent == cur_dir:
+            return None
         else:
-            hash_str = hashlib.md5(str(repo_root_dir.resolve()).encode()).hexdigest()
-            mkreports_dir = mkreports_root_dir / hash_str
-
-    state["mkreports_dir"] = mkreports_dir
+            cur_dir = cur_dir.parent
 
 
-def get_mkreports_dir() -> Path:
-    return state["mkreports_dir"]
+def default_mkreports_dir() -> Path:
+    """
+    Function to set the default mkreports dir.
+
+    The rule for finding the default directory is as follows:
+        - Whatever the MKREPORTS_ROOT_DIR is set to, if it is set
+        - any '.mkreports' directory in the current or any parent directory
+        - a 'mkreports' directory in 'XDG_STATE_HOME' or `~/.local/state/mkreports' if it is
+          not set. This one will be set if no others are available
+    """
+    if (mkreports_dir_str := os.environ.get("MKREPORTS_ROOT_DIR", "")) != "":
+        return Path(mkreports_dir_str)
+    elif (mkreports_dir := search_mkreports_upwards()) is not None:
+        return mkreports_dir
+    else:
+        mkreports_dir = (
+            Path(os.environ.get("XDG_STATE_HOME", "~/.local/state")) / "mkreports"
+        )
+        mkreports_dir.mkdir(parents=True, exist_ok=True)
+        return mkreports_dir
 
 
-# the mkreports_directory to use
-state: Dict[str, Any] = dict()
-set_mkreports_dir()
+class Config:
+    mkreports_dir: ClassVar[Path] = default_mkreports_dir()

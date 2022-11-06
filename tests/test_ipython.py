@@ -4,7 +4,8 @@ from typing import Any, List, NamedTuple
 
 import pytest
 from IPython.testing.globalipapp import get_ipython
-from mkreports import Report, set_mkreports_dir
+
+from mkreports import Config, Report
 
 
 class InitIpShell(NamedTuple):
@@ -19,7 +20,7 @@ def ip_shell_init():
         # set the paths that are used
         tmp_path = Path(tmp_path)
         report_dir = tmp_path / "test_report"
-        set_mkreports_dir(report_dir)
+        Config.mkreports_dir = report_dir
 
         ip = get_ipython()
         assert ip is not None

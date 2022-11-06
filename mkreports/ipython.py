@@ -7,7 +7,7 @@ from IPython.core.magic import Magics, line_magic, magics_class  # type: ignore
 
 from . import md
 from .code_context import do_layout
-from .config import get_mkreports_dir
+from .config import Config
 from .md.handler import Handler, create_default_handlers, get_handler
 from .report import Page, Report
 
@@ -30,7 +30,7 @@ class ConsoleWriter(Magics):
 
         # identify an mkreport
         self.report = Report.create(
-            get_mkreports_dir(),
+            Config.mkreports_dir,
             report_name="Mkreports console",
             exist_ok=True,
         )

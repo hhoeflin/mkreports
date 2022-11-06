@@ -6,7 +6,7 @@ from typing import List, Optional
 import sh  # type: ignore
 import typer
 
-from .config import get_mkreports_dir
+from .config import Config
 from .report import Report
 
 app = typer.Typer()
@@ -15,7 +15,7 @@ app = typer.Typer()
 @app.command()
 def dir():
     """Print the directory mkreports uses by default to the screen."""
-    typer.echo(f"{get_mkreports_dir()}")
+    typer.echo(f"{str(Config.mkreports_dir)}")
 
 
 def _process_out(line: str):
@@ -48,7 +48,7 @@ def serve(
     and invokes `mkdocs serve`, restarting when error occur.
     """
     if mkreports_dir is None:
-        mkreports_dir = get_mkreports_dir()
+        mkreports_dir = Config.mkreports_dir
 
     mkdocs_cmd = f"cd {mkreports_dir} && mkdocs serve {' '.join(mkdocs_args)}"
 
@@ -95,17 +95,20 @@ def serve(
 def new(
     mkreports_dir: Optional[Path] = typer.Argument(
         None,
-        help="mkreports directory to use to serve out of. If not given, then default directory as shown by `dir` subcommand used.",
+        help=(
+            "mkreports directory to use to serve out of. If not given, "
+            "then default directory as shown by `dir` subcommand used."
+        ),
     ),
     name: str = typer.Option("Mkreports report", help="Name of the report"),
 ):
     """Create a new mkreports report."""
     if mkreports_dir is None:
-        mkreports_dir = get_mkreports_dir()
+        mkreports_dir = Config.mkreports_dir
     try:
         Report.create(mkreports_dir, report_name=name)
         typer.echo(f"Create report in {mkreports_dir}")
-    except:
+    except Exception:
         if mkreports_dir.is_dir():
             typer.echo(
                 f"Directory already exists and could not create report in {mkreports_dir}"

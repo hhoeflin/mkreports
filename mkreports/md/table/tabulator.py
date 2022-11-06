@@ -1,5 +1,4 @@
 import copy
-import inspect
 import logging
 import tempfile
 from copy import deepcopy
@@ -100,7 +99,7 @@ class Tabulator(File):
     user_table_settings: Optional[dict] = None
     add_header_filters: bool = True
     prettify_colnames: bool = True
-    col_settings: dict = None
+    col_settings: dict = attrs.field(default=attrs.Factory(dict))
     downloads: bool = False
     table_kwargs: Optional[dict] = None
 
