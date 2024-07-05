@@ -137,3 +137,4 @@ examples/ipython_test/test/docs/console/active.md
 
 # don't check in built site
 docs/final/site
+.pdm-python

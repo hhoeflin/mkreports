@@ -1,7 +1,5 @@
 """A package to programmatically create mkdocs sites."""
 
-__version__ = "0.7.2"
-
 from .config import Config
 from .docs import add_pkg_docs
 from .ipython import load_ipython_extension

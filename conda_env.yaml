@@ -1,9 +1,0 @@
-name: null
-channels:
-  - defaults
-dependencies:
-  - python=3.8
-  - pip
-  - pip:
-    - flit>=3.7
-prefix: /home/hhoeflin/projects/mkreports/.conda_env

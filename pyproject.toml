@@ -1,15 +1,18 @@
 [build-system]
-requires = ["flit_core >=3.2,<4"]
-build-backend = "flit_core.buildapi"
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
 
 [project]
 name = "mkreports"
-authors = [{name = "Holger Hoefling", email = "hhoeflin@gmail.com"}]
+authors = [
+    {name = "Holger Hoefling", email = "hhoeflin@gmail.com"},
+]
 readme = "README.md"
-license = {file = "LICENSE"}
+license = {text = "MIT"}
 classifiers = ["License :: OSI Approved :: MIT License"]
-dynamic = ["version", "description"]
-requires-python = ">= 3.8"
+requires-python = ">=3.11"
+version = "0.7.2"
+description = "A package to programmatically create mkdocs sites."
 
 dependencies = [
     "mkdocs >=1.2.3",
@@ -27,7 +30,6 @@ dependencies = [
     "mkdocstrings[python] >=0.17.0",
     "GitPython >=3.1.26",
     "parse >=1.19.0",
-    "importlib-resources >=5.4.0; python_version <= '3.8'",
     "sh",
     "ipython >=7.30.1",
     "attrs",
@@ -79,3 +81,6 @@ max_line_length = 88
 [tool.pydocstyle]
 add_ignore = ["D105"]
 ignore_decorators = ["overrides"]
+
+[tool.pdm]
+distribution = true
