@@ -3,6 +3,7 @@ from pathlib import Path
 from typing import ClassVar, Optional
 
 from git.repo import Repo
+from platformdirs import user_state_path
 
 
 def repo_root(path: Path = Path(".")) -> Optional[Path]:
@@ -58,9 +59,7 @@ def default_mkreports_dir() -> Path:
     elif (mkreports_dir := search_mkreports_upwards()) is not None:
         return mkreports_dir
     else:
-        mkreports_dir = (
-            Path(os.environ.get("XDG_STATE_HOME", "~/.local/state")) / "mkreports"
-        )
+        mkreports_dir = user_state_path("mkreports")
         mkreports_dir.mkdir(parents=True, exist_ok=True)
         return mkreports_dir
 
