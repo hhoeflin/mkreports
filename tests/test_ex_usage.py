@@ -13,10 +13,11 @@ from pathlib import Path
 sys.path.insert(1, str(Path(__file__).parents[1] / "docs"))
 import filecmp
 
-from mkreports import Report
 from staging.main import run_all
 
-from dircmp import cmp_dirs_recursive
+from mkreports import Report
+
+from .dircmp import cmp_dirs_recursive
 
 gold_path = Path(__file__).parents[1] / "docs/final"
 

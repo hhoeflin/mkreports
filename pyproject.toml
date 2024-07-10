@@ -35,18 +35,11 @@ dependencies = [
     "attrs",
     "overrides",
     "jinja2",
+    "pandas>=2.2.2",
+    "platformdirs>=4.2.2",
 ]
 
 [project.optional-dependencies]
-dev = [
-    "pudb >=2021.2.2",
-    "bpython >=0.22.1",
-    "pytest >=6.2.5",
-    "pytest-pudb >=0.7.0",
-    "types-PyYAML",
-    "pandas-stubs",
-    "types-Pillow",
-]
 content = [
     "pandas",
     "plotnine >=0.8.0",
@@ -55,6 +48,17 @@ content = [
     "plotly >=5.5.0",
     "seaborn >=0.11.2",
     "altair >=4.1.0",
+]
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "pudb >=2021.2.2",
+    "bpython >=0.22.1",
+    "pytest >=6.2.5",
+    "pytest-pudb >=0.7.0",
+    "types-PyYAML",
+    "pandas-stubs",
+    "types-Pillow",
 ]
 
 [project.urls]

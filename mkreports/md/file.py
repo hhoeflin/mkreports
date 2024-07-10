@@ -1,4 +1,5 @@
 import hashlib
+import importlib.resources as imp_res
 import shutil
 import sys
 from os.path import relpath
@@ -6,15 +7,9 @@ from pathlib import Path
 from typing import Optional, Set, Union
 
 import attrs
-import importlib_resources as imp_res
 
 from .base import MdObj, NotRenderedError, RenderedMd, func_kwargs_as_set
 from .md_proxy import register_md
-
-if sys.version_info < (3, 9):
-    import importlib_resources as imp_res
-else:
-    import importlib.resources as imp_res
 
 
 def true_stem(path: Path) -> str:
